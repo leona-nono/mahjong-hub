@@ -1,0 +1,49 @@
+{
+  "site": {
+    "name": "麻将乐园",
+    "tagline": "彩虹治愈系麻将游乐场"
+  },
+  "nav": {
+    "home": "首页",
+    "games": "游戏",
+    "about": "关于"
+  },
+  "home": {
+    "heroTitle": "玩麻将，玩转治愈系消除游戏",
+    "heroSubtitle": "彩虹主题麻将接龙、连连看与消除游戏合集。无需登录，即点即玩。",
+    "playButton": "立即游玩",
+    "featuredTitle": "精选推荐",
+    "collectionTitle": "消除与配对游戏"
+  },
+  "game": {
+    "play": "开始游戏",
+    "loading": "游戏加载中…",
+    "failedTitle": "游戏暂时无法加载",
+    "failedDesc": "该游戏加载失败，试试下面其他游戏。",
+    "tryAnother": "换一个游戏",
+    "about": "关于本游戏"
+  },
+  "collection": {
+    "title": "麻将消除游戏合集",
+    "subtitle": "连接麻将牌、清空棋盘、放松一下。"
+  },
+  "ad": {
+    "label": "广告"
+  },
+  "footer": {
+    "rights": "麻将乐园 · 彩虹治愈系麻将游戏合集。",
+    "noGambling": "免费游玩 · 无真金赌博"
+  },
+  "auth": {
+    "login": "登录",
+    "loginToEarn": "登录以保存你的积分",
+    "connectToSave": "创建免费账户，跨设备保留积分与登录记录。",
+    "close": "稍后再说",
+    "loginHistory": "登录记录",
+    "noHistory": "暂无记录",
+    "logout": "退出登录"
+  },
+  "points": {
+    "youHave": "你有 {n} 积分"
+  }
+}

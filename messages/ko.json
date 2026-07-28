@@ -1,0 +1,49 @@
+{
+  "site": {
+    "name": "마작 허브",
+    "tagline": "레인보드 힐링 마작 놀이터"
+  },
+  "nav": {
+    "home": "홈",
+    "games": "게임",
+    "about": "소개"
+  },
+  "home": {
+    "heroTitle": "마작과 힐링 타일 게임을 즐기세요",
+    "heroSubtitle": "레인보드 마작 솔리테어·연결·타일 매치 게임 모음. 로그인 없이 바로 플레이.",
+    "playButton": "지금 하기",
+    "featuredTitle": "추천 게임",
+    "collectionTitle": "제거·매치 게임"
+  },
+  "game": {
+    "play": "플레이",
+    "loading": "불러오는 중…",
+    "failedTitle": "게임을 불러올 수 없습니다",
+    "failedDesc": "이 게임을 불러오지 못했습니다. 아래 다른 게임을 해 보세요.",
+    "tryAnother": "다른 게임 보기",
+    "about": "이 게임 정보"
+  },
+  "collection": {
+    "title": "마작 제거 게임 컬렉션",
+    "subtitle": "타일을 연결하고 보드를 비우며 휴식하세요."
+  },
+  "ad": {
+    "label": "광고"
+  },
+  "footer": {
+    "rights": "마작 허브 · 레인보드 힐링 타일 게임 모음.",
+    "noGambling": "무료 플레이 · 현금 도박 없음"
+  },
+  "auth": {
+    "login": "로그인",
+    "loginToEarn": "로그인하여 포인트 저장",
+    "connectToSave": "무료 계정으로 기기 간 포인트와 기록을 유지하세요.",
+    "close": "나중에",
+    "loginHistory": "로그인 기록",
+    "noHistory": "기록 없음",
+    "logout": "로그아웃"
+  },
+  "points": {
+    "youHave": "포인트 {n}점"
+  }
+}

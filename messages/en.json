@@ -1,0 +1,49 @@
+{
+  "site": {
+    "name": "Mahjong Hub",
+    "tagline": "Rainbow healing mahjong playground"
+  },
+  "nav": {
+    "home": "Home",
+    "games": "Games",
+    "about": "About"
+  },
+  "home": {
+    "heroTitle": "Play Mahjong & Relaxing Tile Games",
+    "heroSubtitle": "A rainbow-themed collection of mahjong solitaire, connect and tile-match games. No login, just play.",
+    "playButton": "Play Now",
+    "featuredTitle": "Featured Games",
+    "collectionTitle": "Elimination & Match Games"
+  },
+  "game": {
+    "play": "Play",
+    "loading": "Loading game…",
+    "failedTitle": "Game temporarily unavailable",
+    "failedDesc": "This game failed to load. Try another one below.",
+    "tryAnother": "Try another game",
+    "about": "About this game"
+  },
+  "collection": {
+    "title": "Mahjong Elimination Collection",
+    "subtitle": "Connect tiles, clear the board, relax."
+  },
+  "ad": {
+    "label": "Advertisement"
+  },
+  "footer": {
+    "rights": "Mahjong Hub · A rainbow healing tile game collection.",
+    "noGambling": "Free to play · No real-money gambling"
+  },
+  "auth": {
+    "login": "Sign in",
+    "loginToEarn": "Sign in to save your points",
+    "connectToSave": "Create a free account to keep your points and login history across devices.",
+    "close": "Maybe later",
+    "loginHistory": "Login history",
+    "noHistory": "No history yet",
+    "logout": "Sign out"
+  },
+  "points": {
+    "youHave": "You have {n} pts"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "site": {
+    "name": "麻雀ハブ",
+    "tagline": "レインボー癒やし系麻雀遊園地"
+  },
+  "nav": {
+    "home": "ホーム",
+    "games": "ゲーム",
+    "about": "について"
+  },
+  "home": {
+    "heroTitle": "麻雀と癒やし系消除ゲームを遊ぼう",
+    "heroSubtitle": "レインボーカラーの麻雀ソリティア・スリーマッチ・タイル消除ゲーム集。ログイン不要、すぐ遊べる。",
+    "playButton": "今すぐ遊ぶ",
+    "featuredTitle": "おすすめ",
+    "collectionTitle": "消除・マッチゲーム"
+  },
+  "game": {
+    "play": "プレイ",
+    "loading": "読み込み中…",
+    "failedTitle": "ゲームを読み込めません",
+    "failedDesc": "このゲームの読み込みに失敗しました。下の別のゲームをお試しください。",
+    "tryAnother": "別のゲームを試す",
+    "about": "このゲームについて"
+  },
+  "collection": {
+    "title": "麻雀消除ゲームコレクション",
+    "subtitle": "牌をつなぎ、盤を消し、リラックス。"
+  },
+  "ad": {
+    "label": "広告"
+  },
+  "footer": {
+    "rights": "麻雀ハブ · レインボー癒やし系タイルゲーム集。",
+    "noGambling": "無料で遊べる・金銭賭博なし"
+  },
+  "auth": {
+    "login": "ログイン",
+    "loginToEarn": "ログインしてポイントを保存",
+    "connectToSave": "無料アカウントでポイントと履歴を端末間で保持できます。",
+    "close": "後で",
+    "loginHistory": "ログイン履歴",
+    "noHistory": "履歴はまだありません",
+    "logout": "ログアウト"
+  },
+  "points": {
+    "youHave": "ポイント {n} 件"
+  }
+}

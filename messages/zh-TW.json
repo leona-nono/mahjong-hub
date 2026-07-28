@@ -1,0 +1,49 @@
+{
+  "site": {
+    "name": "麻將樂園",
+    "tagline": "彩虹治癒系麻將遊樂場"
+  },
+  "nav": {
+    "home": "首頁",
+    "games": "遊戲",
+    "about": "關於"
+  },
+  "home": {
+    "heroTitle": "玩麻將，玩轉治癒系消除遊戲",
+    "heroSubtitle": "彩虹主題麻將接龍、連連看與消除遊戲合集。無需登入，即點即玩。",
+    "playButton": "立即遊玩",
+    "featuredTitle": "精選推薦",
+    "collectionTitle": "消除與配對遊戲"
+  },
+  "game": {
+    "play": "開始遊戲",
+    "loading": "遊戲載入中…",
+    "failedTitle": "遊戲暫時無法載入",
+    "failedDesc": "該遊戲載入失敗，試試下面其他遊戲。",
+    "tryAnother": "換一個遊戲",
+    "about": "關於本遊戲"
+  },
+  "collection": {
+    "title": "麻將消除遊戲合集",
+    "subtitle": "連接麻將牌、清空棋盤、放鬆一下。"
+  },
+  "ad": {
+    "label": "廣告"
+  },
+  "footer": {
+    "rights": "麻將樂園 · 彩虹治癒系麻將遊戲合集。",
+    "noGambling": "免費遊玩 · 無真金賭博"
+  },
+  "auth": {
+    "login": "登入",
+    "loginToEarn": "登入以保存你的積分",
+    "connectToSave": "建立免費帳號，跨裝置保留積分與登入記錄。",
+    "close": "稍後再說",
+    "loginHistory": "登入記錄",
+    "noHistory": "暫無記錄",
+    "logout": "登出"
+  },
+  "points": {
+    "youHave": "你有 {n} 積分"
+  }
+}

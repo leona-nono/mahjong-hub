@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rb-red: #ff6b6b;
+  --rb-orange: #ffa94d;
+  --rb-yellow: #ffd43b;
+  --rb-green: #51cf66;
+  --rb-blue: #4dabf7;
+  --rb-indigo: #748ffc;
+  --rb-violet: #b197fc;
+  --rb-pink: #f783ac;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: linear-gradient(135deg, #fff5f7 0%, #f0f8ff 50%, #f5fff7 100%);
+  background-attachment: fixed;
+  color: #2b2b3a;
+  font-family:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'PingFang SC', 'Hiragino Sans', 'Noto Sans CJK SC', 'Microsoft YaHei',
+    sans-serif;
+}
+
+.rainbow-text {
+  background: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-violet),
+    var(--rb-pink)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.rainbow-bar {
+  background: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-violet),
+    var(--rb-pink)
+  );
+}
+
+.rainbow-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px -12px rgba(116, 143, 252, 0.35);
+}
