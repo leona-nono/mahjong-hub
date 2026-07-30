@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import {
+  GAME_CATEGORIES,
+  MAX_DESC,
+  MAX_TITLE,
+  MAX_URL,
+  validateBool,
+  validateEnum,
+  validateInt,
+  validateString
+} from '@/lib/admin-validators';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +40,34 @@ export async function PUT(req: NextRequest, { params }: Params) {
   const { slug } = await params;
   const body = await req.json();
 
+  // Field-level validation — only validate fields the client sent.
+  const err =
+    ('title' in body
+      ? validateString('title', body.title, { max: MAX_TITLE, required: true })
+      : null) ??
+    ('description' in body
+      ? validateString('description', body.description, { max: MAX_DESC })
+      : null) ??
+    ('iframeUrl' in body
+      ? validateString('iframeUrl', body.iframeUrl, { max: MAX_URL })
+      : null) ??
+    ('downloadUrl' in body
+      ? validateString('downloadUrl', body.downloadUrl, { max: MAX_URL })
+      : null) ??
+    ('thumbnail' in body
+      ? validateString('thumbnail', body.thumbnail, { max: MAX_URL })
+      : null) ??
+    ('category' in body
+      ? validateEnum('category', body.category, GAME_CATEGORIES)
+      : null) ??
+    ('tags' in body
+      ? validateTags(body.tags)
+      : null) ??
+    ('sortOrder' in body ? validateInt('sortOrder', body.sortOrder) : null) ??
+    ('featured' in body ? validateBool('featured', body.featured) : null) ??
+    ('active' in body ? validateBool('active', body.active) : null);
+  if (err) return err;
+
   const data: Record<string, unknown> = {};
   for (const k of [
     'title',
@@ -58,4 +96,23 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
 
   await prisma.game.delete({ where: { slug } });
   return NextResponse.json({ ok: true });
+}
+
+/** tags is a string array; reject non-strings and bound the size. */
+function validateTags(value: unknown): NextResponse | null {
+  if (!Array.isArray(value)) {
+    return NextResponse.json({ error: 'tags 必须是字符串数组' }, { status: 400 });
+  }
+  if (value.length > 32) {
+    return NextResponse.json({ error: 'tags 数量不能超过 32' }, { status: 400 });
+  }
+  for (const t of value) {
+    if (typeof t !== 'string' || t.length > 64) {
+      return NextResponse.json(
+        { error: 'tags 每项必须是 ≤64 字符的字符串' },
+        { status: 400 }
+      );
+    }
+  }
+  return null;
 }

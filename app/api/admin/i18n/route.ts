@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import {
+  ALL_LOCALES,
+  MAX_KEY,
+  MAX_VALUE,
+  validateEnum,
+  validateString
+} from '@/lib/admin-validators';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +16,9 @@ export async function GET(req: NextRequest) {
   const guard = await requireAdmin();
   if (guard) return guard;
   const locale = req.nextUrl.searchParams.get('locale') ?? undefined;
+  if (locale && !ALL_LOCALES.includes(locale as typeof ALL_LOCALES[number])) {
+    return NextResponse.json({ error: 'locale 无效' }, { status: 400 });
+  }
   const messages = await prisma.messageI18n.findMany({
     where: locale ? { locale } : undefined,
     orderBy: [{ key: 'asc' }, { locale: 'asc' }],
@@ -24,12 +34,11 @@ export async function PUT(req: NextRequest) {
   const body = await req.json();
   const { key, locale, value } = body;
 
-  if (!key || !locale || typeof value !== 'string') {
-    return NextResponse.json(
-      { error: 'key / locale / value 是必填项' },
-      { status: 400 }
-    );
-  }
+  const err =
+    validateString('key', key, { max: MAX_KEY, required: true }) ??
+    validateEnum('locale', locale, ALL_LOCALES) ??
+    validateString('value', value, { max: MAX_VALUE, required: true });
+  if (err) return err;
 
   const row = await prisma.messageI18n.upsert({
     where: { key_locale: { key, locale } },

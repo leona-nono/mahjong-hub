@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import { SETTINGS_KEYS, validateRequiredEnum } from '@/lib/admin-validators';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,9 +23,18 @@ export async function PUT(req: NextRequest) {
   const body = await req.json();
   const { key, value } = body;
 
-  if (!key || value === undefined) {
-    return NextResponse.json({ error: 'key / value 是必填项' }, { status: 400 });
-  }
+  // `key` is restricted to the SiteSetting allow-list (site / social / analytics).
+  // `value` is a Json object — Prisma accepts any serializable JSON and
+  // rejects on type errors at the driver boundary.
+  const err =
+    validateRequiredEnum('key', key, SETTINGS_KEYS) ??
+    (value === undefined
+      ? NextResponse.json(
+          { error: 'value 是必填项' },
+          { status: 400 }
+        )
+      : null);
+  if (err) return err;
 
   const row = await prisma.siteSetting.upsert({
     where: { key },

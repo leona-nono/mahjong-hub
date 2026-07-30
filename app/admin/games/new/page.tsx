@@ -1,11 +1,16 @@
 import { prisma } from '@/lib/db';
+import NewGameForm from '@/components/admin/NewGameForm';
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * Lightweight connectivity probe — runs `SELECT 1` without closing the
+ * shared Prisma client (cf. the previous $connect/$disconnect pattern which
+ * would tear down the singleton's connection on every request).
+ */
 async function checkDb() {
   try {
-    await prisma.$connect();
-    await prisma.$disconnect();
+    await prisma.$queryRaw`select 1`;
     return true;
   } catch {
     return false;
@@ -27,7 +32,7 @@ export default async function NewGamePage() {
         <h1 className="text-2xl font-bold text-gray-800">新建游戏</h1>
         <p className="mt-1 text-sm text-gray-500">
           {dbConnected
-            ? '数据库已连接，可新建游戏记录'
+            ? '数据库已连接，填写后点击创建'
             : '数据库未连接，暂无法保存'}
         </p>
       </div>
@@ -38,71 +43,12 @@ export default async function NewGamePage() {
         </div>
       )}
 
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="grid gap-6 sm:grid-cols-2">
-          <NewField label="Slug（唯一标识）" placeholder="e.g. my-new-game" />
-          <NewField label="标题" placeholder="e.g. My New Game" />
-          <NewField
-            label="分类"
-            placeholder="mahjong / connect / solitaire / tile-match"
-          />
-          <NewField label="推荐排序 (0-999)" placeholder="0" type="number" />
-          <div className="sm:col-span-2">
-            <NewField
-              label="描述"
-              placeholder="A short description of the game..."
-              multiline
-            />
-          </div>
-          <div className="sm:col-span-2">
-            <NewField
-              label="iframe URL"
-              placeholder="https://example.com/embed/game"
-            />
-          </div>
-        </div>
-
-        <div className="mt-6 flex gap-3 border-t pt-6">
-          <button
-            disabled={!dbConnected}
-            className="rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500"
-          >
-            创建游戏
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function NewField({
-  label,
-  placeholder,
-  type,
-  multiline
-}: {
-  label: string;
-  placeholder: string;
-  type?: string;
-  multiline?: boolean;
-}) {
-  return (
-    <div>
-      <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase">
-        {label}
-      </label>
-      {multiline ? (
-        <textarea
-          placeholder={placeholder}
-          rows={3}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-        />
+      {dbConnected ? (
+        <NewGameForm />
       ) : (
-        <input
-          type={type || 'text'}
-          placeholder={placeholder}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-        />
+        <div className="rounded-lg border border-gray-200 bg-white p-6 text-sm text-gray-400">
+          数据库未就绪，无法渲染新建表单。
+        </div>
       )}
     </div>
   );

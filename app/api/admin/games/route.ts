@@ -1,6 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import {
+  GAME_CATEGORIES,
+  MAX_DESC,
+  MAX_TITLE,
+  MAX_URL,
+  validateBool,
+  validateEnum,
+  validateInt,
+  validateSlug,
+  validateString
+} from '@/lib/admin-validators';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,12 +38,16 @@ export async function POST(req: NextRequest) {
   const { slug, title, description, iframeUrl, category, featured, sortOrder } =
     body;
 
-  if (!slug || !title) {
-    return NextResponse.json(
-      { error: 'slug 和 title 是必填项' },
-      { status: 400 }
-    );
-  }
+  // Validation — first failure wins.
+  const v =
+    validateSlug(slug) ??
+    validateString('title', title, { max: MAX_TITLE, required: true }) ??
+    validateString('description', description, { max: MAX_DESC }) ??
+    validateString('iframeUrl', iframeUrl, { max: MAX_URL }) ??
+    validateEnum('category', category, GAME_CATEGORIES) ??
+    validateBool('featured', featured) ??
+    validateInt('sortOrder', sortOrder);
+  if (v) return v;
 
   const existing = await prisma.game.findUnique({ where: { slug } });
   if (existing) {

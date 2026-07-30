@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import {
+  ALL_LOCALES,
+  MAX_ANSWER,
+  MAX_QUESTION,
+  validateInt,
+  validateRequiredEnum,
+  validateString
+} from '@/lib/admin-validators';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +27,9 @@ export async function GET(req: NextRequest, { params }: Params) {
   if (!game) return NextResponse.json({ error: 'Game not found' }, { status: 404 });
 
   const locale = req.nextUrl.searchParams.get('locale') ?? undefined;
+  if (locale && !ALL_LOCALES.includes(locale as typeof ALL_LOCALES[number])) {
+    return NextResponse.json({ error: 'locale 无效' }, { status: 400 });
+  }
   const faqs = await prisma.gameFaq.findMany({
     where: { gameId: game.id, ...(locale ? { locale } : {}) },
     orderBy: [{ locale: 'asc' }, { sortOrder: 'asc' }]
@@ -40,12 +51,19 @@ export async function POST(req: NextRequest, { params }: Params) {
   if (!game) return NextResponse.json({ error: 'Game not found' }, { status: 404 });
 
   const { locale, question, answer, sortOrder } = body;
-  if (!locale || !question || !answer) {
-    return NextResponse.json(
-      { error: 'locale / question / answer 是必填项' },
-      { status: 400 }
-    );
-  }
+
+  const err =
+    validateRequiredEnum('locale', locale, ALL_LOCALES) ??
+    validateString('question', question, {
+      max: MAX_QUESTION,
+      required: true
+    }) ??
+    validateString('answer', answer, {
+      max: MAX_ANSWER,
+      required: true
+    }) ??
+    validateInt('sortOrder', sortOrder);
+  if (err) return err;
 
   const faq = await prisma.gameFaq.create({
     data: {

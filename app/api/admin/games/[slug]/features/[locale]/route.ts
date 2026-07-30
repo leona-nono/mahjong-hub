@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import {
+  FEATURE_LOCALES,
+  MAX_FEATURE_CONTENT,
+  validateInt,
+  validateRequiredEnum,
+  validateString
+} from '@/lib/admin-validators';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,15 +26,27 @@ export async function PUT(req: NextRequest, { params }: Params) {
   });
   if (!game) return NextResponse.json({ error: 'Game not found' }, { status: 404 });
 
-  const { content, sortOrder } = body;
-  if (typeof content !== 'string') {
-    return NextResponse.json({ error: 'content 是必填项' }, { status: 400 });
-  }
+  const err =
+    validateRequiredEnum('locale', locale, FEATURE_LOCALES) ??
+    validateString('content', body.content, {
+      max: MAX_FEATURE_CONTENT,
+      required: true
+    }) ??
+    validateInt('sortOrder', body.sortOrder);
+  if (err) return err;
 
   const feature = await prisma.gameFeature.upsert({
     where: { gameId_locale: { gameId: game.id, locale } },
-    create: { gameId: game.id, locale, content, sortOrder: sortOrder ?? 0 },
-    update: { content, sortOrder: sortOrder ?? 0 }
+    create: {
+      gameId: game.id,
+      locale,
+      content: body.content,
+      sortOrder: body.sortOrder ?? 0
+    },
+    update: {
+      content: body.content,
+      sortOrder: body.sortOrder ?? 0
+    }
   });
   return NextResponse.json({ feature });
 }
@@ -43,6 +62,11 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
     select: { id: true }
   });
   if (!game) return NextResponse.json({ error: 'Game not found' }, { status: 404 });
+
+  // Locale is part of the URL path, still validate it stays in our allow-list.
+  if (!FEATURE_LOCALES.includes(locale as typeof FEATURE_LOCALES[number])) {
+    return NextResponse.json({ error: 'locale 无效' }, { status: 400 });
+  }
 
   try {
     await prisma.gameFeature.delete({
