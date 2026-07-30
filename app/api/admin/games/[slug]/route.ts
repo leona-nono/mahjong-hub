@@ -1,0 +1,61 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/admin-guard';
+import { prisma } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+
+type Params = { params: Promise<{ slug: string }> };
+
+/** GET /api/admin/games/[slug] — fetch single game with FAQs/Features. */
+export async function GET(_req: NextRequest, { params }: Params) {
+  const guard = await requireAdmin();
+  if (guard) return guard;
+  const { slug } = await params;
+
+  const game = await prisma.game.findUnique({
+    where: { slug },
+    include: {
+      faqs: { orderBy: { sortOrder: 'asc' } },
+      features: { orderBy: { locale: 'asc' } }
+    }
+  });
+  if (!game) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  return NextResponse.json({ game });
+}
+
+/** PUT /api/admin/games/[slug] — update a game. */
+export async function PUT(req: NextRequest, { params }: Params) {
+  const guard = await requireAdmin();
+  if (guard) return guard;
+  const { slug } = await params;
+  const body = await req.json();
+
+  const data: Record<string, unknown> = {};
+  for (const k of [
+    'title',
+    'description',
+    'iframeUrl',
+    'downloadUrl',
+    'thumbnail',
+    'category',
+    'tags',
+    'sortOrder'
+  ]) {
+    if (k in body) data[k] = body[k];
+  }
+  if ('featured' in body) data.isFeatured = !!body.featured;
+  if ('active' in body) data.isActive = !!body.active;
+
+  const game = await prisma.game.update({ where: { slug }, data });
+  return NextResponse.json({ game });
+}
+
+/** DELETE /api/admin/games/[slug] — delete a game (cascades FAQs/Features). */
+export async function DELETE(_req: NextRequest, { params }: Params) {
+  const guard = await requireAdmin();
+  if (guard) return guard;
+  const { slug } = await params;
+
+  await prisma.game.delete({ where: { slug } });
+  return NextResponse.json({ ok: true });
+}

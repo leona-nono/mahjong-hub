@@ -1,32 +1,46 @@
 import { notFound } from 'next/navigation';
-import { getGame, type GameCategory } from '@/data/games';
+import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
+import GameEditorForm from '@/components/admin/GameEditorForm';
 
-const CATEGORY_OPTIONS: { value: GameCategory | string; label: string }[] = [
-  { value: 'mahjong', label: '🀄️ 麻将 (mahjong)' },
-  { value: 'connect', label: '🔗 连连看 (connect)' },
-  { value: 'solitaire', label: '♠️ 单人 (solitaire)' },
-  { value: 'tile-match', label: '🧩 配对 (tile-match)' }
-];
+export const dynamic = 'force-dynamic';
 
 async function getEditorData(slug: string) {
   const staticGame = getGame(slug);
   if (!staticGame) notFound();
 
-  let dbRecord: { id: string; title: string } | null = null;
+  let dbGame: any = null;
   try {
-    dbRecord = await prisma.game.findUnique({
-      where: { slug },
-      select: { id: true, title: true }
-    });
+    dbGame = await prisma.game.findUnique({ where: { slug } });
   } catch {
     // DB not available
   }
 
+  // Prefer DB row when available; fall back to static
+  const initial = dbGame
+    ? {
+        slug: dbGame.slug,
+        title: dbGame.title,
+        description: dbGame.description ?? '',
+        iframeUrl: dbGame.iframeUrl ?? '',
+        category: dbGame.category ?? 'mahjong',
+        isFeatured: dbGame.isFeatured,
+        sortOrder: dbGame.sortOrder
+      }
+    : {
+        slug: staticGame.slug,
+        title: staticGame.title,
+        description: staticGame.description,
+        iframeUrl: staticGame.gameIframeUrl,
+        category: staticGame.category,
+        isFeatured: !!staticGame.featured,
+        sortOrder: 0
+      };
+
   return {
-    game: staticGame,
-    dbId: dbRecord?.id ?? null,
-    dbConnected: !!dbRecord
+    initial,
+    dbConnected: !!dbGame,
+    dbId: dbGame?.id ?? null
   };
 }
 
@@ -36,7 +50,7 @@ export default async function GameEditorPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { game, dbId, dbConnected } = await getEditorData(slug);
+  const { initial, dbConnected, dbId } = await getEditorData(slug);
 
   return (
     <div>
@@ -49,7 +63,7 @@ export default async function GameEditorPage({
           ← 返回游戏列表
         </a>
         <h1 className="text-2xl font-bold text-gray-800">
-          编辑游戏: {game.title}
+          编辑游戏: {initial.title}
         </h1>
         <p className="mt-1 text-sm text-gray-500">
           Slug: <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs">{slug}</code>
@@ -64,98 +78,14 @@ export default async function GameEditorPage({
       {/* DB warning */}
       {!dbConnected && (
         <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-          ⚠️ 数据库未连接，当前显示只读预览。配置 DATABASE_URL 后方可保存修改。
+          ⚠️ 数据库未连接。下方修改无法保存（按钮会显示错误）。配置 DATABASE_URL 后可生效。
         </div>
       )}
 
-      {/* Editor form */}
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="grid gap-6 sm:grid-cols-2">
-          {/* Slug (read-only) */}
-          <Field label="Slug" readonly value={game.slug} />
+      {/* Editor form (client) */}
+      <GameEditorForm slug={slug} initial={initial} />
 
-          {/* Title */}
-          <Field label="标题 (Title)" readonly={!dbConnected} value={game.title} />
-
-          {/* Category */}
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase">
-              分类 (Category)
-            </label>
-            <select
-              disabled={!dbConnected}
-              defaultValue={game.category}
-              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm disabled:bg-gray-100 disabled:text-gray-400"
-            >
-              {CATEGORY_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Featured */}
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase">
-              推荐 (Featured)
-            </label>
-            <select
-              disabled={!dbConnected}
-              defaultValue={game.featured ? 'true' : 'false'}
-              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm disabled:bg-gray-100 disabled:text-gray-400"
-            >
-              <option value="true">✅ 是</option>
-              <option value="false">— 否</option>
-            </select>
-          </div>
-
-          {/* Description */}
-          <div className="sm:col-span-2">
-            <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase">
-              描述 (Description)
-            </label>
-            <textarea
-              readOnly={!dbConnected}
-              defaultValue={game.description}
-              rows={3}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm read-only:bg-gray-100 read-only:text-gray-400"
-            />
-          </div>
-
-          {/* iframe URL */}
-          <div className="sm:col-span-2">
-            <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase">
-              iframe 嵌入 URL
-            </label>
-            <input
-              type="url"
-              readOnly={!dbConnected}
-              defaultValue={game.gameIframeUrl}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono read-only:bg-gray-100 read-only:text-gray-400"
-            />
-          </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="mt-6 flex gap-3 border-t pt-6">
-          <button
-            disabled={!dbConnected}
-            className="rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500"
-          >
-            保存修改
-          </button>
-          <a
-            href={`/games/${slug}`}
-            target="_blank"
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-600 transition hover:bg-gray-50"
-          >
-            预览游戏页 ↗
-          </a>
-        </div>
-      </div>
-
-      {/* Placeholder for FAQ/Features sections (wired in later) */}
+      {/* Multi-language content shortcuts */}
       <div className="mt-8">
         <h2 className="mb-4 text-lg font-bold text-gray-800">多语言内容</h2>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -174,35 +104,11 @@ export default async function GameEditorPage({
           >
             <h3 className="font-bold text-gray-800">📝 Features 详情</h3>
             <p className="mt-1 text-sm text-gray-500">
-              按语言编辑游戏详情（MDX 富文本，含直接问答段 + GEO 增强）
+              按语言编辑游戏详情（Markdown 富文本，含直接问答段 + GEO 增强）
             </p>
           </a>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Field({
-  label,
-  value,
-  readonly
-}: {
-  label: string;
-  value: string;
-  readonly: boolean;
-}) {
-  return (
-    <div>
-      <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase">
-        {label}
-      </label>
-      <input
-        type="text"
-        readOnly={readonly}
-        defaultValue={value}
-        className={`w-full rounded-lg border border-gray-300 px-3 py-2 text-sm read-only:bg-gray-100 read-only:text-gray-400 ${readonly ? '' : ''}`}
-      />
     </div>
   );
 }
