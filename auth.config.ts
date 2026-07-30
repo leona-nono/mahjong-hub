@@ -18,10 +18,11 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isProtectedApi =
+      const isProtected =
         nextUrl.pathname.startsWith('/api/points') ||
-        nextUrl.pathname.startsWith('/api/leaderboard');
-      if (isProtectedApi) return isLoggedIn;
+        nextUrl.pathname.startsWith('/api/leaderboard') ||
+        nextUrl.pathname.startsWith('/admin');
+      if (isProtected) return isLoggedIn;
       return true;
     },
     async session({ session, user }) {

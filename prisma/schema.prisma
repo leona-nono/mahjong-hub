@@ -107,3 +107,85 @@ model DailyBonus {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+// ── FaWeb 运营后台扩展 (Site/Game/FAQ/Features/i18n/Themes) ──────────
+// 对标 fafafa.ai 建站模板的 JSON 配置驱动+表单式无代码+每语言内容分离范式
+// 96 游戏 × 18 语言规模，DB 化后可通过网页表单读写替代手动改 JSON
+
+model SiteSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique // 'general' | 'seo' | 'social' | 'analytics'
+  value       Json     @db.JsonB
+  updatedAt   DateTime @updatedAt
+}
+
+model Game {
+  id          String   @id @default(cuid())
+  slug        String   @unique // URL slug, e.g. 'aloha-mahjong'
+  title       String   // default title (en)
+  description String?
+  iframeUrl   String?  // iframe embed URL
+  downloadUrl String?  // optional download link
+  thumbnail   String?  // image path/URL
+  category    String?  // e.g. 'mahjong', 'tile', 'match'
+  tags        String[] // e.g. ['classic','relax']
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  faqs     GameFaq[]
+  features GameFeature[]
+}
+
+model GameFaq {
+  id        String   @id @default(cuid())
+  gameId    String
+  locale    String   // e.g. 'en', 'ja', 'zh-TW'
+  question  String
+  answer    String   // plain text or simple HTML
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([gameId, locale])
+}
+
+model GameFeature {
+  gameId    String
+  locale    String   // e.g. 'en', 'ja', 'zh-TW'
+  content   String   // MDX (markdown with JSX components) — long-form rich text
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@id([gameId, locale])
+  @@index([gameId, locale])
+}
+
+model ThemePreset {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  colors     Json     @db.JsonB // { primary, secondary, accent, background, ... }
+  fonts      Json?    @db.JsonB // { heading, body }
+  cssVars    Json?    @db.JsonB // custom CSS variables
+  isActive   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model MessageI18n {
+  id        String   @id @default(cuid())
+  key       String   // dot-path key like 'navbar.home'
+  locale    String   // 'en', 'ja', 'ko', 'zh-TW', 'zh-CN', ...
+  value     String   // translated text
+  updatedAt DateTime @updatedAt
+
+  @@unique([key, locale])
+  @@index([locale])
+}
