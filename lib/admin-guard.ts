@@ -7,7 +7,14 @@ import { NextResponse } from 'next/server';
  * Returns `null` on success, or a 401/403 NextResponse on failure.
  *
  * Admin allow-list is read from `ADMIN_EMAILS` env var (comma-separated).
- * If env is missing, all logged-in users are admins (single-user dev mode).
+ *
+ * Security model — FAIL CLOSED in production:
+ *   • If ADMIN_EMAILS is set, only listed emails may hit /api/admin/*.
+ *   • If ADMIN_EMAILS is MISSING in production, the route is locked down
+ *     (403) so a forgotten env var can never accidentally grant admin to
+ *     every logged-in user.
+ *   • If ADMIN_EMAILS is missing in development (NODE_ENV !== 'production'),
+ *     we fall back to "any logged-in user is admin" for convenience.
  */
 export async function requireAdmin(): Promise<NextResponse | null> {
   const session = await auth();
@@ -17,8 +24,14 @@ export async function requireAdmin(): Promise<NextResponse | null> {
 
   const allowList = process.env.ADMIN_EMAILS;
   if (!allowList) {
-    // Dev fallback: allow any logged-in user. Once ADMIN_EMAILS is set in
-    // Vercel / .env.local, only listed emails can hit /api/admin/*.
+    if (process.env.NODE_ENV === 'production') {
+      // Fail closed: never implicitly grant admin in prod.
+      return NextResponse.json(
+        { error: 'Admin allowlist not configured' },
+        { status: 403 }
+      );
+    }
+    // Dev fallback: allow any logged-in user.
     return null;
   }
 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-interface SettingsForm {
+export interface SettingsForm {
   siteTitle: string;
   siteDescription: string;
   defaultLocale: string;
@@ -28,8 +28,15 @@ const DEFAULTS: SettingsForm = {
   gtm: ''
 };
 
-export default function SettingsForm() {
-  const [form, setForm] = useState<SettingsForm>(DEFAULTS);
+export default function SettingsForm({
+  initial
+}: {
+  initial?: Partial<SettingsForm>;
+}) {
+  const [form, setForm] = useState<SettingsForm>(() => ({
+    ...DEFAULTS,
+    ...(initial ?? {})
+  }));
   const [status, setStatus] = useState<{ kind: 'idle' | 'saving' | 'saved' | 'error'; msg?: string }>({
     kind: 'idle'
   });
@@ -43,7 +50,14 @@ export default function SettingsForm() {
     setStatus({ kind: 'saving' });
     try {
       const payload = {
-        site: DEFAULTS,
+        // NOTE: `site` fields MUST read from the live form, never from the
+        // DEFAULTS constant — otherwise user edits are overwritten on save.
+        site: {
+          siteTitle: form.siteTitle,
+          siteDescription: form.siteDescription,
+          defaultLocale: form.defaultLocale,
+          ogImage: form.ogImage
+        },
         social: {
           facebook: form.facebook,
           x: form.x,
