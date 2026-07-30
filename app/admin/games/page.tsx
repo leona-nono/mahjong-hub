@@ -1,5 +1,6 @@
 import { getGames, type GameCategory } from '@/data/games';
 import { prisma } from '@/lib/db';
+import { isDbConnected } from '@/lib/db-health';
 
 /**
  * Game list — shows all games in a table with search/filter.
@@ -18,17 +19,22 @@ export const dynamic = 'force-dynamic';
 async function getGameList() {
   const staticGames = getGames();
 
+  // Probe connectivity first; only attempt the query when DB is reachable so
+  // we never confuse "empty result" with "DB down" in the UI.
+  const dbConnected = await isDbConnected();
   let dbGames: { slug: string; title: string }[] = [];
-  try {
-    dbGames = await prisma.game.findMany({
-      select: { slug: true, title: true },
-      orderBy: { sortOrder: 'asc' }
-    });
-  } catch {
-    // DB not available
+  if (dbConnected) {
+    try {
+      dbGames = await prisma.game.findMany({
+        select: { slug: true, title: true },
+        orderBy: { sortOrder: 'asc' }
+      });
+    } catch {
+      // Connectivity dropped between probe and query — fall back to static.
+    }
   }
 
-  return { staticGames, dbGames, dbConnected: dbGames.length > 0 };
+  return { staticGames, dbGames, dbConnected };
 }
 
 export default async function AdminGamesPage() {

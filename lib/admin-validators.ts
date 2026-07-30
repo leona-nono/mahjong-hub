@@ -26,6 +26,8 @@ export const MAX_VALUE = 16 * 1024; // 16KB for short string values
 export const MAX_QUESTION = 500;
 export const MAX_ANSWER = 8 * 1024; // 8KB per FAQ answer
 export const MAX_FEATURE_CONTENT = 64 * 1024; // 64KB MDX long-form
+export const MAX_TAGS = 32; // upper bound on tags array length
+export const MAX_TAG_LEN = 64; // upper bound on a single tag
 
 export const ALL_LOCALES = [
   'en', 'zh-TW', 'zh-CN', 'ja', 'ko', 'de', 'fr', 'es', 'pt', 'it', 'nl',
@@ -125,4 +127,24 @@ export function validateRequiredEnum(
     return badRequest(`${field} 是必填项`);
   }
   return validateEnum(field, value, allowed);
+}
+
+/**
+ * Validate a string-array tag list. Reject anything that isn't an array,
+ * bounds the array length and per-item length, and rejects non-string
+ * entries. Used by the Game.tags column.
+ */
+export function validateTags(value: unknown): NextResponse | null {
+  if (!Array.isArray(value)) {
+    return badRequest('tags 必须是字符串数组');
+  }
+  if (value.length > MAX_TAGS) {
+    return badRequest(`tags 数量不能超过 ${MAX_TAGS}`);
+  }
+  for (const t of value) {
+    if (typeof t !== 'string' || t.length > MAX_TAG_LEN) {
+      return badRequest(`tags 每项必须是 ≤${MAX_TAG_LEN} 字符的字符串`);
+    }
+  }
+  return null;
 }

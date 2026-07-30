@@ -1,5 +1,6 @@
 import { getGames } from '@/data/games';
 import { prisma } from '@/lib/db';
+import { isDbConnected } from '@/lib/db-health';
 
 /**
  * Admin dashboard — shows site KPIs.
@@ -9,14 +10,25 @@ async function getStats() {
   const games = getGames();
   const categories = new Set(games.map((g) => g.category));
 
+  // Probe DB first so we never conflate "table empty" with "DB unreachable".
+  const dbConnected = await isDbConnected();
   let dbUserCount = 0;
   let dbGameCount = 0;
-  try {
-    // Quick connectivity check — will throw if DATABASE_URL is not set
-    dbUserCount = await prisma.user.count();
-    dbGameCount = await prisma.game.count();
-  } catch {
-    // DB not available yet; stats stay at 0
+  if (dbConnected) {
+    try {
+      dbUserCount = await prisma.user.count();
+      dbGameCount = await prisma.game.count();
+    } catch {
+      // Connectivity dropped between probe and query — treat as disconnected.
+      return {
+        totalGames: games.length,
+        categories: categories.size,
+        featured: games.filter((g) => g.featured).length,
+        dbUserCount: 0,
+        dbGameCount: 0,
+        dbConnected: false
+      };
+    }
   }
 
   return {
@@ -24,12 +36,14 @@ async function getStats() {
     categories: categories.size,
     featured: games.filter((g) => g.featured).length,
     dbUserCount,
-    dbGameCount
+    dbGameCount,
+    dbConnected
   };
 }
 
 export default async function AdminDashboard() {
   const stats = await getStats();
+  const dbUp = stats.dbConnected;
 
   return (
     <div>
@@ -51,20 +65,20 @@ export default async function AdminDashboard() {
       {/* DB status */}
       <div
         className={`rounded-lg border p-4 ${
-          stats.dbGameCount > 0
+          dbUp
             ? 'border-green-200 bg-green-50 text-green-800'
             : 'border-amber-200 bg-amber-50 text-amber-800'
         }`}
       >
         <p className="text-sm font-medium">
-          {stats.dbGameCount > 0
+          {dbUp
             ? `✅ 数据库已连接 — ${stats.dbGameCount} 个游戏记录可编辑`
             : '⚠️ 数据库尚未连接 — 当前数据来自静态源，编辑功能需配置 DATABASE_URL'}
         </p>
         <p className="mt-1 text-xs opacity-75">
-          {stats.dbGameCount === 0
-            ? '请在 Neon 创建数据库并在 Vercel / .env.local 填入 DATABASE_URL'
-            : '游戏/FAQ/Features 数据现可通过后台直接编辑'}
+          {dbUp
+            ? '游戏/FAQ/Features 数据现可通过后台直接编辑'
+            : '请在 Neon 创建数据库并在 Vercel / .env.local 填入 DATABASE_URL'}
         </p>
       </div>
 

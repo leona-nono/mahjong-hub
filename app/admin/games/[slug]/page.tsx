@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
+import { isDbConnected } from '@/lib/db-health';
+import type { Game } from '@/lib/generated/prisma';
 import GameEditorForm from '@/components/admin/GameEditorForm';
 
 export const dynamic = 'force-dynamic';
@@ -9,11 +11,16 @@ async function getEditorData(slug: string) {
   const staticGame = getGame(slug);
   if (!staticGame) notFound();
 
-  let dbGame: any = null;
-  try {
-    dbGame = await prisma.game.findUnique({ where: { slug } });
-  } catch {
-    // DB not available
+  // Use a real connectivity probe so the warning banner is accurate even
+  // when the DB is reachable but this particular game is still static-only.
+  const dbConnected = await isDbConnected();
+  let dbGame: Game | null = null;
+  if (dbConnected) {
+    try {
+      dbGame = await prisma.game.findUnique({ where: { slug } });
+    } catch {
+      // Connectivity dropped between probe and query.
+    }
   }
 
   // Prefer DB row when available; fall back to static
@@ -23,8 +30,12 @@ async function getEditorData(slug: string) {
         title: dbGame.title,
         description: dbGame.description ?? '',
         iframeUrl: dbGame.iframeUrl ?? '',
+        thumbnail: dbGame.thumbnail ?? '',
+        downloadUrl: dbGame.downloadUrl ?? '',
         category: dbGame.category ?? 'mahjong',
+        tags: dbGame.tags ?? [],
         isFeatured: dbGame.isFeatured,
+        isActive: dbGame.isActive,
         sortOrder: dbGame.sortOrder
       }
     : {
@@ -32,14 +43,18 @@ async function getEditorData(slug: string) {
         title: staticGame.title,
         description: staticGame.description,
         iframeUrl: staticGame.gameIframeUrl,
+        thumbnail: '',
+        downloadUrl: '',
         category: staticGame.category,
+        tags: [],
         isFeatured: !!staticGame.featured,
+        isActive: true,
         sortOrder: 0
       };
 
   return {
     initial,
-    dbConnected: !!dbGame,
+    dbConnected,
     dbId: dbGame?.id ?? null
   };
 }

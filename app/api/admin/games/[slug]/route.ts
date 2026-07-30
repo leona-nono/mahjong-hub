@@ -9,7 +9,8 @@ import {
   validateBool,
   validateEnum,
   validateInt,
-  validateString
+  validateString,
+  validateTags
 } from '@/lib/admin-validators';
 
 export const dynamic = 'force-dynamic';
@@ -96,23 +97,4 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
 
   await prisma.game.delete({ where: { slug } });
   return NextResponse.json({ ok: true });
-}
-
-/** tags is a string array; reject non-strings and bound the size. */
-function validateTags(value: unknown): NextResponse | null {
-  if (!Array.isArray(value)) {
-    return NextResponse.json({ error: 'tags 必须是字符串数组' }, { status: 400 });
-  }
-  if (value.length > 32) {
-    return NextResponse.json({ error: 'tags 数量不能超过 32' }, { status: 400 });
-  }
-  for (const t of value) {
-    if (typeof t !== 'string' || t.length > 64) {
-      return NextResponse.json(
-        { error: 'tags 每项必须是 ≤64 字符的字符串' },
-        { status: 400 }
-      );
-    }
-  }
-  return null;
 }

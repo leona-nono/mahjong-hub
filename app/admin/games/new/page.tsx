@@ -1,24 +1,10 @@
-import { prisma } from '@/lib/db';
 import NewGameForm from '@/components/admin/NewGameForm';
+import { isDbConnected } from '@/lib/db-health';
 
 export const dynamic = 'force-dynamic';
 
-/**
- * Lightweight connectivity probe — runs `SELECT 1` without closing the
- * shared Prisma client (cf. the previous $connect/$disconnect pattern which
- * would tear down the singleton's connection on every request).
- */
-async function checkDb() {
-  try {
-    await prisma.$queryRaw`select 1`;
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 export default async function NewGamePage() {
-  const dbConnected = await checkDb();
+  const dbConnected = await isDbConnected();
 
   return (
     <div>
