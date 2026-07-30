@@ -1,9 +1,16 @@
-import createMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
+import NextAuth from 'next-auth';
+import { authConfig } from './auth.config';
 
-export default createMiddleware(routing);
+/**
+ * Edge-runtime middleware: only runs the `authorized` callback from
+ * authConfig so it does not need Prisma / Node APIs. We restrict the
+ * matcher to API routes that need auth — static pages keep SSG.
+ */
+export default NextAuth(authConfig).auth;
 
 export const config = {
-  // Match all pathnames except for static assets, api, and files with an extension.
-  matcher: ['/', '/(en|zh|zh-TW|ja|ko)/:path*', '/((?!api|_next|_vercel|.*\\..*).*)']
+  matcher: [
+    '/api/points/:path*',
+    '/api/leaderboard/:path*'
+  ]
 };
