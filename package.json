@@ -5,10 +5,11 @@
   "description": "Rainbow-themed mahjong elimination game collection (clean-room replica, no 3rd-party source copied).",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
