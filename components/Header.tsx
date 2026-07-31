@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import LocaleSwitcher from './LocaleSwitcher';
@@ -12,9 +13,11 @@ export default function Header() {
   const ts = useTranslations('site');
   const ta = useTranslations('auth');
   const tp = useTranslations('points');
-  const { user, loginHistory, openLogin, logout } = useAuth();
+  const { openLogin } = useAuth();
+  const { data: session, status } = useSession();
   const { points } = usePoints();
-  const [showHistory, setShowHistory] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
+  const user = session?.user;
 
   return (
     <header className="sticky top-0 z-50 bg-white/70 backdrop-blur">
@@ -39,35 +42,28 @@ export default function Header() {
               </span>
               <button
                 type="button"
-                onClick={() => setShowHistory((v) => !v)}
+                onClick={() => setShowAccount((value) => !value)}
                 className="flex items-center gap-1 rounded-full bg-rainbow-indigo/10 px-3 py-1 font-medium text-rainbow-indigo hover:bg-rainbow-indigo/20"
               >
-                <span className="text-sm">{user.name.split(' ')[0]}</span>
+                <span className="text-sm">
+                  {(user.name ?? user.email ?? 'User').split(' ')[0]}
+                </span>
                 <span className="text-xs">▾</span>
               </button>
 
-              {showHistory && (
-                <div className="absolute right-0 top-10 z-50 w-60 rounded-2xl bg-white p-3 shadow-xl ring-1 ring-black/5">
-                  <p className="mb-2 text-xs font-bold uppercase tracking-wide text-gray-400">
-                    {ta('loginHistory')}
+              {showAccount && (
+                <div className="absolute right-0 top-10 z-50 w-64 rounded-2xl bg-white p-3 shadow-xl ring-1 ring-black/5">
+                  <p className="truncate text-sm font-semibold text-gray-700">
+                    {user.name ?? 'Mahjong Hub User'}
                   </p>
-                  {loginHistory.length === 0 ? (
-                    <p className="text-xs text-gray-400">{ta('noHistory')}</p>
-                  ) : (
-                    <ul className="space-y-1 text-xs text-gray-600">
-                      {loginHistory.slice(0, 5).map((r, i) => (
-                        <li key={i} className="flex justify-between gap-2">
-                          <span className="capitalize">{r.provider}</span>
-                          <span className="text-gray-400">
-                            {new Date(r.at).toLocaleString()}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
+                  {user.email && (
+                    <p className="mt-0.5 truncate text-xs text-gray-400">
+                      {user.email}
+                    </p>
                   )}
                   <button
                     type="button"
-                    onClick={logout}
+                    onClick={() => signOut({ callbackUrl: window.location.href })}
                     className="mt-3 w-full rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200"
                   >
                     {ta('logout')}
@@ -79,7 +75,8 @@ export default function Header() {
             <button
               type="button"
               onClick={openLogin}
-              className="rounded-full bg-rainbow-pink px-4 py-1 font-semibold text-white shadow-sm hover:opacity-90"
+              disabled={status === 'loading'}
+              className="rounded-full bg-rainbow-pink px-4 py-1 font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-60"
             >
               {ta('login')}
             </button>

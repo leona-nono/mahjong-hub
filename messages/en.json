@@ -41,7 +41,10 @@
     "close": "Maybe later",
     "loginHistory": "Login history",
     "noHistory": "No history yet",
-    "logout": "Sign out"
+    "logout": "Sign out",
+    "redirecting": "Redirecting…",
+    "loginFailed": "Login failed. Please try again.",
+    "providerUnavailable": "Google and Facebook login are not configured yet."
   },
   "points": {
     "youHave": "You have {n} pts"

@@ -48,7 +48,17 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <Providers>
+          <Providers
+            enabledProviders={{
+              google:
+                !!process.env.AUTH_GOOGLE_ID &&
+                !!process.env.AUTH_GOOGLE_SECRET,
+              facebook:
+                !!process.env.AUTH_FACEBOOK_ID &&
+                !!process.env.AUTH_FACEBOOK_SECRET,
+              x: !!process.env.AUTH_X_ID && !!process.env.AUTH_X_SECRET
+            }}
+          >
             <Header />
             <main className="min-h-screen">{children}</main>
             <Footer />
