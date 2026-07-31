@@ -41,7 +41,10 @@
     "close": "後で",
     "loginHistory": "ログイン履歴",
     "noHistory": "履歴はまだありません",
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "redirecting": "リダイレクト中…",
+    "loginFailed": "ログインに失敗しました。もう一度お試しください。",
+    "providerUnavailable": "Google と Facebook のログインはまだ設定されていません。"
   },
   "points": {
     "youHave": "ポイント {n} 件"

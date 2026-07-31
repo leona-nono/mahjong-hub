@@ -1,27 +1,47 @@
 'use client';
 
-import { SessionProvider } from 'next-auth/react';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { SessionProvider, useSession } from 'next-auth/react';
 import { useEffect, type ReactNode } from 'react';
-import { initAuth, hasGoogle } from '@/lib/auth';
+import { clearSessionUser, initAuth, syncSessionUser } from '@/lib/auth';
 import { initPoints } from '@/lib/points';
 import LoginModal from '@/components/LoginModal';
 import DailyBonus from '@/components/DailyBonus';
-import XCallbackHandler from '@/components/XCallbackHandler';
 
-/**
- * Bootstraps the module-level auth/points stores on the client and mounts the
- * global login modal + daily-bonus checker + X OAuth callback handler.
- *
- * Phase 0 (backend ready, UI switch deferred):
- *   • SessionProvider is mounted so Phase 1's `useSession()` + `signIn()`
- *     calls have a session context the moment we flip LoginModal.
- *   • The legacy mock login path in lib/auth.tsx stays untouched — when
- *     no Auth.js provider is configured, the mock login is the only path,
- *     which keeps the current site working in preview / local dev.
- */
+export interface EnabledAuthProviders {
+  google: boolean;
+  facebook: boolean;
+  x: boolean;
+}
 
-function Inner({ children }: { children: ReactNode }) {
+/** Keeps the legacy points UI aware of the authoritative Auth.js session. */
+function AuthSessionBridge() {
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated' && session.user) {
+      const user = session.user as typeof session.user & { id?: string };
+      syncSessionUser({
+        id: user.id ?? user.email ?? 'authjs-user',
+        name: user.name ?? user.email ?? 'Mahjong Hub User',
+        email: user.email ?? '',
+        avatar: user.image ?? undefined,
+        provider: 'authjs'
+      });
+    } else if (status === 'unauthenticated') {
+      clearSessionUser();
+    }
+  }, [session, status]);
+
+  return null;
+}
+
+function Inner({
+  children,
+  enabledProviders
+}: {
+  children: ReactNode;
+  enabledProviders: EnabledAuthProviders;
+}) {
   useEffect(() => {
     initAuth();
     initPoints();
@@ -29,25 +49,24 @@ function Inner({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <AuthSessionBridge />
       {children}
       <DailyBonus />
-      <XCallbackHandler />
-      <LoginModal />
+      <LoginModal enabledProviders={enabledProviders} />
     </>
   );
 }
 
-export default function Providers({ children }: { children: ReactNode }) {
-  const googleId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  const content = (
+export default function Providers({
+  children,
+  enabledProviders
+}: {
+  children: ReactNode;
+  enabledProviders: EnabledAuthProviders;
+}) {
+  return (
     <SessionProvider>
-      <Inner>{children}</Inner>
+      <Inner enabledProviders={enabledProviders}>{children}</Inner>
     </SessionProvider>
   );
-  if (hasGoogle && googleId) {
-    return (
-      <GoogleOAuthProvider clientId={googleId}>{content}</GoogleOAuthProvider>
-    );
-  }
-  return content;
 }

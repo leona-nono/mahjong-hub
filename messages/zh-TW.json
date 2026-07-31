@@ -41,7 +41,10 @@
     "close": "稍後再說",
     "loginHistory": "登入記錄",
     "noHistory": "暫無記錄",
-    "logout": "登出"
+    "logout": "登出",
+    "redirecting": "正在跳轉…",
+    "loginFailed": "登入失敗，請重試。",
+    "providerUnavailable": "Google 和 Facebook 登入尚未設定。"
   },
   "points": {
     "youHave": "你有 {n} 積分"

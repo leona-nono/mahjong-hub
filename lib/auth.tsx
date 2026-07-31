@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 
-export type SocialProvider = 'google' | 'facebook' | 'x';
+export type SocialProvider = 'google' | 'facebook' | 'x' | 'authjs';
 
 export interface LoginRecord {
   provider: SocialProvider;
@@ -29,7 +29,8 @@ const HISTORY_KEY = 'mh_login_history';
 const PROVIDER_LABEL: Record<SocialProvider, string> = {
   google: 'Google',
   facebook: 'Facebook',
-  x: 'X'
+  x: 'X',
+  authjs: 'OAuth'
 };
 
 // ── Env-gated flags ───────────────────────────────────────────────────────
@@ -88,6 +89,30 @@ export function loginWithUser(user: User) {
   const next = [record, ...state.loginHistory].slice(0, 20);
   state = { ...state, user, loginHistory: next, loginModalOpen: false };
   persist(user, next);
+  emit();
+}
+/**
+ * Mirrors an authoritative Auth.js session into the legacy client store.
+ * This temporary bridge keeps the local points UI working until it moves to
+ * /api/points; the server-side Auth.js session remains the source of truth.
+ */
+export function syncSessionUser(user: User) {
+  const unchanged =
+    state.user?.provider === 'authjs' &&
+    state.user.id === user.id &&
+    state.user.name === user.name &&
+    state.user.email === user.email &&
+    state.user.avatar === user.avatar;
+  if (unchanged && !state.loginModalOpen) return;
+  state = { ...state, user, loginModalOpen: false };
+  persist(user, state.loginHistory);
+  emit();
+}
+
+export function clearSessionUser() {
+  if (state.user?.provider !== 'authjs') return;
+  state = { ...state, user: null, loginModalOpen: false };
+  persist(null, state.loginHistory);
   emit();
 }
 
