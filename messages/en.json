@@ -13,7 +13,9 @@
     "heroSubtitle": "A rainbow-themed collection of mahjong solitaire, connect and tile-match games. No login, just play.",
     "playButton": "Play Now",
     "featuredTitle": "Featured Games",
-    "collectionTitle": "Elimination & Match Games"
+    "collectionTitle": "Elimination & Match Games",
+    "originalTitle": "Built by us",
+    "originalSubtitle": "Real four-player mahjong and connect, written in-house. Free, no download."
   },
   "game": {
     "play": "Play",
@@ -21,7 +23,10 @@
     "failedTitle": "Game temporarily unavailable",
     "failedDesc": "This game failed to load. Try another one below.",
     "tryAnother": "Try another game",
-    "about": "About this game"
+    "about": "About this game",
+    "howToPlay": "How to play",
+    "tips": "Strategy tips",
+    "faq": "Frequently asked questions"
   },
   "collection": {
     "title": "Mahjong Elimination Collection",
@@ -48,5 +53,58 @@
   },
   "points": {
     "youHave": "You have {n} pts"
+  },
+  "mahjong": {
+    "rulesetLabel": "Ruleset",
+    "difficultyLabel": "Opponent skill",
+    "easy": "Easy",
+    "normal": "Normal",
+    "hard": "Hard",
+    "hints": "Hints",
+    "newGame": "New game",
+    "yourHand": "Your hand",
+    "waiting": "Waiting for the other players…",
+    "wallLeft": "{n} tiles left in the wall",
+    "turnOf": "{seat} to play",
+    "ready": "Ready — waiting on {tiles}",
+    "awayFromReady": "{n} away from ready",
+    "claimPrompt": "{tile} was discarded. Call it?",
+    "drawnGame": "The wall ran out — the hand is drawn.",
+    "youWin": "You win! {score} points.",
+    "seatWins": "{seat} wins with {score} points.",
+    "doubleRon": "Double ron — both players win, the discarder pays each.",
+    "call": {
+      "chi": "Chi",
+      "pon": "Pon",
+      "kan": "Kan",
+      "ron": "Ron",
+      "tsumo": "Tsumo",
+      "pass": "Pass"
+    }
+  },
+  "connect": {
+    "difficultyLabel": "Board size",
+    "relaxed": "Relaxed",
+    "classic": "Classic",
+    "expert": "Expert",
+    "score": "Score {n}",
+    "left": "{n} tiles left",
+    "hint": "Hint",
+    "shuffle": "Shuffle",
+    "restart": "Restart",
+    "cleared": "Board cleared! {n} points.",
+    "timeUp": "Time's up — try again."
+  },
+  "solitaire": {
+    "layoutLabel": "Layout",
+    "turtle": "Turtle",
+    "pyramid": "Pyramid",
+    "score": "Score {n}",
+    "left": "{n} tiles left",
+    "hint": "Hint",
+    "undo": "Undo",
+    "shuffle": "Shuffle",
+    "restart": "Restart",
+    "cleared": "Board cleared! {n} points."
   }
 }

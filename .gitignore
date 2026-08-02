@@ -7,5 +7,11 @@ node_modules
 *.log
 .DS_Store
 
+# Claude Code 本地设置（机器相关，不共享）
+.claude/settings.local.json
+
 # Prisma generated client (created by `npx prisma generate`)
 lib/generated/
+
+# TypeScript incremental build cache
+*.tsbuildinfo

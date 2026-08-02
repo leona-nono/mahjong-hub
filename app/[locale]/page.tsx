@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
-import { getFeaturedGames, getGames } from '@/data/games';
+import { getFeaturedGames, getGames, getNativeGames } from '@/data/games';
 import GameCard from '@/components/GameCard';
 import { Link } from '@/i18n/navigation';
 
@@ -15,6 +15,7 @@ export default async function HomePage({
   const t = await getTranslations('home');
   const ts = await getTranslations('site');
   const featured = getFeaturedGames();
+  const native = getNativeGames();
   const all = getGames();
 
   const jsonLd = {
@@ -47,6 +48,19 @@ export default async function HomePage({
         >
           {t('playButton')}
         </Link>
+      </section>
+
+      {/* Our own games — the differentiator, so they go above the fold. */}
+      <section className="mt-12">
+        <h2 className="mb-1 text-2xl font-bold text-gray-800">
+          {t('originalTitle')}
+        </h2>
+        <p className="mb-4 text-sm text-gray-500">{t('originalSubtitle')}</p>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {native.map((g) => (
+            <GameCard key={g.slug} game={g} />
+          ))}
+        </div>
       </section>
 
       {/* Featured */}
