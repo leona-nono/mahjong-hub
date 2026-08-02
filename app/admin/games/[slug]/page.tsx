@@ -42,7 +42,7 @@ async function getEditorData(slug: string) {
         slug: staticGame.slug,
         title: staticGame.title,
         description: staticGame.description,
-        iframeUrl: staticGame.gameIframeUrl,
+        iframeUrl: staticGame.gameIframeUrl ?? '',
         thumbnail: '',
         downloadUrl: '',
         category: staticGame.category,
