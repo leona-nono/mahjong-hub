@@ -26,7 +26,8 @@ const CATEGORIES = [
   { value: 'mahjong', label: '🀄️ 麻将' },
   { value: 'connect', label: '🔗 连连看' },
   { value: 'solitaire', label: '♠️ 单人' },
-  { value: 'tile-match', label: '🧩 配对' }
+  { value: 'tile-match', label: '🧩 配对' },
+  { value: 'four-player', label: '👥 四人麻将' }
 ];
 
 /** Convert comma-separated input into a clean string array. */

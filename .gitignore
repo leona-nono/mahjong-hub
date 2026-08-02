@@ -9,3 +9,6 @@ node_modules
 
 # Prisma generated client (created by `npx prisma generate`)
 lib/generated/
+
+# TypeScript incremental build cache
+*.tsbuildinfo

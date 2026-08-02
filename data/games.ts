@@ -1,4 +1,34 @@
-export type GameCategory = 'mahjong' | 'connect' | 'solitaire' | 'tile-match';
+export type GameCategory =
+  | 'mahjong'
+  | 'connect'
+  | 'solitaire'
+  | 'tile-match'
+  | 'four-player';
+
+/** Which in-house component renders a native game. */
+export type NativeGame = 'mahjong-table' | 'mahjong-connect';
+
+/**
+ * Ruleset id mirrored from lib/mahjong/engine. Kept as a string literal so this
+ * module — which every page imports — stays free of engine imports.
+ */
+export type NativeRuleset = 'hongkong' | 'riichi' | 'chinese-official';
+
+export interface GameFaq {
+  question: string;
+  answer: string;
+}
+
+/** Long-form copy that makes a native game page worth indexing. */
+export interface GameContent {
+  /** One paragraph shown above the board. */
+  intro: string;
+  /** Ordered "how to play" steps. */
+  howToPlay: string[];
+  /** Strategy notes — the part that earns dwell time and links. */
+  tips: string[];
+  faq: GameFaq[];
+}
 
 export interface GameConfig {
   /** URL-safe unique id, also used as the game page slug. */
@@ -10,11 +40,19 @@ export interface GameConfig {
   /** English short description (default; localized via page copy). */
   description: string;
   category: GameCategory;
-  gameType: 'iframe';
-  /** External embed URL (verified embeddable: no X-Frame-Options / CSP frame-ancestors). */
-  gameIframeUrl: string;
+  gameType: 'iframe' | 'native';
+  /** External embed URL (verified embeddable) — iframe games only. */
+  gameIframeUrl?: string;
+  /** In-house component to mount — native games only. */
+  native?: NativeGame;
+  /** Ruleset passed to the native four-player table. */
+  ruleset?: NativeRuleset;
+  /** Player count, used in the schema.org payload. */
+  players?: number;
   /** Highlight on the home page. */
   featured?: boolean;
+  /** Indexable long-form copy. Native games only — iframe pages stay noindex. */
+  content?: GameContent;
 }
 
 /**
@@ -23,16 +61,193 @@ export interface GameConfig {
  * technically verified as iframe-embeddable. These are facts (links), not copied code.
  */
 export const games: GameConfig[] = [
+  // ---------------------------------------------------------------- native --
+  // Ours. Code lives in lib/mahjong and lib/connect, written clean-room against
+  // the published rules. Indexable, with full rules copy.
+  {
+    slug: 'hong-kong-mahjong',
+    pageName: 'hong-kong-mahjong',
+    title: 'Hong Kong Mahjong',
+    description:
+      'Play real four-player mahjong against three opponents. Hong Kong Old Style scoring, free, no download.',
+    category: 'four-player',
+    gameType: 'native',
+    native: 'mahjong-table',
+    ruleset: 'hongkong',
+    players: 4,
+    featured: true,
+    content: {
+      intro:
+        'Hong Kong Old Style is the most widely played four-player mahjong ruleset outside Japan, and the easiest one to learn first. You build a hand of four sets and one pair, and you need at least three faan to declare a win. This table gives you three computer opponents, an optional readiness hint, and a breakdown of how every winning hand scored.',
+      howToPlay: [
+        'Each player starts with 13 tiles. On your turn you draw one tile and then discard one, keeping your hand at 13.',
+        'A winning hand is four sets plus one pair. A set is either three identical tiles or three consecutive tiles in the same suit.',
+        'When another player discards a tile you need, you may call it: pong for a triplet, chi for a sequence (from the player to your left only), or kong for all four copies.',
+        'Calling a tile makes your hand open, which costs you some scoring patterns. Take the call only when it genuinely moves you forward.',
+        'Declare a win by self-draw or on another player\u2019s discard, provided the hand meets the three faan minimum.'
+      ],
+      tips: [
+        'Discard lone honour tiles early. They are the hardest tiles to pair up and the least flexible thing in your hand.',
+        'Track your distance to ready rather than staring at individual tiles. Two away is a normal mid-game position; one away is when you start playing carefully.',
+        'A hand of all one suit is worth far more than the sum of its parts. Dealt seven or eight tiles in a single suit, committing early usually pays.',
+        'Watch the other seats. Three players throwing away the same suit means the tiles you need are probably still live.'
+      ],
+      faq: [
+        {
+          question: 'Do I need to download anything?',
+          answer:
+            'No. The game runs entirely in your browser on desktop and mobile, and nothing is installed.'
+        },
+        {
+          question: 'Is this real mahjong or the tile-matching game?',
+          answer:
+            'This is real four-player mahjong with drawing, discarding, calling and scoring. The tile-matching game most Western sites call "mahjong" is mahjong solitaire, which is a different game.'
+        },
+        {
+          question: 'What does the three faan minimum mean?',
+          answer:
+            'Hong Kong rules require a hand to be worth at least three faan before you may declare a win. A hand that is technically complete but scores less cannot be declared, so you keep playing to improve it.'
+        },
+        {
+          question: 'Is there any real-money gambling?',
+          answer:
+            'No. There is no wagering, no purchasable currency and no cash prize of any kind. Scores track your own progress only.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'riichi-mahjong',
+    pageName: 'riichi-mahjong',
+    title: 'Riichi Mahjong',
+    description:
+      'Japanese Riichi mahjong against three opponents. The ruleset behind the modern competitive scene.',
+    category: 'four-player',
+    gameType: 'native',
+    native: 'mahjong-table',
+    ruleset: 'riichi',
+    players: 4,
+    featured: true,
+    content: {
+      intro:
+        'Riichi is the Japanese ruleset that most of the modern competitive mahjong scene plays. It rewards concealed hands and rich pattern-building rather than raw speed, which makes it the deepest of the three rulesets on this site and the most rewarding to study.',
+      howToPlay: [
+        'The core loop is the same as any four-player mahjong: draw a tile, discard a tile, and build four sets plus a pair.',
+        'Riichi puts a premium on keeping your hand concealed. Calling tiles from other players closes off many scoring patterns.',
+        'A hand needs at least one scoring pattern to be declared, so a hand that is merely complete is not always a winning hand.',
+        'Seven pairs and thirteen orphans count as alternative winning shapes, both of which require a fully concealed hand.'
+      ],
+      tips: [
+        'Concealed hands score much better here than under Hong Kong rules. Resist calling unless the call takes you straight to ready.',
+        'All-simples is the workhorse pattern: no terminals, no honours. It is reachable from almost any starting hand.',
+        'Dealt four or more pairs early, seven pairs is often a faster route to ready than forcing four sets.',
+        'Late in the hand, watch which tiles the other seats have stopped discarding. That is usually where their wait is.'
+      ],
+      faq: [
+        {
+          question: 'How is Riichi different from Chinese mahjong?',
+          answer:
+            'Riichi requires a scoring pattern before a win can be declared, values concealed hands more highly, and uses a different scoring table. The draw-and-discard core is the same, so the two transfer easily.'
+        },
+        {
+          question: 'Is this a good place to learn Riichi?',
+          answer:
+            'It is a good place to get comfortable with the flow, the calls and the common patterns. The readiness hint shows how far you are from a complete hand, which is the single most useful thing for a new player to see.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'chinese-official-mahjong',
+    pageName: 'chinese-official-mahjong',
+    title: 'Chinese Official Mahjong',
+    description:
+      'Chinese Official (MCR) mahjong with the eight-point minimum — the international tournament ruleset.',
+    category: 'four-player',
+    gameType: 'native',
+    native: 'mahjong-table',
+    ruleset: 'chinese-official',
+    players: 4,
+    content: {
+      intro:
+        'Chinese Official, also called Mahjong Competition Rules, is the ruleset used for international tournament play. Its eight-point minimum forces you to build a hand with real structure rather than racing to the first complete shape, which makes it the most demanding of the three rulesets here.',
+      howToPlay: [
+        'Standard four-player mahjong: draw, discard, and build four sets plus a pair.',
+        'A hand must be worth at least eight points before it can be declared. Simple hands with no pattern do not qualify.',
+        'Points come from patterns — flushes, all-triplets, dragon and wind sets, and many more — which stack together.',
+        'Because the minimum is high, calling tiles to rush a weak hand is usually a losing plan.'
+      ],
+      tips: [
+        'Pick a direction in the first few turns. Flush hands and all-triplet hands are the most reliable ways to clear eight points.',
+        'Dragon and seat-wind triplets are worth taking even at the cost of a turn, because they combine with almost everything else.',
+        'A hand one tile from complete but worth only six points is not yet a hand. Keep improving it.'
+      ],
+      faq: [
+        {
+          question: 'Why can I not declare a win on a complete hand?',
+          answer:
+            'Chinese Official requires eight points minimum. If your completed hand scores less, the win cannot be declared and play continues.'
+        },
+        {
+          question: 'Is the scoring here complete?',
+          answer:
+            'It covers the common patterns rather than the full official table. It is built for learning and casual play, not for tournament adjudication.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'mahjong-connect-classic',
+    pageName: 'mahjong-connect-classic',
+    title: 'Mahjong Connect',
+    description:
+      'Link matching tile pairs with a path that turns at most twice. Three board sizes, hints, and no timer on relaxed mode.',
+    category: 'connect',
+    gameType: 'native',
+    native: 'mahjong-connect',
+    players: 1,
+    featured: true,
+    content: {
+      intro:
+        'Mahjong Connect, also known as Onet, is the link-matching puzzle built from mahjong tiles. Clear the whole board by joining pairs of identical tiles with a path that bends no more than twice. Relaxed mode has no clock if you would rather take your time.',
+      howToPlay: [
+        'Tap or click two tiles showing the same face.',
+        'The pair clears if they can be joined by a path of empty space that turns at most twice. The path may travel around the outside edge of the board.',
+        'Clear every tile to win. Consecutive matches build a streak bonus.',
+        'If no pair is playable, the board reshuffles automatically so you never get stuck.'
+      ],
+      tips: [
+        'Work the edges first. Outside tiles have the most routes available and open up the middle as they clear.',
+        'Two identical tiles sitting next to each other are always playable — but clearing them may be the only way to open a path elsewhere, so look before taking the free match.',
+        'The hint button costs a few points. On the timed boards that trade is almost always worth it.'
+      ],
+      faq: [
+        {
+          question: 'How is this different from mahjong solitaire?',
+          answer:
+            'Solitaire stacks tiles in layers and you match tiles that are free on one side. Connect lays them flat and asks you to join pairs with a path. Different puzzle, same tiles.'
+        },
+        {
+          question: 'What counts as a turn in the path?',
+          answer:
+            'Every change of direction. A straight line has no turns, an L shape has one, and a Z or U shape has two. Three or more is not allowed.'
+        }
+      ]
+    }
+  },
+
+  // ---------------------------------------------------------------- iframe --
+  // External embeds whose URLs were verified as embeddable. These are links,
+  // not copied code, and their pages stay noindex because the content is not ours.
   {
     slug: 'mahjong-connect',
     pageName: 'mahjong-connect',
-    title: 'Mahjong Connect',
+    title: 'Mahjong Connect Lite',
     description:
       'Match pairs of free mahjong tiles connected by a path. A relaxing connect-style elimination game.',
     category: 'connect',
     gameType: 'iframe',
-    gameIframeUrl: 'https://1games.io/embed/mahjong-connect',
-    featured: true
+    gameIframeUrl: 'https://1games.io/embed/mahjong-connect'
   },
   {
     slug: 'mahjong-classic',
@@ -149,6 +364,22 @@ export function getFeaturedGames(): GameConfig[] {
   return games.filter((g) => g.featured);
 }
 
+/** Games we built ourselves — indexable, and the ones worth promoting. */
+export function getNativeGames(): GameConfig[] {
+  return games.filter((g) => g.gameType === 'native');
+}
+
+export function getGamesByCategory(category: GameCategory): GameConfig[] {
+  return games.filter((g) => g.category === category);
+}
+
+/** Related games, preferring the same category before falling back to the rest. */
 export function getRelatedGames(slug: string, limit = 4): GameConfig[] {
-  return games.filter((g) => g.slug !== slug).slice(0, limit);
+  const current = getGame(slug);
+  const others = games.filter((g) => g.slug !== slug);
+  if (!current) return others.slice(0, limit);
+
+  const sameCategory = others.filter((g) => g.category === current.category);
+  const rest = others.filter((g) => g.category !== current.category);
+  return [...sameCategory, ...rest].slice(0, limit);
 }

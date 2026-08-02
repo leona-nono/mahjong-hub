@@ -13,7 +13,9 @@
     "heroSubtitle": "레인보드 마작 솔리테어·연결·타일 매치 게임 모음. 로그인 없이 바로 플레이.",
     "playButton": "지금 하기",
     "featuredTitle": "추천 게임",
-    "collectionTitle": "제거·매치 게임"
+    "collectionTitle": "제거·매치 게임",
+    "originalTitle": "자체 제작",
+    "originalSubtitle": "4인 마작과 사천성을 직접 개발했습니다. 무료, 설치 불필요."
   },
   "game": {
     "play": "플레이",
@@ -21,7 +23,10 @@
     "failedTitle": "게임을 불러올 수 없습니다",
     "failedDesc": "이 게임을 불러오지 못했습니다. 아래 다른 게임을 해 보세요.",
     "tryAnother": "다른 게임 보기",
-    "about": "이 게임 정보"
+    "about": "이 게임 정보",
+    "howToPlay": "게임 방법",
+    "tips": "전략 팁",
+    "faq": "자주 묻는 질문"
   },
   "collection": {
     "title": "마작 제거 게임 컬렉션",
@@ -48,5 +53,46 @@
   },
   "points": {
     "youHave": "포인트 {n}점"
+  },
+  "mahjong": {
+    "rulesetLabel": "규칙",
+    "difficultyLabel": "상대 실력",
+    "easy": "쉬움",
+    "normal": "보통",
+    "hard": "어려움",
+    "hints": "힌트",
+    "newGame": "새 게임",
+    "yourHand": "내 패",
+    "waiting": "다른 플레이어를 기다리는 중…",
+    "wallLeft": "남은 패 {n}장",
+    "turnOf": "{seat} 차례",
+    "ready": "텐파이 — {tiles} 대기",
+    "awayFromReady": "텐파이까지 {n}장",
+    "claimPrompt": "{tile}이(가) 버려졌습니다. 부르시겠습니까?",
+    "drawnGame": "패가 모두 소진되어 무승부입니다.",
+    "youWin": "승리! {score}점.",
+    "seatWins": "{seat} 승리, {score}점.",
+    "doubleRon": "더블 론 — 두 사람이 동시에 론, 쏘인 사람이 두 사람분을 지불합니다.",
+    "call": {
+      "chi": "치",
+      "pon": "펑",
+      "kan": "깡",
+      "ron": "론",
+      "tsumo": "쯔모",
+      "pass": "패스"
+    }
+  },
+  "connect": {
+    "difficultyLabel": "보드 크기",
+    "relaxed": "여유",
+    "classic": "클래식",
+    "expert": "전문가",
+    "score": "점수 {n}",
+    "left": "남은 패 {n}장",
+    "hint": "힌트",
+    "shuffle": "섞기",
+    "restart": "다시 시작",
+    "cleared": "모두 제거! {n}점.",
+    "timeUp": "시간 종료 — 다시 도전하세요."
   }
 }

@@ -13,7 +13,9 @@
     "heroSubtitle": "レインボーカラーの麻雀ソリティア・スリーマッチ・タイル消除ゲーム集。ログイン不要、すぐ遊べる。",
     "playButton": "今すぐ遊ぶ",
     "featuredTitle": "おすすめ",
-    "collectionTitle": "消除・マッチゲーム"
+    "collectionTitle": "消除・マッチゲーム",
+    "originalTitle": "オリジナル",
+    "originalSubtitle": "四人麻雀と上海（連結）を自社開発。無料・インストール不要。"
   },
   "game": {
     "play": "プレイ",
@@ -21,7 +23,10 @@
     "failedTitle": "ゲームを読み込めません",
     "failedDesc": "このゲームの読み込みに失敗しました。下の別のゲームをお試しください。",
     "tryAnother": "別のゲームを試す",
-    "about": "このゲームについて"
+    "about": "このゲームについて",
+    "howToPlay": "遊び方",
+    "tips": "戦術のヒント",
+    "faq": "よくある質問"
   },
   "collection": {
     "title": "麻雀消除ゲームコレクション",
@@ -48,5 +53,46 @@
   },
   "points": {
     "youHave": "ポイント {n} 件"
+  },
+  "mahjong": {
+    "rulesetLabel": "ルール",
+    "difficultyLabel": "相手の強さ",
+    "easy": "やさしい",
+    "normal": "ふつう",
+    "hard": "つよい",
+    "hints": "ヒント",
+    "newGame": "新しい局",
+    "yourHand": "自分の手牌",
+    "waiting": "他家の打牌を待っています…",
+    "wallLeft": "残り {n} 枚",
+    "turnOf": "{seat} の番",
+    "ready": "テンパイ — 待ちは {tiles}",
+    "awayFromReady": "テンパイまで {n} 向聴",
+    "claimPrompt": "{tile} が捨てられました。鳴きますか？",
+    "drawnGame": "牌が尽きました。流局です。",
+    "youWin": "あがり！{score} 翻。",
+    "seatWins": "{seat} のあがり、{score} 翻。",
+    "doubleRon": "ダブロン — 捨て牌に二人がロン、放銃者が二人分を支払います。",
+    "call": {
+      "chi": "チー",
+      "pon": "ポン",
+      "kan": "カン",
+      "ron": "ロン",
+      "tsumo": "ツモ",
+      "pass": "スルー"
+    }
+  },
+  "connect": {
+    "difficultyLabel": "盤面サイズ",
+    "relaxed": "のんびり",
+    "classic": "クラシック",
+    "expert": "エキスパート",
+    "score": "スコア {n}",
+    "left": "残り {n} 枚",
+    "hint": "ヒント",
+    "shuffle": "シャッフル",
+    "restart": "やり直す",
+    "cleared": "全消し！{n} 点。",
+    "timeUp": "時間切れ。もう一度。"
   }
 }

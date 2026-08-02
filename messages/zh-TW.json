@@ -13,7 +13,9 @@
     "heroSubtitle": "彩虹主題麻將接龍、連連看與消除遊戲合集。無需登入，即點即玩。",
     "playButton": "立即遊玩",
     "featuredTitle": "精選推薦",
-    "collectionTitle": "消除與配對遊戲"
+    "collectionTitle": "消除與配對遊戲",
+    "originalTitle": "自研遊戲",
+    "originalSubtitle": "真人四人麻將與連連看，全部自研。免費，無需下載。"
   },
   "game": {
     "play": "開始遊戲",
@@ -21,7 +23,10 @@
     "failedTitle": "遊戲暫時無法載入",
     "failedDesc": "該遊戲載入失敗，試試下面其他遊戲。",
     "tryAnother": "換一個遊戲",
-    "about": "關於本遊戲"
+    "about": "關於本遊戲",
+    "howToPlay": "玩法說明",
+    "tips": "策略要點",
+    "faq": "常見問題"
   },
   "collection": {
     "title": "麻將消除遊戲合集",
@@ -48,5 +53,46 @@
   },
   "points": {
     "youHave": "你有 {n} 積分"
+  },
+  "mahjong": {
+    "rulesetLabel": "規則",
+    "difficultyLabel": "對手水準",
+    "easy": "簡單",
+    "normal": "普通",
+    "hard": "困難",
+    "hints": "提示",
+    "newGame": "重新開局",
+    "yourHand": "你的手牌",
+    "waiting": "等待其他玩家出牌…",
+    "wallLeft": "牌牆剩餘 {n} 張",
+    "turnOf": "輪到 {seat}",
+    "ready": "已聽牌 — 等 {tiles}",
+    "awayFromReady": "距離聽牌還差 {n} 張",
+    "claimPrompt": "打出了 {tile}，要吃碰槓嗎？",
+    "drawnGame": "牌牆摸完，本局流局。",
+    "youWin": "你胡了！{score} 番。",
+    "seatWins": "{seat} 胡牌，{score} 番。",
+    "doubleRon": "雙榮 — 兩家同時榮和，放槍者一人包賠兩家。",
+    "call": {
+      "chi": "吃",
+      "pon": "碰",
+      "kan": "槓",
+      "ron": "榮和",
+      "tsumo": "自摸",
+      "pass": "過"
+    }
+  },
+  "connect": {
+    "difficultyLabel": "棋盤大小",
+    "relaxed": "輕鬆",
+    "classic": "經典",
+    "expert": "高手",
+    "score": "得分 {n}",
+    "left": "剩餘 {n} 張",
+    "hint": "提示",
+    "shuffle": "重排",
+    "restart": "重新開始",
+    "cleared": "全部消除！{n} 分。",
+    "timeUp": "時間到，再來一局。"
   }
 }

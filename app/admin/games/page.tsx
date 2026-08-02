@@ -11,7 +11,8 @@ const CATEGORY_LABELS: Record<GameCategory, string> = {
   mahjong: '🀄️ 麻将',
   connect: '🔗 连连看',
   solitaire: '♠️ 单人',
-  'tile-match': '🧩 配对'
+  'tile-match': '🧩 配对',
+  'four-player': '👥 四人麻将'
 };
 
 export const dynamic = 'force-dynamic';
