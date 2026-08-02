@@ -94,5 +94,17 @@
     "restart": "Restart",
     "cleared": "Board cleared! {n} points.",
     "timeUp": "Time's up — try again."
+  },
+  "solitaire": {
+    "layoutLabel": "Layout",
+    "turtle": "Turtle",
+    "pyramid": "Pyramid",
+    "score": "Score {n}",
+    "left": "{n} tiles left",
+    "hint": "Hint",
+    "undo": "Undo",
+    "shuffle": "Shuffle",
+    "restart": "Restart",
+    "cleared": "Board cleared! {n} points."
   }
 }

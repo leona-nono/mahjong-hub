@@ -6,7 +6,7 @@ export type GameCategory =
   | 'four-player';
 
 /** Which in-house component renders a native game. */
-export type NativeGame = 'mahjong-table' | 'mahjong-connect';
+export type NativeGame = 'mahjong-table' | 'mahjong-connect' | 'mahjong-solitaire';
 
 /**
  * Ruleset id mirrored from lib/mahjong/engine. Kept as a string literal so this
@@ -231,6 +231,58 @@ export const games: GameConfig[] = [
           question: 'What counts as a turn in the path?',
           answer:
             'Every change of direction. A straight line has no turns, an L shape has one, and a Z or U shape has two. Three or more is not allowed.'
+        }
+      ]
+    }
+  },
+
+  {
+    slug: 'mahjong-solitaire-classic',
+    pageName: 'mahjong-solitaire-classic',
+    title: 'Mahjong Solitaire Classic',
+    description:
+      'The classic layered tile-matching puzzle. Turtle and pyramid layouts, guaranteed-solvable deals, hints and undo.',
+    category: 'solitaire',
+    gameType: 'native',
+    native: 'mahjong-solitaire',
+    players: 1,
+    featured: true,
+    content: {
+      intro:
+        'Mahjong Solitaire is the classic single-player tile-matching puzzle built from mahjong tiles. Clear the whole layout by matching identical tiles that are free: nothing rests on top of them and at least one side is open. Every deal here is generated solvable, so a complete clearing always exists. Two classic shapes are included — the turtle and the pyramid — plus hints, undo, and a reshuffle for when you corner yourself.',
+      howToPlay: [
+        'Tap two tiles showing the same face to match them. A tile can be matched only when it is free: nothing rests on top of it and it is open on at least one side at its own layer.',
+        'Tiles cover the tiles directly beneath them, so clear a stack from the top down. The top layer is always available; lower layers open up as you work through it.',
+        'Clear every tile to win. The turtle spreads a wide shell across the board; the pyramid stacks five centred triangles that you peel from the edges inward.',
+        'Every deal is generated solvable, so a solution always exists. Use hints if you are stuck, undo a hasty match, or reshuffle to re-deal the remaining tiles.',
+        'There is no timer and no score pressure — take as long as you like.'
+      ],
+      tips: [
+        'Work the outside first. A tile on the outer edge of a layer has an open side for free, so clearing the perimeter opens up the middle.',
+        'Before taking an obvious pair, glance at what it frees. Two adjacent identical tiles are an easy match, but clearing them may be the only way to unpin a higher stack.',
+        'Use the pyramid tiers to your advantage: its edge tiles are playable from the start, and the apex tile is only reachable once its layer is reached.',
+        'If you run out of matches, reshuffle instead of restarting — the remaining tiles are re-dealt in a fresh solvable arrangement.'
+      ],
+      faq: [
+        {
+          question: 'How is this different from mahjong connect?',
+          answer:
+            'Connect lays tiles flat and asks you to join matching pairs with a path. Solitaire stacks tiles in layers, and you match tiles that are free on one side and uncovered on top. Different puzzle, same tiles.'
+        },
+        {
+          question: 'What does "free" mean here?',
+          answer:
+            'A tile is free when nothing rests directly on top of it and at least one of its left or right neighbours at the same level is empty. The outer edge tiles of a layer are always free on the outside.'
+        },
+        {
+          question: 'Is every game guaranteed solvable?',
+          answer:
+            'Yes. Deals are built in reverse — the game repeatedly picks two free tiles, removes them and records the match — so every layout has a known solution path you can find with thought.'
+        },
+        {
+          question: 'Is there any real-money gambling?',
+          answer:
+            'No. This is a pure puzzle with no wagering, no purchasable currency and no cash prize of any kind.'
         }
       ]
     }

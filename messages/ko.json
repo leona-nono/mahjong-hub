@@ -94,5 +94,17 @@
     "restart": "다시 시작",
     "cleared": "모두 제거! {n}점.",
     "timeUp": "시간 종료 — 다시 도전하세요."
+  },
+  "solitaire": {
+    "layoutLabel": "배치",
+    "turtle": "거북이",
+    "pyramid": "피라미드",
+    "score": "점수 {n}",
+    "left": "남은 패 {n}장",
+    "hint": "힌트",
+    "undo": "실행 취소",
+    "shuffle": "섞기",
+    "restart": "다시 시작",
+    "cleared": "모두 제거! {n}점."
   }
 }

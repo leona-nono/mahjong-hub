@@ -94,5 +94,17 @@
     "restart": "重新开始",
     "cleared": "全部消除！{n} 分。",
     "timeUp": "时间到，再来一局。"
+  },
+  "solitaire": {
+    "layoutLabel": "牌型",
+    "turtle": "龟甲",
+    "pyramid": "金字塔",
+    "score": "得分 {n}",
+    "left": "剩余 {n} 张",
+    "hint": "提示",
+    "undo": "撤销",
+    "shuffle": "重排",
+    "restart": "重新开始",
+    "cleared": "全部消除！{n} 分。"
   }
 }
