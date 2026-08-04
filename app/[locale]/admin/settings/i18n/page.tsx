@@ -1,3 +1,4 @@
+import { Link } from '@/i18n/navigation';
 import { prisma } from '@/lib/db';
 import { isDbConnected } from '@/lib/db-health';
 import I18nEditor, { type I18nRow } from '@/components/admin/I18nEditor';
@@ -35,12 +36,12 @@ export default async function I18nPage() {
   return (
     <div>
       <div className="mb-6">
-        <a
+        <Link
           href="/admin/settings"
           className="mb-2 inline-block text-sm text-blue-600 hover:text-blue-800"
         >
           ← 返回站点设置
-        </a>
+        </Link>
         <h1 className="text-2xl font-bold text-gray-800">🌐 i18n 多语言文案管理</h1>
         <p className="mt-1 text-sm text-gray-500">
           管理 UI 界面文案（对应{' '}

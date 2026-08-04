@@ -21,7 +21,7 @@ export const authConfig = {
       const isProtected =
         nextUrl.pathname.startsWith('/api/points') ||
         nextUrl.pathname.startsWith('/api/leaderboard') ||
-        nextUrl.pathname.startsWith('/admin');
+        /^\/(en|zh|zh-TW|ja|ko)\/admin(\/.*)?$/.test(nextUrl.pathname);
       if (isProtected) return isLoggedIn;
       return true;
     },
