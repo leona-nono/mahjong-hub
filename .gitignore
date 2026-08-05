@@ -2,8 +2,16 @@ node_modules
 .next
 .vercel
 .env*.local
+# 本地真实密钥（DATABASE_URL / AUTH_SECRET 等）——绝不进仓库
+.env
 *.log
 .DS_Store
 
+# Claude Code 本地设置（机器相关，不共享）
+.claude/settings.local.json
+
 # Prisma generated client (created by `npx prisma generate`)
 lib/generated/
+
+# TypeScript incremental build cache
+*.tsbuildinfo

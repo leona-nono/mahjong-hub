@@ -5,8 +5,6 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import '@/app/globals.css';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Providers from '@/components/providers';
 
 export function generateStaticParams() {
@@ -31,6 +29,9 @@ export const metadata: Metadata = {
   }
 };
 
+// 根布局：只负责 <html>/<body> + i18n Provider + 全局 Providers。
+// 公共页面的 Header/Footer 已下放到 app/[locale]/(public)/layout.tsx，
+// 后台 app/[locale]/admin 不需要公共 chrome，因此这里不再渲染。
 export default async function LocaleLayout({
   children,
   params
@@ -59,9 +60,7 @@ export default async function LocaleLayout({
               x: !!process.env.AUTH_X_ID && !!process.env.AUTH_X_SECRET
             }}
           >
-            <Header />
-            <main className="min-h-screen">{children}</main>
-            <Footer />
+            {children}
           </Providers>
         </NextIntlClientProvider>
       </body>

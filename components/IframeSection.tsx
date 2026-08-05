@@ -21,11 +21,17 @@ export default function IframeSection({ game }: { game: GameConfig }) {
         <h2 className="text-lg font-bold text-gray-800">{t('about')}</h2>
         <p className="mt-1 text-sm text-gray-500">{game.description}</p>
       </div>
-      <LazyIframe
-        src={game.gameIframeUrl}
-        title={game.title}
-        fallbackGames={related}
-      />
+      {game.gameIframeUrl ? (
+        <LazyIframe
+          src={game.gameIframeUrl}
+          title={game.title}
+          fallbackGames={related}
+        />
+      ) : (
+        <p className="rounded-2xl bg-gray-50 p-6 text-center text-sm text-gray-500">
+          {t('failedDesc')}
+        </p>
+      )}
     </section>
   );
 }

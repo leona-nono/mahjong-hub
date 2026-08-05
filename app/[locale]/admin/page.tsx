@@ -1,3 +1,4 @@
+import { Link } from '@/i18n/navigation';
 import { getGames } from '@/data/games';
 import { prisma } from '@/lib/db';
 import { isDbConnected } from '@/lib/db-health';
@@ -138,12 +139,12 @@ function QuickLink({
   desc: string;
 }) {
   return (
-    <a
+    <Link
       href={href}
       className="block rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
     >
       <h3 className="text-lg font-bold text-gray-800">{title}</h3>
       <p className="mt-1 text-sm text-gray-500">{desc}</p>
-    </a>
+    </Link>
   );
 }

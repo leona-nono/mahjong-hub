@@ -1,11 +1,12 @@
+import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
-import FeaturesEditor, { type FeatureEntry } from '@/components/admin/FeaturesEditor';
+import FaqEditor, { type FaqRow } from '@/components/admin/FaqEditor';
 
 export const dynamic = 'force-dynamic';
 
-export default async function GameFeaturesPage({
+export default async function GameFaqsPage({
   params
 }: {
   params: Promise<{ slug: string }>;
@@ -14,20 +15,22 @@ export default async function GameFeaturesPage({
   const game = getGame(slug);
   if (!game) notFound();
 
-  let initial: FeatureEntry[] = [];
+  let initial: FaqRow[] = [];
   try {
     const dbGame = await prisma.game.findUnique({
       where: { slug },
       select: { id: true }
     });
     if (dbGame) {
-      const features = await prisma.gameFeature.findMany({
+      const faqs = await prisma.gameFaq.findMany({
         where: { gameId: dbGame.id },
-        orderBy: { locale: 'asc' }
+        orderBy: [{ locale: 'asc' }, { sortOrder: 'asc' }]
       });
-      initial = features.map((f) => ({
+      initial = faqs.map((f) => ({
+        id: f.id,
         locale: f.locale,
-        content: f.content,
+        question: f.question,
+        answer: f.answer,
         sortOrder: f.sortOrder
       }));
     }
@@ -38,21 +41,21 @@ export default async function GameFeaturesPage({
   return (
     <div>
       <div className="mb-6">
-        <a
+        <Link
           href={`/admin/games/${slug}`}
           className="mb-2 inline-block text-sm text-blue-600 hover:text-blue-800"
         >
           ← 返回游戏编辑
-        </a>
+        </Link>
         <h1 className="text-2xl font-bold text-gray-800">
-          Features 详情 — {game.title}
+          FAQ 问答 — {game.title}
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-          为每种语言编辑游戏详情（Markdown 富文本 → 长文内容 + GEO 直接问答）
+          为每种语言编辑 FAQ 条目（自动生成 FAQPage JSON-LD → SEO 富媒体 + GEO 直接问答）
         </p>
       </div>
 
-      <FeaturesEditor slug={slug} initial={initial} />
+      <FaqEditor slug={slug} initial={initial} />
     </div>
   );
 }

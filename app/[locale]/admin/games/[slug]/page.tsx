@@ -1,3 +1,4 @@
+import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
@@ -42,7 +43,7 @@ async function getEditorData(slug: string) {
         slug: staticGame.slug,
         title: staticGame.title,
         description: staticGame.description,
-        iframeUrl: staticGame.gameIframeUrl,
+        iframeUrl: staticGame.gameIframeUrl ?? '',
         thumbnail: '',
         downloadUrl: '',
         category: staticGame.category,
@@ -71,12 +72,12 @@ export default async function GameEditorPage({
     <div>
       {/* Header */}
       <div className="mb-6">
-        <a
+        <Link
           href="/admin/games"
           className="mb-2 inline-block text-sm text-blue-600 hover:text-blue-800"
         >
           ← 返回游戏列表
-        </a>
+        </Link>
         <h1 className="text-2xl font-bold text-gray-800">
           编辑游戏: {initial.title}
         </h1>
@@ -104,7 +105,7 @@ export default async function GameEditorPage({
       <div className="mt-8">
         <h2 className="mb-4 text-lg font-bold text-gray-800">多语言内容</h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <a
+          <Link
             href={`/admin/games/${slug}/faqs`}
             className="block rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
           >
@@ -112,8 +113,8 @@ export default async function GameEditorPage({
             <p className="mt-1 text-sm text-gray-500">
               按语言编辑 FAQ（生成 FAQPage JSON-LD，提升 SEO/GEO 排名）
             </p>
-          </a>
-          <a
+          </Link>
+          <Link
             href={`/admin/games/${slug}/features`}
             className="block rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
           >
@@ -121,7 +122,7 @@ export default async function GameEditorPage({
             <p className="mt-1 text-sm text-gray-500">
               按语言编辑游戏详情（Markdown 富文本，含直接问答段 + GEO 增强）
             </p>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { Link } from '@/i18n/navigation';
 import { getGames, type GameCategory } from '@/data/games';
 import { prisma } from '@/lib/db';
 import { isDbConnected } from '@/lib/db-health';
@@ -11,7 +12,8 @@ const CATEGORY_LABELS: Record<GameCategory, string> = {
   mahjong: '🀄️ 麻将',
   connect: '🔗 连连看',
   solitaire: '♠️ 单人',
-  'tile-match': '🧩 配对'
+  'tile-match': '🧩 配对',
+  'four-player': '👥 四人麻将'
 };
 
 export const dynamic = 'force-dynamic';
@@ -51,12 +53,12 @@ export default async function AdminGamesPage() {
             {dbConnected ? '（数据库已连接，可编辑）' : '（静态源，DB 连接后可编辑）'}
           </p>
         </div>
-        <a
+        <Link
           href="/admin/games/new"
           className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-blue-700"
         >
           ＋ 新建游戏
-        </a>
+        </Link>
       </div>
 
       {/* Status banner */}
@@ -102,12 +104,12 @@ export default async function AdminGamesPage() {
                   {g.slug}
                 </td>
                 <td className="px-4 py-3">
-                  <a
+                  <Link
                     href={`/admin/games/${g.slug}`}
                     className="text-blue-600 transition hover:text-blue-800"
                   >
                     编辑 →
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}

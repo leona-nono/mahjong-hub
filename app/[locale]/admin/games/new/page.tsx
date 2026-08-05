@@ -1,3 +1,4 @@
+import { Link } from '@/i18n/navigation';
 import NewGameForm from '@/components/admin/NewGameForm';
 import { isDbConnected } from '@/lib/db-health';
 
@@ -9,12 +10,12 @@ export default async function NewGamePage() {
   return (
     <div>
       <div className="mb-6">
-        <a
+        <Link
           href="/admin/games"
           className="mb-2 inline-block text-sm text-blue-600 hover:text-blue-800"
         >
           ← 返回游戏列表
-        </a>
+        </Link>
         <h1 className="text-2xl font-bold text-gray-800">新建游戏</h1>
         <p className="mt-1 text-sm text-gray-500">
           {dbConnected

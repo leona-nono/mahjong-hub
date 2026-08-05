@@ -16,13 +16,14 @@ export const authConfig = {
     signIn: '/'
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isProtected =
-        nextUrl.pathname.startsWith('/api/points') ||
-        nextUrl.pathname.startsWith('/api/leaderboard') ||
-        nextUrl.pathname.startsWith('/admin');
-      if (isProtected) return isLoggedIn;
+    // Authorization is enforced server-side, NOT at the edge:
+    //  - Admin pages: app/[locale]/admin/layout.tsx calls auth() and redirects.
+    //  - APIs: each route calls requireAdmin() and returns 401.
+    // Edge middleware redirecting statically-prerendered admin pages is
+    // unreliable (the cached 200 HTML is served straight from the CDN, so
+    // the edge redirect never runs). The Node server component is the
+    // authoritative gate. The middleware still runs to set up the session.
+    authorized() {
       return true;
     },
     async session({ session, user }) {

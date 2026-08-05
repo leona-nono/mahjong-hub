@@ -37,7 +37,7 @@ export const ALL_LOCALES = [
 export const FEATURE_LOCALES = ['en', 'zh-TW', 'zh-CN', 'ja', 'ko'] as const;
 
 export const GAME_CATEGORIES = [
-  'mahjong', 'connect', 'solitaire', 'tile-match'
+  'mahjong', 'connect', 'solitaire', 'tile-match', 'four-player'
 ] as const;
 
 export const SETTINGS_KEYS = ['site', 'social', 'analytics'] as const;
