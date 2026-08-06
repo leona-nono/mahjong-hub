@@ -249,7 +249,7 @@ export default function MahjongConnect({
                         : 'hover:-translate-y-0.5'
                   }`}
                 >
-                  <TileFace tile={tile} size="sm" />
+                  <TileFace tile={tile} size="sm" traditional />
                 </button>
               );
             })
