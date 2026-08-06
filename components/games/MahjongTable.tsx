@@ -175,9 +175,9 @@ export default function MahjongTable({
   };
 
   return (
-    <div className={traditional ? "rounded-3xl border border-emerald-950/70 bg-[#0a3b31] p-3 text-white shadow-[0_24px_70px_rgba(2,44,34,.35)] sm:p-5" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
+    <div className={traditional ? "min-h-[760px] rounded-3xl border border-emerald-950/80 bg-[#063b2e] p-2 text-white shadow-[0_24px_70px_rgba(2,44,34,.45)] sm:p-4" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
       {/* Controls */}
-      <div className="sticky top-2 z-10 mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-white/80 bg-white/90 p-2 text-sm shadow-md backdrop-blur">
+      <div className={traditional ? "sticky top-2 z-20 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-emerald-800/80 bg-[#062b23]/95 p-2 text-sm shadow-lg backdrop-blur" : "sticky top-2 z-10 mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-white/80 bg-white/90 p-2 text-sm shadow-md backdrop-blur"}>
         <select
           value={ruleset}
           onChange={(e) => {
@@ -248,8 +248,19 @@ export default function MahjongTable({
       </div>
 
       {/* Table centre */}
-      <div className={traditional ? "my-4 rounded-2xl border border-emerald-950/30 bg-[radial-gradient(circle_at_center,rgba(22,101,52,.96),rgba(6,78,59,.98))] p-3 text-white shadow-sm sm:p-4" : "my-4 rounded-2xl border border-emerald-900/10 bg-white/90 p-4 shadow-sm"}>
-        <div className="mb-3 flex items-center justify-between text-xs text-gray-500">
+      <div className={traditional ? "relative my-3 min-h-[470px] overflow-hidden rounded-2xl border border-emerald-950/80 bg-[#07553f] p-3 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,.04),inset_0_20px_60px_rgba(0,0,0,.18)] sm:p-5" : "my-4 rounded-2xl border border-emerald-900/10 bg-white/90 p-4 shadow-sm"}>
+        {traditional && <>
+          <WallRail position="top" />
+          <WallRail position="left" />
+          <WallRail position="right" />
+          <WallRail position="bottom" />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-44 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-950/80 bg-[#10131d] p-4 text-center shadow-2xl">
+            <div className="text-[10px] uppercase tracking-[.24em] text-emerald-300">Hong Kong</div>
+            <div className="mt-2 text-3xl font-light text-cyan-200">East 1</div>
+            <div className="mt-1 text-xs text-slate-400">牌墙 {tilesRemaining(state)} · {SEAT_LABEL[state.turn]} 回合</div>
+          </div>
+        </>}
+        <div className="relative z-10 mb-3 flex items-center justify-between text-xs text-gray-500">
           <span className={traditional ? "text-emerald-50" : ""}>
             {t('wallLeft', { n: tilesRemaining(state) })}
           </span>
@@ -259,7 +270,7 @@ export default function MahjongTable({
         </div>
 
         {traditional && (<div className="mb-3 grid grid-cols-2 gap-2 rounded-xl border border-white/15 bg-black/10 p-2 text-center text-[10px] font-semibold uppercase tracking-[.18em] text-emerald-100 sm:grid-cols-4">{(["East", "South", "West", "North"] as const).map((seat) => (<span key={seat} className={SEAT_LABEL[state.turn] === seat ? "rounded-lg bg-amber-300/25 py-1 text-amber-100" : "py-1 opacity-70"}>{seat} {SEAT_LABEL[state.turn] === seat ? "· PLAYING" : ""}</span>))}</div>)}
-        <div className={traditional ? "rounded-xl border border-white/10 bg-black/10 p-2" : ""}><DiscardPool state={state} traditional={traditional} /></div>
+        <div className={traditional ? "relative z-10 mt-36 rounded-xl border border-white/10 bg-black/15 p-2" : ""}><DiscardPool state={state} traditional={traditional} /></div>
       </div>
 
       {/* Result banner */}
@@ -386,7 +397,7 @@ function OpponentPanel({ state, seat, traditional }: { state: GameState; seat: S
       }`}
     >
       <div className="mb-1 flex items-center justify-between text-xs font-semibold text-emerald-50">
-        <span>{SEAT_LABEL[seat]}</span>
+        <span className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-900/70 text-xs text-amber-200">{SEAT_LABEL[seat][0]}</span>{SEAT_LABEL[seat]}</span>
         <span className="text-gray-400">{player.hand.length}</span>
       </div>
       <div className="flex flex-wrap gap-0.5">
@@ -407,6 +418,14 @@ function OpponentPanel({ state, seat, traditional }: { state: GameState; seat: S
       )}
     </div>
   );
+}
+
+function WallRail({ position }: { position: 'top' | 'right' | 'bottom' | 'left' }) {
+  const vertical = position === 'left' || position === 'right';
+  const positionClass = position === 'top' ? 'left-1/2 top-5 -translate-x-1/2' : position === 'bottom' ? 'bottom-5 left-1/2 -translate-x-1/2' : position === 'left' ? 'left-5 top-1/2 -translate-y-1/2' : 'right-5 top-1/2 -translate-y-1/2';
+  return <div aria-hidden="true" className={`absolute z-10 flex ${vertical ? 'flex-col' : 'flex-row'} gap-0.5 rounded-lg bg-[#0a7b4e]/80 p-1 shadow-[0_5px_0_rgba(0,0,0,.2)] ${positionClass}`}>
+    {Array.from({ length: 13 }, (_, index) => <TileBack key={index} size="sm" />)}
+  </div>;
 }
 
 function DiscardPool({ state, traditional }: { state: GameState; traditional: boolean }) {

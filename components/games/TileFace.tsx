@@ -33,23 +33,18 @@ export interface TileFaceProps {
 }
 
 const TRADITIONAL_TILE_FILES: Record<Tile, string> = {
-  m1: 'tile-04.png', m2: 'tile-05.png', m3: 'tile-06.png',
-  m4: 'tile-10.png', m5: 'tile-11.png', m6: 'tile-12.png',
-  m7: 'tile-16.png', m8: 'tile-17.png', m9: 'tile-18.png',
-  p1: 'tile-19.png', p2: 'tile-20.png', p3: 'tile-21.png',
-  p4: 'tile-25.png', p5: 'tile-26.png', p6: 'tile-27.png',
-  p7: 'tile-32.png', p8: 'tile-33.png', p9: 'tile-34.png',
-  s1: 'tile-02.png', s2: 'tile-03.png', s3: 'tile-07.png',
-  s4: 'tile-08.png', s5: 'tile-09.png', s6: 'tile-13.png',
-  s7: 'tile-14.png', s8: 'tile-15.png', s9: 'tile-01.png',
-  z1: 'tile-22.png', z2: 'tile-23.png', z3: 'tile-24.png',
-  z4: 'tile-39.png', z5: 'tile-42.png', z6: 'tile-41.png', z7: 'tile-40.png'
+  // The cutter contact sheet is ordered by suit: bamboo, characters, dots,
+  // winds/dragons, then flowers and blanks. Every face is a unique source file.
+  m1: '004.png', m2: '005.png', m3: '006.png', m4: '010.png', m5: '011.png', m6: '012.png', m7: '016.png', m8: '017.png', m9: '018.png',
+  p1: '019.png', p2: '020.png', p3: '021.png', p4: '025.png', p5: '026.png', p6: '027.png', p7: '032.png', p8: '033.png', p9: '034.png',
+  s1: '002.png', s2: '003.png', s3: '007.png', s4: '008.png', s5: '009.png', s6: '013.png', s7: '014.png', s8: '015.png', s9: '001.png',
+  z1: '022.png', z2: '023.png', z3: '024.png', z4: '039.png', z5: '042.png', z6: '041.png', z7: '040.png'
 };
 
 function traditionalTileSrc(tile: Tile): string {
   const file = TRADITIONAL_TILE_FILES[tile];
   return file
-    ? '/assets/mahjong-chinese/source-5-crops/' + file
+    ? '/assets/mahjong-hongkong/tiles/' + file
     : '/assets/mahjong-chinese/source-5-crops/tile-42.png';
 }
 export default function TileFace({
