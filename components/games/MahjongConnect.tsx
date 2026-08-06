@@ -48,6 +48,7 @@ export default function MahjongConnect({
   const [streak, setStreak] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(PRESETS[defaultDifficulty].seconds);
   const [status, setStatus] = useState<'playing' | 'won' | 'lost'>('playing');
+  const [paused, setPaused] = useState(false);
 
   const preset = PRESETS[difficulty];
 
@@ -61,30 +62,31 @@ export default function MahjongConnect({
       setStreak(0);
       setSecondsLeft(PRESETS[next].seconds);
       setStatus('playing');
+      setPaused(false);
     },
     [difficulty]
   );
 
   // Countdown for the timed presets.
   useEffect(() => {
-    if (status !== 'playing' || preset.seconds === 0) return undefined;
+    if (status !== 'playing' || paused || preset.seconds === 0) return undefined;
     if (secondsLeft <= 0) {
       setStatus('lost');
       return undefined;
     }
     const timer = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
     return () => clearTimeout(timer);
-  }, [secondsLeft, status, preset.seconds]);
+  }, [secondsLeft, status, paused, preset.seconds]);
 
   // Clear the "matched" flash a beat after it fires.
   useEffect(() => {
     if (flash.length === 0) return undefined;
-    const timer = setTimeout(() => setFlash([]), 220);
+    const timer = setTimeout(() => setFlash([]), 650);
     return () => clearTimeout(timer);
   }, [flash]);
 
   const handleTile = (row: number, col: number) => {
-    if (status !== 'playing') return;
+    if (status !== 'playing' || paused) return;
     const cell = { row, col };
     if (!board.grid[row][col]) return;
 
@@ -140,14 +142,19 @@ export default function MahjongConnect({
     [flash]
   );
 
+  const pathPoints = useMemo(
+    () => flash.map((cell) => `${cell.col},${cell.row}`).join(' '),
+    [flash]
+  );
+
   const timeLabel =
     preset.seconds === 0
       ? '∞'
       : `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, '0')}`;
 
   return (
-    <div className="rounded-3xl rainbow-card p-3 sm:p-5">
-      <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
+    <div className="rounded-3xl border border-sky-900/10 bg-[radial-gradient(circle_at_center,#ffffff_0%,#eff9ff_70%,#e5f4ff_100%)] p-3 shadow-[0_24px_70px_rgba(14,165,233,.14)] sm:p-5">
+      <div className="sticky top-2 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-white/80 bg-white/90 p-2 text-sm shadow-md backdrop-blur">
         <select
           value={difficulty}
           onChange={(e) => {
@@ -187,6 +194,7 @@ export default function MahjongConnect({
         >
           {t('shuffle')}
         </button>
+        <button type="button" onClick={() => setPaused((value) => !value)} className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-700">{paused ? 'Resume' : 'Pause'}</button>
         <button
           type="button"
           onClick={() => restart()}
@@ -198,7 +206,7 @@ export default function MahjongConnect({
 
       {status !== 'playing' && (
         <div
-          className={`mb-3 rounded-2xl p-3 text-sm font-bold ${
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 text-center text-sm font-bold ${
             status === 'won'
               ? 'bg-emerald-50 text-emerald-800'
               : 'bg-rose-50 text-rose-700'
@@ -210,9 +218,20 @@ export default function MahjongConnect({
 
       <div className="overflow-x-auto">
         <div
-          className="mx-auto grid w-max gap-0.5"
+          className="relative mx-auto grid w-max gap-1 rounded-2xl border border-sky-100 bg-white/80 p-3 shadow-inner sm:gap-1.5"
           style={{ gridTemplateColumns: `repeat(${board.cols}, minmax(0, 1fr))` }}
         >
+          {flash.length > 0 && (
+            <svg
+              className="pointer-events-none absolute inset-0 z-20 h-full w-full"
+              viewBox={`0 0 ${board.cols + 1} ${board.rows + 1}`}
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <polyline points={pathPoints} fill="none" stroke="#f59e0b" strokeWidth="0.16" strokeLinecap="round" strokeLinejoin="round" />
+              <polyline points={pathPoints} fill="none" stroke="#fff7ed" strokeWidth="0.06" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
           {Array.from({ length: board.rows }).map((_, r) =>
             Array.from({ length: board.cols }).map((__, c) => {
               const row = r + 1;
@@ -228,7 +247,7 @@ export default function MahjongConnect({
                 return (
                   <div
                     key={key}
-                    className={`h-9 w-7 rounded-md sm:h-11 sm:w-8 ${
+                    className={`h-11 w-9 rounded-lg sm:h-14 sm:w-11 ${
                       flashKeys.has(key) ? 'bg-amber-200/70' : ''
                     }`}
                   />
@@ -241,7 +260,7 @@ export default function MahjongConnect({
                   type="button"
                   onClick={() => handleTile(row, col)}
                   aria-label={tile}
-                  className={`flex h-9 w-7 items-center justify-center rounded-md transition sm:h-11 sm:w-8 ${
+                  className={`flex h-11 w-9 items-center justify-center rounded-lg transition sm:h-14 sm:w-11 ${
                     isSelected
                       ? 'scale-95 ring-2 ring-amber-400'
                       : isHinted
