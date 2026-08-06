@@ -53,15 +53,18 @@ export default function MahjongTable({
 }: MahjongTableProps) {
   const t = useTranslations('mahjong');
   const [ruleset, setRuleset] = useState<Ruleset>(defaultRuleset);
+  const traditional = ruleset === 'hongkong' || ruleset === 'chinese-official';
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
   const [showHints, setShowHints] = useState(true);
+  const [paused, setPaused] = useState(false);
   const [state, setState] = useState<GameState>(() =>
-    createGame({ ruleset: defaultRuleset, humanSeat: HUMAN })
+    createGame({ ruleset: defaultRuleset, humanSeat: HUMAN, seed: 1 })
   );
 
   const newGame = useCallback(
     (nextRuleset: Ruleset = ruleset) => {
       setState(createGame({ ruleset: nextRuleset, humanSeat: HUMAN }));
+      setPaused(false);
     },
     [ruleset]
   );
@@ -70,7 +73,7 @@ export default function MahjongTable({
   // Everything that is not a human decision is advanced here on a timer, so the
   // engine stays synchronous and the UI stays readable.
   useEffect(() => {
-    if (state.phase === 'over') return undefined;
+    if (paused || state.phase === 'over') return undefined;
 
     if (state.phase === 'claim') {
       const pending = (Object.keys(state.claims).map(Number) as Seat[]).filter(
@@ -130,7 +133,7 @@ export default function MahjongTable({
     }
 
     return undefined;
-  }, [state, difficulty]);
+  }, [state, difficulty, paused]);
 
   // Report a human win to the site points system exactly once. A double ron
   // has no single `winner`, so the human seat has to be looked up in `winners`.
@@ -172,9 +175,9 @@ export default function MahjongTable({
   };
 
   return (
-    <div className="rounded-3xl rainbow-card p-4 sm:p-6">
+    <div className={traditional ? "rounded-3xl border border-emerald-950/70 bg-[#0a3b31] p-3 text-white shadow-[0_24px_70px_rgba(2,44,34,.35)] sm:p-5" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
       {/* Controls */}
-      <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">
+      <div className="sticky top-2 z-10 mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-white/80 bg-white/90 p-2 text-sm shadow-md backdrop-blur">
         <select
           value={ruleset}
           onChange={(e) => {
@@ -217,32 +220,46 @@ export default function MahjongTable({
 
         <button
           type="button"
+          onClick={() => setPaused((value) => !value)}
+          className="rounded-full border border-emerald-700 bg-emerald-900/70 px-3 py-1.5 font-bold text-emerald-50 hover:bg-emerald-800"
+        >
+          {paused ? '▶ 继续' : 'Ⅱ 暂停'}
+        </button>
+        <button
+          type="button"
           onClick={() => newGame()}
-          className="ml-auto rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-700 hover:bg-gray-50"
+          className="ml-auto rounded-full border border-amber-300/70 bg-amber-300 px-3 py-1.5 font-bold text-emerald-950 hover:bg-amber-200"
         >
           {t('newGame')}
         </button>
       </div>
 
-      {/* Opponents */}
-      <div className="grid gap-2 sm:grid-cols-3">
-        {([1, 2, 3] as Seat[]).map((seat) => (
-          <OpponentPanel key={seat} state={state} seat={seat} />
-        ))}
+      {/* Opponents / table seats */}
+      <div className={traditional ? "grid gap-2 rounded-[1.5rem] border border-emerald-950/40 bg-[linear-gradient(135deg,#064e3b,#166534,#14532d)] p-2 shadow-inner sm:grid-cols-3 sm:grid-rows-[auto_auto]" : "grid gap-2 rounded-[1.5rem] border border-emerald-900/10 bg-[linear-gradient(135deg,#0f766e,#115e59)] p-2 shadow-inner sm:grid-cols-3 sm:grid-rows-[auto_auto]"}>
+        <div className="sm:col-span-3">
+          <OpponentPanel state={state} seat={3} traditional={traditional} />
+        </div>
+        <div className="sm:col-start-1 sm:row-start-2">
+          <OpponentPanel state={state} seat={2} traditional={traditional} />
+        </div>
+        <div className="sm:col-start-3 sm:row-start-2">
+          <OpponentPanel state={state} seat={1} traditional={traditional} />
+        </div>
       </div>
 
       {/* Table centre */}
-      <div className="my-4 rounded-2xl bg-white/70 p-4">
+      <div className={traditional ? "my-4 rounded-2xl border border-emerald-950/30 bg-[radial-gradient(circle_at_center,rgba(22,101,52,.96),rgba(6,78,59,.98))] p-3 text-white shadow-sm sm:p-4" : "my-4 rounded-2xl border border-emerald-900/10 bg-white/90 p-4 shadow-sm"}>
         <div className="mb-3 flex items-center justify-between text-xs text-gray-500">
-          <span>
+          <span className={traditional ? "text-emerald-50" : ""}>
             {t('wallLeft', { n: tilesRemaining(state) })}
           </span>
-          <span>
+          <span className={traditional ? "font-semibold text-amber-200" : ""}>
             {t('turnOf', { seat: SEAT_LABEL[state.turn] })}
           </span>
         </div>
 
-        <DiscardPool state={state} />
+        {traditional && (<div className="mb-3 grid grid-cols-2 gap-2 rounded-xl border border-white/15 bg-black/10 p-2 text-center text-[10px] font-semibold uppercase tracking-[.18em] text-emerald-100 sm:grid-cols-4">{(["East", "South", "West", "North"] as const).map((seat) => (<span key={seat} className={SEAT_LABEL[state.turn] === seat ? "rounded-lg bg-amber-300/25 py-1 text-amber-100" : "py-1 opacity-70"}>{seat} {SEAT_LABEL[state.turn] === seat ? "· PLAYING" : ""}</span>))}</div>)}
+        <div className={traditional ? "rounded-xl border border-white/10 bg-black/10 p-2" : ""}><DiscardPool state={state} traditional={traditional} /></div>
       </div>
 
       {/* Result banner */}
@@ -311,10 +328,10 @@ export default function MahjongTable({
       )}
 
       {/* Hand */}
-      <div className="rounded-2xl bg-white/80 p-3">
+      <div className="sticky bottom-0 z-10 rounded-2xl border border-amber-200/80 bg-white/95 p-3 shadow-[0_-10px_28px_rgba(15,23,42,.12)] backdrop-blur">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-sm font-bold text-gray-700">
-            {t('yourHand')} · {SEAT_LABEL[HUMAN]}
+            {t('yourHand')} 路 {SEAT_LABEL[HUMAN]}
           </span>
           {hints && (
             <span className="text-xs text-gray-500">
@@ -330,7 +347,7 @@ export default function MahjongTable({
             {human.melds.map((meld, i) => (
               <div key={i} className="flex gap-0.5 rounded-lg bg-gray-50 p-1">
                 {meld.tiles.map((tile, j) => (
-                  <TileFace key={j} tile={tile} size="sm" />
+                  <TileFace key={j} tile={tile} size="sm" traditional={traditional} />
                 ))}
               </div>
             ))}
@@ -346,6 +363,7 @@ export default function MahjongTable({
               onClick={handleDiscard}
               disabled={!myTurn}
               highlight={myTurn && i === human.hand.length - 1}
+              traditional={traditional}
             />
           ))}
         </div>
@@ -358,16 +376,16 @@ export default function MahjongTable({
   );
 }
 
-function OpponentPanel({ state, seat }: { state: GameState; seat: Seat }) {
+function OpponentPanel({ state, seat, traditional }: { state: GameState; seat: Seat; traditional: boolean }) {
   const player = state.players[seat];
   const active = state.turn === seat && state.phase !== 'over';
   return (
     <div
-      className={`rounded-2xl border p-2 transition ${
-        active ? 'border-amber-300 bg-amber-50' : 'border-gray-100 bg-white/70'
+      className={`rounded-2xl border p-3 transition ${
+        active ? 'border-amber-300 bg-amber-50 shadow-[0_0_0_3px_rgba(251,191,36,.25)]' : 'border-white/20 bg-white/10 text-white'
       }`}
     >
-      <div className="mb-1 flex items-center justify-between text-xs font-semibold text-gray-600">
+      <div className="mb-1 flex items-center justify-between text-xs font-semibold text-emerald-50">
         <span>{SEAT_LABEL[seat]}</span>
         <span className="text-gray-400">{player.hand.length}</span>
       </div>
@@ -381,7 +399,7 @@ function OpponentPanel({ state, seat }: { state: GameState; seat: Seat }) {
           {player.melds.map((meld, i) => (
             <div key={i} className="flex gap-0.5">
               {meld.tiles.map((tile, j) => (
-                <TileFace key={j} tile={tile} size="sm" />
+                <TileFace key={j} tile={tile} size="sm" traditional={traditional} />
               ))}
             </div>
           ))}
@@ -391,7 +409,7 @@ function OpponentPanel({ state, seat }: { state: GameState; seat: Seat }) {
   );
 }
 
-function DiscardPool({ state }: { state: GameState }) {
+function DiscardPool({ state, traditional }: { state: GameState; traditional: boolean }) {
   return (
     <div className="grid gap-2 sm:grid-cols-2">
       {state.players.map((player) => (
@@ -411,6 +429,7 @@ function DiscardPool({ state }: { state: GameState }) {
                   size="sm"
                   muted={!isLatest}
                   highlight={isLatest}
+                  traditional={traditional}
                 />
               );
             })}
@@ -435,7 +454,7 @@ function ResultBanner({
   const result = state.result!;
 
   return (
-    <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-2 bg-slate-950/40 p-4 text-center">
       {result.kind === 'draw' ? (
         <p className="font-bold text-emerald-800">{t('drawnGame')}</p>
       ) : result.winners ? (
