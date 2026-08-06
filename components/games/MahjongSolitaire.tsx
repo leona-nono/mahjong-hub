@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import TileFace from './TileFace';
@@ -37,13 +37,22 @@ export default function MahjongSolitaire({
   const t = useTranslations('solitaire');
   const [layout, setLayout] = useState<SolitaireLayout>(defaultLayout);
   const [board, setBoard] = useState<Board>(() =>
-    createBoard({ layout: defaultLayout, seed: Math.floor(Math.random() * 2 ** 31) })
+    createBoard({ layout: defaultLayout, seed: 1 })
   );
   const [selected, setSelected] = useState<number | null>(null);
   const [hint, setHint] = useState<[number, number] | null>(null);
   const [score, setScore] = useState(0);
   const [status, setStatus] = useState<'playing' | 'won'>('playing');
   const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    setBoard(
+      createBoard({
+        layout: defaultLayout,
+        seed: Math.floor(Math.random() * 2 ** 31)
+      })
+    );
+  }, [defaultLayout]);
 
   const restart = (nextLayout: SolitaireLayout = layout) => {
     setBoard(

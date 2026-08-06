@@ -40,7 +40,7 @@ export default function MahjongConnect({
 }: MahjongConnectProps) {
   const t = useTranslations('connect');
   const [difficulty, setDifficulty] = useState<ConnectDifficulty>(defaultDifficulty);
-  const [board, setBoard] = useState<Board>(() => createBoard(PRESETS[defaultDifficulty]));
+  const [board, setBoard] = useState<Board>(() => createBoard({ ...PRESETS[defaultDifficulty], seed: 1 }));
   const [selected, setSelected] = useState<Cell | null>(null);
   const [hint, setHint] = useState<[Cell, Cell] | null>(null);
   const [flash, setFlash] = useState<Cell[]>([]);
@@ -51,6 +51,12 @@ export default function MahjongConnect({
   const [paused, setPaused] = useState(false);
 
   const preset = PRESETS[difficulty];
+
+  useEffect(() => {
+    setBoard({
+      ...createBoard({ ...PRESETS[defaultDifficulty], seed: Math.floor(Math.random() * 2 ** 31) })
+    });
+  }, [defaultDifficulty]);
 
   const restart = useCallback(
     (next: ConnectDifficulty = difficulty) => {
