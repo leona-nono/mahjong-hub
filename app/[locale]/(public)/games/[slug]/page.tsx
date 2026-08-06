@@ -7,6 +7,7 @@ import IframeSection from '@/components/IframeSection';
 import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
 import AdSlot from '@/components/AdSlot';
+import ComingSoonGame from '@/components/ComingSoonGame';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -67,6 +68,7 @@ export default async function GamePage({
   const t = await getTranslations('game');
   const related = getRelatedGames(slug, 4);
   const isNative = game.gameType === 'native';
+  const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
 
   const jsonLd: Record<string, unknown>[] = [];
@@ -123,7 +125,9 @@ export default async function GamePage({
         <p className="mb-5 max-w-3xl text-gray-600">{content.intro}</p>
       )}
 
-      {isNative && game.native ? (
+      {isComingSoon ? (
+        <ComingSoonGame game={game} />
+      ) : isNative && game.native ? (
         <NativeGameMount native={game.native} ruleset={game.ruleset} slug={game.slug} />
       ) : (
         <IframeSection game={game} />
