@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 
 import {
   buildWall,
@@ -208,7 +208,7 @@ describe('engine', () => {
 
   it('offers ron and scores with the winning tile included', () => {
     // Seat 0 holds four concealed triplets + a pair, waiting on z4/z5. Ron on
-    // z4 completes four concealed triplets (a limit hand) — the engine must
+    // z4 completes four concealed triplets (a limit hand) 鈥?the engine must
     // score with the 14-tile hand, not the pre-ron 13-tile one.
     const state = createGame({ seed: 1 });
     state.players[0].hand = hand('m1 m1 m1 p2 p2 p2 s3 s3 s3 z4 z4 z5 z5');
@@ -229,7 +229,7 @@ describe('engine', () => {
     const resolved = submitClaim(after, 0, ron!);
     expect(resolved.result?.kind).toBe('win');
     expect(resolved.result?.winner).toBe(0);
-    expect(resolved.result?.score?.total).toBe(13);
+    expect(resolved.result?.score?.total).toBe(10); // Hong Kong table caps at 10 Fan
   });
 
   it('gates a quad seven-pairs win by ruleset', () => {
@@ -357,7 +357,7 @@ describe('ai', () => {
   });
 
   it('plays a full hand to completion without throwing', () => {
-    // Drives the whole loop — including claim windows — so the turn flow after
+    // Drives the whole loop 鈥?including claim windows 鈥?so the turn flow after
     // a chi / pon is exercised rather than skipped past.
     let state = createGame({ seed: 2026 });
     let guard = 0;
@@ -397,3 +397,4 @@ describe('ai', () => {
     expect(state.phase).toBe('over');
   });
 });
+

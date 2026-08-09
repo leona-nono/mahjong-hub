@@ -56,17 +56,17 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   allTriplets: { base: 3, 'chinese-official': 6, riichi: 2 },
   halfFlush: { base: 3, 'chinese-official': 6, riichi: 2 },
   sevenPairs: { base: 4, 'chinese-official': 24, riichi: 2 },
-  littleThreeDragons: { base: 4, 'chinese-official': 6, riichi: 2 },
+  littleThreeDragons: { base: 5, 'chinese-official': 6, riichi: 2 },
   fullFlush: { base: 7, 'chinese-official': 24, riichi: 6 },
   allTerminalsHonours: { base: 10, 'chinese-official': 32, riichi: 13 },
-  allHonours: { base: 13, 'chinese-official': 64, riichi: 13 },
-  bigThreeDragons: { base: 13, 'chinese-official': 88, riichi: 13 },
-  fourConcealedTriplets: { base: 13, 'chinese-official': 64, riichi: 13 },
-  thirteenOrphans: { base: 13, 'chinese-official': 88, riichi: 13 }
+  allHonours: { base: 10, 'chinese-official': 64, riichi: 13 },
+  bigThreeDragons: { base: 8, 'chinese-official': 88, riichi: 13 },
+  fourConcealedTriplets: { base: 10, 'chinese-official': 64, riichi: 13 },
+  thirteenOrphans: { base: 10, 'chinese-official': 88, riichi: 13 }
 };
 
 const LIMIT: Record<Ruleset, number> = {
-  hongkong: 13,
+  hongkong: 10,
   riichi: 13,
   'chinese-official': 88
 };

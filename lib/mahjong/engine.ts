@@ -169,7 +169,7 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     melds: [],
     discards: [],
     seatWind: WINDS[seat],
-    score: 0,
+    score: 78000,
     isBot: seat !== humanSeat,
     declaredReady: false
   }));
@@ -525,7 +525,16 @@ function finishWithWin(
   const score = scoreHand({ state, seat, winningTile, selfDrawn });
   state.phase = 'over';
   state.result = { kind: 'win', winner: seat, loser, score };
-  state.players[seat].score += score.total;
+  if (selfDrawn) {
+    for (const payer of SEATS) {
+      if (payer === seat) continue;
+      state.players[payer].score -= score.total;
+      state.players[seat].score += score.total;
+    }
+  } else if (loser !== undefined) {
+    state.players[loser].score -= score.total;
+    state.players[seat].score += score.total;
+  }
   state.log.push(
     `Seat ${seat} wins ${selfDrawn ? 'by self-draw' : 'on a discard'} for ${score.total}.`
   );
