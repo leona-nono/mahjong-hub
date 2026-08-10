@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import { getFeaturedGames, getGames, getNativeGames, getLocalizedGames } from '@/data/games';
 import GameCard from '@/components/GameCard';
+import DailyCheckIn from '@/components/DailyCheckIn';
 import { Link } from '@/i18n/navigation';
 
 export default async function HomePage({
@@ -49,6 +50,9 @@ export default async function HomePage({
           {t('playButton')}
         </Link>
       </section>
+
+      {/* Daily check-in */}
+      <DailyCheckIn />
 
       {/* Our own games — the differentiator, so they go above the fold. */}
       <section className="mt-12">

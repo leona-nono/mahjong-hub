@@ -5,7 +5,6 @@ import { useEffect, type ReactNode } from 'react';
 import { clearSessionUser, initAuth, syncSessionUser } from '@/lib/auth';
 import { initPoints } from '@/lib/points';
 import LoginModal from '@/components/LoginModal';
-import DailyBonus from '@/components/DailyBonus';
 
 export interface EnabledAuthProviders {
   google: boolean;
@@ -51,7 +50,6 @@ function Inner({
     <>
       <AuthSessionBridge />
       {children}
-      <DailyBonus />
       <LoginModal enabledProviders={enabledProviders} />
     </>
   );

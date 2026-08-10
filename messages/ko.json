@@ -122,5 +122,14 @@
     "shuffle": "섞기",
     "restart": "다시 시작",
     "cleared": "모두 제거! {n}점."
+  },
+  "daily": {
+    "title": "일일 보너스",
+    "subtitle": "매일 출석하고 포인트를 받으세요.",
+    "reward": "오늘 +{n}포인트",
+    "claim": "출석",
+    "claimed": "오늘 출석 완료",
+    "yourPoints": "내 포인트: {n}",
+    "guestNote": "포인트는 지금은 이 기기에 저장됩니다."
   }
 }

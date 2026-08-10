@@ -122,5 +122,14 @@
     "shuffle": "Shuffle",
     "restart": "Restart",
     "cleared": "Board cleared! {n} points."
+  },
+  "daily": {
+    "title": "Daily Bonus",
+    "subtitle": "Check in every day to earn points.",
+    "reward": "+{n} points today",
+    "claim": "Check in",
+    "claimed": "Checked in today",
+    "yourPoints": "Your points: {n}",
+    "guestNote": "Points are saved on this device for now."
   }
 }

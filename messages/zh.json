@@ -122,5 +122,14 @@
     "shuffle": "重排",
     "restart": "重新开始",
     "cleared": "全部消除！{n} 分。"
+  },
+  "daily": {
+    "title": "每日签到",
+    "subtitle": "每天签到赚取积分。",
+    "reward": "今日 +{n} 积分",
+    "claim": "签到",
+    "claimed": "今日已签到",
+    "yourPoints": "你的积分：{n}",
+    "guestNote": "积分目前保存在本设备上。"
   }
 }
