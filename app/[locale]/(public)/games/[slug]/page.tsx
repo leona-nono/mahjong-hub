@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { getGame, getRelatedGames, getGames } from '@/data/games';
+import { getLocalizedGame, getRelatedGames, getGames, getLocalizedGames } from '@/data/games';
 import IframeSection from '@/components/IframeSection';
 import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
@@ -24,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const game = getGame(slug);
+  const game = getLocalizedGame(slug, locale);
   if (!game) return {};
 
   const isNative = game.gameType === 'native';
@@ -62,11 +62,11 @@ export default async function GamePage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const game = getGame(slug);
+  const game = getLocalizedGame(slug, locale);
   if (!game) notFound();
 
   const t = await getTranslations('game');
-  const related = getRelatedGames(slug, 4);
+  const related = getLocalizedGames(getRelatedGames(slug, 4), locale);
   const isNative = game.gameType === 'native';
   const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
@@ -183,7 +183,7 @@ export default async function GamePage({
         <h2 className="mb-4 text-xl font-bold text-gray-800">{t('tryAnother')}</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {related.map((g) => (
-            <GameCard key={g.slug} game={g} />
+            <GameCard key={g.slug} game={g} locale={locale} />
           ))}
         </div>
       </section>

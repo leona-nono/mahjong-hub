@@ -1,9 +1,8 @@
-import { getTranslations } from 'next-intl/server';
-import { setRequestLocale } from 'next-intl/server';
-import { getGames } from '@/data/games';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getGamesByNavGroup } from '@/data/games';
 import GameCard from '@/components/GameCard';
 
-export default async function GamesPage({
+export default async function SolitaireGamesPage({
   params
 }: {
   params: Promise<{ locale: string }>;
@@ -11,17 +10,17 @@ export default async function GamesPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations('collection');
-  const games = getGames();
+  const t = await getTranslations('nav');
+  const games = getGamesByNavGroup('solitaire');
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <section className="rounded-3xl rainbow-card px-6 py-10 text-center">
         <h1 className="text-3xl font-black rainbow-text sm:text-4xl">
-          {t('title')}
+          {t('solitaire')}
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-gray-600">
-          {t('subtitle')}
+          {t('solitaireSubtitle')}
         </p>
       </section>
 

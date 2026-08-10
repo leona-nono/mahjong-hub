@@ -6,7 +6,22 @@
   "nav": {
     "home": "홈",
     "games": "게임",
-    "about": "소개"
+    "about": "소개",
+    "classic": "클래식 마작",
+    "classicSubtitle": "진짜 4인 마작——중국, 일본, 미국, 대만, 쓰촨 룰.",
+    "solitaire": "마작 솔리테어",
+    "solitaireSubtitle": "캐주얼 타일 맞추기·소거 게임으로 가볍게 즐기세요.",
+    "beginners": "마작 입문",
+    "beginnersSubtitle": "마작을 처음부터 배워요——쉬운 규칙, 전략, 가이드.",
+    "beginnersComingSoon": "입문 가이드가 곧 올라옵니다.",
+    "set": "마작 세트",
+    "setSubtitle": "추천 마작 세트와 액세서리.",
+    "setComingSoon": "추천 상품이 곧 올라옵니다.",
+    "regionChina": "중국 마작",
+    "regionJapan": "일본 마작",
+    "regionAmerica": "미국 마작",
+    "regionTaiwan": "대만 마작",
+    "regionSichuan": "쓰촨 마작"
   },
   "home": {
     "heroTitle": "마작과 힐링 타일 게임을 즐기세요",
@@ -26,7 +41,8 @@
     "about": "이 게임 정보",
     "howToPlay": "게임 방법",
     "tips": "전략 팁",
-    "faq": "자주 묻는 질문"
+    "faq": "자주 묻는 질문",
+    "comingSoon": "곧 출시"
   },
   "collection": {
     "title": "마작 제거 게임 컬렉션",

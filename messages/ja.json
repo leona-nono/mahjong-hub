@@ -6,7 +6,22 @@
   "nav": {
     "home": "ホーム",
     "games": "ゲーム",
-    "about": "について"
+    "about": "について",
+    "classic": "クラシック麻雀",
+    "classicSubtitle": "本格四人麻雀——中国、日本、アメリカ、台湾、四川のルール。",
+    "solitaire": "麻雀ソリティア",
+    "solitaireSubtitle": "カジュアルな牌合わせ・消しゲーで、気軽にリラックス。",
+    "beginners": "麻雀入門",
+    "beginnersSubtitle": "ゼロから学ぶ麻雀——わかりやすいルール・戦略・ガイド。",
+    "beginnersComingSoon": "入門ガイドは準備中です。",
+    "set": "麻雀セット",
+    "setSubtitle": "おすすめの麻雀セットとアクセサリー。",
+    "setComingSoon": "おすすめ商品は準備中です。",
+    "regionChina": "中国麻雀",
+    "regionJapan": "日本麻雀",
+    "regionAmerica": "アメリカ麻雀",
+    "regionTaiwan": "台湾麻雀",
+    "regionSichuan": "四川麻雀"
   },
   "home": {
     "heroTitle": "麻雀と癒やし系消除ゲームを遊ぼう",
@@ -26,7 +41,8 @@
     "about": "このゲームについて",
     "howToPlay": "遊び方",
     "tips": "戦術のヒント",
-    "faq": "よくある質問"
+    "faq": "よくある質問",
+    "comingSoon": "近日公開"
   },
   "collection": {
     "title": "麻雀消除ゲームコレクション",

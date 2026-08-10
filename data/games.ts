@@ -1,3 +1,5 @@
+import { GAME_I18N, type LocaleCode } from './games.i18n';
+
 export type GameCategory =
   | 'mahjong'
   | 'connect'
@@ -14,6 +16,17 @@ export type GameType = 'iframe' | 'native' | 'coming-soon';
  * module — which every page imports — stays free of engine imports.
  */
 export type NativeRuleset = 'hongkong' | 'riichi' | 'chinese-official';
+
+/** Top-level navigation group (4 一级目录). */
+export type NavGroup = 'classic' | 'solitaire' | 'beginners' | 'set';
+
+/** Regional ruleset for mahjong classic games (中国/日本/美国/台湾/四川). */
+export type MahjongRegion =
+  | 'china'
+  | 'japan'
+  | 'america'
+  | 'taiwan'
+  | 'sichuan';
 
 export interface GameFaq {
   question: string;
@@ -54,6 +67,10 @@ export interface GameConfig {
   featured?: boolean;
   /** Indexable long-form copy. Native games only — iframe pages stay noindex. */
   content?: GameContent;
+  /** Top-level nav group this game belongs to. */
+  navGroup?: NavGroup;
+  /** Regional ruleset for mahjong classic games. */
+  region?: MahjongRegion;
 }
 
 /**
@@ -75,6 +92,8 @@ export const games: GameConfig[] = [
     gameType: 'native',
     native: 'mahjong-table',
     ruleset: 'hongkong',
+    navGroup: 'classic',
+    region: 'china',
     players: 4,
     featured: true,
     content: {
@@ -127,6 +146,8 @@ export const games: GameConfig[] = [
     gameType: 'native',
     native: 'mahjong-table',
     ruleset: 'riichi',
+    navGroup: 'classic',
+    region: 'japan',
     players: 4,
     featured: true,
     content: {
@@ -168,6 +189,8 @@ export const games: GameConfig[] = [
     gameType: 'native',
     native: 'mahjong-table',
     ruleset: 'chinese-official',
+    navGroup: 'classic',
+    region: 'china',
     players: 4,
     content: {
       intro:
@@ -197,6 +220,8 @@ export const games: GameConfig[] = [
       ]
     }
   },
+
+  // --------------------- coming soon (classic rulesets, not launched yet) --
   {
     slug: 'sichuan-mahjong',
     pageName: 'sichuan-mahjong',
@@ -204,6 +229,8 @@ export const games: GameConfig[] = [
     description: 'Sichuan Blood Battle Mahjong with Exchange Three, a forbidden suit, and continued play after the first win.',
     category: 'four-player',
     gameType: 'coming-soon',
+    navGroup: 'classic',
+    region: 'sichuan',
     players: 4,
     featured: true
   },
@@ -214,6 +241,8 @@ export const games: GameConfig[] = [
     description: 'Taiwanese 16-tile Mahjong with Flower replacement and Tai-based scoring.',
     category: 'four-player',
     gameType: 'coming-soon',
+    navGroup: 'classic',
+    region: 'taiwan',
     players: 4,
     featured: true
   },
@@ -224,6 +253,8 @@ export const games: GameConfig[] = [
     description: 'American Mahjong with Charleston, Jokers, Flowers, and card-based winning patterns.',
     category: 'four-player',
     gameType: 'coming-soon',
+    navGroup: 'classic',
+    region: 'america',
     players: 4,
     featured: true
   },
@@ -234,6 +265,7 @@ export const games: GameConfig[] = [
     description:
       'Link matching tile pairs with a path that turns at most twice. Three board sizes, hints, and no timer on relaxed mode.',
     category: 'connect',
+    navGroup: 'solitaire',
     gameType: 'native',
     native: 'mahjong-connect',
     players: 1,
@@ -274,6 +306,7 @@ export const games: GameConfig[] = [
     description:
       'The classic layered tile-matching puzzle. Turtle and pyramid layouts, guaranteed-solvable deals, hints and undo.',
     category: 'solitaire',
+    navGroup: 'solitaire',
     gameType: 'native',
     native: 'mahjong-solitaire',
     players: 1,
@@ -329,6 +362,7 @@ export const games: GameConfig[] = [
     description:
       'Match pairs of free mahjong tiles connected by a path. A relaxing connect-style elimination game.',
     category: 'connect',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl: 'https://1games.io/embed/mahjong-connect'
   },
@@ -339,6 +373,7 @@ export const games: GameConfig[] = [
     description:
       'The timeless mahjong solitaire. Clear the board by matching open tile pairs.',
     category: 'mahjong',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://mahjongclassic.h5games.usercontent.goog/v/390ce075-68ea-41ab-b192-b120b5647b61/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks',
@@ -351,6 +386,7 @@ export const games: GameConfig[] = [
     description:
       'A beautiful solitaire layout of mahjong tiles. Match and clear the tower at your own pace.',
     category: 'solitaire',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://4erks8385j9eo.h5games.usercontent.goog/v/1ff4p4m8ilme8/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks',
@@ -363,6 +399,7 @@ export const games: GameConfig[] = [
     description:
       'A three-dimensional take on mahjong matching with depth and a calm rainbow palette.',
     category: 'mahjong',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://mahjong3d.h5games.usercontent.goog/v/eba0837e-4855-4bb2-b762-5dd6d8982cac/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks'
@@ -374,6 +411,7 @@ export const games: GameConfig[] = [
     description:
       'The classic Onet link game. Connect identical tiles with a line of at most two turns.',
     category: 'connect',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://onetconnectclassic.h5games.usercontent.goog/v/3548fcd4-da1a-47bd-ac18-01488239c660/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks'
@@ -385,6 +423,7 @@ export const games: GameConfig[] = [
     description:
       'A cute bee-themed connect game. Link the little tiles and clear the honeycomb board.',
     category: 'connect',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://beeconnect.h5games.usercontent.goog/v/06c7e297-3e6d-4512-9fb2-e491ae2b2fb9/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks'
@@ -396,6 +435,7 @@ export const games: GameConfig[] = [
     description:
       'A tropical twist on mahjong matching with a sunny, laid-back vibe.',
     category: 'mahjong',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://02ef7fb7guapg.h5games.usercontent.goog/v/13knu9k9rm8go/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks'
@@ -407,6 +447,7 @@ export const games: GameConfig[] = [
     description:
       'A compact 8x8 tile-match puzzle. Connect same tiles and chase the high score.',
     category: 'tile-match',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://75njrrvim9kq0.h5games.usercontent.goog/v/1v57mtiv2ele0/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks'
@@ -418,6 +459,7 @@ export const games: GameConfig[] = [
     description:
       'A zen tile-matching puzzle. Find and connect matching tiles in a soothing layout.',
     category: 'tile-match',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://5en3tugq69tdo.h5games.usercontent.goog/v/4pu6to0p0cgrg/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks'
@@ -429,6 +471,7 @@ export const games: GameConfig[] = [
     description:
       'A journey through tile-matching levels. Plan your connections and clear each board.',
     category: 'tile-match',
+    navGroup: 'solitaire',
     gameType: 'iframe',
     gameIframeUrl:
       'https://0i1jh8boqif48.h5games.usercontent.goog/v/1643ot8on0v9g/?origin=https%3A%2F%2Fgamesnacks.com&gameCenterId=gamesnacks'
@@ -443,6 +486,46 @@ export function getGame(slug: string): GameConfig | undefined {
   return games.find((g) => g.slug === slug);
 }
 
+/**
+ * Return a game with locale-aware title / description / content merged in.
+ * Falls back to the English base for any missing key, so partial translations
+ * are safe. `locale === 'en'` returns the raw config unchanged.
+ */
+export function getLocalizedGame(
+  slug: string,
+  locale: string
+): GameConfig | undefined {
+  const game = getGame(slug);
+  if (!game || locale === 'en') return game;
+  const i18n = GAME_I18N[slug];
+  if (!i18n) return game;
+
+  const localeKey = locale as LocaleCode;
+  const title = i18n.title?.[localeKey] ?? game.title;
+  const description = i18n.description?.[localeKey] ?? game.description;
+
+  const ci = i18n.content?.[localeKey];
+  const content: GameContent | undefined =
+    ci && game.content
+      ? {
+          intro: ci.intro ?? game.content.intro,
+          howToPlay: ci.howToPlay ?? game.content.howToPlay,
+          tips: ci.tips ?? game.content.tips,
+          faq: ci.faq ?? game.content.faq
+        }
+      : game.content;
+
+  return { ...game, title, description, content };
+}
+
+/** Localize a whole list of games (for grids / listings). */
+export function getLocalizedGames(
+  list: GameConfig[],
+  locale: string
+): GameConfig[] {
+  return list.map((g) => getLocalizedGame(g.slug, locale) ?? g);
+}
+
 export function getFeaturedGames(): GameConfig[] {
   return games.filter((g) => g.featured);
 }
@@ -455,6 +538,48 @@ export function getNativeGames(): GameConfig[] {
 export function getGamesByCategory(category: GameCategory): GameConfig[] {
   return games.filter((g) => g.category === category);
 }
+
+/** Games in one top-level nav group, ordered by sortOrder then slug. */
+export function getGamesByNavGroup(navGroup: NavGroup): GameConfig[] {
+  return games.filter(
+    (g) => g.navGroup === navGroup && g.gameType !== 'coming-soon'
+  );
+}
+
+/** All classic games (4-player real mahjong), including coming-soon rulesets. */
+export function getClassicGames(): GameConfig[] {
+  return games.filter((g) => g.navGroup === 'classic');
+}
+
+/** Classic games for one regional ruleset (e.g. 'china' → hongkong + MCR). */
+export function getClassicByRegion(region: MahjongRegion): GameConfig[] {
+  return games.filter((g) => g.navGroup === 'classic' && g.region === region);
+}
+
+/**
+ * Top-level nav definition — 4 一级目录 and their second-level entries.
+ * `beginners` is blog/content pages; `set` is Amazon-affiliate embeds (no game
+ * entries in data, handled by dedicated pages).
+ */
+export interface NavItem {
+  /** Locale-independent route segment, e.g. 'classic'. */
+  segment: NavGroup;
+  /** i18n key under `nav` namespace. */
+  labelKey: string;
+  /** Second-level entries (region slugs for classic, else omitted). */
+  children?: Array<{ labelKey: string; href: string; comingSoon?: boolean }>;
+}
+
+export const CLASSIC_REGIONS: Array<{
+  region: MahjongRegion;
+  labelKey: string;
+}> = [
+  { region: 'china', labelKey: 'regionChina' },
+  { region: 'japan', labelKey: 'regionJapan' },
+  { region: 'america', labelKey: 'regionAmerica' },
+  { region: 'taiwan', labelKey: 'regionTaiwan' },
+  { region: 'sichuan', labelKey: 'regionSichuan' }
+];
 
 /** Related games, preferring the same category before falling back to the rest. */
 export function getRelatedGames(slug: string, limit = 4): GameConfig[] {

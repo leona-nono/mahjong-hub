@@ -6,7 +6,22 @@
   "nav": {
     "home": "首頁",
     "games": "遊戲",
-    "about": "關於"
+    "about": "關於",
+    "classic": "經典麻將",
+    "classicSubtitle": "玩真正的四人麻將——中國、日本、美國、台灣與四川玩法。",
+    "solitaire": "麻將消除",
+    "solitaireSubtitle": "休閒配對與消除小遊戲，輕鬆放鬆片刻。",
+    "beginners": "麻將入門",
+    "beginnersSubtitle": "從零開始學麻將——淺顯易懂的規則、策略與教學。",
+    "beginnersComingSoon": "入門教學即將上線。",
+    "set": "麻將套裝",
+    "setSubtitle": "精選麻將套裝與配件推薦。",
+    "setComingSoon": "精選商品即將上線。",
+    "regionChina": "中國麻將",
+    "regionJapan": "日本麻將",
+    "regionAmerica": "美國麻將",
+    "regionTaiwan": "台灣麻將",
+    "regionSichuan": "四川麻將"
   },
   "home": {
     "heroTitle": "玩麻將，玩轉治癒系消除遊戲",
@@ -26,7 +41,8 @@
     "about": "關於本遊戲",
     "howToPlay": "玩法說明",
     "tips": "策略要點",
-    "faq": "常見問題"
+    "faq": "常見問題",
+    "comingSoon": "敬請期待"
   },
   "collection": {
     "title": "麻將消除遊戲合集",

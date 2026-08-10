@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
-import { getFeaturedGames, getGames, getNativeGames } from '@/data/games';
+import { getFeaturedGames, getGames, getNativeGames, getLocalizedGames } from '@/data/games';
 import GameCard from '@/components/GameCard';
 import { Link } from '@/i18n/navigation';
 
@@ -14,9 +14,9 @@ export default async function HomePage({
 
   const t = await getTranslations('home');
   const ts = await getTranslations('site');
-  const featured = getFeaturedGames();
-  const native = getNativeGames();
-  const all = getGames();
+  const featured = getLocalizedGames(getFeaturedGames(), locale);
+  const native = getLocalizedGames(getNativeGames(), locale);
+  const all = getLocalizedGames(getGames(), locale);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -58,7 +58,7 @@ export default async function HomePage({
         <p className="mb-4 text-sm text-gray-500">{t('originalSubtitle')}</p>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {native.map((g) => (
-            <GameCard key={g.slug} game={g} />
+            <GameCard key={g.slug} game={g} locale={locale} />
           ))}
         </div>
       </section>
@@ -70,7 +70,7 @@ export default async function HomePage({
         </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           {featured.map((g) => (
-            <GameCard key={g.slug} game={g} />
+            <GameCard key={g.slug} game={g} locale={locale} />
           ))}
         </div>
       </section>
@@ -82,7 +82,7 @@ export default async function HomePage({
         </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {all.map((g) => (
-            <GameCard key={g.slug} game={g} />
+            <GameCard key={g.slug} game={g} locale={locale} />
           ))}
         </div>
       </section>

@@ -6,7 +6,22 @@
   "nav": {
     "home": "Home",
     "games": "Games",
-    "about": "About"
+    "about": "About",
+    "classic": "Mahjong Classic",
+    "classicSubtitle": "Play real four-player mahjong — Chinese, Japanese, American, Taiwanese and Sichuan rulesets.",
+    "solitaire": "Mahjong Solitaire",
+    "solitaireSubtitle": "Casual tile-matching and elimination games for a quick, relaxing break.",
+    "beginners": "Mahjong for Beginners",
+    "beginnersSubtitle": "Learn mahjong from scratch — rules, strategies and guides in plain language.",
+    "beginnersComingSoon": "Beginner guides are coming soon.",
+    "set": "Mahjong Set",
+    "setSubtitle": "Recommended mahjong sets and accessories from our curated picks.",
+    "setComingSoon": "Recommended products are coming soon.",
+    "regionChina": "Chinese Mahjong",
+    "regionJapan": "Japanese Mahjong",
+    "regionAmerica": "American Mahjong",
+    "regionTaiwan": "Taiwanese Mahjong",
+    "regionSichuan": "Sichuan Mahjong"
   },
   "home": {
     "heroTitle": "Play Mahjong & Relaxing Tile Games",
@@ -26,7 +41,8 @@
     "about": "About this game",
     "howToPlay": "How to play",
     "tips": "Strategy tips",
-    "faq": "Frequently asked questions"
+    "faq": "Frequently asked questions",
+    "comingSoon": "Coming Soon"
   },
   "collection": {
     "title": "Mahjong Elimination Collection",
