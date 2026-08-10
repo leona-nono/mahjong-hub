@@ -10,7 +10,16 @@
 
 - `data/games.ts` 是游戏目录的**唯一真相来源**，所有游戏（自研 native + 外嵌 iframe）都在这里配置。
 - `gameType: 'native'` 的自研游戏可被搜索引擎索引，并带 `content` 完整规则文案（intro / howToPlay / tips / faq）；`gameType: 'iframe'` 的外嵌页保持 noindex。
+- `gameType: 'coming-soon'` 表示尚未上线的 ruleset（美国/台湾/四川麻将），由 `components/ComingSoonGame.tsx` 渲染可索引介绍页。
 - `app/sitemap.ts` 只收录 `gameType === 'native'` 的游戏，iframe 游戏不进 sitemap。
+
+### 导航分组（4 一级目录）
+
+- 每个游戏必须带 `navGroup`：`'classic'`（4 人真麻将）/ `'solitaire'`（休闲消除）/ `'beginners'`（blog，无游戏条目）/ `'set'`（亚马逊联盟，无游戏条目）。
+- `classic` 组的游戏还要带 `region`：`china` / `japan` / `america` / `taiwan` / `sichuan`（五国麻将）。
+- 分组路由：`app/[locale]/(public)/games/{classic,solitaire,beginners,set}/page.tsx`（静态段优先于 `[slug]`）。
+- `CLASSIC_REGIONS` / `getClassicByRegion()` / `getGamesByNavGroup()` 是分组取数的唯一入口，改分组别绕过它们。
+- 新增一个游戏若属于 classic 组，必须同时：① 打 `navGroup: 'classic'` ② 打 `region` ③ 若未上线用 `gameType: 'coming-soon'`。
 
 ## lib/mahjong/ 引擎边界
 
@@ -36,7 +45,13 @@
 
 ## 多语言
 
-新增文案必须同步 `messages/` 下**五个**语言文件：`en.json`、`ja.json`、`ko.json`、`zh-TW.json`、`zh.json`。只加一种语言会导致 next-intl 缺 key。
+**UI 文案**（按钮/导航/标签）：新增文案必须同步 `messages/` 下**五个**语言文件：`en.json`、`ja.json`、`ko.json`、`zh-TW.json`、`zh.json`。只加一种语言会导致 next-intl 缺 key。
+
+**游戏内容文案**（标题/描述/intro/教程/提示/FAQ）：
+- 英文基准在 `data/games.ts`（`title`/`description`/`content`）。
+- 非英文覆盖在 `data/games.i18n.ts` 的 `GAME_I18N[slug]`，按 locale 提供 `title`/`description`/`content`（content 可只覆盖部分字段，如只给 `intro`）。
+- 取数一律走 `getLocalizedGame(slug, locale)` / `getLocalizedGames(list, locale)`——**逐词回退英文**：某语言缺某个字段就显示英文，不会崩。
+- 规则：**新增或修改游戏内容时，务必同步 `data/games.i18n.ts` 里该游戏的 4 个非英文语言（zh/zh-TW/ja/ko）**；`GameCard` 渲染卡片时要传 `locale` prop，否则卡片显示英文。
 
 ## 合规红线
 
