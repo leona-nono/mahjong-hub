@@ -1,7 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import { getAuthState, openLogin } from './auth';
+import { getAuthState, openLogin, hasGoogle, hasFacebook, hasX } from './auth';
 
 interface AwardResult {
   granted: boolean;
@@ -55,10 +55,13 @@ export function initPoints() {
 }
 
 export function awardPoints(amount: number, reason?: string): AwardResult {
-  // Core rule: earning points is gated behind login.
-  // Guests keep browsing AND starting games freely; they are only prompted
-  // to sign in at the moment points would be awarded.
-  if (!getAuthState().user) {
+  // Earning points is gated behind login — BUT only once a real login is
+  // actually available. Until an OAuth provider is configured (P1), there is
+  // nothing to log into, so opening the login modal is a dead end and guests
+  // lose their points. Instead we grant points on this device and let the
+  // server-side auth take over the gate later.
+  const loginAvailable = hasGoogle || hasFacebook || hasX;
+  if (!getAuthState().user && loginAvailable) {
     openLogin();
     return { granted: false, needLogin: true };
   }

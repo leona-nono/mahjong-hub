@@ -65,7 +65,7 @@
     "logout": "ログアウト",
     "redirecting": "リダイレクト中…",
     "loginFailed": "ログインに失敗しました。もう一度お試しください。",
-    "providerUnavailable": "Google と Facebook のログインはまだ設定されていません。"
+    "providerUnavailable": "ログイン機能は近日提供予定です。ポイントは当面この端末に保存されます。"
   },
   "points": {
     "youHave": "ポイント {n} 件"

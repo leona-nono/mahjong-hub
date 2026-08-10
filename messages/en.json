@@ -65,7 +65,7 @@
     "logout": "Sign out",
     "redirecting": "Redirecting…",
     "loginFailed": "Login failed. Please try again.",
-    "providerUnavailable": "Google and Facebook login are not configured yet."
+    "providerUnavailable": "Sign in is coming soon. Your points stay saved on this device for now."
   },
   "points": {
     "youHave": "You have {n} pts"

@@ -65,7 +65,7 @@
     "logout": "退出登录",
     "redirecting": "正在跳转…",
     "loginFailed": "登录失败，请重试。",
-    "providerUnavailable": "Google 和 Facebook 登录尚未配置。"
+    "providerUnavailable": "登录功能即将上线。积分目前保存在本设备上。"
   },
   "points": {
     "youHave": "你有 {n} 积分"
