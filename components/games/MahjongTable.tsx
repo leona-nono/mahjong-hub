@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import TileFace, { TileBack } from './TileFace';
+import HongKongTable from './HongKongTable';
 import {
   CLAIM_TIMEOUT_MS,
   RULESETS,
@@ -14,6 +15,7 @@ import {
   declareTsumo,
   discard,
   drawTile,
+  evaluateSelfDraw,
   passUnansweredClaims,
   seatShanten,
   seatWaits,
@@ -162,8 +164,21 @@ export default function MahjongTable({
     return { shanten: value, waits };
   }, [state, human.hand.length, showHints]);
 
-  const canTsumo = myTurn && canDeclareTsumo(state, HUMAN);
+  const tsumoEvaluation = myTurn ? evaluateSelfDraw(state, HUMAN) : null;
+  const canTsumo = Boolean(tsumoEvaluation?.legal);
   const kanTiles = myTurn ? availableConcealedKans(state, HUMAN) : [];
+
+  // A legal self-draw is terminal: show the result automatically instead of
+  // leaving the player on a completed hand with no visible outcome.
+  useEffect(() => {
+    if (paused || !canTsumo) return undefined;
+    const timer = setTimeout(() => {
+      setState((current) =>
+        canDeclareTsumo(current, HUMAN) ? declareTsumo(current, HUMAN) : current
+      );
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [canTsumo, paused]);
 
   const handleDiscard = (tile: Tile) => {
     if (!myTurn) return;
@@ -173,6 +188,31 @@ export default function MahjongTable({
   const handleClaim = (option: ClaimOption) => {
     setState((current) => submitClaim(current, HUMAN, option));
   };
+
+  if (ruleset === 'hongkong') {
+    return (
+      <HongKongTable
+        state={state}
+        paused={paused}
+        difficulty={difficulty}
+        showHints={showHints}
+        myTurn={myTurn}
+        myClaims={myClaims}
+        hints={hints}
+        canTsumo={canTsumo}
+        tsumoEvaluation={tsumoEvaluation}
+        kanTiles={kanTiles}
+        onDifficulty={setDifficulty}
+        onToggleHints={() => setShowHints((value) => !value)}
+        onTogglePause={() => setPaused((value) => !value)}
+        onNewGame={() => newGame('hongkong')}
+        onDiscard={handleDiscard}
+        onClaim={handleClaim}
+        onTsumo={() => setState((current) => declareTsumo(current, HUMAN))}
+        onKan={(tile) => setState((current) => declareConcealedKan(current, HUMAN, tile))}
+      />
+    );
+  }
 
   return (
     <div className={traditional ? "relative min-h-[820px] overflow-hidden rounded-none border-[6px] border-[#073727] bg-[#07553f] p-2 text-white shadow-[0_24px_70px_rgba(2,44,34,.45)] sm:rounded-xl sm:p-4" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>

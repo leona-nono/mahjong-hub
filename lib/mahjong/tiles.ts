@@ -111,10 +111,12 @@ export const ORPHAN_TILES: Tile[] = [
  * Build a fresh 136-tile wall (no flowers/seasons — those are cosmetic in the
  * rulesets we ship and only add bookkeeping).
  */
-export function buildWall(): Tile[] {
+export function buildWall(excludedTiles: readonly Tile[] = []): Tile[] {
   const wall: Tile[] = [];
+  const excluded = new Set(excludedTiles);
   for (let i = 0; i < TILE_KINDS; i += 1) {
     const tile = tileFromIndex(i);
+    if (excluded.has(tile)) continue;
     for (let c = 0; c < COPIES_PER_TILE; c += 1) wall.push(tile);
   }
   return wall;

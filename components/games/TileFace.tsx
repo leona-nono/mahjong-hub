@@ -2,12 +2,14 @@
 
 import { tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
 
-export type TileSize = 'sm' | 'md' | 'lg';
+export type TileSize = 'sm' | 'md' | 'lg' | 'table' | 'xl';
 
 const SIZE_CLASS: Record<TileSize, string> = {
   sm: 'h-9 w-7 text-xs rounded-md',
   md: 'h-14 w-10 text-lg rounded-lg',
-  lg: 'h-[4.5rem] w-14 text-2xl rounded-xl'
+  lg: 'h-[4.5rem] w-14 text-2xl rounded-xl',
+  table: 'h-12 w-9 text-sm rounded-md',
+  xl: 'h-24 w-[4.25rem] text-3xl rounded-lg'
 };
 
 /** Each suit gets its own colour so the board reads at a glance on mobile. */
@@ -33,18 +35,19 @@ export interface TileFaceProps {
 }
 
 const TRADITIONAL_TILE_FILES: Record<Tile, string> = {
-  // The cutter contact sheet is ordered by suit: bamboo, characters, dots,
-  // winds/dragons, then flowers and blanks. Every face is a unique source file.
-  m1: '004.png', m2: '005.png', m3: '006.png', m4: '010.png', m5: '011.png', m6: '012.png', m7: '016.png', m8: '017.png', m9: '018.png',
-  p1: '019.png', p2: '020.png', p3: '021.png', p4: '025.png', p5: '026.png', p6: '027.png', p7: '032.png', p8: '033.png', p9: '034.png',
-  s1: '002.png', s2: '003.png', s3: '007.png', s4: '008.png', s5: '009.png', s6: '013.png', s7: '014.png', s8: '015.png', s9: '001.png',
-  z1: '022.png', z2: '023.png', z3: '024.png', z4: '039.png', z5: '042.png', z6: '041.png', z7: '040.png'
+  // Exact source order in majiangmeishuziyuan1: Characters, Dots,
+  // Bamboo, Winds, then Dragons. Flowers and Seasons are never mapped.
+  m1: '001.png', m2: '002.png', m3: '003.png', m4: '004.png', m5: '005.png', m6: '006.png', m7: '007.png', m8: '008.png', m9: '009.png',
+  p1: '010.png', p2: '011.png', p3: '012.png', p4: '013.png', p5: '014.png', p6: '015.png', p7: '016.png', p8: '017.png', p9: '018.png',
+  s1: '019.png', s2: '020.png', s3: '021.png', s4: '022.png', s5: '023.png', s6: '024.png', s7: '025.png', s8: '026.png', s9: '027.png',
+  z1: '028.png', z2: '029.png', z3: '030.png', z4: '031.png',
+  z5: '034.png', z6: '033.png', z7: '032.png'
 };
 
 function traditionalTileSrc(tile: Tile): string {
   const file = TRADITIONAL_TILE_FILES[tile];
   return file
-    ? '/assets/mahjong-hongkong/tiles/' + file
+    ? '/assets/mahjong-hongkong/tiles-display/' + file
     : '/assets/mahjong-chinese/source-5-crops/tile-42.png';
 }
 export default function TileFace({

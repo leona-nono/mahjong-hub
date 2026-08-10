@@ -70,6 +70,7 @@ export default async function GamePage({
   const isNative = game.gameType === 'native';
   const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
+  const isHongKong = game.ruleset === 'hongkong';
 
   const jsonLd: Record<string, unknown>[] = [];
   if (isNative) {
@@ -110,7 +111,7 @@ export default async function GamePage({
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <div className={`mx-auto px-4 py-8 ${isHongKong ? 'max-w-[1500px]' : 'max-w-5xl'}`}>
       {jsonLd.map((block, i) => (
         <script
           key={i}
@@ -119,9 +120,9 @@ export default async function GamePage({
         />
       ))}
 
-      <h1 className="mb-2 text-3xl font-black rainbow-text">{game.title}</h1>
+      <h1 className={isHongKong ? 'sr-only' : 'mb-2 text-3xl font-black rainbow-text'}>{game.title}</h1>
 
-      {isNative && content && (
+      {isNative && content && !isHongKong && (
         <p className="mb-5 max-w-3xl text-gray-600">{content.intro}</p>
       )}
 

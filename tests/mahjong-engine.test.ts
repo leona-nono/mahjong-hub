@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import {
   buildWall,
@@ -18,6 +18,7 @@ import {
 } from '@/lib/mahjong/shanten';
 import {
   canDeclareTsumo,
+  evaluateSelfDraw,
   CLAIM_TIMEOUT_MS,
   createGame,
   declareConcealedKan,
@@ -52,6 +53,17 @@ describe('tiles', () => {
   });
 });
 
+
+describe('Hong Kong product tile set', () => {
+  it('omits Flowers, Seasons and the White Dragon from every new wall', () => {
+    const state = createGame({ ruleset: 'hongkong', seed: 20260809 });
+    expect(state.wall).toHaveLength(132);
+    expect(state.wall).not.toContain('z5');
+    expect(state.wall.filter((tile) => tile === 'z6')).toHaveLength(4);
+    expect(state.wall.filter((tile) => tile === 'z7')).toHaveLength(4);
+    expect(RULESETS.hongkong.excludedTiles).toEqual(['z5']);
+  });
+});
 describe('shanten', () => {
   it('reports -1 for a completed standard hand', () => {
     const tiles = hand('m1 m2 m3 p4 p5 p6 s7 s8 s9 z1 z1 z1 m5 m5');
@@ -329,6 +341,38 @@ describe('engine', () => {
   });
 });
 
+
+describe('Hong Kong self-draw outcome', () => {
+  it('records the human winner and payments for a legal self-draw', () => {
+    const state = createGame({ ruleset: 'hongkong', seed: 7 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].hand = hand('m1 m2 m3 m2 m3 m4 m5 m6 m7 m7 m8 m9 m5 m5');
+    const evaluation = evaluateSelfDraw(state, 0);
+    expect(evaluation.complete).toBe(true);
+    expect(evaluation.legal).toBe(true);
+    const result = declareTsumo(state, 0);
+    expect(result.phase).toBe('over');
+    expect(result.result?.kind).toBe('win');
+    expect(result.result?.winner).toBe(0);
+    expect(result.result?.loser).toBeUndefined();
+    expect(result.result?.score?.total).toBeGreaterThanOrEqual(3);
+    expect(result.players[0].score).toBeGreaterThan(78000);
+    expect(result.players.slice(1).every((player) => player.score < 78000)).toBe(true);
+  });
+
+  it('reports a complete hand below the three-Fan minimum without declaring a win', () => {
+    const state = createGame({ ruleset: 'hongkong', seed: 8 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 p1 p2 p3 s4 s5 s6 z1 z1');
+    const evaluation = evaluateSelfDraw(state, 0);
+    expect(evaluation.complete).toBe(true);
+    expect(evaluation.legal).toBe(false);
+    expect(evaluation.score?.total).toBeLessThan(3);
+    expect(declareTsumo(state, 0)).toBe(state);
+  });
+});
 describe('ai', () => {
   it('always returns a legal move from the current hand', () => {
     let state = createGame({ seed: 99 });
