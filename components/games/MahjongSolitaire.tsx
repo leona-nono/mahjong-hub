@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import TileFace from './TileFace';
@@ -37,12 +37,22 @@ export default function MahjongSolitaire({
   const t = useTranslations('solitaire');
   const [layout, setLayout] = useState<SolitaireLayout>(defaultLayout);
   const [board, setBoard] = useState<Board>(() =>
-    createBoard({ layout: defaultLayout, seed: Math.floor(Math.random() * 2 ** 31) })
+    createBoard({ layout: defaultLayout, seed: 1 })
   );
   const [selected, setSelected] = useState<number | null>(null);
   const [hint, setHint] = useState<[number, number] | null>(null);
   const [score, setScore] = useState(0);
   const [status, setStatus] = useState<'playing' | 'won'>('playing');
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    setBoard(
+      createBoard({
+        layout: defaultLayout,
+        seed: Math.floor(Math.random() * 2 ** 31)
+      })
+    );
+  }, [defaultLayout]);
 
   const restart = (nextLayout: SolitaireLayout = layout) => {
     setBoard(
@@ -69,7 +79,7 @@ export default function MahjongSolitaire({
   }, [board.positions]);
 
   const handleTile = (index: number) => {
-    if (status !== 'playing') return;
+    if (status !== 'playing' || paused) return;
     if (!isExposed(board, index)) return;
 
     if (selected === null) {
@@ -107,7 +117,7 @@ export default function MahjongSolitaire({
   };
 
   const showHint = () => {
-    if (status !== 'playing') return;
+    if (status !== 'playing' || paused) return;
     const pair = findHint(board);
     if (pair) {
       setHint(pair);
@@ -119,6 +129,7 @@ export default function MahjongSolitaire({
     if (status === 'won') {
       setBoard((b) => undo(b));
       setStatus('playing');
+      setPaused(false);
       return;
     }
     setBoard((b) => undo(b));
@@ -127,9 +138,9 @@ export default function MahjongSolitaire({
   };
 
   return (
-    <div className="rounded-3xl rainbow-card p-3 sm:p-5">
+    <div className="rounded-3xl border border-slate-950/20 bg-[#13252d] p-3 text-slate-100 shadow-[0_24px_70px_rgba(15,23,42,.28)] sm:p-5">
       {/* Controls */}
-      <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
+      <div className="sticky top-2 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-700 bg-[#172f39]/95 p-2 text-sm shadow-md backdrop-blur">
         <select
           value={layout}
           onChange={(e) => {
@@ -137,31 +148,31 @@ export default function MahjongSolitaire({
             setLayout(next);
             restart(next);
           }}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium"
+          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100"
           aria-label={t('layoutLabel')}
         >
           <option value="turtle">{t('turtle')}</option>
           <option value="pyramid">{t('pyramid')}</option>
         </select>
 
-        <span className="rounded-full bg-white px-3 py-1.5 font-semibold text-gray-700">
+        <span className="rounded-full bg-[#213c47] px-3 py-1.5 font-semibold text-emerald-100">
           {t('score', { n: score })}
         </span>
-        <span className="rounded-full bg-white px-3 py-1.5 text-gray-500">
+        <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-slate-300">
           {t('left', { n: board.remaining })}
         </span>
 
         <button
           type="button"
           onClick={showHint}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-700 hover:bg-gray-50"
+          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-200 hover:bg-[#2c4b57]"
         >
           {t('hint')}
         </button>
         <button
           type="button"
           onClick={handleUndo}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-700 hover:bg-gray-50"
+          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-200 hover:bg-[#2c4b57]"
         >
           {t('undo')}
         </button>
@@ -172,14 +183,15 @@ export default function MahjongSolitaire({
             setSelected(null);
             setHint(null);
           }}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-700 hover:bg-gray-50"
+          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-200 hover:bg-[#2c4b57]"
         >
           {t('shuffle')}
         </button>
+        <button type="button" onClick={() => setPaused((value) => !value)} className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-700">{paused ? "Resume" : "Pause"}</button>
         <button
           type="button"
           onClick={() => restart()}
-          className="ml-auto rounded-full rainbow-bar px-4 py-1.5 font-bold text-white"
+          className="ml-auto rounded-full bg-emerald-600 px-4 py-1.5 font-bold text-white hover:bg-emerald-500"
         >
           {t('restart')}
         </button>
@@ -187,13 +199,13 @@ export default function MahjongSolitaire({
 
       {/* Win banner */}
       {status === 'won' && (
-        <div className="mb-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-bold text-emerald-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 text-center text-sm font-bold text-emerald-800">
           {t('cleared', { n: score })}
         </div>
       )}
 
       {/* Board */}
-      <div className="overflow-x-auto py-2">
+      <div className="overflow-x-auto rounded-2xl border border-slate-700 bg-[#1e3843] px-3 py-5 shadow-inner">
         <div
           className="relative mx-auto"
           style={{ width: geometry.width, height: geometry.height }}
@@ -233,7 +245,7 @@ export default function MahjongSolitaire({
                     : p.layer * 1000 + p.row * 100 + p.col
                 }}
               >
-                <TileFace tile={tile} size="md" muted={!exposed} />
+                <TileFace tile={tile} size="md" traditional />
               </button>
             );
           })}

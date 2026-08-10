@@ -37,6 +37,8 @@ export interface RulesetConfig {
   allowChi: boolean;
   /** Seven pairs / thirteen orphans recognised as winning shapes. */
   allowSpecialHands: boolean;
+  /** Tile kinds intentionally omitted from this ruleset's physical wall. */
+  excludedTiles: readonly Tile[];
 }
 
 export const RULESETS: Record<Ruleset, RulesetConfig> = {
@@ -45,21 +47,25 @@ export const RULESETS: Record<Ruleset, RulesetConfig> = {
     label: 'Hong Kong Old Style',
     minimumScore: 3,
     allowChi: true,
-    allowSpecialHands: true
+    allowSpecialHands: true,
+    // Product rule: no Flowers/Seasons and no White Dragon (white board).
+    excludedTiles: ['z5']
   },
   riichi: {
     id: 'riichi',
     label: 'Japanese Riichi',
     minimumScore: 1,
     allowChi: true,
-    allowSpecialHands: true
+    allowSpecialHands: true,
+    excludedTiles: []
   },
   'chinese-official': {
     id: 'chinese-official',
     label: 'Chinese Official (MCR)',
     minimumScore: 8,
     allowChi: true,
-    allowSpecialHands: true
+    allowSpecialHands: true,
+    excludedTiles: []
   }
 };
 
@@ -161,7 +167,7 @@ export function createGame(options: CreateGameOptions = {}): GameState {
   const seed = options.seed ?? Math.floor(Math.random() * 2 ** 31);
   const humanSeat = options.humanSeat ?? 0;
   const rng = createRng(seed);
-  const wall = shuffle(buildWall(), rng);
+  const wall = shuffle(buildWall(RULESETS[ruleset].excludedTiles), rng);
 
   const players: PlayerState[] = SEATS.map((seat) => ({
     seat,
@@ -169,7 +175,7 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     melds: [],
     discards: [],
     seatWind: WINDS[seat],
-    score: 0,
+    score: 78000,
     isBot: seat !== humanSeat,
     declaredReady: false
   }));
@@ -265,20 +271,35 @@ function drawReplacement(state: GameState, seat: Seat): void {
   state.players[seat].hand = sortTiles([...state.players[seat].hand, tile]);
 }
 
-/** Can this seat declare a self-drawn win right now? */
-export function canDeclareTsumo(state: GameState, seat: Seat): boolean {
+export interface SelfDrawEvaluation {
+  complete: boolean;
+  legal: boolean;
+  score: ScoreResult | null;
+  minimum: number;
+}
+
+/** Distinguish a complete shape from a legal win that clears the score floor. */
+export function evaluateSelfDraw(state: GameState, seat: Seat): SelfDrawEvaluation {
   const player = state.players[seat];
-  if (player.hand.length % 3 !== 2) return false;
-  if (!isWinningHand(handCounts(player), meldCount(player), state.ruleset)) return false;
+  const minimum = RULESETS[state.ruleset].minimumScore;
+  if (player.hand.length % 3 !== 2) {
+    return { complete: false, legal: false, score: null, minimum };
+  }
+  const complete = isWinningHand(handCounts(player), meldCount(player), state.ruleset);
+  if (!complete) return { complete: false, legal: false, score: null, minimum };
   const score = scoreHand({
     state,
     seat,
     winningTile: player.hand[player.hand.length - 1],
     selfDrawn: true
   });
-  return score.total >= RULESETS[state.ruleset].minimumScore;
+  return { complete: true, legal: score.total >= minimum, score, minimum };
 }
 
+/** Can this seat declare a self-drawn win right now? */
+export function canDeclareTsumo(state: GameState, seat: Seat): boolean {
+  return evaluateSelfDraw(state, seat).legal;
+}
 /** Concealed kans available on the current draw. */
 export function availableConcealedKans(state: GameState, seat: Seat): Tile[] {
   const player = state.players[seat];
@@ -484,6 +505,7 @@ export function maybeResolveClaims(state: GameState): GameState {
 
 /** Declare a self-drawn win for the seat currently holding 14 tiles. */
 export function declareTsumo(state: GameState, seat: Seat): GameState {
+  if (!evaluateSelfDraw(state, seat).legal) return state;
   const player = state.players[seat];
   const winningTile = player.hand[player.hand.length - 1];
   return finishWithWin(clone(state), seat, winningTile, true);
@@ -525,7 +547,16 @@ function finishWithWin(
   const score = scoreHand({ state, seat, winningTile, selfDrawn });
   state.phase = 'over';
   state.result = { kind: 'win', winner: seat, loser, score };
-  state.players[seat].score += score.total;
+  if (selfDrawn) {
+    for (const payer of SEATS) {
+      if (payer === seat) continue;
+      state.players[payer].score -= score.total;
+      state.players[seat].score += score.total;
+    }
+  } else if (loser !== undefined) {
+    state.players[loser].score -= score.total;
+    state.players[seat].score += score.total;
+  }
   state.log.push(
     `Seat ${seat} wins ${selfDrawn ? 'by self-draw' : 'on a discard'} for ${score.total}.`
   );

@@ -12,6 +12,7 @@ const ACCENT: Record<string, string> = {
 
 export default function GameCard({ game }: { game: GameConfig }) {
   const isNative = game.gameType === 'native';
+  const isComingSoon = game.gameType === 'coming-soon';
 
   return (
     <Link
@@ -23,9 +24,9 @@ export default function GameCard({ game }: { game: GameConfig }) {
           ACCENT[game.category] ?? 'rainbow-bar'
         }`}
       >
-        {isNative && (
+        {(isNative || isComingSoon) && (
           <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-700">
-            Original
+            {isComingSoon ? 'Coming soon' : 'Original'}
           </span>
         )}
         {game.players && game.players > 1 && (

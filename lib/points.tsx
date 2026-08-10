@@ -81,8 +81,10 @@ function snapshot() {
   return state;
 }
 
+const SERVER_POINTS_STATE: PointsState = { points: 0, recentAwards: [] };
+
 function serverSnapshot(): PointsState {
-  return { points: 0, recentAwards: [] };
+  return SERVER_POINTS_STATE;
 }
 
 export function usePoints() {

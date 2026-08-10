@@ -1,13 +1,15 @@
 'use client';
 
-import { tileFace, tileName, tileSuit, type Tile } from '@/lib/mahjong/tiles';
+import { tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
 
-export type TileSize = 'sm' | 'md' | 'lg';
+export type TileSize = 'sm' | 'md' | 'lg' | 'table' | 'xl';
 
 const SIZE_CLASS: Record<TileSize, string> = {
-  sm: 'h-8 w-6 text-[11px] rounded-md',
-  md: 'h-12 w-9 text-base rounded-lg',
-  lg: 'h-16 w-12 text-xl rounded-xl'
+  sm: 'h-9 w-7 text-xs rounded-md',
+  md: 'h-14 w-10 text-lg rounded-lg',
+  lg: 'h-[4.5rem] w-14 text-2xl rounded-xl',
+  table: 'h-12 w-9 text-sm rounded-md',
+  xl: 'h-24 w-[4.25rem] text-3xl rounded-lg'
 };
 
 /** Each suit gets its own colour so the board reads at a glance on mobile. */
@@ -28,29 +30,49 @@ export interface TileFaceProps {
   highlight?: boolean;
   /** Dims the tile, used for tiles already in the discard pool. */
   muted?: boolean;
+  /** Uses the supplied traditional Chinese tile photographs. */
+  traditional?: boolean;
 }
 
+const TRADITIONAL_TILE_FILES: Record<Tile, string> = {
+  // Exact source order in majiangmeishuziyuan1: Characters, Dots,
+  // Bamboo, Winds, then Dragons. Flowers and Seasons are never mapped.
+  m1: '001.png', m2: '002.png', m3: '003.png', m4: '004.png', m5: '005.png', m6: '006.png', m7: '007.png', m8: '008.png', m9: '009.png',
+  p1: '010.png', p2: '011.png', p3: '012.png', p4: '013.png', p5: '014.png', p6: '015.png', p7: '016.png', p8: '017.png', p9: '018.png',
+  s1: '019.png', s2: '020.png', s3: '021.png', s4: '022.png', s5: '023.png', s6: '024.png', s7: '025.png', s8: '026.png', s9: '027.png',
+  z1: '028.png', z2: '029.png', z3: '030.png', z4: '031.png',
+  z5: '034.png', z6: '033.png', z7: '032.png'
+};
+
+function traditionalTileSrc(tile: Tile): string {
+  const file = TRADITIONAL_TILE_FILES[tile];
+  return file
+    ? '/assets/mahjong-hongkong/tiles-display/' + file
+    : '/assets/mahjong-chinese/source-5-crops/tile-42.png';
+}
 export default function TileFace({
   tile,
   size = 'md',
   onClick,
   disabled,
   highlight,
-  muted
+  muted,
+  traditional = false
 }: TileFaceProps) {
   const suit = tileSuit(tile);
   const interactive = Boolean(onClick) && !disabled;
+  const face = traditional ? <img src={traditionalTileSrc(tile)} alt="" className="block h-full w-full object-contain" draggable={false} /> : tileFace(tile);
 
   const classes = [
-    'inline-flex select-none items-center justify-center border font-bold shadow-sm transition',
+    'inline-flex select-none items-center justify-center border-2 font-bold shadow-[0_3px_0_rgba(148,163,184,.35),0_7px_12px_rgba(15,23,42,.12)] transition duration-150',
     SIZE_CLASS[size],
     SUIT_CLASS[suit] ?? 'text-gray-700',
-    muted ? 'border-gray-200 bg-gray-50 opacity-70' : 'border-gray-200 bg-white',
-    highlight ? 'ring-2 ring-amber-300 -translate-y-1' : '',
+    muted ? 'border-slate-200 bg-slate-100 opacity-45 saturate-50' : 'border-slate-200 bg-gradient-to-b from-white to-slate-50',
+    highlight ? 'ring-2 ring-amber-400 -translate-y-2 shadow-[0_0_0_4px_rgba(251,191,36,.18)]' : '',
     interactive
-      ? 'cursor-pointer hover:-translate-y-1.5 hover:shadow-md active:translate-y-0'
+      ? 'cursor-pointer hover:-translate-y-2 hover:border-sky-300 hover:shadow-[0_10px_18px_rgba(14,165,233,.2)] active:translate-y-0'
       : '',
-    disabled ? 'opacity-50' : ''
+    disabled ? 'cursor-not-allowed opacity-40 saturate-50' : ''
   ]
     .filter(Boolean)
     .join(' ');
@@ -58,7 +80,7 @@ export default function TileFace({
   if (!interactive) {
     return (
       <span className={classes} role="img" aria-label={tileName(tile)}>
-        {tileFace(tile)}
+        {face}
       </span>
     );
   }
@@ -70,7 +92,7 @@ export default function TileFace({
       onClick={() => onClick?.(tile)}
       aria-label={tileName(tile)}
     >
-      {tileFace(tile)}
+      {face}
     </button>
   );
 }
@@ -79,7 +101,7 @@ export default function TileFace({
 export function TileBack({ size = 'md' }: { size?: TileSize }) {
   return (
     <span
-      className={`inline-block border border-emerald-300/60 bg-gradient-to-br from-emerald-400 to-teal-500 shadow-sm ${SIZE_CLASS[size]}`}
+      className={`inline-block border-2 border-emerald-200/70 bg-[linear-gradient(135deg,#34d399,#0f766e)] shadow-[inset_0_0_0_2px_rgba(255,255,255,.18),0_3px_6px_rgba(15,118,110,.28)] ${SIZE_CLASS[size]}`}
       aria-hidden="true"
     />
   );

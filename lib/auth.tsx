@@ -162,8 +162,14 @@ function snapshot() {
   return state;
 }
 
+const SERVER_AUTH_STATE: AuthState = {
+  user: null,
+  loginHistory: [],
+  loginModalOpen: false
+};
+
 function serverSnapshot(): AuthState {
-  return { user: null, loginHistory: [], loginModalOpen: false };
+  return SERVER_AUTH_STATE;
 }
 
 export function useAuth() {

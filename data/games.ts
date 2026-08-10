@@ -7,6 +7,7 @@ export type GameCategory =
 
 /** Which in-house component renders a native game. */
 export type NativeGame = 'mahjong-table' | 'mahjong-connect' | 'mahjong-solitaire';
+export type GameType = 'iframe' | 'native' | 'coming-soon';
 
 /**
  * Ruleset id mirrored from lib/mahjong/engine. Kept as a string literal so this
@@ -40,7 +41,7 @@ export interface GameConfig {
   /** English short description (default; localized via page copy). */
   description: string;
   category: GameCategory;
-  gameType: 'iframe' | 'native';
+  gameType: GameType;
   /** External embed URL (verified embeddable) — iframe games only. */
   gameIframeUrl?: string;
   /** In-house component to mount — native games only. */
@@ -195,6 +196,36 @@ export const games: GameConfig[] = [
         }
       ]
     }
+  },
+  {
+    slug: 'sichuan-mahjong',
+    pageName: 'sichuan-mahjong',
+    title: 'Sichuan Mahjong',
+    description: 'Sichuan Blood Battle Mahjong with Exchange Three, a forbidden suit, and continued play after the first win.',
+    category: 'four-player',
+    gameType: 'coming-soon',
+    players: 4,
+    featured: true
+  },
+  {
+    slug: 'taiwan-mahjong',
+    pageName: 'taiwan-mahjong',
+    title: 'Taiwan Mahjong',
+    description: 'Taiwanese 16-tile Mahjong with Flower replacement and Tai-based scoring.',
+    category: 'four-player',
+    gameType: 'coming-soon',
+    players: 4,
+    featured: true
+  },
+  {
+    slug: 'american-mahjong',
+    pageName: 'american-mahjong',
+    title: 'American Mahjong',
+    description: 'American Mahjong with Charleston, Jokers, Flowers, and card-based winning patterns.',
+    category: 'four-player',
+    gameType: 'coming-soon',
+    players: 4,
+    featured: true
   },
   {
     slug: 'mahjong-connect-classic',
