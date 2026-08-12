@@ -129,10 +129,13 @@
   },
   "daily": {
     "title": "每日签到",
-    "subtitle": "每天签到赚取积分。",
-    "reward": "今日 +{n} 积分",
-    "claim": "签到",
+    "todayReward": "今日可领取：{n} 积分（Day {day}）",
+    "claimedReward": "签到成功！+{n} 积分（Day {day}）",
+    "claim": "签到领积分",
     "claimed": "今日已签到",
+    "streakLine": "连续签到 {days} 天，明天可得 {n} 积分",
+    "pointsTip": "积分有什么用？",
+    "tipBody": "积分可兑换精美牌背、牌桌皮肤、特效！即将上线。",
     "yourPoints": "你的积分：{n}",
     "guestNote": "积分目前保存在本设备上。"
   }

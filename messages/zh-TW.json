@@ -129,10 +129,13 @@
   },
   "daily": {
     "title": "每日簽到",
-    "subtitle": "每天簽到賺取積分。",
-    "reward": "今日 +{n} 積分",
-    "claim": "簽到",
+    "todayReward": "今日可領取：{n} 積分（Day {day}）",
+    "claimedReward": "簽到成功！+{n} 積分（Day {day}）",
+    "claim": "簽到領積分",
     "claimed": "今日已簽到",
+    "streakLine": "連續簽到 {days} 天，明天可得 {n} 積分",
+    "pointsTip": "積分有什麼用？",
+    "tipBody": "積分可兌換精美牌背、牌桌皮膚、特效！即將上線。",
     "yourPoints": "你的積分：{n}",
     "guestNote": "積分目前保存在本裝置上。"
   }

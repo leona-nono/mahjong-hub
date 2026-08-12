@@ -128,11 +128,14 @@
     "cleared": "모두 제거! {n}점."
   },
   "daily": {
-    "title": "일일 보너스",
-    "subtitle": "매일 출석하고 포인트를 받으세요.",
-    "reward": "오늘 +{n}포인트",
-    "claim": "출석",
+    "title": "일일 출석",
+    "todayReward": "오늘 보상: {n}포인트({day}일차)",
+    "claimedReward": "출석 완료! +{n}포인트({day}일차)",
+    "claim": "출석하고 획득",
     "claimed": "오늘 출석 완료",
+    "streakLine": "{days}일 연속! 내일은 {n}포인트",
+    "pointsTip": "포인트는 어디에 쓰나요?",
+    "tipBody": "포인트로 아름다운 타일 뒷면, 테이블 스킨, 이펙트를 교환할 수 있어요! 곧 제공.",
     "yourPoints": "내 포인트: {n}",
     "guestNote": "포인트는 지금은 이 기기에 저장됩니다."
   }
