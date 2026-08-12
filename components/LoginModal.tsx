@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth';
@@ -13,8 +13,16 @@ const GOOGLE_CLS =
 const FB_CLS = 'bg-[#1877F2] text-white hover:bg-[#166fe5]';
 const X_CLS = 'bg-black text-white hover:bg-gray-800';
 const EMAIL_CLS = 'bg-rainbow-pink text-white hover:opacity-90';
+const COOLDOWN_KEY = 'mh_email_send_until';
+const COOLDOWN_SECONDS = 60;
 
 type OAuthProvider = 'google' | 'facebook' | 'twitter';
+
+function getRemainingCooldown(): number {
+  if (typeof window === 'undefined') return 0;
+  const until = Number(localStorage.getItem(COOLDOWN_KEY)) || 0;
+  return Math.max(0, Math.ceil((until - Date.now()) / 1000));
+}
 
 export default function LoginModal({
   enabledProviders
@@ -27,7 +35,19 @@ export default function LoginModal({
   const [emailSent, setEmailSent] = useState(false);
   const [emailSending, setEmailSending] = useState(false);
   const [error, setError] = useState('');
+  const [cooldown, setCooldown] = useState(0);
   const t = useTranslations('auth');
+
+  useEffect(() => {
+    if (!loginModalOpen) return;
+    setCooldown(getRemainingCooldown());
+    const id = setInterval(() => {
+      const remaining = getRemainingCooldown();
+      setCooldown(remaining);
+      if (remaining === 0) clearInterval(id);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [loginModalOpen]);
 
   if (!loginModalOpen) return null;
 
@@ -45,6 +65,8 @@ export default function LoginModal({
   const sendEmailLink = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (cooldown > 0) return;
+
     const value = email.trim();
     if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       setError(t('emailInvalid'));
@@ -52,11 +74,18 @@ export default function LoginModal({
     }
     setEmailSending(true);
     try {
-      await signIn('email', {
+      const result = await signIn('email', {
         email: value,
         callbackUrl: window.location.href,
         redirect: false
       });
+      if (result?.error) {
+        setError(t('loginFailed'));
+        return;
+      }
+      const until = Date.now() + COOLDOWN_SECONDS * 1000;
+      localStorage.setItem(COOLDOWN_KEY, String(until));
+      setCooldown(COOLDOWN_SECONDS);
       setEmailSent(true);
     } catch {
       setError(t('loginFailed'));
@@ -122,8 +151,15 @@ export default function LoginModal({
 
           {enabledProviders.email &&
             (emailSent ? (
-              <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-                {t('emailSent')}
+              <div className="space-y-2">
+                <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                  {t('emailSent')}
+                </div>
+                {cooldown > 0 && (
+                  <p className="text-center text-xs text-gray-500">
+                    {t('emailSendAgain', { n: cooldown })}
+                  </p>
+                )}
               </div>
             ) : (
               <form onSubmit={sendEmailLink} className="flex flex-col gap-2">
@@ -137,10 +173,14 @@ export default function LoginModal({
                 />
                 <button
                   type="submit"
-                  disabled={emailSending || submitting !== null}
+                  disabled={emailSending || submitting !== null || cooldown > 0}
                   className={`${BTN_BASE} ${EMAIL_CLS}`}
                 >
-                  {emailSending ? t('redirecting') : t('emailSend')}
+                  {emailSending
+                    ? t('redirecting')
+                    : cooldown > 0
+                      ? t('emailSendAgain', { n: cooldown })
+                      : t('emailSend')}
                 </button>
               </form>
             ))}

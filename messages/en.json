@@ -68,7 +68,8 @@
     "providerUnavailable": "Sign in is coming soon. Your points stay saved on this device for now.",
     "emailPlaceholder": "Your email address",
     "emailSend": "Send login link",
-    "emailSent": "We sent you a login link. Check your inbox and click it to sign in.",
+    "emailSent": "Login link sent. Check your inbox (and spam) and click it within 24 hours. Please do not request multiple links.",
+    "emailSendAgain": "Resend in {n}s",
     "emailInvalid": "Please enter a valid email address."
   },
   "points": {
