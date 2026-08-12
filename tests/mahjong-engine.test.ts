@@ -26,15 +26,20 @@ import {
   discard,
   drawTile,
   passUnansweredClaims,
+  minimumWinScore,
   seatShanten,
   submitClaim,
+  startNextHand,
   tilesRemaining,
   RULESETS,
+  availableRiichiDiscards,
+  declareRiichi,
   type GameState,
   type Ruleset,
   type Seat
 } from '@/lib/mahjong/engine';
 import { chooseClaim, chooseMove } from '@/lib/mahjong/ai';
+import { scoreHand } from '@/lib/mahjong/scoring';
 
 const hand = (spec: string): Tile[] => spec.split(' ') as Tile[];
 
@@ -175,6 +180,25 @@ describe('decomposeWin', () => {
 });
 
 describe('engine', () => {
+  it('keeps scores and rotates the dealer when moving to the next hand', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 23 });
+    state.phase = 'over';
+    state.result = { kind: 'win', winner: 1 };
+    state.players[0].score = 28600;
+    state.players[1].score = 31400;
+    state.honba = 2;
+    state.riichiSticks = 1;
+
+    const next = startNextHand(state);
+    expect(next.phase).toBe('draw');
+    expect(next.dealer).toBe(1);
+    expect(next.handNumber).toBe(1);
+    expect(next.players.map((player) => player.score)).toEqual([28600, 31400, 30000, 30000]);
+    expect(next.honba).toBe(2);
+    expect(next.riichiSticks).toBe(1);
+    expect(next.players[1].seatWind).toBe('z1');
+  });
+
   it('deals thirteen tiles to each seat from a seeded wall', () => {
     const state = createGame({ seed: 42 });
     expect(state.players).toHaveLength(4);
@@ -260,7 +284,7 @@ describe('engine', () => {
     expect(canDeclareTsumo(riichi, 0)).toBe(false);
   });
 
-  it('scores a double ron under riichi but a single winner under HK / CO', () => {
+  it('uses WRC head-bump when two players call ron', () => {
     // Two seats both ron on seat 1's z1 discard. Each has a half-flush with a
     // dragon triplet, so both clear the score floor for every ruleset.
     const setup = (ruleset: Ruleset) => {
@@ -306,11 +330,26 @@ describe('engine', () => {
       riichiResolved.claims[2]!.find((o) => o.kind === 'ron')!
     );
     expect(riichiResolved.result?.kind).toBe('win');
-    expect(riichiResolved.result?.winners).toHaveLength(2);
-    expect(riichiResolved.result?.winners?.map((w) => w.seat)).toEqual([0, 2]);
-    expect(riichiResolved.result?.winners?.[0]?.loser).toBe(1);
+    expect(riichiResolved.result?.winner).toBe(2);
+    expect(riichiResolved.result?.loser).toBe(1);
+    expect(riichiResolved.result?.winners).toBeUndefined();
   });
 
+
+  it('starts WRC Riichi at 30,000 and confirms a 1,000-point riichi stick', () => {
+    let state = createGame({ ruleset: 'riichi', seed: 7 });
+    expect(state.players.every((player) => player.score === 30000)).toBe(true);
+    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 p2 p3 p4 s6 s7 s8 z1 z1');
+    state.turn = 0;
+    state.phase = 'discard';
+    const candidates = availableRiichiDiscards(state, 0);
+    expect(candidates.length).toBeGreaterThan(0);
+    state = declareRiichi(state, 0);
+    state = discard(state, candidates[0], 1000);
+    expect(state.players[0].declaredReady).toBe(true);
+    expect(state.players[0].score).toBe(29000);
+    expect(state.riichiSticks).toBe(1);
+  });
   it('auto-passes a silent claim after the timeout', () => {
     // Seat 1 discards m3; only seat 0 (the human) can pon it. Seat 0 stays
     // silent, so once the window expires the engine must pass it and move on.
@@ -343,6 +382,40 @@ describe('engine', () => {
 
 
 describe('Hong Kong self-draw outcome', () => {
+  it('uses a one-Fan casual threshold and a three-Fan standard threshold', () => {
+    expect(minimumWinScore(createGame({ ruleset: 'hongkong', hongKongMode: 'casual' }))).toBe(1);
+    expect(minimumWinScore(createGame({ ruleset: 'hongkong', hongKongMode: 'standard' }))).toBe(3);
+  });
+
+  it('lets a complete low-Fan hand win in casual mode but not standard mode', () => {
+    const tiles = hand('m1 m1 m1 m2 m3 m4 p3 p4 p5 s6 s7 s8 z1 z1');
+    const casual = createGame({ ruleset: 'hongkong', hongKongMode: 'casual', seed: 18 });
+    casual.turn = 0;
+    casual.phase = 'discard';
+    casual.players[0].hand = tiles;
+    const standard = createGame({ ruleset: 'hongkong', hongKongMode: 'standard', seed: 18 });
+    standard.turn = 0;
+    standard.phase = 'discard';
+    standard.players[0].hand = tiles;
+
+    expect(evaluateSelfDraw(casual, 0).legal).toBe(true);
+    expect(evaluateSelfDraw(standard, 0).legal).toBe(false);
+  });
+
+  it('awards one Fan to a zero-Fan chicken hand in casual mode', () => {
+    const state = createGame({ ruleset: 'hongkong', hongKongMode: 'casual', seed: 19 });
+    state.players[0].hand = hand('m4 m5 m6 p9');
+    state.players[0].melds = [
+      { kind: 'chi', tiles: hand('m1 m2 m3'), from: 3 },
+      { kind: 'chi', tiles: hand('p4 p5 p6'), from: 3 },
+      { kind: 'pon', tiles: hand('s7 s7 s7'), from: 1 }
+    ];
+
+    const score = scoreHand({ state, seat: 0, winningTile: 'p9', selfDrawn: false });
+    expect(score.total).toBe(1);
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('chickenHand');
+  });
+
   it('records the human winner and payments for a legal self-draw', () => {
     const state = createGame({ ruleset: 'hongkong', seed: 7 });
     state.turn = 0;
@@ -361,11 +434,28 @@ describe('Hong Kong self-draw outcome', () => {
     expect(result.players.slice(1).every((player) => player.score < 78000)).toBe(true);
   });
 
+  it('counts a closed self-drawn hand and allows the three-Fan win shown in gameplay', () => {
+    const state = createGame({ ruleset: 'hongkong', seed: 9 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].hand = hand('m1 m1 m1 p1 p2 p3 p4 p5 p6 z7 z7 z7 s6 s6');
+
+    const evaluation = evaluateSelfDraw(state, 0);
+
+    expect(evaluation.complete).toBe(true);
+    expect(evaluation.score?.patterns.map((pattern) => pattern.id)).toEqual(
+      expect.arrayContaining(['dragonTriplet', 'selfDraw', 'concealed'])
+    );
+    expect(evaluation.score?.total).toBe(3);
+    expect(evaluation.legal).toBe(true);
+    expect(declareTsumo(state, 0).result?.winner).toBe(0);
+  });
+
   it('reports a complete hand below the three-Fan minimum without declaring a win', () => {
     const state = createGame({ ruleset: 'hongkong', seed: 8 });
     state.turn = 0;
     state.phase = 'discard';
-    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 p1 p2 p3 s4 s5 s6 z1 z1');
+    state.players[0].hand = hand('m1 m1 m1 m2 m3 m4 p3 p4 p5 s6 s7 s8 z1 z1');
     const evaluation = evaluateSelfDraw(state, 0);
     expect(evaluation.complete).toBe(true);
     expect(evaluation.legal).toBe(false);
@@ -441,4 +531,3 @@ describe('ai', () => {
     expect(state.phase).toBe('over');
   });
 });
-

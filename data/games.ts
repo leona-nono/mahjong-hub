@@ -98,19 +98,22 @@ export const games: GameConfig[] = [
     featured: true,
     content: {
       intro:
-        'Hong Kong Old Style is the most widely played four-player mahjong ruleset outside Japan, and the easiest one to learn first. You build a hand of four sets and one pair, and you need at least three faan to declare a win. This table gives you three computer opponents, an optional readiness hint, and a breakdown of how every winning hand scored.',
+        'Mahjong Hub Hong Kong Mahjong is a four-player product ruleset based on Hong Kong Old Style. It uses Characters, Dots, Bamboo, Winds, Red Dragon and Green Dragon; White Dragon plus all Flowers and Seasons are deliberately excluded. Build four sets and one pair, then choose Casual mode for beginner-friendly chicken hands or Standard mode for the traditional three-faan minimum.',
       howToPlay: [
-        'Each player starts with 13 tiles. On your turn you draw one tile and then discard one, keeping your hand at 13.',
+        'The 132-tile product wall contains Characters, Dots, Bamboo, Winds, Red Dragon and Green Dragon. White Dragon, Flowers and Seasons are not used.',
+        'Each player starts with 13 tiles; East starts with 14 and makes the first discard. On a later turn, draw one tile and then discard one, keeping your hand at 13.',
         'A winning hand is four sets plus one pair. A set is either three identical tiles or three consecutive tiles in the same suit.',
         'When another player discards a tile you need, you may call it: pong for a triplet, chi for a sequence (from the player to your left only), or kong for all four copies.',
         'Calling a tile makes your hand open, which costs you some scoring patterns. Take the call only when it genuinely moves you forward.',
-        'Declare a win by self-draw or on another player\u2019s discard, provided the hand meets the three faan minimum.'
+        'Declare a win by self-draw or on another player\u2019s discard. Casual mode accepts any complete four-sets-and-a-pair hand; Standard mode requires at least three faan.',
+        'After settlement, East keeps the dealer seat after a dealer win or a draw; otherwise the dealer moves to the next seat.'
       ],
       tips: [
         'Discard lone honour tiles early. They are the hardest tiles to pair up and the least flexible thing in your hand.',
         'Track your distance to ready rather than staring at individual tiles. Two away is a normal mid-game position; one away is when you start playing carefully.',
         'A hand of all one suit is worth far more than the sum of its parts. Dealt seven or eight tiles in a single suit, committing early usually pays.',
-        'Watch the other seats. Three players throwing away the same suit means the tiles you need are probably still live.'
+        'Watch the other seats. Three players throwing away the same suit means the tiles you need are probably still live.',
+        'In Standard mode, verify the faan total before committing to a call: a complete shape below three faan is not a legal win.'
       ],
       faq: [
         {
@@ -124,9 +127,9 @@ export const games: GameConfig[] = [
             'This is real four-player mahjong with drawing, discarding, calling and scoring. The tile-matching game most Western sites call "mahjong" is mahjong solitaire, which is a different game.'
         },
         {
-          question: 'What does the three faan minimum mean?',
+          question: 'What is the difference between Casual and Standard mode?',
           answer:
-            'Hong Kong rules require a hand to be worth at least three faan before you may declare a win. A hand that is technically complete but scores less cannot be declared, so you keep playing to improve it.'
+            'Casual mode lets any structurally complete hand win and awards a one-faan chicken hand when no other pattern scores. Standard Hong Kong mode requires at least three faan, so a complete lower-scoring hand must keep playing.'
         },
         {
           question: 'Is there any real-money gambling?',
@@ -152,18 +155,22 @@ export const games: GameConfig[] = [
     featured: true,
     content: {
       intro:
-        'Riichi is the Japanese ruleset that most of the modern competitive mahjong scene plays. It rewards concealed hands and rich pattern-building rather than raw speed, which makes it the deepest of the three rulesets on this site and the most rewarding to study.',
+        'This four-player Japanese Riichi table follows the approved World Riichi Championship 2025 baseline: no red fives, one-winner head-bump, and a 30,000-point start.',
       howToPlay: [
-        'The core loop is the same as any four-player mahjong: draw a tile, discard a tile, and build four sets plus a pair.',
-        'Riichi puts a premium on keeping your hand concealed. Calling tiles from other players closes off many scoring patterns.',
-        'A hand needs at least one scoring pattern to be declared, so a hand that is merely complete is not always a winning hand.',
-        'Seven pairs and thirteen orphans count as alternative winning shapes, both of which require a fully concealed hand.'
+        'Each player starts with 13 tiles. Draw one tile and discard one, aiming for four sets and a pair; Seven Pairs and Thirteen Orphans are also valid closed shapes.',
+        'A complete shape is not enough: the hand needs at least one yaku. Dora adds value but is not a yaku by itself.',
+        'Chi is available only from the player on your left. Pon, Kan and Ron may be called from any opponent, subject to claim priority.',
+        'Keep the hand closed and reach tenpai to declare Riichi. Choose a highlighted discard and place a 1,000-point stick.',
+        'Win by Tsumo on your own draw or Ron on an opponent discard. Under WRC head-bump, only the first winner in turn order receives the Ron.',
+        'The match runs through East and South rounds. In this product baseline, a dealer win or an exhaustive draw keeps the dealer; exhaustive draws use a 3,000-point noten payment.',
+        'This table uses 136 tiles, a 14-tile dead wall, Dora indicators and no red fives.'
       ],
       tips: [
-        'Concealed hands score much better here than under Hong Kong rules. Resist calling unless the call takes you straight to ready.',
-        'All-simples is the workhorse pattern: no terminals, no honours. It is reachable from almost any starting hand.',
-        'Dealt four or more pairs early, seven pairs is often a faster route to ready than forcing four sets.',
-        'Late in the hand, watch which tiles the other seats have stopped discarding. That is usually where their wait is.'
+        'Secure a yaku before chasing Dora: bonus tiles cannot make an otherwise yaku-less hand legal.',
+        'Compare shanten and effective tiles before every discard; keep shapes with more improving draws.',
+        'Against Riichi, begin with genbutsu, then use suji and visible tile walls to reduce risk.',
+        'Declare Riichi deliberately: compare wait quality, hand value, remaining tiles and the match score.',
+        'Do not force low-value attacks late in the hand when a safer fold protects your position.'
       ],
       faq: [
         {
@@ -194,7 +201,7 @@ export const games: GameConfig[] = [
     players: 4,
     content: {
       intro:
-        'Chinese Official, also called Mahjong Competition Rules, is the ruleset used for international tournament play. Its eight-point minimum forces you to build a hand with real structure rather than racing to the first complete shape, which makes it the most demanding of the three rulesets here.',
+        'Chinese Official, also called Mahjong Competition Rules (MCR), is the four-player international tournament ruleset. It uses 144 tiles, including Flowers and Seasons, and requires a legal hand to reach at least eight points from its official scoring elements.',
       howToPlay: [
         'Standard four-player mahjong: draw, discard, and build four sets plus a pair.',
         'A hand must be worth at least eight points before it can be declared. Simple hands with no pattern do not qualify.',
@@ -205,6 +212,7 @@ export const games: GameConfig[] = [
         'Pick a direction in the first few turns. Flush hands and all-triplet hands are the most reliable ways to clear eight points.',
         'Dragon and seat-wind triplets are worth taking even at the cost of a turn, because they combine with almost everything else.',
         'A hand one tile from complete but worth only six points is not yet a hand. Keep improving it.'
+        ,'Check the score before calling a win: MCR has overlap and exclusion rules, so visible patterns do not always stack.'
       ],
       faq: [
         {
@@ -257,6 +265,101 @@ export const games: GameConfig[] = [
     region: 'america',
     players: 4,
     featured: true
+  },
+  {
+    slug: 'sichuan-mahjong',
+    pageName: 'sichuan-mahjong',
+    title: 'Sichuan Mahjong',
+    description: 'Sichuan Blood Battle Mahjong with Exchange Three, a forbidden suit, and continued play after the first win.',
+    category: 'four-player',
+    gameType: 'coming-soon',
+    players: 4,
+    featured: true,
+    content: {
+      intro: 'Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.',
+      howToPlay: [
+        'The 108-tile wall uses only Characters, Dots and Bamboo. Winds, Dragons, Flowers and Seasons are not used.',
+        'Before normal play, select three tiles from one suit for Exchange Three; the table passes them in the direction chosen for that hand.',
+        'Choose one forbidden suit. You must discard every tile of that suit before you are allowed to win.',
+        'Draw and discard normally. Chow is not allowed; Pung and Kong are allowed under the table claim order.',
+        'Make four melds and a pair, or an approved special hand such as Seven Pairs, then win by self-draw or a legal discard.',
+        'A winner stops drawing, but the hand continues for the remaining players. End-of-hand settlement includes ready-hand check, flower-pig penalty and Kong refund.'
+      ],
+      tips: [
+        'Choose the forbidden suit from the suit you can clear most quickly, not merely from its lowest tiles.',
+        'Exchange Three should remove three tiles from one coherent weak suit so you do not create three unrelated dead tiles.',
+        'Because Chow is unavailable, pairs and connected shapes are more valuable than in Chow-enabled variants.',
+        'After another player wins, reassess risk: staying ready matters for the end-of-hand check, but avoid becoming flower pig.',
+        'Track Kong exposure and settlement. A high-value Kong is not automatically safe if it opens a dangerous draw.'
+      ],
+      faq: [
+        { question: 'Why can I not win while I still hold my forbidden suit?', answer: 'The forbidden-suit rule is a core Chengdu Blood Battle condition. Clear every tile of your chosen suit before a win may be declared.' },
+        { question: 'Why does the game continue after someone wins?', answer: 'Blood Battle to the End permits remaining players to continue. This can create several winners or penalties within one hand.' }
+      ]
+    }
+  },
+  {
+    slug: 'taiwan-mahjong',
+    pageName: 'taiwan-mahjong',
+    title: 'Taiwan Mahjong',
+    description: 'Taiwanese 16-tile Mahjong with Flower replacement and Tai-based scoring.',
+    category: 'four-player',
+    gameType: 'coming-soon',
+    players: 4,
+    featured: true,
+    content: {
+      intro: 'Mahjong Hub Taiwan Mahjong is a relaxed 16-tile version: a 144-tile wall with Flowers and Seasons, five melds plus a pair to win, additive Tai scoring, and a 0-Tai minimum for beginner-friendly play.',
+      howToPlay: [
+        'Use all 144 tiles. Each non-dealer starts with 16 tiles; East starts with 17 and makes the first discard.',
+        'Reveal every Flower or Season immediately and draw a replacement. It remains outside your 16-tile hand and adds Tai when applicable.',
+        'On your turn draw one tile and discard one. You may Chow from the left player, or Pung and Kong according to the claim order.',
+        'Win with five melds and one pair, for a 17-tile hand. Self-draw and discard wins are both supported.',
+        'Tai patterns add together for settlement. This Mahjong Hub beginner baseline allows a complete 0-Tai hand to win.'
+      ],
+      tips: [
+        'With 16 concealed tiles, retain several connected shapes early instead of committing to one wait too quickly.',
+        'Flowers add value but do not repair a weak main hand; build the five-meld structure first.',
+        'Kongs are more frequent in Taiwan Mahjong. Consider both the replacement draw and the information you reveal.',
+        'Use 0-Tai mode to learn tempo; once comfortable, chase Tai only when it does not reduce your live waits.',
+        'Check whether your Flower matches your seat, as seat Flowers can add an extra scoring bonus.'
+      ],
+      faq: [
+        { question: 'Why do I hold 16 tiles instead of 13?', answer: 'Taiwan Mahjong uses five melds plus one pair. Players normally hold 16 tiles and win after drawing or claiming the 17th.' },
+        { question: 'Can a 0-Tai hand win here?', answer: 'Yes. Mahjong Hub uses a relaxed 0-Tai baseline. Other Taiwan tables may require a minimum Tai, so this is shown clearly in the game settings.' }
+      ]
+    }
+  },
+  {
+    slug: 'american-mahjong',
+    pageName: 'american-mahjong',
+    title: 'American Mahjong',
+    description: 'American Mahjong with Charleston, Jokers, Flowers, and card-based winning patterns.',
+    category: 'four-player',
+    gameType: 'coming-soon',
+    players: 4,
+    featured: true,
+    content: {
+      intro: 'Mahjong Hub American Mahjong is an original practice-card game inspired by NMJL-style flow: 152 tiles, Charleston, Flowers, Jokers, exposed groups and exact card-pattern wins. It does not reproduce a current NMJL annual card.',
+      howToPlay: [
+        'Use a 152-tile set with standard tiles, eight Flowers and eight Jokers. Every player takes 13 tiles; East takes 14 and discards first.',
+        'Read the original practice card, then complete Charleston: pass three tiles right, across and left. A second Charleston and courtesy pass are table options.',
+        'Draw and discard while steering toward one exact line on the practice card, not a general four-meld-and-a-pair shape.',
+        'Expose legal Pungs, Kongs or larger groups when the selected card line permits it. Concealed card lines may not be exposed before the final win.',
+        'Use a Joker only in a group of three or more; never use it as a single or pair. On your turn, a natural tile may exchange for a Joker in an opponent exposure.',
+        'Declare Mah Jongg only when all 14 tiles exactly match one legal original practice-card line.'
+      ],
+      tips: [
+        'Before Charleston, keep two or three compatible card lines open rather than committing to a single rare line.',
+        'Pass tiles that do not support any of your likely card categories, but never pass a Joker.',
+        'Do not expose a group merely because you can: exposure signals your target and may make your hand impossible to pivot.',
+        'Treat Jokers as group accelerators, not universal wildcards; you still need natural tiles for singles and pairs.',
+        'Use opponent exposures to decide which natural tiles are safe to discard and when a Joker exchange is valuable.'
+      ],
+      faq: [
+        { question: 'Is this the official NMJL yearly card?', answer: 'No. This game uses Mahjong Hub original practice cards. A licensed NMJL-card integration would be a separate future product.' },
+        { question: 'Can a Joker be used in a pair?', answer: 'No. In this rules baseline, Jokers are legal only in groups of three or more, never in singles or pairs.' }
+      ]
+    }
   },
   {
     slug: 'mahjong-connect-classic',
