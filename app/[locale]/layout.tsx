@@ -57,7 +57,10 @@ export default async function LocaleLayout({
               facebook:
                 !!process.env.AUTH_FACEBOOK_ID &&
                 !!process.env.AUTH_FACEBOOK_SECRET,
-              x: !!process.env.AUTH_X_ID && !!process.env.AUTH_X_SECRET
+              x: !!process.env.AUTH_X_ID && !!process.env.AUTH_X_SECRET,
+              email:
+                !!process.env.AUTH_EMAIL_SERVER &&
+                !!process.env.AUTH_EMAIL_FROM
             }}
           >
             {children}

@@ -65,7 +65,11 @@
     "logout": "로그아웃",
     "redirecting": "이동 중…",
     "loginFailed": "로그인에 실패했습니다. 다시 시도해 주세요.",
-    "providerUnavailable": "로그인 기능이 곧 제공됩니다. 포인트는 지금은 이 기기에 저장됩니다."
+    "providerUnavailable": "로그인 기능이 곧 제공됩니다. 포인트는 지금은 이 기기에 저장됩니다.",
+    "emailPlaceholder": "이메일 주소",
+    "emailSend": "로그인 링크 보내기",
+    "emailSent": "로그인 링크를 보냈습니다. 받은 편지함을 확인하고 링크를 클릭하세요.",
+    "emailInvalid": "유효한 이메일 주소를 입력하세요."
   },
   "points": {
     "youHave": "포인트 {n}점"

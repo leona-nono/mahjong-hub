@@ -65,7 +65,11 @@
     "logout": "Sign out",
     "redirecting": "Redirecting…",
     "loginFailed": "Login failed. Please try again.",
-    "providerUnavailable": "Sign in is coming soon. Your points stay saved on this device for now."
+    "providerUnavailable": "Sign in is coming soon. Your points stay saved on this device for now.",
+    "emailPlaceholder": "Your email address",
+    "emailSend": "Send login link",
+    "emailSent": "We sent you a login link. Check your inbox and click it to sign in.",
+    "emailInvalid": "Please enter a valid email address."
   },
   "points": {
     "youHave": "You have {n} pts"

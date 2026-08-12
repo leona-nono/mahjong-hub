@@ -12,6 +12,7 @@ const GOOGLE_CLS =
   'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50';
 const FB_CLS = 'bg-[#1877F2] text-white hover:bg-[#166fe5]';
 const X_CLS = 'bg-black text-white hover:bg-gray-800';
+const EMAIL_CLS = 'bg-rainbow-pink text-white hover:opacity-90';
 
 type OAuthProvider = 'google' | 'facebook' | 'twitter';
 
@@ -22,6 +23,9 @@ export default function LoginModal({
 }) {
   const { loginModalOpen, closeLogin } = useAuth();
   const [submitting, setSubmitting] = useState<OAuthProvider | null>(null);
+  const [email, setEmail] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailSending, setEmailSending] = useState(false);
   const [error, setError] = useState('');
   const t = useTranslations('auth');
 
@@ -38,8 +42,34 @@ export default function LoginModal({
     }
   };
 
+  const sendEmailLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    const value = email.trim();
+    if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      setError(t('emailInvalid'));
+      return;
+    }
+    setEmailSending(true);
+    try {
+      await signIn('email', {
+        email: value,
+        callbackUrl: window.location.href,
+        redirect: false
+      });
+      setEmailSent(true);
+    } catch {
+      setError(t('loginFailed'));
+    } finally {
+      setEmailSending(false);
+    }
+  };
+
   const hasProvider =
-    enabledProviders.google || enabledProviders.facebook || enabledProviders.x;
+    enabledProviders.google ||
+    enabledProviders.facebook ||
+    enabledProviders.x ||
+    enabledProviders.email;
 
   return (
     <div
@@ -63,7 +93,7 @@ export default function LoginModal({
             <button
               type="button"
               onClick={() => login('google')}
-              disabled={submitting !== null}
+              disabled={submitting !== null || emailSending}
               className={`${BTN_BASE} ${GOOGLE_CLS}`}
             >
               {submitting === 'google' ? t('redirecting') : 'Google'}
@@ -73,7 +103,7 @@ export default function LoginModal({
             <button
               type="button"
               onClick={() => login('facebook')}
-              disabled={submitting !== null}
+              disabled={submitting !== null || emailSending}
               className={`${BTN_BASE} ${FB_CLS}`}
             >
               {submitting === 'facebook' ? t('redirecting') : 'Facebook'}
@@ -83,12 +113,38 @@ export default function LoginModal({
             <button
               type="button"
               onClick={() => login('twitter')}
-              disabled={submitting !== null}
+              disabled={submitting !== null || emailSending}
               className={`${BTN_BASE} ${X_CLS}`}
             >
               {submitting === 'twitter' ? t('redirecting') : 'X'}
             </button>
           )}
+
+          {enabledProviders.email &&
+            (emailSent ? (
+              <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                {t('emailSent')}
+              </div>
+            ) : (
+              <form onSubmit={sendEmailLink} className="flex flex-col gap-2">
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t('emailPlaceholder')}
+                  className="w-full rounded-full border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 outline-none transition focus:border-rainbow-pink"
+                />
+                <button
+                  type="submit"
+                  disabled={emailSending || submitting !== null}
+                  className={`${BTN_BASE} ${EMAIL_CLS}`}
+                >
+                  {emailSending ? t('redirecting') : t('emailSend')}
+                </button>
+              </form>
+            ))}
+
           {!hasProvider && (
             <p className="rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
               {t('providerUnavailable')}

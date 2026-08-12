@@ -10,6 +10,7 @@ export interface EnabledAuthProviders {
   google: boolean;
   facebook: boolean;
   x: boolean;
+  email: boolean;
 }
 
 /** Keeps the legacy points UI aware of the authoritative Auth.js session. */

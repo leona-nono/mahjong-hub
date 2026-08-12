@@ -65,7 +65,11 @@
     "logout": "ログアウト",
     "redirecting": "リダイレクト中…",
     "loginFailed": "ログインに失敗しました。もう一度お試しください。",
-    "providerUnavailable": "ログイン機能は近日提供予定です。ポイントは当面この端末に保存されます。"
+    "providerUnavailable": "ログイン機能は近日提供予定です。ポイントは当面この端末に保存されます。",
+    "emailPlaceholder": "メールアドレス",
+    "emailSend": "ログインリンクを送信",
+    "emailSent": "ログインリンクを送信しました。メールを確認してリンクをクリックしてください。",
+    "emailInvalid": "有効なメールアドレスを入力してください。"
   },
   "points": {
     "youHave": "ポイント {n} 件"

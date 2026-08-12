@@ -2,6 +2,8 @@ import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Facebook from 'next-auth/providers/facebook';
 import Twitter from 'next-auth/providers/twitter';
+import Nodemailer from 'next-auth/providers/nodemailer';
+import nodemailer from 'nodemailer';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/lib/db';
 import { authConfig } from './auth.config';
@@ -19,6 +21,11 @@ import { authConfig } from './auth.config';
  *   legacy mock login in lib/auth.tsx remains the only path (intentional
  *   for Phase 0: backend infra is shipped first, UI switches in Phase 1).
  *
+ * - Email magic-link login is the mainland-China-friendly option (no OAuth
+ *   app registration needed). Configure AUTH_EMAIL_SERVER (SMTP URL) +
+ *   AUTH_EMAIL_FROM and the provider activates; the Prisma VerificationToken
+ *   table stores the one-time login tokens.
+ *
  * X (Twitter) uses Auth.js OAuth 2.0 with PKCE. Local development is
  * served on 127.0.0.1 so the callback exactly matches X's allowlist.
  */
@@ -27,6 +34,8 @@ const googleConfigured =
 const facebookConfigured =
   !!process.env.AUTH_FACEBOOK_ID && !!process.env.AUTH_FACEBOOK_SECRET;
 const xConfigured = !!process.env.AUTH_X_ID && !!process.env.AUTH_X_SECRET;
+const emailConfigured =
+  !!process.env.AUTH_EMAIL_SERVER && !!process.env.AUTH_EMAIL_FROM;
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: process.env.AUTH_SECRET,
@@ -41,6 +50,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           Twitter({
             clientId: process.env.AUTH_X_ID!,
             clientSecret: process.env.AUTH_X_SECRET!,
+          }),
+        ]
+      : []),
+    ...(emailConfigured
+      ? [
+          Nodemailer({
+            server: process.env.AUTH_EMAIL_SERVER!,
+            from: process.env.AUTH_EMAIL_FROM!,
+            maxAge: 24 * 60 * 60,
+            async sendVerificationRequest({ identifier, url, provider }) {
+              const { host } = new URL(url);
+              const transport = nodemailer.createTransport(provider.server);
+              await transport.sendMail({
+                to: identifier,
+                from: provider.from,
+                subject: `Sign in to ${host}`,
+                text: `Sign in to ${host}\n\n${url}\n\nIf you didn't request this, you can ignore this email.`,
+                html: `<p>Sign in to <strong>${host}</strong></p><p><a href="${url}" style="display:inline-block;padding:10px 18px;background:#ef5b5b;color:#fff;border-radius:999px;text-decoration:none;font-weight:bold;">Sign in</a></p><p>If you didn't request this email, you can safely ignore it.</p>`
+              });
+            },
           }),
         ]
       : []),

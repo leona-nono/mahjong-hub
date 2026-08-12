@@ -65,7 +65,11 @@
     "logout": "退出登录",
     "redirecting": "正在跳转…",
     "loginFailed": "登录失败，请重试。",
-    "providerUnavailable": "登录功能即将上线。积分目前保存在本设备上。"
+    "providerUnavailable": "登录功能即将上线。积分目前保存在本设备上。",
+    "emailPlaceholder": "你的邮箱地址",
+    "emailSend": "发送登录链接",
+    "emailSent": "登录链接已发送。请查收邮件并点击链接登录。",
+    "emailInvalid": "请输入有效的邮箱地址。"
   },
   "points": {
     "youHave": "你有 {n} 积分"

@@ -1,7 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import { getAuthState, openLogin, hasGoogle, hasFacebook, hasX } from './auth';
+import { getAuthState, openLogin, hasGoogle, hasFacebook, hasX, hasEmail } from './auth';
 
 interface AwardResult {
   granted: boolean;
@@ -60,7 +60,7 @@ export function awardPoints(amount: number, reason?: string): AwardResult {
   // nothing to log into, so opening the login modal is a dead end and guests
   // lose their points. Instead we grant points on this device and let the
   // server-side auth take over the gate later.
-  const loginAvailable = hasGoogle || hasFacebook || hasX;
+  const loginAvailable = hasGoogle || hasFacebook || hasX || hasEmail;
   if (!getAuthState().user && loginAvailable) {
     openLogin();
     return { granted: false, needLogin: true };

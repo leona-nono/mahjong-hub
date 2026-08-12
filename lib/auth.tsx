@@ -40,6 +40,8 @@ const PROVIDER_LABEL: Record<SocialProvider, string> = {
 export const hasGoogle = !!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 export const hasFacebook = !!process.env.NEXT_PUBLIC_FACEBOOK_APP_ID;
 export const hasX = !!process.env.NEXT_PUBLIC_X_CLIENT_ID;
+/** Email magic-link login (server env is AUTH_EMAIL_SERVER/FROM). */
+export const hasEmail = !!process.env.NEXT_PUBLIC_EMAIL_ENABLED;
 
 // Module-level store (no React Context) so client components can read auth
 // from anywhere — even across Server Component boundaries (App Router SSG).
