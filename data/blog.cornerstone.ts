@@ -14,6 +14,7 @@ export const cornerstonePosts: BlogPost[] = [
       'The complete beginner-friendly guide to mahjong rules. Learn the tiles, the wall, turns, calling, winning hands and scoring — with a plain-language ruleset comparison.',
     readMinutes: 12,
     keywords: 'mahjong for beginners, mahjong rules, learn mahjong, mahjong basics',
+    heroTiles: [{"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}, {"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 3}, {"suit": 'dot', "rank": 4}],
     cta: { label: 'Play Mahjong Now', href: '/games/classic' },
     sections: [
       {
@@ -52,7 +53,8 @@ export const cornerstonePosts: BlogPost[] = [
           '• Chi — three consecutive tiles in one suit. Callable only from the player on your left.',
           '• Kong — four identical tiles. The most powerful call, worth bonus tiles in some rulesets.',
           'Calls expose your hand. An open hand is weaker in most scoring systems, so beginners should call sparingly.'
-        ]
+        ],
+        tiles: [{"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'bamboo', "rank": 6}, {"suit": 'bamboo', "rank": 7}, {"suit": 'bamboo', "rank": 8}],
       },
       {
         heading: 'Winning Hands',
@@ -92,6 +94,7 @@ export const cornerstonePosts: BlogPost[] = [
       'What do mahjong tiles mean? A full guide to the 144 tiles — suits, winds, dragons, flowers and seasons — with the symbols explained for beginners.',
     readMinutes: 8,
     keywords: 'mahjong tiles meaning, mahjong tiles, mahjong suit symbols, chinese mahjong tiles',
+    heroTiles: [{"suit": 'char', "rank": 1}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}],
     cta: { label: 'Play Mahjong Now', href: '/games/classic' },
     sections: [
       {
@@ -108,7 +111,8 @@ export const cornerstonePosts: BlogPost[] = [
           '• Bamboo (條, tiao) — the tile shows one to nine sticks of bamboo.',
           '• Circles (筒, tong) — the tile shows one to nine coins or dots.',
           'Each suit has four copies of each number, giving 36 tiles per suit and 108 numbered tiles in total. A set (sequence) is three consecutive numbers in the same suit, so suits matter for more than just looks.'
-        ]
+        ],
+        tiles: [{"suit": 'char', "rank": 1}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}],
       },
       {
         heading: 'The Winds',
@@ -153,6 +157,7 @@ export const cornerstonePosts: BlogPost[] = [
       'American mahjong and Chinese mahjong are very different games. Compare jokers, hand cards, scoring and tile counts to see which style suits you.',
     readMinutes: 7,
     keywords: 'american vs chinese mahjong, american mahjong rules, chinese mahjong rules',
+    heroTiles: [{"suit": 'char', "rank": 1}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}],
     cta: { label: 'Play Chinese Mahjong Now', href: '/games/classic' },
     sections: [
       {
@@ -174,7 +179,8 @@ export const cornerstonePosts: BlogPost[] = [
         body: [
           'American mahjong uses jokers that can stand in for any tile, and a fixed opening exchange called the Charleston in which players pass tiles left, right and across in a set sequence. Both features add a trading phase that does not exist in Chinese mahjong.',
           'Chinese styles have no jokers and no passing — you play strictly from the tiles you are dealt.'
-        ]
+        ],
+        tiles: [{"suit": 'wind', "wind": 'east'}, {"suit": 'wind', "wind": 'south'}, {"suit": 'wind', "wind": 'west'}, {"suit": 'wind', "wind": 'north'}],
       },
       {
         heading: 'Tiles, Turns and Calling',
@@ -205,6 +211,7 @@ export const cornerstonePosts: BlogPost[] = [
       'Play mahjong online free — no download, no install. Learn where to play, how the online rules work, and the etiquette of playing against bots and strangers.',
     readMinutes: 6,
     keywords: 'how to play mahjong online, mahjong online free, play mahjong online',
+    heroTiles: [{"suit": 'bamboo', "rank": 6}, {"suit": 'bamboo', "rank": 7}, {"suit": 'bamboo', "rank": 8}, {"suit": 'dragon', "dragon": 'green'}],
     cta: { label: 'Play Free Now', href: '/games/classic' },
     sections: [
       {
@@ -226,7 +233,8 @@ export const cornerstonePosts: BlogPost[] = [
         body: [
           'You join a table and the game deals you 13 tiles. On your turn you click a tile to draw, then click a tile to discard. The game highlights tiles you can call and shows when your hand can win.',
           'An optional readiness hint shows how far your hand is from a complete shape, which is the single most useful tool for learning.'
-        ]
+        ],
+        tiles: [{"suit": 'bamboo', "rank": 6}, {"suit": 'bamboo', "rank": 7}, {"suit": 'bamboo', "rank": 8}, {"suit": 'dragon', "dragon": 'green'}],
       },
       {
         heading: 'Bots vs. Human Opponents',
@@ -263,6 +271,7 @@ export const cornerstonePosts: BlogPost[] = [
       'What to look for in a first mahjong set: tile size, material, travel cases and the right accessories. Practical buying advice so you start with the right tiles.',
     readMinutes: 6,
     keywords: 'best mahjong sets for beginners, mahjong set buying guide, mahjong tiles set',
+    heroTiles: [{"suit": 'wind', "wind": 'east'}, {"suit": 'wind', "wind": 'south'}, {"suit": 'wind', "wind": 'west'}, {"suit": 'wind', "wind": 'north'}],
     cta: { label: 'Play Online Instead', href: '/games/classic' },
     sections: [
       {
@@ -277,7 +286,8 @@ export const cornerstonePosts: BlogPost[] = [
         body: [
           'Classic sets are made from bone-and-bamboo, but modern sets use resin, plastic or melamine. Good-quality resin tiles have crisp, painted faces that do not wear off. Cheap plastic tiles can chip at the corners and fade.',
           'For a first set, choose solid-colour resin or melamine tiles with a frosted back — they shuffle well and last for years.'
-        ]
+        ],
+        tiles: [{"suit": 'dot', "rank": 1}, {"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 3}, {"suit": 'dot', "rank": 4}],
       },
       {
         heading: 'Tile Count and Size',
@@ -321,6 +331,7 @@ export const cornerstonePosts: BlogPost[] = [
       'How mahjong scoring works across rulesets: faan in Hong Kong, han in Riichi, points in Chinese Official. The common patterns and how to count your hand.',
     readMinutes: 8,
     keywords: 'mahjong scoring, mahjong points, mahjong faan, mahjong han, mahjong scoring system',
+    heroTiles: [{"suit": 'dragon', "dragon": 'red'}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'char', "rank": 7}],
     cta: { label: 'See Scoring in Action', href: '/games/classic' },
     sections: [
       {
@@ -346,7 +357,8 @@ export const cornerstonePosts: BlogPost[] = [
         body: [
           'Hong Kong style requires three faan minimum. Common patterns and their value: a pure suit hand (3), all-triplets (3), all-simples (1), a dragon triplet (1\u20133). Hands stack — a flush with a dragon triplet is worth more than either alone.',
           'The scoring table rewards clean, deliberate hands. Cheap hands are reliable but slow; ambitious hands score big but rarely come together.'
-        ]
+        ],
+        tiles: [{"suit": 'dragon', "dragon": 'red'}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}],
       },
       {
         heading: 'Japanese Han and Riichi',
@@ -383,6 +395,7 @@ export const cornerstonePosts: BlogPost[] = [
       'From Hong Kong and Riichi to American, Taiwanese and Sichuan — compare the major types of mahjong games and find the style that fits you.',
     readMinutes: 7,
     keywords: 'types of mahjong, mahjong variants, mahjong styles, different mahjong games',
+    heroTiles: [{"suit": 'char', "rank": 1}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}, {"suit": 'wind', "wind": 'west'}],
     cta: { label: 'Try Hong Kong Mahjong', href: '/games/classic' },
     sections: [
       {
@@ -395,7 +408,8 @@ export const cornerstonePosts: BlogPost[] = [
         heading: 'Hong Kong Mahjong',
         body: [
           'The most widely played style outside Japan and the best entry point for beginners. Three-faan minimum, simple scoring, fast games. If you want one style to learn first, make it this one.'
-        ]
+        ],
+        tiles: [{"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}],
       },
       {
         heading: 'Japanese Riichi Mahjong',
@@ -448,6 +462,7 @@ export const cornerstonePosts: BlogPost[] = [
       'Learn the etiquette of mahjong — how to handle tiles, when to call, reading the flow, and the social rules that keep the table friendly.',
     readMinutes: 5,
     keywords: 'mahjong etiquette, mahjong table manners, how to behave playing mahjong',
+    heroTiles: [{"suit": 'wind', "wind": 'east'}, {"suit": 'wind', "wind": 'south'}, {"suit": 'wind', "wind": 'west'}, {"suit": 'wind', "wind": 'north'}, {"suit": 'dragon', "dragon": 'white'}],
     cta: { label: 'Play a Friendly Game', href: '/games/classic' },
     sections: [
       {
@@ -460,7 +475,8 @@ export const cornerstonePosts: BlogPost[] = [
         heading: 'Handle the Tiles With Care',
         body: [
           'Draw and discard one tile at a time. Do not sweep tiles across the table, and never rearrange another player\u2019s discards. Online, this translates to: take your turn without dragging the game — a slow but steady player is better than a fast sloppy one.'
-        ]
+        ],
+        tiles: [{"suit": 'dot', "rank": 1}, {"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 3}, {"suit": 'dot', "rank": 4}],
       },
       {
         heading: 'Call With Confidence, Not Habit',
@@ -501,6 +517,7 @@ export const cornerstonePosts: BlogPost[] = [
       'Where to buy a mahjong set online: what shops carry, how to check quality, price ranges, and what to avoid when buying your first set.',
     readMinutes: 6,
     keywords: 'buy mahjong online, where to buy mahjong set, mahjong set price',
+    heroTiles: [{"suit": 'dot', "rank": 1}, {"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 3}, {"suit": 'dot', "rank": 4}, {"suit": 'dot', "rank": 5}],
     cta: { label: 'Play Online for Free', href: '/games/classic' },
     sections: [
       {
@@ -533,7 +550,8 @@ export const cornerstonePosts: BlogPost[] = [
           '• ¥300\u2013¥800 — solid resin with crisp faces and a good case. The beginner sweet spot.',
           '• ¥800+ — premium and vintage sets. Only worth it if you know you play often.',
           'Spend at the middle tier for your first set and you will not regret it.'
-        ]
+        ],
+        tiles: [{"suit": 'dot', "rank": 1}, {"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 3}],
       },
       {
         heading: 'Try the Game Before You Commit',
@@ -556,6 +574,7 @@ export const cornerstonePosts: BlogPost[] = [
       'The fascinating history of mahjong — its origins in 19th-century China, the 1920s Western craze, its reinvention in Japan and America, and where it stands today.',
     readMinutes: 8,
     keywords: 'mahjong history, history of mahjong, mahjong origins, mahjong culture',
+    heroTiles: [{"suit": 'char', "rank": 1}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'green'}, {"suit": 'bamboo', "rank": 9}],
     cta: { label: 'Play the Classic Game', href: '/games/classic' },
     sections: [
       {
@@ -577,7 +596,8 @@ export const cornerstonePosts: BlogPost[] = [
         body: [
           'As mahjong spread it became many games. Japan built Riichi with its strict yaku and concealed-hand scoring. Taiwan developed the sixteen-tile game. Sichuan created the fast "bloody battle" variant. America kept the card-driven style that diverged furthest from the original.',
           'Each version kept the draw-and-discard core but rebuilt the scoring and strategy around local taste.'
-        ]
+        ],
+        tiles: [{"suit": 'wind', "wind": 'east'}, {"suit": 'wind', "wind": 'south'}, {"suit": 'wind', "wind": 'west'}, {"suit": 'wind', "wind": 'north'}],
       },
       {
         heading: 'Competitive Mahjong Today',

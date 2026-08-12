@@ -7,10 +7,13 @@
  */
 import { BLOG_I18N, type LocaleCode } from './blog.i18n';
 import { cornerstonePosts } from './blog.cornerstone';
+import type { TileSpec } from './tiles';
 
 export interface BlogSection {
   heading: string;
   body: string[];
+  /** Optional row of mahjong tiles (牌图) to render under the section. */
+  tiles?: TileSpec[];
 }
 
 export interface BlogFaq {
@@ -35,6 +38,8 @@ export interface BlogPost {
   keywords: string;
   /** End-of-article Play Now button back to the games. */
   cta?: BlogCta;
+  /** Decorative tile row for the article hero (配图). */
+  heroTiles?: TileSpec[];
 }
 
 /** Beginner guides (kept for /games/beginners) + cornerstone SEO articles. */
@@ -46,6 +51,7 @@ const beginnerPosts: BlogPost[] = [
       'Mahjong is a four-player tile game of skill, strategy and luck. Learn what mahjong is, how the tiles work, the main rulesets around the world, and how it differs from the tile-matching games you may have seen online.',
     readMinutes: 6,
     keywords: 'what is mahjong, mahjong rules, mahjong tiles, mahjong variants, four player mahjong',
+    heroTiles: [{"suit": 'char', "rank": 1}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}],
     sections: [
       {
         heading: 'Mahjong Is a Four-Player Tile Game',
@@ -59,7 +65,8 @@ const beginnerPosts: BlogPost[] = [
         body: [
           'A standard mahjong set has 144 tiles: three suits of numbered tiles, honour tiles (winds and dragons), and bonus tiles (flowers and seasons, used in some rulesets).',
           'The suits are: characters (万, tens), bamboo (条, bamboos) and dots (筒, circles), each numbered 1 through 9 with four copies of every tile. The honours are the four winds (East, South, West, North) and three dragons (Red, Green, White).'
-        ]
+        ],
+        tiles: [{"suit": 'char', "rank": 1}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}],
       },
       {
         heading: 'The Objective',
@@ -115,6 +122,7 @@ const beginnerPosts: BlogPost[] = [
       'Learn how to play mahjong from scratch: the tiles, setting up the wall, drawing and discarding, building pongs and chows, and declaring a winning hand — explained simply with examples.',
     readMinutes: 8,
     keywords: 'how to play mahjong, mahjong rules, mahjong for beginners, mahjong tutorial',
+    heroTiles: [{"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 3}, {"suit": 'dot', "rank": 4}, {"suit": 'bamboo', "rank": 6}],
     sections: [
       {
         heading: 'What You Need to Play',
@@ -145,7 +153,8 @@ const beginnerPosts: BlogPost[] = [
           '• Chi (吃): take the discard to complete a sequence (three consecutive tiles) — but only from the player on your left.',
           '• Kong (杠): take the discard to complete four identical tiles.',
           'Calling makes your hand open (exposed), which can reduce the patterns you are eligible for — so only call when it genuinely helps.'
-        ]
+        ],
+        tiles: [{ "suit": 'dot', "rank": 5 }, { "suit": 'dot', "rank": 5 }, { "suit": 'dot', "rank": 5 }, { "suit": 'bamboo', "rank": 6 }, { "suit": 'bamboo', "rank": 7 }, { "suit": 'bamboo', "rank": 8 }]
       },
       {
         heading: 'Winning a Hand',
@@ -183,6 +192,7 @@ const beginnerPosts: BlogPost[] = [
       'Practical mahjong strategy for beginners: choose a hand direction early, discard honours, read the discard pile, avoid over-calling, and reach ready faster. Beat the bots more often with these tips.',
     readMinutes: 7,
     keywords: 'how to win mahjong, mahjong strategy, mahjong tips, mahjong tenpai, mahjong tactics',
+    heroTiles: [{"suit": 'dragon', "dragon": 'red'}, {"suit": 'dragon', "dragon": 'green'}, {"suit": 'dragon', "dragon": 'white'}, {"suit": 'char', "rank": 7}],
     sections: [
       {
         heading: 'Pick a Direction Early',
@@ -228,7 +238,8 @@ const beginnerPosts: BlogPost[] = [
           '• All-triplets (碰碰胡): every set is a triplet.',
           '• Seven pairs (七对子): the classic alternative winning shape.',
           '• Dragon sets (三元牌): three dragons score in most rulesets.'
-        ]
+        ],
+        tiles: [{"suit": 'dragon', "dragon": 'red'}, {"suit": 'dragon', "dragon": 'green'}, {"suit": 'dragon', "dragon": 'white'}, {"suit": 'char', "rank": 7}, {"suit": 'char', "rank": 7}],
       },
       {
         heading: 'Play Your Ruleset, Not a Generic Game',

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getBlogPosts, getLocalizedBlogPost } from '@/data/blog';
+import { TileRow } from '@/components/TileArt';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -99,6 +100,13 @@ export default async function BlogPostPage({
         {post.readMinutes} min read
       </p>
 
+      {/* 配图 — decorative tile row */}
+      {post.heroTiles && post.heroTiles.length > 0 && (
+        <div className="mt-6 rounded-3xl rainbow-card px-6 py-6">
+          <TileRow tiles={post.heroTiles} size={60} />
+        </div>
+      )}
+
       <div className="mt-8 space-y-10">
         {post.sections.map((section, i) => (
           <section key={i}>
@@ -110,6 +118,11 @@ export default async function BlogPostPage({
                 {para}
               </p>
             ))}
+            {section.tiles && section.tiles.length > 0 && (
+              <div className="mt-4 rounded-2xl border border-gray-100 bg-white/60 px-4 py-4">
+                <TileRow tiles={section.tiles} size={48} />
+              </div>
+            )}
           </section>
         ))}
       </div>
