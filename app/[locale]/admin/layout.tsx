@@ -32,11 +32,26 @@ export default async function AdminLayout({
   const { locale } = await params;
 
   // 服务端会话校验：未登录一律重定向到对应语言的站点首页。
-  // （当前尚无可用登录通道——OAuth 凭证未配、无独立登录页；配好后即可进入。）
   // auth() 在 NextAuth v5 为重载类型，故用 .catch 推导而非手写 ReturnType 注解。
   const session = await auth().catch(() => null);
   if (!session?.user) {
     redirect(`/${locale}?auth=required`);
+  }
+
+  // 管理员白名单校验（与 lib/admin-guard.ts 的 requireAdmin 保持一致）：
+  // 仅 ADMIN_EMAILS 内的邮箱可进入后台。生产环境若未配置 ADMIN_EMAILS 则
+  // 一律 fail-closed，避免任何登录用户都能看到后台空壳（即便 API 也会 403，
+  // 但此处直接拦截更彻底）。
+  const allowList = process.env.ADMIN_EMAILS;
+  const isAdmin =
+    allowList &&
+    allowList
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .includes((session.user.email ?? '').toLowerCase());
+  const adminOk = isAdmin || (allowList ? false : process.env.NODE_ENV !== 'production');
+  if (!adminOk) {
+    redirect(`/${locale}?auth=forbidden`);
   }
 
   const items = NAV_ITEMS(locale);
