@@ -23,10 +23,12 @@ import {
 import { isWinningHand, shanten, waitingTiles } from './shanten';
 import { scoreHand, type ScoreResult } from './scoring';
 
+import { calculateRiichiPayment } from './riichi';
 export type Seat = 0 | 1 | 2 | 3;
 
 /** Ruleset presets. They share the engine and differ in scoring + legal calls. */
 export type Ruleset = 'hongkong' | 'riichi' | 'chinese-official';
+export type HongKongMode = 'casual' | 'standard';
 
 export interface RulesetConfig {
   id: Ruleset;
@@ -90,6 +92,11 @@ export interface PlayerState {
   isBot: boolean;
   /** Set once the player has declared a ready hand (riichi ruleset). */
   declaredReady: boolean;
+  riichiPending: boolean;
+  temporaryFuriten: boolean;
+  ippatsuEligible: boolean;
+  /** Drawn tile kept separately so a declared Riichi hand can only tsumogiri. */
+  lastDrawn?: Tile;
 }
 
 export type Phase = 'draw' | 'discard' | 'claim' | 'over';
@@ -117,6 +124,8 @@ export interface GameResult {
 
 export interface GameState {
   ruleset: Ruleset;
+  /** Casual accepts chicken hands; standard enforces the three-Fan gate. */
+  hongKongMode: HongKongMode;
   wall: Tile[];
   /** Index of the next tile to be drawn from the live wall. */
   wallIndex: number;
@@ -127,6 +136,8 @@ export interface GameState {
   phase: Phase;
   dealer: Seat;
   roundWind: Tile;
+  /** Number of dealer changes since East 1; used to advance the prevailing wind. */
+  handNumber: number;
   lastDiscard: { tile: Tile; from: Seat } | null;
   /** Pending claim options per seat, keyed by seat index. */
   claims: Partial<Record<Seat, ClaimOption[]>>;
@@ -137,6 +148,8 @@ export interface GameState {
   result: GameResult | null;
   log: string[];
   seed: number;
+  riichiSticks: number;
+  honba: number;
 }
 
 const DEAD_WALL_SIZE = 14;
@@ -155,15 +168,23 @@ export function tilesRemaining(state: GameState): number {
   return state.deadWallIndex - state.wallIndex;
 }
 
+/** Product-level Hong Kong win floor. Other variants use their preset. */
+export function minimumWinScore(state: GameState): number {
+  if (state.ruleset === 'hongkong') return state.hongKongMode === 'casual' ? 1 : 3;
+  return RULESETS[state.ruleset].minimumScore;
+}
+
 export interface CreateGameOptions {
   ruleset?: Ruleset;
   seed?: number;
+  hongKongMode?: HongKongMode;
   /** Seat controlled by the person playing; the rest are bots. */
   humanSeat?: Seat;
 }
 
 export function createGame(options: CreateGameOptions = {}): GameState {
   const ruleset = options.ruleset ?? 'hongkong';
+  const hongKongMode = options.hongKongMode ?? 'standard';
   const seed = options.seed ?? Math.floor(Math.random() * 2 ** 31);
   const humanSeat = options.humanSeat ?? 0;
   const rng = createRng(seed);
@@ -175,9 +196,12 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     melds: [],
     discards: [],
     seatWind: WINDS[seat],
-    score: 78000,
+    score: ruleset === 'riichi' ? 30000 : 78000,
     isBot: seat !== humanSeat,
-    declaredReady: false
+    declaredReady: false,
+    riichiPending: false,
+    temporaryFuriten: false,
+    ippatsuEligible: false
   }));
 
   let index = 0;
@@ -191,6 +215,7 @@ export function createGame(options: CreateGameOptions = {}): GameState {
 
   const state: GameState = {
     ruleset,
+    hongKongMode,
     wall,
     wallIndex: index,
     deadWallIndex: wall.length - DEAD_WALL_SIZE,
@@ -199,15 +224,49 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     phase: 'draw',
     dealer: 0,
     roundWind: WINDS[0],
+    handNumber: 0,
     lastDiscard: null,
     claims: {},
     submitted: {},
     result: null,
     log: [],
-    seed
+    seed,
+    riichiSticks: 0,
+    honba: 0
   };
 
   return state;
+}
+
+/**
+ * Deal the next hand while preserving the table score, dealer progression,
+ * honba and any unclaimed Riichi sticks. New Game remains the explicit way to
+ * start a fresh match from the opening score.
+ */
+export function startNextHand(state: GameState): GameState {
+  if (state.phase !== 'over') return state;
+  const winner = state.result?.winner;
+  const dealerKeepsSeat = state.result?.kind === 'draw' || winner === state.dealer;
+  const dealer = dealerKeepsSeat ? state.dealer : nextSeat(state.dealer);
+  const handNumber = state.handNumber + (dealerKeepsSeat ? 0 : 1);
+  const humanSeat = state.players.find((player) => !player.isBot)?.seat ?? 0;
+  const next = createGame({
+    ruleset: state.ruleset,
+    hongKongMode: state.hongKongMode,
+    humanSeat,
+    seed: state.seed + 1
+  });
+  next.dealer = dealer;
+  next.handNumber = handNumber;
+  next.roundWind = WINDS[Math.floor(handNumber / 4) % 4];
+  next.honba = state.honba;
+  next.riichiSticks = state.riichiSticks;
+  for (const seat of SEATS) {
+    next.players[seat].score = state.players[seat].score;
+    next.players[seat].seatWind = WINDS[(seat - dealer + 4) % 4];
+  }
+  next.log = [...state.log, `Next hand: ${next.roundWind} ${handNumber % 4 + 1}; dealer seat ${dealer}.`];
+  return next;
 }
 
 function clone(state: GameState): GameState {
@@ -249,6 +308,19 @@ export function drawTile(state: GameState): GameState {
 
   if (tilesRemaining(next) <= 0) {
     next.phase = 'over';
+    if (next.ruleset === 'riichi') {
+      const tenpai = SEATS.filter((seat) => seatShanten(next, seat) === 0);
+      if (tenpai.length > 0 && tenpai.length < 4) {
+        const gain = 3000 / tenpai.length;
+        const loss = 3000 / (4 - tenpai.length);
+        for (const seat of SEATS) {
+          if (tenpai.includes(seat)) next.players[seat].score += gain;
+          else next.players[seat].score -= loss;
+        }
+      }
+      next.honba += 1;
+      next.log.push('Exhaustive draw: 3,000-point noten payment settled.');
+    }
     next.result = { kind: 'draw' };
     next.log.push('Wall exhausted — the hand is drawn.');
     return next;
@@ -258,6 +330,8 @@ export function drawTile(state: GameState): GameState {
   next.wallIndex += 1;
   const player = next.players[next.turn];
   player.hand = sortTiles([...player.hand, tile]);
+  player.lastDrawn = tile;
+  if (!player.declaredReady) player.temporaryFuriten = false;
   next.phase = 'discard';
   next.lastDiscard = null;
   return next;
@@ -269,6 +343,7 @@ function drawReplacement(state: GameState, seat: Seat): void {
   const tile = state.wall[state.deadWallIndex];
   state.deadWallIndex += 1;
   state.players[seat].hand = sortTiles([...state.players[seat].hand, tile]);
+  state.players[seat].lastDrawn = tile;
 }
 
 export interface SelfDrawEvaluation {
@@ -281,7 +356,7 @@ export interface SelfDrawEvaluation {
 /** Distinguish a complete shape from a legal win that clears the score floor. */
 export function evaluateSelfDraw(state: GameState, seat: Seat): SelfDrawEvaluation {
   const player = state.players[seat];
-  const minimum = RULESETS[state.ruleset].minimumScore;
+  const minimum = minimumWinScore(state);
   if (player.hand.length % 3 !== 2) {
     return { complete: false, legal: false, score: null, minimum };
   }
@@ -293,12 +368,38 @@ export function evaluateSelfDraw(state: GameState, seat: Seat): SelfDrawEvaluati
     winningTile: player.hand[player.hand.length - 1],
     selfDrawn: true
   });
-  return { complete: true, legal: score.total >= minimum, score, minimum };
+  const legal = state.ruleset === 'riichi'
+    ? Boolean(score.legalYaku)
+    : score.total >= minimum;
+  return { complete: true, legal, score, minimum };
 }
 
 /** Can this seat declare a self-drawn win right now? */
 export function canDeclareTsumo(state: GameState, seat: Seat): boolean {
   return evaluateSelfDraw(state, seat).legal;
+}
+
+/** Discards that leave a closed Riichi hand in tenpai. */
+export function availableRiichiDiscards(state: GameState, seat: Seat): Tile[] {
+  if (state.ruleset !== 'riichi' || state.phase !== 'discard' || state.turn !== seat) return [];
+  const player = state.players[seat];
+  if (player.declaredReady || player.melds.some((meld) => !meld.concealed)) return [];
+  const candidates = new Set<Tile>();
+  for (const tile of player.hand) {
+    const hand = [...player.hand];
+    if (!removeTile(hand, tile)) continue;
+    if (shanten(toCounts(hand), meldCount(player), 'riichi') === 0) candidates.add(tile);
+  }
+  return [...candidates];
+}
+
+/** Arm Riichi; the declaration becomes final on a highlighted tenpai discard. */
+export function declareRiichi(state: GameState, seat: Seat): GameState {
+  if (availableRiichiDiscards(state, seat).length === 0) return state;
+  const next = clone(state);
+  next.players[seat].riichiPending = true;
+  next.log.push('Seat ' + seat + ' announces riichi.');
+  return next;
 }
 /** Concealed kans available on the current draw. */
 export function availableConcealedKans(state: GameState, seat: Seat): Tile[] {
@@ -313,6 +414,7 @@ export function availableConcealedKans(state: GameState, seat: Seat): Tile[] {
 }
 
 export function declareConcealedKan(state: GameState, seat: Seat, tile: Tile): GameState {
+  if (state.ruleset === 'riichi' && state.players[seat].declaredReady) return state;
   const next = clone(state);
   const player = next.players[seat];
   for (let i = 0; i < 4; i += 1) removeTile(player.hand, tile);
@@ -332,8 +434,25 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
   if (state.phase !== 'discard') return state;
   const next = clone(state);
   const player = next.players[next.turn];
+  const confirmingRiichi = player.riichiPending;
+  if (player.declaredReady && tile !== player.lastDrawn) return state;
+  if (player.riichiPending && !availableRiichiDiscards(state, next.turn).includes(tile)) {
+    return state;
+  }
   if (!removeTile(player.hand, tile)) return state;
+  if (player.riichiPending) {
+    player.riichiPending = false;
+    player.declaredReady = true;
+    player.score -= 1000;
+    player.ippatsuEligible = true;
+    next.riichiSticks += 1;
+    next.log.push('Riichi declared: 1,000-point stick placed.');
+  }
+  if (!confirmingRiichi && player.ippatsuEligible) {
+    player.ippatsuEligible = false;
+  }
   player.hand = sortTiles(player.hand);
+  player.lastDrawn = undefined;
   player.discards.push(tile);
   next.lastDiscard = { tile, from: next.turn };
 
@@ -370,12 +489,20 @@ export function passUnansweredClaims(state: GameState, now: number): GameState {
 }
 
 /** Work out what every other seat could call on the discarded tile. */
+export function isPermanentFuriten(state: GameState, seat: Seat): boolean {
+  if (state.ruleset !== 'riichi') return false;
+  const player = state.players[seat];
+  const waits = waitingTiles(handCounts(player), meldCount(player), 'riichi');
+  return waits.some((tile) => player.discards.includes(tile));
+}
+
 function collectClaims(
   state: GameState,
   tile: Tile,
   from: Seat
 ): Partial<Record<Seat, ClaimOption[]>> {
   const config = RULESETS[state.ruleset];
+  const minimum = minimumWinScore(state);
   const claims: Partial<Record<Seat, ClaimOption[]>> = {};
 
   for (const seat of SEATS) {
@@ -388,9 +515,12 @@ function collectClaims(
     // Ron — completing the hand on someone else's discard.
     const test = [...counts];
     test[index] += 1;
-    if (isWinningHand(test, meldCount(player), state.ruleset)) {
+    const blockedByFuriten = state.ruleset === 'riichi' && (
+      player.temporaryFuriten || isPermanentFuriten(state, seat)
+    );
+    if (!blockedByFuriten && isWinningHand(test, meldCount(player), state.ruleset)) {
       const score = scoreHand({ state, seat, winningTile: tile, selfDrawn: false });
-      if (score.total >= config.minimumScore) {
+      if (state.ruleset === 'riichi' ? score.legalYaku : score.total >= minimum) {
         options.push({ kind: 'ron', tiles: [tile] });
       }
     }
@@ -437,6 +567,11 @@ export function submitClaim(
 ): GameState {
   if (state.phase !== 'claim') return state;
   const next = clone(state);
+  if (state.ruleset === 'riichi' && option.kind === 'pass' &&
+      state.claims[seat]?.some((claim) => claim.kind === 'ron')) {
+    next.players[seat].temporaryFuriten = true;
+  }
+
   next.submitted[seat] = option;
   return maybeResolveClaims(next);
 }
@@ -456,7 +591,12 @@ export function maybeResolveClaims(state: GameState): GameState {
     (seat) => next.submitted[seat]!.kind === 'ron'
   );
   if (ronSeats.length >= 2 && next.ruleset === 'riichi') {
-    return finishWithDoubleRon(next, ronSeats, discardInfo);
+    const winner = ronSeats.sort((a, b) =>
+      ((a - discardInfo.from + 4) % 4) - ((b - discardInfo.from + 4) % 4)
+    )[0];
+    next.claims = {};
+    next.submitted = {};
+    return finishWithWin(next, winner, discardInfo.tile, false, discardInfo.from);
   }
 
   let best: { seat: Seat; option: ClaimOption } | null = null;
@@ -488,11 +628,15 @@ export function maybeResolveClaims(state: GameState): GameState {
   const caller = next.players[best.seat];
   for (const tile of best.option.tiles) removeTile(caller.hand, tile);
   caller.hand = sortTiles(caller.hand);
+  caller.lastDrawn = undefined;
 
   const meldTiles = sortTiles([...best.option.tiles, discardInfo.tile]);
   const kind: MeldKind =
     best.option.kind === 'chi' ? 'chi' : best.option.kind === 'kan' ? 'kan' : 'pon';
   caller.melds.push({ kind, tiles: meldTiles, from: discardInfo.from });
+  if (next.ruleset === 'riichi') {
+    for (const participant of next.players) participant.ippatsuEligible = false;
+  }
   next.log.push(`Seat ${best.seat} calls ${best.option.kind}.`);
 
   if (kind === 'kan') drawReplacement(next, best.seat);
@@ -547,6 +691,34 @@ function finishWithWin(
   const score = scoreHand({ state, seat, winningTile, selfDrawn });
   state.phase = 'over';
   state.result = { kind: 'win', winner: seat, loser, score };
+  if (state.ruleset === 'riichi') {
+    const payment = calculateRiichiPayment({
+      han: score.han ?? score.total,
+      fu: score.fu ?? 30,
+      winner: seat,
+      dealer: state.dealer,
+      selfDrawn,
+      honba: state.honba
+    });
+    score.points = payment.winnerGain;
+    score.paymentLabel = payment.label;
+    if (selfDrawn) {
+      for (const payer of SEATS) {
+        if (payer === seat) continue;
+        state.players[payer].score -= payment.payments[payer] ?? 0;
+      }
+    } else if (loser !== undefined) {
+      state.players[loser].score -= payment.winnerGain;
+    }
+    state.players[seat].score += payment.winnerGain;
+    if (state.riichiSticks > 0) {
+      state.players[seat].score += state.riichiSticks * 1000;
+      state.riichiSticks = 0;
+    }
+    state.honba = seat === state.dealer ? state.honba + 1 : 0;
+    state.log.push('Riichi settlement: ' + payment.label + '.');
+    return state;
+  }
   if (selfDrawn) {
     for (const payer of SEATS) {
       if (payer === seat) continue;

@@ -2,10 +2,11 @@
 
 import { tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
 
-export type TileSize = 'sm' | 'md' | 'lg' | 'table' | 'xl';
+export type TileSize = 'xs' | 'sm' | 'md' | 'lg' | 'table' | 'xl';
 
 const SIZE_CLASS: Record<TileSize, string> = {
   sm: 'h-9 w-7 text-xs rounded-md',
+  xs: 'h-10 w-6 text-[10px] rounded',
   md: 'h-14 w-10 text-lg rounded-lg',
   lg: 'h-[4.5rem] w-14 text-2xl rounded-xl',
   table: 'h-12 w-9 text-sm rounded-md',

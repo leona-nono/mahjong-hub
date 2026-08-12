@@ -9,9 +9,11 @@ import {
   CLAIM_TIMEOUT_MS,
   RULESETS,
   availableConcealedKans,
+  availableRiichiDiscards,
   canDeclareTsumo,
   createGame,
   declareConcealedKan,
+  declareRiichi,
   declareTsumo,
   discard,
   drawTile,
@@ -19,10 +21,12 @@ import {
   passUnansweredClaims,
   seatShanten,
   seatWaits,
+  startNextHand,
   submitClaim,
   tilesRemaining,
   type ClaimOption,
   type GameState,
+  type HongKongMode,
   type Ruleset,
   type Seat
 } from '@/lib/mahjong/engine';
@@ -57,18 +61,19 @@ export default function MahjongTable({
   const [ruleset, setRuleset] = useState<Ruleset>(defaultRuleset);
   const traditional = ruleset === 'hongkong' || ruleset === 'chinese-official';
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
+  const [hongKongMode, setHongKongMode] = useState<HongKongMode>('casual');
   const [showHints, setShowHints] = useState(true);
   const [paused, setPaused] = useState(false);
   const [state, setState] = useState<GameState>(() =>
-    createGame({ ruleset: defaultRuleset, humanSeat: HUMAN, seed: 1 })
+    createGame({ ruleset: defaultRuleset, humanSeat: HUMAN, seed: 1, hongKongMode: 'casual' })
   );
 
   const newGame = useCallback(
-    (nextRuleset: Ruleset = ruleset) => {
-      setState(createGame({ ruleset: nextRuleset, humanSeat: HUMAN }));
+    (nextRuleset: Ruleset = ruleset, nextHongKongMode: HongKongMode = hongKongMode) => {
+      setState(createGame({ ruleset: nextRuleset, humanSeat: HUMAN, hongKongMode: nextHongKongMode }));
       setPaused(false);
     },
-    [ruleset]
+    [ruleset, hongKongMode]
   );
 
   // --- Game driver --------------------------------------------------------
@@ -167,6 +172,7 @@ export default function MahjongTable({
   const tsumoEvaluation = myTurn ? evaluateSelfDraw(state, HUMAN) : null;
   const canTsumo = Boolean(tsumoEvaluation?.legal);
   const kanTiles = myTurn ? availableConcealedKans(state, HUMAN) : [];
+  const riichiDiscards = myTurn ? availableRiichiDiscards(state, HUMAN) : [];
 
   // A legal self-draw is terminal: show the result automatically instead of
   // leaving the player on a completed hand with no visible outcome.
@@ -189,12 +195,15 @@ export default function MahjongTable({
     setState((current) => submitClaim(current, HUMAN, option));
   };
 
-  if (ruleset === 'hongkong') {
+  if (ruleset === 'hongkong' || ruleset === 'riichi') {
     return (
       <HongKongTable
         state={state}
         paused={paused}
+        variant={ruleset}
+        riichiDiscards={riichiDiscards}
         difficulty={difficulty}
+        hongKongMode={hongKongMode}
         showHints={showHints}
         myTurn={myTurn}
         myClaims={myClaims}
@@ -203,13 +212,19 @@ export default function MahjongTable({
         tsumoEvaluation={tsumoEvaluation}
         kanTiles={kanTiles}
         onDifficulty={setDifficulty}
+        onHongKongMode={(mode) => {
+          setHongKongMode(mode);
+          newGame(ruleset, mode);
+        }}
         onToggleHints={() => setShowHints((value) => !value)}
         onTogglePause={() => setPaused((value) => !value)}
-        onNewGame={() => newGame('hongkong')}
+        onNewGame={() => newGame(ruleset, hongKongMode)}
+        onNextHand={() => setState((current) => startNextHand(current))}
         onDiscard={handleDiscard}
         onClaim={handleClaim}
         onTsumo={() => setState((current) => declareTsumo(current, HUMAN))}
         onKan={(tile) => setState((current) => declareConcealedKan(current, HUMAN, tile))}
+        onRiichi={() => setState((current) => declareRiichi(current, HUMAN))}
       />
     );
   }

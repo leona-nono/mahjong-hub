@@ -79,13 +79,13 @@ export const games: GameConfig[] = [
     featured: true,
     content: {
       intro:
-        'Hong Kong Old Style is the most widely played four-player mahjong ruleset outside Japan, and the easiest one to learn first. You build a hand of four sets and one pair, and you need at least three faan to declare a win. This table gives you three computer opponents, an optional readiness hint, and a breakdown of how every winning hand scored.',
+        'Hong Kong Old Style is one of the most widely played four-player mahjong rulesets outside Japan. Build four sets and one pair, then choose Casual mode for beginner-friendly chicken hands or Standard mode for the traditional three-faan minimum. The table includes three computer opponents, readiness hints, and a breakdown of every winning hand.',
       howToPlay: [
         'Each player starts with 13 tiles. On your turn you draw one tile and then discard one, keeping your hand at 13.',
         'A winning hand is four sets plus one pair. A set is either three identical tiles or three consecutive tiles in the same suit.',
         'When another player discards a tile you need, you may call it: pong for a triplet, chi for a sequence (from the player to your left only), or kong for all four copies.',
         'Calling a tile makes your hand open, which costs you some scoring patterns. Take the call only when it genuinely moves you forward.',
-        'Declare a win by self-draw or on another player\u2019s discard, provided the hand meets the three faan minimum.'
+        'Declare a win by self-draw or on another player\u2019s discard. Casual mode accepts any complete four-sets-and-a-pair hand; Standard mode requires at least three faan.'
       ],
       tips: [
         'Discard lone honour tiles early. They are the hardest tiles to pair up and the least flexible thing in your hand.',
@@ -105,9 +105,9 @@ export const games: GameConfig[] = [
             'This is real four-player mahjong with drawing, discarding, calling and scoring. The tile-matching game most Western sites call "mahjong" is mahjong solitaire, which is a different game.'
         },
         {
-          question: 'What does the three faan minimum mean?',
+          question: 'What is the difference between Casual and Standard mode?',
           answer:
-            'Hong Kong rules require a hand to be worth at least three faan before you may declare a win. A hand that is technically complete but scores less cannot be declared, so you keep playing to improve it.'
+            'Casual mode lets any structurally complete hand win and awards a one-faan chicken hand when no other pattern scores. Standard Hong Kong mode requires at least three faan, so a complete lower-scoring hand must keep playing.'
         },
         {
           question: 'Is there any real-money gambling?',
@@ -131,18 +131,22 @@ export const games: GameConfig[] = [
     featured: true,
     content: {
       intro:
-        'Riichi is the Japanese ruleset that most of the modern competitive mahjong scene plays. It rewards concealed hands and rich pattern-building rather than raw speed, which makes it the deepest of the three rulesets on this site and the most rewarding to study.',
+        'This four-player Japanese Riichi table follows the approved World Riichi Championship 2025 baseline: no red fives, one-winner head-bump, and a 30,000-point start.',
       howToPlay: [
-        'The core loop is the same as any four-player mahjong: draw a tile, discard a tile, and build four sets plus a pair.',
-        'Riichi puts a premium on keeping your hand concealed. Calling tiles from other players closes off many scoring patterns.',
-        'A hand needs at least one scoring pattern to be declared, so a hand that is merely complete is not always a winning hand.',
-        'Seven pairs and thirteen orphans count as alternative winning shapes, both of which require a fully concealed hand.'
+        'Each player starts with 13 tiles. Draw one tile and discard one, aiming for four sets and a pair; Seven Pairs and Thirteen Orphans are also valid closed shapes.',
+        'A complete shape is not enough: the hand needs at least one yaku. Dora adds value but is not a yaku by itself.',
+        'Chi is available only from the player on your left. Pon, Kan and Ron may be called from any opponent, subject to claim priority.',
+        'Keep the hand closed and reach tenpai to declare Riichi. Choose a highlighted discard and place a 1,000-point stick.',
+        'Win by Tsumo on your own draw or Ron on an opponent discard. Under WRC head-bump, only the first winner in turn order receives the Ron.',
+        'The match runs through East and South rounds. Tenpai keeps the dealer; exhaustive draws use a 3,000-point noten payment.',
+        'This table uses 136 tiles, a 14-tile dead wall, Dora indicators and no red fives.'
       ],
       tips: [
-        'Concealed hands score much better here than under Hong Kong rules. Resist calling unless the call takes you straight to ready.',
-        'All-simples is the workhorse pattern: no terminals, no honours. It is reachable from almost any starting hand.',
-        'Dealt four or more pairs early, seven pairs is often a faster route to ready than forcing four sets.',
-        'Late in the hand, watch which tiles the other seats have stopped discarding. That is usually where their wait is.'
+        'Secure a yaku before chasing Dora: bonus tiles cannot make an otherwise yaku-less hand legal.',
+        'Compare shanten and effective tiles before every discard; keep shapes with more improving draws.',
+        'Against Riichi, begin with genbutsu, then use suji and visible tile walls to reduce risk.',
+        'Declare Riichi deliberately: compare wait quality, hand value, remaining tiles and the match score.',
+        'Do not force low-value attacks late in the hand when a safer fold protects your position.'
       ],
       faq: [
         {

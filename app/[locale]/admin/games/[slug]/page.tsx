@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
 import { isDbConnected } from '@/lib/db-health';
-import type { Game } from '@/lib/generated/prisma';
+import type { Game } from '@prisma/client';
 import GameEditorForm from '@/components/admin/GameEditorForm';
 
 export const dynamic = 'force-dynamic';
