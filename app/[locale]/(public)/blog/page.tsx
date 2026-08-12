@@ -1,0 +1,42 @@
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
+import { getBlogPosts, getLocalizedBlogPosts } from '@/data/blog';
+
+export default async function BlogPage({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations('nav');
+  const posts = getLocalizedBlogPosts(getBlogPosts(), locale);
+
+  return (
+    <div className="mx-auto max-w-4xl px-4 py-12">
+      <h1 className="text-3xl font-black rainbow-text">{t('beginners')}</h1>
+      <p className="mt-3 text-gray-600">{t('beginnersSubtitle')}</p>
+
+      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        {posts.map((post) => (
+          <Link
+            key={post.slug}
+            href={`/blog/${post.slug}`}
+            className="block rounded-2xl rainbow-card p-6 transition hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="font-bold text-gray-800">{post.title}</h2>
+              <span className="shrink-0 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+                {post.readMinutes} min
+              </span>
+            </div>
+            <p className="mt-2 line-clamp-3 text-sm text-gray-500">
+              {post.description}
+            </p>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -45,7 +45,7 @@ export default function Header() {
       children: classicChildren
     },
     { key: 'solitaire', label: tn('solitaire'), href: '/games/solitaire' },
-    { key: 'beginners', label: tn('beginners'), href: '/games/beginners' },
+    { key: 'beginners', label: tn('beginners'), href: '/blog' },
     { key: 'set', label: tn('set'), href: '/games/set' }
   ];
 

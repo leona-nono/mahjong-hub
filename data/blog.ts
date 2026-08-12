@@ -6,6 +6,7 @@
  * as FAQPage JSON-LD for rich results.
  */
 import { BLOG_I18N, type LocaleCode } from './blog.i18n';
+import { cornerstonePosts } from './blog.cornerstone';
 
 export interface BlogSection {
   heading: string;
@@ -17,6 +18,12 @@ export interface BlogFaq {
   answer: string;
 }
 
+/** End-of-article Play Now button back to the games. */
+export interface BlogCta {
+  label: string;
+  href: string;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -26,9 +33,12 @@ export interface BlogPost {
   faq: BlogFaq[];
   /** Meta keywords (not rendered). */
   keywords: string;
+  /** End-of-article Play Now button back to the games. */
+  cta?: BlogCta;
 }
 
-export const blogPosts: BlogPost[] = [
+/** Beginner guides (kept for /games/beginners) + cornerstone SEO articles. */
+const beginnerPosts: BlogPost[] = [
   {
     slug: 'what-is-mahjong',
     title: 'What Is Mahjong? A Complete Beginner Guide',
@@ -237,6 +247,8 @@ export const blogPosts: BlogPost[] = [
     ]
   }
 ];
+
+export const blogPosts: BlogPost[] = [...beginnerPosts, ...cornerstonePosts];
 
 export function getBlogPosts(): BlogPost[] {
   return blogPosts;
