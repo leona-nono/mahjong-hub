@@ -3,7 +3,7 @@
 import { SessionProvider, useSession } from 'next-auth/react';
 import { useEffect, type ReactNode } from 'react';
 import { clearSessionUser, initAuth, syncSessionUser } from '@/lib/auth';
-import { initPoints } from '@/lib/points';
+import { initPoints, awardPoints } from '@/lib/points';
 import LoginModal from '@/components/LoginModal';
 
 export interface EnabledAuthProviders {
@@ -12,6 +12,8 @@ export interface EnabledAuthProviders {
   x: boolean;
   email: boolean;
 }
+
+const FIRST_LOGIN_KEY = 'mh_first_email_login_rewarded';
 
 /** Keeps the legacy points UI aware of the authoritative Auth.js session. */
 function AuthSessionBridge() {
@@ -27,6 +29,16 @@ function AuthSessionBridge() {
         avatar: user.image ?? undefined,
         provider: 'authjs'
       });
+      // First email login bonus (P0-2). Client-side once-per-browser for now;
+      // the server-side ledger (P0-1) will move this to a per-user DB flag.
+      try {
+        if (!localStorage.getItem(FIRST_LOGIN_KEY)) {
+          awardPoints(500, 'email_first_login');
+          localStorage.setItem(FIRST_LOGIN_KEY, '1');
+        }
+      } catch {
+        /* ignore */
+      }
     } else if (status === 'unauthenticated') {
       clearSessionUser();
     }
