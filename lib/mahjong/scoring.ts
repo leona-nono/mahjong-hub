@@ -56,6 +56,8 @@ export interface ScoreResult {
 const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }> = {
   chickenHand: { base: 1, riichi: 0, 'chinese-official': 0 },
   selfDraw: { base: 1, 'chinese-official': 1, riichi: 1 },
+  replacementWin: { base: 1 },
+  robbingKong: { base: 1 },
   riichi: { base: 0, riichi: 1 },
   ippatsu: { base: 0, riichi: 1 },
   pinfu: { base: 0, riichi: 1 },
@@ -279,11 +281,18 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     } else if (runBlocks.length === 4 && isConcealed) {
       push('allSequences', 'All Sequences');
     }
+
   }
 
   // --- Conditions of the win itself ----------------------------------------
   if (selfDrawn && (ruleset !== 'riichi' || isConcealed)) push('selfDraw', 'Self Draw');
   if (isConcealed && ruleset !== 'riichi') push('concealed', 'Fully Concealed');
+  if (ruleset === 'hongkong' && selfDrawn && player.lastDrawWasReplacement) {
+    push('replacementWin', 'Win on Kong Replacement');
+  }
+  if (ruleset === 'hongkong' && state.winContext === 'rob-kong') {
+    push('robbingKong', 'Robbing the Kong');
+  }
 
   // Beginner-friendly product mode: a structurally complete zero-Fan hand
   // becomes a one-Fan chicken hand, so it settles for a non-zero score.

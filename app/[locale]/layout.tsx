@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -27,6 +27,14 @@ export const metadata: Metadata = {
       ko: '/ko'
     }
   }
+};
+
+// Some mobile in-app browsers otherwise select a desktop layout viewport
+// (roughly 980px), which makes the four-player table overflow off-screen.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover'
 };
 
 // 根布局：只负责 <html>/<body> + i18n Provider + 全局 Providers。

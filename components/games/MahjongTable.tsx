@@ -8,11 +8,11 @@ import HongKongTable from './HongKongTable';
 import {
   CLAIM_TIMEOUT_MS,
   RULESETS,
-  availableConcealedKans,
+  availableKans,
   availableRiichiDiscards,
   canDeclareTsumo,
   createGame,
-  declareConcealedKan,
+  declareKan,
   declareRiichi,
   declareTsumo,
   discard,
@@ -82,7 +82,7 @@ export default function MahjongTable({
   useEffect(() => {
     if (paused || state.phase === 'over') return undefined;
 
-    if (state.phase === 'claim') {
+    if (state.phase === 'claim' || state.phase === 'added-kan-claim') {
       const pending = (Object.keys(state.claims).map(Number) as Seat[]).filter(
         (seat) => state.submitted[seat] === undefined
       );
@@ -132,7 +132,7 @@ export default function MahjongTable({
           const seat = current.turn;
           const move = chooseMove(current, seat, difficulty);
           if (move.type === 'tsumo') return declareTsumo(current, seat);
-          if (move.type === 'kan') return declareConcealedKan(current, seat, move.tile);
+          if (move.type === 'kan') return declareKan(current, seat, move.tile);
           return discard(current, move.tile);
         });
       }, DELAY.botDiscard);
@@ -158,7 +158,7 @@ export default function MahjongTable({
   const human = state.players[HUMAN];
   const myTurn = state.turn === HUMAN && state.phase === 'discard';
   const myClaims: ClaimOption[] | undefined =
-    state.phase === 'claim' && state.submitted[HUMAN] === undefined
+    (state.phase === 'claim' || state.phase === 'added-kan-claim') && state.submitted[HUMAN] === undefined
       ? state.claims[HUMAN]
       : undefined;
 
@@ -171,7 +171,7 @@ export default function MahjongTable({
 
   const tsumoEvaluation = myTurn ? evaluateSelfDraw(state, HUMAN) : null;
   const canTsumo = Boolean(tsumoEvaluation?.legal);
-  const kanTiles = myTurn ? availableConcealedKans(state, HUMAN) : [];
+  const kanTiles = myTurn ? availableKans(state, HUMAN) : [];
   const riichiDiscards = myTurn ? availableRiichiDiscards(state, HUMAN) : [];
 
   // A legal self-draw is terminal: show the result automatically instead of
@@ -223,7 +223,7 @@ export default function MahjongTable({
         onDiscard={handleDiscard}
         onClaim={handleClaim}
         onTsumo={() => setState((current) => declareTsumo(current, HUMAN))}
-        onKan={(tile) => setState((current) => declareConcealedKan(current, HUMAN, tile))}
+        onKan={(tile) => setState((current) => declareKan(current, HUMAN, tile))}
         onRiichi={() => setState((current) => declareRiichi(current, HUMAN))}
       />
     );
@@ -385,7 +385,7 @@ export default function MahjongTable({
             <button
               key={tile}
               type="button"
-              onClick={() => setState((c) => declareConcealedKan(c, HUMAN, tile))}
+              onClick={() => setState((c) => declareKan(c, HUMAN, tile))}
               className="rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-700"
             >
               {t('call.kan')} {tileFace(tile)}

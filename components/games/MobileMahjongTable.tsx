@@ -5,7 +5,7 @@ import { useLocale } from 'next-intl';
 import TileFace, { TileBack } from './TileFace';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
-import { primeMahjongAudio } from '@/lib/mahjong/sound';
+import { playMahjongSound, primeMahjongAudio } from '@/lib/mahjong/sound';
 
 const HUMAN: Seat = 0;
 const NAMES: Record<Seat, string> = { 0: 'YOU', 1: 'SOUTH', 2: 'WEST', 3: 'NORTH' };
@@ -132,6 +132,21 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                 {isZh
                   ? `当前 ${tsumoEvaluation.score?.total ?? 0} 番，香港麻将需要 ${tsumoEvaluation.minimum} 番才能胡；还差 ${Math.max(0, tsumoEvaluation.minimum - (tsumoEvaluation.score?.total ?? 0))} 番。`
                   : `${tsumoEvaluation.score?.total ?? 0} Fan now; ${tsumoEvaluation.minimum} Fan required to win.`}
+                {tsumoEvaluation.score?.patterns.length ? (
+                  <span className="mt-1 block text-[10px] font-bold text-amber-800">
+                    {isZh ? '已有番种：' : 'Current patterns: '}
+                    {tsumoEvaluation.score.patterns.map((pattern) => pattern.label).join(' · ')}
+                  </span>
+                ) : null}
+                {!isRiichi && hongKongMode === 'standard' && (
+                  <button
+                    type="button"
+                    onClick={() => onHongKongMode('casual')}
+                    className="mt-2 rounded-md bg-emerald-700 px-3 py-1.5 text-[10px] font-black text-white"
+                  >
+                    {isZh ? '改用休闲模式（重新开局）' : 'Switch to Casual (new hand)'}
+                  </button>
+                )}
               </div>
             )}
             {canTsumo && <Action onClick={onTsumo} danger>{isZh ? '自摸 · 胡牌' : 'SELF DRAW · WIN'}</Action>}
@@ -165,7 +180,12 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                   traditional
                   onClick={(selected) => {
                     primeMahjongAudio();
-                    if (!human.riichiPending || riichiDiscards.includes(selected)) onDiscard(selected);
+                    if (!human.riichiPending || riichiDiscards.includes(selected)) {
+                      // Speech must run inside the tap gesture on mobile;
+                      // deferred React effects are often blocked by the browser.
+                      if (soundEnabled) playMahjongSound('discard', selected);
+                      onDiscard(selected);
+                    }
                   }}
                   disabled={!myTurn || paused || (human.riichiPending && !riichiDiscards.includes(tile))}
                   highlight={(myTurn && index === human.hand.length - 1) || (human.riichiPending && riichiDiscards.includes(tile))}
@@ -202,7 +222,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                       ? `${resultScore.han ?? resultScore.total} Han · ${resultScore.fu ?? 0} Fu`
                       : `${resultScore.total} ${isZh ? '番' : 'Fan'}`}
                   </strong>
-                  {isRiichi && resultScore.points && (
+                  {resultScore.points && (
                     <span className="mt-1 block text-xs font-black text-emerald-800">{resultScore.points} points · {resultScore.paymentLabel}</span>
                   )}
                   <span className="mt-1 block text-xs font-bold text-slate-600">

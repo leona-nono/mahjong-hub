@@ -106,6 +106,9 @@ export default function HongKongTable({
     const previousDiscards = previous.players.reduce((total, player) => total + player.discards.length, 0);
     const currentDiscards = state.players.reduce((total, player) => total + player.discards.length, 0);
     if (currentDiscards > previousDiscards) {
+      // Mobile human discards already announce inside the user gesture. Keep
+      // this state effect for desktop and bot discards without double speech.
+      if (state.lastDiscard?.from === HUMAN && typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) return;
       playMahjongSound('discard', state.lastDiscard?.tile);
       return;
     }
@@ -298,7 +301,11 @@ export default function HongKongTable({
               )}
               {tsumoEvaluation?.complete && !tsumoEvaluation.legal && (
                 <div className="max-w-md rounded-lg border border-amber-300/40 bg-amber-50 px-4 py-2 text-sm font-bold text-amber-950">
-                  Complete hand: {tsumoEvaluation.score?.total ?? 0} Fan. This table requires {tsumoEvaluation.minimum} Fan, so it cannot be declared as a win.
+                  <span className="block">Complete hand: {tsumoEvaluation.score?.total ?? 0} Fan. This table requires {tsumoEvaluation.minimum} Fan, so it cannot be declared as a win.</span>
+                  {tsumoEvaluation.score?.patterns.length ? <span className="mt-1 block text-xs">Current patterns: {tsumoEvaluation.score.patterns.map((pattern) => pattern.label).join(' · ')}</span> : null}
+                  {variant === 'hongkong' && hongKongMode === 'standard' ? (
+                    <button type="button" onClick={() => onHongKongMode('casual')} className="mt-2 rounded-md bg-emerald-700 px-3 py-1.5 text-xs font-black text-white">Switch to Casual (new hand)</button>
+                  ) : null}
                 </div>
               )}
               {canTsumo && (
@@ -536,10 +543,10 @@ function HongKongResultBanner({ state, onNewGame, onNextHand }: { state: GameSta
                 <p className="mt-3 text-2xl font-black text-amber-700">
                   {state.ruleset === 'riichi'
                     ? (result.score.han ?? result.score.total) + ' Han · ' + (result.score.fu ?? 0) + ' Fu · ' + (result.score.points ?? 0) + ' points'
-                    : result.score.total + ' Fan'}
+                    : result.score.total + ' Fan' + (result.score.points ? ' · ' + result.score.points + ' points' : '')}
                 </p>
                 <p className="mt-2 max-w-md text-sm leading-6 text-emerald-800">{describeScore(result.score)}</p>
-                {state.ruleset === 'riichi' && result.score.paymentLabel && (
+                {result.score.paymentLabel && (
                   <p className="mt-2 text-sm font-bold">{result.score.paymentLabel}</p>
                 )}
               </>

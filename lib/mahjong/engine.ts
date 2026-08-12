@@ -24,6 +24,7 @@ import { isWinningHand, shanten, waitingTiles } from './shanten';
 import { scoreHand, type ScoreResult } from './scoring';
 
 import { calculateRiichiPayment } from './riichi';
+import { calculateHongKongPayment } from './hongkong';
 export type Seat = 0 | 1 | 2 | 3;
 
 /** Ruleset presets. They share the engine and differ in scoring + legal calls. */
@@ -97,9 +98,11 @@ export interface PlayerState {
   ippatsuEligible: boolean;
   /** Drawn tile kept separately so a declared Riichi hand can only tsumogiri. */
   lastDrawn?: Tile;
+  /** True only for the replacement draw immediately following a Kong. */
+  lastDrawWasReplacement?: boolean;
 }
 
-export type Phase = 'draw' | 'discard' | 'claim' | 'over';
+export type Phase = 'draw' | 'discard' | 'claim' | 'added-kan-claim' | 'over';
 
 export type ClaimKind = 'chi' | 'pon' | 'kan' | 'ron' | 'pass';
 
@@ -145,6 +148,10 @@ export interface GameState {
   submitted: Partial<Record<Seat, ClaimOption>>;
   /** Wall-clock time the current claim window opened, for the timeout fallback. */
   claimOpenedAt?: number;
+  /** An exposed Pung that is waiting to become an Added Kong. */
+  pendingAddedKan?: { seat: Seat; tile: Tile; meldIndex: number };
+  /** Scoring-only context for the win currently being resolved. */
+  winContext?: 'replacement' | 'rob-kong';
   result: GameResult | null;
   log: string[];
   seed: number;
@@ -281,6 +288,7 @@ function clone(state: GameState): GameState {
     })),
     claims: { ...state.claims },
     submitted: { ...state.submitted },
+    pendingAddedKan: state.pendingAddedKan ? { ...state.pendingAddedKan } : undefined,
     log: [...state.log]
   };
 }
@@ -331,6 +339,7 @@ export function drawTile(state: GameState): GameState {
   const player = next.players[next.turn];
   player.hand = sortTiles([...player.hand, tile]);
   player.lastDrawn = tile;
+  player.lastDrawWasReplacement = false;
   if (!player.declaredReady) player.temporaryFuriten = false;
   next.phase = 'discard';
   next.lastDiscard = null;
@@ -344,6 +353,7 @@ function drawReplacement(state: GameState, seat: Seat): void {
   state.deadWallIndex += 1;
   state.players[seat].hand = sortTiles([...state.players[seat].hand, tile]);
   state.players[seat].lastDrawn = tile;
+  state.players[seat].lastDrawWasReplacement = true;
 }
 
 export interface SelfDrawEvaluation {
@@ -403,6 +413,7 @@ export function declareRiichi(state: GameState, seat: Seat): GameState {
 }
 /** Concealed kans available on the current draw. */
 export function availableConcealedKans(state: GameState, seat: Seat): Tile[] {
+  if (state.phase !== 'discard' || state.turn !== seat) return [];
   const player = state.players[seat];
   if (player.hand.length % 3 !== 2) return [];
   const counts = handCounts(player);
@@ -413,7 +424,25 @@ export function availableConcealedKans(state: GameState, seat: Seat): Tile[] {
   return tiles;
 }
 
+/** Added Kongs: promote an already exposed Pung with a self-drawn fourth tile. */
+export function availableAddedKans(state: GameState, seat: Seat): Tile[] {
+  // Added-kan robbing is implemented for the Hong Kong product ruleset.  Do
+  // not accidentally change the existing Riichi rules while this variant is
+  // still being expanded.
+  if (state.ruleset !== 'hongkong') return [];
+  if (state.phase !== 'discard' || state.turn !== seat) return [];
+  const player = state.players[seat];
+  return player.melds
+    .filter((meld) => meld.kind === 'pon' && !meld.concealed && player.hand.includes(meld.tiles[0]))
+    .map((meld) => meld.tiles[0]);
+}
+
+export function availableKans(state: GameState, seat: Seat): Tile[] {
+  return [...new Set([...availableConcealedKans(state, seat), ...availableAddedKans(state, seat)])];
+}
+
 export function declareConcealedKan(state: GameState, seat: Seat, tile: Tile): GameState {
+  if (!availableConcealedKans(state, seat).includes(tile)) return state;
   if (state.ruleset === 'riichi' && state.players[seat].declaredReady) return state;
   const next = clone(state);
   const player = next.players[seat];
@@ -423,6 +452,58 @@ export function declareConcealedKan(state: GameState, seat: Seat, tile: Tile): G
   next.log.push(`Seat ${seat} declares a concealed kan.`);
   next.phase = 'discard';
   return next;
+}
+
+/**
+ * Announce an Added Kong. The fourth tile remains available for a Robbing the
+ * Kong win until every eligible opponent has passed or claimed Ron.
+ */
+export function declareAddedKan(state: GameState, seat: Seat, tile: Tile, now = Date.now()): GameState {
+  if (state.ruleset !== 'hongkong') return state;
+  if (!availableAddedKans(state, seat).includes(tile)) return state;
+  const next = clone(state);
+  const meldIndex = next.players[seat].melds.findIndex(
+    (meld) => meld.kind === 'pon' && !meld.concealed && meld.tiles[0] === tile
+  );
+  if (meldIndex < 0) return state;
+  const claims: Partial<Record<Seat, ClaimOption[]>> = {};
+  for (const claimant of SEATS) {
+    if (claimant === seat) continue;
+    const player = next.players[claimant];
+    const counts = handCounts(player);
+    counts[tileIndex(tile)] += 1;
+    if (!isWinningHand(counts, meldCount(player), next.ruleset)) continue;
+    const score = scoreHand({ state: { ...next, winContext: 'rob-kong' }, seat: claimant, winningTile: tile, selfDrawn: false });
+    const legal = next.ruleset === 'riichi' ? Boolean(score.legalYaku) : score.total >= minimumWinScore(next);
+    if (legal) claims[claimant] = [{ kind: 'ron', tiles: [tile] }, { kind: 'pass', tiles: [] }];
+  }
+  if (Object.keys(claims).length === 0) return completeAddedKan(next, seat, tile, meldIndex);
+  next.pendingAddedKan = { seat, tile, meldIndex };
+  next.claims = claims;
+  next.submitted = {};
+  next.claimOpenedAt = now;
+  next.phase = 'added-kan-claim';
+  next.log.push(`Seat ${seat} declares an added kan; rob-kong window opens.`);
+  return next;
+}
+
+function completeAddedKan(state: GameState, seat: Seat, tile: Tile, meldIndex: number): GameState {
+  const player = state.players[seat];
+  if (!removeTile(player.hand, tile)) return state;
+  player.melds[meldIndex] = { ...player.melds[meldIndex], kind: 'kan', tiles: [tile, tile, tile, tile] };
+  drawReplacement(state, seat);
+  state.turn = seat;
+  state.phase = 'discard';
+  state.lastDiscard = null;
+  state.pendingAddedKan = undefined;
+  state.log.push(`Seat ${seat} completes an added kan.`);
+  return state;
+}
+
+/** Choose the appropriate concealed or added Kong for a tile. */
+export function declareKan(state: GameState, seat: Seat, tile: Tile): GameState {
+  if (availableConcealedKans(state, seat).includes(tile)) return declareConcealedKan(state, seat, tile);
+  return declareAddedKan(state, seat, tile);
 }
 
 /**
@@ -453,6 +534,7 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
   }
   player.hand = sortTiles(player.hand);
   player.lastDrawn = undefined;
+  player.lastDrawWasReplacement = false;
   player.discards.push(tile);
   next.lastDiscard = { tile, from: next.turn };
 
@@ -476,7 +558,7 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
  * the window is still open.
  */
 export function passUnansweredClaims(state: GameState, now: number): GameState {
-  if (state.phase !== 'claim') return state;
+  if (state.phase !== 'claim' && state.phase !== 'added-kan-claim') return state;
   if (now - (state.claimOpenedAt ?? now) < CLAIM_TIMEOUT_MS) return state;
 
   const next = clone(state);
@@ -565,7 +647,7 @@ export function submitClaim(
   seat: Seat,
   option: ClaimOption
 ): GameState {
-  if (state.phase !== 'claim') return state;
+  if (state.phase !== 'claim' && state.phase !== 'added-kan-claim') return state;
   const next = clone(state);
   if (state.ruleset === 'riichi' && option.kind === 'pass' &&
       state.claims[seat]?.some((claim) => claim.kind === 'ron')) {
@@ -583,6 +665,19 @@ export function maybeResolveClaims(state: GameState): GameState {
   if (!answered) return state;
 
   const next = clone(state);
+  if (next.phase === 'added-kan-claim' && next.pendingAddedKan) {
+    const pendingKan = next.pendingAddedKan;
+    const ronSeats = pending.filter((seat) => next.submitted[seat]!.kind === 'ron');
+    next.claims = {};
+    next.submitted = {};
+    if (ronSeats.length > 0) {
+      const winner = ronSeats.sort((a, b) => ((a - pendingKan.seat + 4) % 4) - ((b - pendingKan.seat + 4) % 4))[0];
+      next.winContext = 'rob-kong';
+      next.pendingAddedKan = undefined;
+      return finishWithWin(next, winner, pendingKan.tile, false, pendingKan.seat);
+    }
+    return completeAddedKan(next, pendingKan.seat, pendingKan.tile, pendingKan.meldIndex);
+  }
   const discardInfo = next.lastDiscard!;
 
   // Riichi: every seat that declared ron wins the same discard, and the
@@ -717,6 +812,19 @@ function finishWithWin(
     }
     state.honba = seat === state.dealer ? state.honba + 1 : 0;
     state.log.push('Riichi settlement: ' + payment.label + '.');
+    return state;
+  }
+  if (state.ruleset === 'hongkong') {
+    const payment = calculateHongKongPayment({ fan: score.total, selfDrawn, winner: seat, loser });
+    score.points = payment.winnerGain;
+    score.paymentLabel = payment.label;
+    for (const payer of SEATS) {
+      const amount = payment.payments[payer] ?? 0;
+      if (amount > 0) state.players[payer].score -= amount;
+    }
+    state.players[seat].score += payment.winnerGain;
+    state.honba = seat === state.dealer ? state.honba + 1 : 0;
+    state.log.push('Hong Kong settlement: ' + payment.label + '.');
     return state;
   }
   if (selfDrawn) {
