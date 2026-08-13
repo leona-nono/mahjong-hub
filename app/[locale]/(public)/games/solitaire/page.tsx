@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { getGamesByNavGroup } from '@/data/games';
+import { getMergedGamesByNavGroup, getMergedLocalizedGames } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import { alternatesFor } from '@/lib/seo';
+
+export const revalidate = 300;
 
 export async function generateMetadata({
   params
@@ -22,7 +24,7 @@ export default async function SolitaireGamesPage({
   setRequestLocale(locale);
 
   const t = await getTranslations('nav');
-  const games = getGamesByNavGroup('solitaire');
+  const games = getMergedLocalizedGames(await getMergedGamesByNavGroup('solitaire'), locale);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">

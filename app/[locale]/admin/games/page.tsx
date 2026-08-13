@@ -24,11 +24,16 @@ async function getGameList() {
   // Probe connectivity first; only attempt the query when DB is reachable so
   // we never confuse "empty result" with "DB down" in the UI.
   const dbConnected = await isDbConnected();
-  let dbGames: { slug: string; title: string }[] = [];
+  let dbGames: { slug: string; title: string; category: string | null; isFeatured: boolean }[] = [];
   if (dbConnected) {
     try {
       dbGames = await prisma.game.findMany({
-        select: { slug: true, title: true },
+        select: {
+          slug: true,
+          title: true,
+          category: true,
+          isFeatured: true
+        },
         orderBy: { sortOrder: 'asc' }
       });
     } catch {
@@ -36,11 +41,33 @@ async function getGameList() {
     }
   }
 
-  return { staticGames, dbGames, dbConnected };
+  // Render the full catalogue: static games first (DB overlay shows as-is),
+  // then CMS-only games created in the back office appended with a badge.
+  const staticSlugs = new Set(staticGames.map((g) => g.slug));
+  const displayGames = [
+    ...staticGames.map((g) => ({
+      slug: g.slug,
+      title: g.title,
+      category: g.category,
+      featured: g.featured,
+      source: 'static' as const
+    })),
+    ...dbGames
+      .filter((g) => !staticSlugs.has(g.slug))
+      .map((g) => ({
+        slug: g.slug,
+        title: g.title,
+        category: (g.category as GameCategory | null) ?? null,
+        featured: g.isFeatured,
+        source: 'db' as const
+      }))
+  ];
+
+  return { displayGames, dbConnected };
 }
 
 export default async function AdminGamesPage() {
-  const { staticGames, dbConnected } = await getGameList();
+  const { displayGames, dbConnected } = await getGameList();
 
   return (
     <div>
@@ -49,7 +76,7 @@ export default async function AdminGamesPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-800">游戏管理</h1>
           <p className="mt-1 text-sm text-gray-500">
-            共 {staticGames.length} 个游戏
+            共 {displayGames.length} 个游戏
             {dbConnected ? '（数据库已连接，可编辑）' : '（静态源，DB 连接后可编辑）'}
           </p>
         </div>
@@ -83,14 +110,19 @@ export default async function AdminGamesPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {staticGames.map((g) => (
+            {displayGames.map((g) => (
               <tr key={g.slug} className="transition hover:bg-gray-50">
                 <td className="px-4 py-3 font-medium text-gray-800">
                   {g.title}
+                  {g.source === 'db' && (
+                    <span className="ml-2 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600">
+                      CMS
+                    </span>
+                  )}
                 </td>
                 <td className="px-4 py-3">
                   <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
-                    {CATEGORY_LABELS[g.category] || g.category}
+                    {CATEGORY_LABELS[g.category as GameCategory] || g.category || '—'}
                   </span>
                 </td>
                 <td className="px-4 py-3">

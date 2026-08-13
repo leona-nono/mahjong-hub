@@ -12,18 +12,30 @@ export default async function GameFeaturesPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const game = getGame(slug);
-  if (!game) notFound();
+  const staticGame = getGame(slug);
 
-  let initial: FeatureEntry[] = [];
+  let title = staticGame?.title ?? slug;
+  let dbGameId: string | null = null;
   try {
     const dbGame = await prisma.game.findUnique({
       where: { slug },
-      select: { id: true }
+      select: { id: true, title: true }
     });
     if (dbGame) {
+      dbGameId = dbGame.id;
+      title = dbGame.title;
+    }
+  } catch {
+    // DB not available
+  }
+  // CMS-only games are editable too; refuse only when the game exists nowhere.
+  if (!staticGame && !dbGameId) notFound();
+
+  let initial: FeatureEntry[] = [];
+  if (dbGameId) {
+    try {
       const features = await prisma.gameFeature.findMany({
-        where: { gameId: dbGame.id },
+        where: { gameId: dbGameId },
         orderBy: { locale: 'asc' }
       });
       initial = features.map((f) => ({
@@ -31,9 +43,9 @@ export default async function GameFeaturesPage({
         content: f.content,
         sortOrder: f.sortOrder
       }));
+    } catch {
+      // DB not available
     }
-  } catch {
-    // DB not available
   }
 
   return (
@@ -46,7 +58,7 @@ export default async function GameFeaturesPage({
           ← 返回游戏编辑
         </Link>
         <h1 className="text-2xl font-bold text-gray-800">
-          Features 详情 — {game.title}
+          Features 详情 — {title}
         </h1>
         <p className="mt-1 text-sm text-gray-500">
           为每种语言编辑游戏详情（Markdown 富文本 → 长文内容 + GEO 直接问答）

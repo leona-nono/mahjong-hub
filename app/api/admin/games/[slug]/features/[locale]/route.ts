@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import { revalidateGamePaths } from '@/lib/revalidate-games';
 import {
   FEATURE_LOCALES,
   MAX_FEATURE_CONTENT,
@@ -48,6 +49,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
       sortOrder: body.sortOrder ?? 0
     }
   });
+  revalidateGamePaths(slug);
   return NextResponse.json({ feature });
 }
 
@@ -75,5 +77,6 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
   } catch {
     // already gone — idempotent
   }
+  revalidateGamePaths(slug);
   return NextResponse.json({ ok: true });
 }

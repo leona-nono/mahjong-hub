@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
-import { getGames } from '@/data/games';
+import { getMergedNativeGames } from '@/lib/games-db'
 import { getBlogPosts } from '@/data/blog';
 
 const BASE = 'https://mahjonggame.org';
@@ -12,10 +12,14 @@ const BASE = 'https://mahjonggame.org';
  * get a high priority. Iframe game pages are noindex in their metadata, so
  * listing them would send Search Console a contradictory signal — they are
  * deliberately excluded.
+ *
+ * We read the merged catalogue (static base + CMS overlay) so admin edits
+ * — hiding a game via `isActive`, renaming a native game, or publishing a new
+ * CMS-native game — are reflected without a redeploy.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
-  const nativeGames = getGames().filter((g) => g.gameType === 'native');
+  const nativeGames = await getMergedNativeGames();
   const blogPosts = getBlogPosts();
   const lastModified = new Date();
 

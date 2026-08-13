@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { CLASSIC_REGIONS, getClassicByRegion } from '@/data/games';
+import { CLASSIC_REGIONS } from '@/data/games';
+import { getMergedClassicByRegion, getMergedLocalizedGames } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import { alternatesFor } from '@/lib/seo';
+
+export const revalidate = 300;
 
 export async function generateMetadata({
   params
@@ -23,6 +26,14 @@ export default async function ClassicGamesPage({
 
   const t = await getTranslations('nav');
   const tg = await getTranslations('game');
+  const gamesByRegion = new Map(
+    await Promise.all(
+      CLASSIC_REGIONS.map(async (r) => [
+        r.region,
+        getMergedLocalizedGames(await getMergedClassicByRegion(r.region), locale)
+      ] as const)
+    )
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -37,7 +48,7 @@ export default async function ClassicGamesPage({
 
       <div className="mt-10 space-y-12">
         {CLASSIC_REGIONS.map((region) => {
-          const games = getClassicByRegion(region.region);
+          const games = gamesByRegion.get(region.region) ?? [];
           return (
             <section key={region.region}>
               <h2 className="mb-4 text-xl font-bold text-gray-800">

@@ -2,7 +2,12 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { getLocalizedGame, getRelatedGames, getGames, getLocalizedGames } from '@/data/games';
+import {
+  getMergedGames,
+  getMergedLocalizedGame,
+  getMergedLocalizedGames,
+  getMergedRelatedGames
+} from '@/lib/games-db';
 import IframeSection from '@/components/IframeSection';
 import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
@@ -13,8 +18,11 @@ import { alternatesFor } from '@/lib/seo';
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
 
-export function generateStaticParams() {
-  return getGames().flatMap((g) =>
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const games = await getMergedGames();
+  return games.flatMap((g) =>
     LOCALES.map((locale) => ({ locale, slug: g.slug }))
   );
 }
@@ -25,7 +33,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const game = getLocalizedGame(slug, locale);
+  const game = await getMergedLocalizedGame(slug, locale);
   if (!game) return {};
 
   const isNative = game.gameType === 'native';
@@ -58,11 +66,14 @@ export default async function GamePage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const game = getLocalizedGame(slug, locale);
+  const game = await getMergedLocalizedGame(slug, locale);
   if (!game) notFound();
 
   const t = await getTranslations('game');
-  const related = getLocalizedGames(getRelatedGames(slug, 4), locale);
+  const related = getMergedLocalizedGames(
+    await getMergedRelatedGames(slug, 4),
+    locale
+  );
   const isNative = game.gameType === 'native';
   const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
@@ -127,7 +138,10 @@ export default async function GamePage({
       ) : isNative && game.native ? (
         <NativeGameMount native={game.native} ruleset={game.ruleset} slug={game.slug} />
       ) : (
-        <IframeSection game={game} />
+        <IframeSection
+          game={game}
+          fallbackGames={related.map((g) => ({ slug: g.slug, title: g.title }))}
+        />
       )}
 
       <AdSlot />

@@ -10,7 +10,6 @@ export const dynamic = 'force-dynamic';
 
 async function getEditorData(slug: string) {
   const staticGame = getGame(slug);
-  if (!staticGame) notFound();
 
   // Use a real connectivity probe so the warning banner is accurate even
   // when the DB is reachable but this particular game is still static-only.
@@ -23,6 +22,10 @@ async function getEditorData(slug: string) {
       // Connectivity dropped between probe and query.
     }
   }
+
+  // CMS-only games (no static entry) are editable too — refuse only when the
+  // game exists nowhere.
+  if (!staticGame && !dbGame) notFound();
 
   // Prefer DB row when available; fall back to static
   const initial = dbGame
@@ -40,15 +43,15 @@ async function getEditorData(slug: string) {
         sortOrder: dbGame.sortOrder
       }
     : {
-        slug: staticGame.slug,
-        title: staticGame.title,
-        description: staticGame.description,
-        iframeUrl: staticGame.gameIframeUrl ?? '',
+        slug: staticGame!.slug,
+        title: staticGame!.title,
+        description: staticGame!.description,
+        iframeUrl: staticGame!.gameIframeUrl ?? '',
         thumbnail: '',
         downloadUrl: '',
-        category: staticGame.category,
+        category: staticGame!.category,
         tags: [],
-        isFeatured: !!staticGame.featured,
+        isFeatured: !!staticGame!.featured,
         isActive: true,
         sortOrder: 0
       };

@@ -1,19 +1,27 @@
 import { useTranslations } from 'next-intl';
 import LazyIframe from './LazyIframe';
 import type { GameConfig } from '@/data/games';
-import { getRelatedGames } from '@/data/games';
 
 /**
  * Wraps a game iframe with a tap-to-play gate and a related-games fallback.
  * The surrounding page copy (title / description / related) carries SEO;
  * the external iframe itself is not indexed (cross-origin, noindex on detail route).
+ *
+ * `fallbackGames` is passed from the server page (already merged with the CMS
+ * overlay + localized). It defaults to the static catalogue for safety when
+ * called without a value.
  */
-export default function IframeSection({ game }: { game: GameConfig }) {
+export default function IframeSection({
+  game,
+  fallbackGames
+}: {
+  game: GameConfig;
+  fallbackGames?: { slug: string; title: string }[];
+}) {
   const t = useTranslations('game');
-  const related = getRelatedGames(game.slug, 4).map((g) => ({
-    slug: g.slug,
-    title: g.title
-  }));
+  const related = fallbackGames ?? [
+    { slug: game.slug, title: game.title }
+  ];
 
   return (
     <section className="mx-auto max-w-4xl">
