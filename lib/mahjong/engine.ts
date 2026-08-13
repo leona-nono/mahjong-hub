@@ -17,6 +17,7 @@ import {
   tileFromIndex,
   tileSuit,
   tileRank,
+  isBonusTile,
   WINDS,
   type Tile
 } from './tiles';
@@ -88,6 +89,8 @@ export interface PlayerState {
   hand: Tile[];
   melds: Meld[];
   discards: Tile[];
+  /** MCR Flowers / Seasons already exposed and replaced from the back wall. */
+  flowers: Tile[];
   seatWind: Tile;
   score: number;
   isBot: boolean;
@@ -212,13 +215,17 @@ export function createGame(options: CreateGameOptions = {}): GameState {
   const seed = options.seed ?? Math.floor(Math.random() * 2 ** 31);
   const humanSeat = options.humanSeat ?? 0;
   const rng = createRng(seed);
-  const wall = shuffle(buildWall(RULESETS[ruleset].excludedTiles), rng);
+  const wall = shuffle(
+    buildWall(RULESETS[ruleset].excludedTiles, ruleset === 'chinese-official'),
+    rng
+  );
 
   const players: PlayerState[] = SEATS.map((seat) => ({
     seat,
     hand: [],
     melds: [],
     discards: [],
+    flowers: [],
     seatWind: WINDS[seat],
     score: ruleset === 'riichi' ? 30000 : 78000,
     isBot: seat !== humanSeat,
@@ -231,10 +238,18 @@ export function createGame(options: CreateGameOptions = {}): GameState {
   }));
 
   let index = 0;
+  let replacementIndex = wall.length - DEAD_WALL_SIZE;
+  const dealPlayableTile = (seat: Seat) => {
+    let tile = wall[index++];
+    while (isBonusTile(tile)) {
+      players[seat].flowers.push(tile);
+      tile = wall[replacementIndex++];
+    }
+    players[seat].hand.push(tile);
+  };
   for (let round = 0; round < 13; round += 1) {
     for (const seat of SEATS) {
-      players[seat].hand.push(wall[index]);
-      index += 1;
+      dealPlayableTile(seat);
     }
   }
   for (const player of players) player.hand = sortTiles(player.hand);
@@ -244,7 +259,7 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     hongKongMode,
     wall,
     wallIndex: index,
-    deadWallIndex: wall.length - DEAD_WALL_SIZE,
+    deadWallIndex: replacementIndex,
     players,
     turn: 0,
     phase: 'draw',
@@ -317,7 +332,8 @@ function clone(state: GameState): GameState {
       ...p,
       hand: [...p.hand],
       melds: p.melds.map((m) => ({ ...m, tiles: [...m.tiles] })),
-      discards: [...p.discards]
+      discards: [...p.discards],
+      flowers: [...p.flowers]
     })),
     claims: { ...state.claims },
     submitted: { ...state.submitted },
@@ -372,9 +388,20 @@ export function drawTile(state: GameState): GameState {
     return next;
   }
 
-  const tile = next.wall[next.wallIndex];
+  let tile = next.wall[next.wallIndex];
   next.wallIndex += 1;
   const player = next.players[next.turn];
+  while (next.ruleset === 'chinese-official' && isBonusTile(tile)) {
+    player.flowers.push(tile);
+    next.log.push(`Seat ${next.turn} exposes ${tile} and draws a flower replacement.`);
+    if (next.deadWallIndex >= next.wall.length) {
+      next.phase = 'over';
+      next.result = { kind: 'draw', reason: 'exhaustive' };
+      return next;
+    }
+    tile = next.wall[next.deadWallIndex];
+    next.deadWallIndex += 1;
+  }
   player.hand = sortTiles([...player.hand, tile]);
   player.lastDrawn = tile;
   player.lastDrawWasReplacement = false;
@@ -387,8 +414,15 @@ export function drawTile(state: GameState): GameState {
 /** Draw a replacement tile after a kan, taken from the dead wall. */
 function drawReplacement(state: GameState, seat: Seat): void {
   if (state.deadWallIndex >= state.wall.length) return;
-  const tile = state.wall[state.deadWallIndex];
+  let tile = state.wall[state.deadWallIndex];
   state.deadWallIndex += 1;
+  while (state.ruleset === 'chinese-official' && isBonusTile(tile)) {
+    state.players[seat].flowers.push(tile);
+    state.log.push(`Seat ${seat} exposes ${tile} and draws a flower replacement.`);
+    if (state.deadWallIndex >= state.wall.length) return;
+    tile = state.wall[state.deadWallIndex];
+    state.deadWallIndex += 1;
+  }
   state.players[seat].hand = sortTiles([...state.players[seat].hand, tile]);
   state.players[seat].lastDrawn = tile;
   state.players[seat].lastDrawWasReplacement = true;
@@ -418,7 +452,9 @@ export function evaluateSelfDraw(state: GameState, seat: Seat): SelfDrawEvaluati
   });
   const legal = state.ruleset === 'riichi'
     ? Boolean(score.legalYaku)
-    : score.total >= minimum;
+    : (state.ruleset === 'chinese-official'
+      ? (score.qualifyingTotal ?? score.total) >= minimum
+      : score.total >= minimum);
   return { complete: true, legal, score, minimum };
 }
 
@@ -700,7 +736,10 @@ function collectClaims(
     );
     if (!blockedByFuriten && isWinningHand(test, meldCount(player), state.ruleset)) {
       const score = scoreHand({ state, seat, winningTile: tile, selfDrawn: false });
-      if (state.ruleset === 'riichi' ? score.legalYaku : score.total >= minimum) {
+    const meetsMinimum = state.ruleset === 'chinese-official'
+      ? (score.qualifyingTotal ?? score.total) >= minimum
+      : score.total >= minimum;
+    if (state.ruleset === 'riichi' ? score.legalYaku : meetsMinimum) {
         options.push({ kind: 'ron', tiles: [tile] });
       }
     }
