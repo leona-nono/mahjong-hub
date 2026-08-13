@@ -7,6 +7,7 @@ import { routing } from '@/i18n/routing';
 import '@/app/globals.css';
 import Providers from '@/components/providers';
 import Analytics from '@/components/Analytics';
+import { SITE_BASE_URL, LANGUAGE_ALTERNATES } from '@/lib/seo';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -19,14 +20,11 @@ export const metadata: Metadata = {
   },
   description:
     'A rainbow-themed collection of relaxing mahjong solitaire, connect and tile-match games. Free to play, no login.',
+  // Absolute hreflang URLs (Google requires absolute, not relative) plus an
+  // x-default that falls back to the English homepage for language-agnostic
+  // crawlers and visitors. Individual pages set their own canonical.
   alternates: {
-    languages: {
-      en: '/en',
-      zh: '/zh',
-      'zh-TW': '/zh-TW',
-      ja: '/ja',
-      ko: '/ko'
-    }
+    languages: LANGUAGE_ALTERNATES
   },
   // GSC site verification (meta-tag method). Set the env var in Vercel; when
   // absent, Next omits the tag. DNS TXT verification in Cloudflare is an

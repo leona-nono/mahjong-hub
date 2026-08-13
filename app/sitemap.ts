@@ -19,10 +19,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blogPosts = getBlogPosts();
   const lastModified = new Date();
 
-  const alternatesFor = (path: string) =>
-    Object.fromEntries(
+  const alternatesFor = (path: string) => {
+    const languages = Object.fromEntries(
       routing.locales.map((locale) => [locale, `${BASE}/${locale}${path}`])
     );
+    // x-default points at the default locale so undefined/region-agnostic
+    // visitors (and crawlers without a language hint) land on English.
+    languages['x-default'] = `${BASE}/${routing.defaultLocale}${path}`;
+    return languages;
+  };
 
   for (const locale of routing.locales) {
     entries.push({

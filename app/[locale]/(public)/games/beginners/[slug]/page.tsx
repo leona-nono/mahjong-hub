@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getBlogPosts, getLocalizedBlogPost } from '@/data/blog';
+import { alternatesFor } from '@/lib/seo';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -26,12 +27,7 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.description,
-    alternates: {
-      canonical: url,
-      languages: Object.fromEntries(
-        LOCALES.map((l) => [l, `${SITE}/${l}/games/beginners/${slug}`])
-      )
-    },
+    alternates: alternatesFor(locale, `/games/beginners/${slug}`),
     openGraph: { title: post.title, description: post.description, url, type: 'article' },
     keywords: post.keywords,
     robots: { index: true, follow: true }
