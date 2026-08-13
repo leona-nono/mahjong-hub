@@ -68,7 +68,8 @@
     "providerUnavailable": "登录功能即将上线。积分目前保存在本设备上。",
     "emailPlaceholder": "你的邮箱地址",
     "emailSend": "发送登录链接",
-    "emailSent": "登录链接已发送。请查收邮件并点击链接登录。",
+    "emailSent": "登录链接已发送。请查收邮件（包括垃圾箱）并在 24 小时内点击。请勿重复发送。",
+    "emailSendAgain": "{n} 秒后可重新发送",
     "emailInvalid": "请输入有效的邮箱地址。"
   },
   "points": {

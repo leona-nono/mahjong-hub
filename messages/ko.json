@@ -68,8 +68,9 @@
     "providerUnavailable": "로그인 기능이 곧 제공됩니다. 포인트는 지금은 이 기기에 저장됩니다.",
     "emailPlaceholder": "이메일 주소",
     "emailSend": "로그인 링크 보내기",
-    "emailSent": "로그인 링크를 보냈습니다. 받은 편지함을 확인하고 링크를 클릭하세요.",
-    "emailInvalid": "유효한 이메일 주소를 입력하세요."
+    "emailSent": "로그인 링크를 보냈습니다. 받은 편지함(스팸 포함)을 확인하고 24시간 이내에 링크를 클릭하세요. 여러 번 요청하지 마세요.",
+    "emailInvalid": "유효한 이메일 주소를 입력하세요.",
+    "emailSendAgain": "{n}초 후 재전송"
   },
   "points": {
     "youHave": "포인트 {n}점"
