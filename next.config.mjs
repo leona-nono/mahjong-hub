@@ -17,6 +17,14 @@ const nextConfig = {
   images: {
     remotePatterns: [{ protocol: 'https', hostname: '**' }]
   },
+  async headers() {
+    return [
+      {
+        source: '/assets/mahjong-hongkong/tiles-webp-v1/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }]
+      }
+    ];
+  },
   async redirects() {
     return [
       {

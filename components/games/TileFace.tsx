@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
 
 export type TileSize = 'xs' | 'sm' | 'md' | 'lg' | 'table' | 'xl';
@@ -45,11 +46,38 @@ const TRADITIONAL_TILE_FILES: Record<Tile, string> = {
   z5: '034.png', z6: '033.png', z7: '032.png'
 };
 
-function traditionalTileSrc(tile: Tile): string {
+function traditionalTilePngSrc(tile: Tile): string {
   const file = TRADITIONAL_TILE_FILES[tile];
   return file
     ? '/assets/mahjong-hongkong/tiles-display/' + file
     : '/assets/mahjong-chinese/source-5-crops/tile-42.png';
+}
+
+function traditionalTileWebpSrc(tile: Tile): string {
+  const file = TRADITIONAL_TILE_FILES[tile];
+  return file ? '/assets/mahjong-hongkong/tiles-webp-v1/' + file.replace(/\.png$/, '.webp') : traditionalTilePngSrc(tile);
+}
+
+const TRADITIONAL_TILE_SRCS = Object.keys(TRADITIONAL_TILE_FILES).map((tile) => traditionalTileWebpSrc(tile));
+
+/** Warm the browser's decoded image cache after the table becomes interactive. */
+export function useTraditionalTilePreload(enabled = true): void {
+  useEffect(() => {
+    if (!enabled || typeof window === 'undefined') return;
+    const warm = () => {
+      for (const src of TRADITIONAL_TILE_SRCS) {
+        const image = new Image();
+        image.decoding = 'async';
+        image.src = src;
+      }
+    };
+    const idle = window.requestIdleCallback?.(warm, { timeout: 1200 });
+    if (idle === undefined) {
+      const timer = window.setTimeout(warm, 180);
+      return () => window.clearTimeout(timer);
+    }
+    return () => window.cancelIdleCallback?.(idle);
+  }, [enabled]);
 }
 export default function TileFace({
   tile,
@@ -62,7 +90,21 @@ export default function TileFace({
 }: TileFaceProps) {
   const suit = tileSuit(tile);
   const interactive = Boolean(onClick) && !disabled;
-  const face = traditional ? <img src={traditionalTileSrc(tile)} alt="" className="block h-full w-full object-contain" draggable={false} /> : tileFace(tile);
+  const face = traditional ? (
+    <picture>
+      <source srcSet={traditionalTileWebpSrc(tile)} type="image/webp" />
+      <img
+        src={traditionalTilePngSrc(tile)}
+        alt=""
+        width={150}
+        height={210}
+        className="block h-full w-full object-contain"
+        decoding="async"
+        fetchPriority={highlight ? 'high' : 'auto'}
+        draggable={false}
+      />
+    </picture>
+  ) : tileFace(tile);
 
   const classes = [
     'inline-flex select-none items-center justify-center border-2 font-bold shadow-[0_3px_0_rgba(148,163,184,.35),0_7px_12px_rgba(15,23,42,.12)] transition duration-150',

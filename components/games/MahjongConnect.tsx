@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import TileFace from './TileFace';
+import TileFace, { useTraditionalTilePreload } from './TileFace';
 import {
   createBoard,
   findAllPairs,
@@ -38,6 +38,7 @@ export default function MahjongConnect({
   defaultDifficulty = 'classic',
   onWin
 }: MahjongConnectProps) {
+  useTraditionalTilePreload();
   const t = useTranslations('connect');
   const [difficulty, setDifficulty] = useState<ConnectDifficulty>(defaultDifficulty);
   const [board, setBoard] = useState<Board>(() => createBoard({ ...PRESETS[defaultDifficulty], seed: 1 }));

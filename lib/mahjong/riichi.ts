@@ -37,7 +37,8 @@ function ceil100(value: number): number {
   return Math.ceil(value / 100) * 100;
 }
 
-export function riichiBasePoints(han: number, fu: number): number {
+export function riichiBasePoints(han: number, fu: number, yakumanCount = 0): number {
+  if (yakumanCount > 0) return 8000 * yakumanCount;
   if (han >= 13) return 8000;
   if (han >= 11) return 6000;
   if (han >= 8) return 4000;
@@ -53,9 +54,11 @@ export function calculateRiichiPayment(input: {
   dealer: Seat;
   selfDrawn: boolean;
   honba?: number;
+  /** Genuine yakuman stack in WRC; counted yakuman stays one yakuman. */
+  yakumanCount?: number;
 }): RiichiPayment {
-  const { han, fu, winner, dealer, selfDrawn, honba = 0 } = input;
-  const base = riichiBasePoints(han, fu);
+  const { han, fu, winner, dealer, selfDrawn, honba = 0, yakumanCount = 0 } = input;
+  const base = riichiBasePoints(han, fu, yakumanCount);
   const payments: Partial<Record<Seat, number>> = {};
   const seats: Seat[] = [0, 1, 2, 3];
 

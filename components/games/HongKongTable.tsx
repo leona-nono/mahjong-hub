@@ -3,13 +3,14 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
-import TileFace, { TileBack } from './TileFace';
+import TileFace, { TileBack, useTraditionalTilePreload } from './TileFace';
 import MobileMahjongTable from './MobileMahjongTable';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { describeScore } from '@/lib/mahjong/scoring';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 import type { Difficulty } from '@/lib/mahjong/ai';
 import { playMahjongSound, primeMahjongAudio } from '@/lib/mahjong/sound';
+import { visibleDoraIndicators } from '@/lib/mahjong/riichi';
 
 const HUMAN: Seat = 0;
 const SEAT_LABEL: Record<Seat, string> = { 0: 'East', 1: 'South', 2: 'West', 3: 'North' };
@@ -72,6 +73,7 @@ export default function HongKongTable({
   onKan,
   onRiichi
 }: HongKongTableProps) {
+  useTraditionalTilePreload();
   const t = useTranslations('mahjong');
   const human = state.players[HUMAN];
   const currentWind = SEAT_LABEL[state.turn];
@@ -257,8 +259,10 @@ export default function HongKongTable({
           </div>
           {isRiichi && (
             <div className="absolute left-[58%] top-[24%] z-10 rounded-lg bg-black/30 p-2 text-center text-[10px] font-bold uppercase tracking-wider text-amber-200">
-              <span className="mb-1 block">Dora indicator</span>
-              <TileFace tile={state.wall[state.wall.length - 5]} size="sm" traditional />
+              <span className="mb-1 block">Dora indicators</span>
+              <div className="flex justify-center gap-0.5">
+                {visibleDoraIndicators(state).map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}
+              </div>
             </div>
           )}
 
@@ -528,12 +532,21 @@ function HongKongResultBanner({ state, onNewGame, onNextHand }: { state: GameSta
   const result = state.result!;
   const selfDrawn = result.kind === 'win' && !result.winners && result.loser === undefined;
   const humanWon = result.winner === HUMAN || result.winners?.some((item) => item.seat === HUMAN);
-  const winner = result.winner === HUMAN ? 'You' : SEAT_LABEL[result.winner as Seat];
+  const winnerSeat = result.winner ?? result.winners?.[0]?.seat;
+  const winner = winnerSeat === HUMAN ? 'You' : SEAT_LABEL[winnerSeat as Seat];
+  const revealedTiles = winnerSeat === undefined ? [] : [
+    ...state.players[winnerSeat].hand,
+    ...(result.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
+  ];
+  const winnerMelds = winnerSeat === undefined ? [] : state.players[winnerSeat].melds;
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-[3px]">
-      <div className="min-w-[380px] rounded-2xl border-2 border-amber-300 bg-[#f4f0df] p-8 text-center text-emerald-950 shadow-[0_0_70px_rgba(251,191,36,.38)]">
+      <div className="max-h-[92vh] min-w-[380px] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#f4f0df] p-8 text-center text-emerald-950 shadow-[0_0_70px_rgba(251,191,36,.38)]">
         {result.kind === 'draw' ? (
-          <p className="text-3xl font-black">Draw Game</p>
+          <>
+            <p className="text-3xl font-black">Draw Game</p>
+            {result.reason && <p className="mt-2 text-sm font-bold text-emerald-800">{drawReason(result.reason)}</p>}
+          </>
         ) : (
           <>
             <p className="text-sm font-black uppercase tracking-[.3em] text-rose-600">{selfDrawn ? 'Self Draw' : 'Win on Discard'}</p>
@@ -551,13 +564,51 @@ function HongKongResultBanner({ state, onNewGame, onNextHand }: { state: GameSta
                 )}
               </>
             )}
+            {winnerSeat !== undefined && (
+              <div className="mt-5 rounded-xl border border-emerald-200 bg-white/80 p-4 text-left">
+                <p className="text-center text-sm font-black uppercase tracking-[.16em] text-emerald-800">Winning Hand · {winner}</p>
+                <p className="mt-1 text-center text-xs font-bold text-slate-500">All concealed tiles, called melds and the winning tile are revealed for review.</p>
+                <div className="mt-3 flex flex-wrap justify-center gap-1">
+                  {revealedTiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="md" traditional highlight={Boolean(result.loser !== undefined && index === revealedTiles.length - 1)} />)}
+                </div>
+                {winnerMelds.length > 0 && (
+                  <div className="mt-3 border-t border-emerald-100 pt-3">
+                    <p className="mb-2 text-center text-xs font-black text-emerald-800">Called melds / Kongs</p>
+                    <div className="flex flex-wrap justify-center gap-3">
+                      {winnerMelds.map((meld, meldIndex) => <div key={meldIndex} className="flex gap-px rounded-lg bg-emerald-50 p-1">{meld.tiles.map((tile, tileIndex) => <TileFace key={`${tile}-${tileIndex}`} tile={tile} size="sm" traditional />)}</div>)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </>
         )}
+        {state.matchEnded && state.matchResult && (
+          <div className="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-left">
+            <p className="text-center text-sm font-black uppercase tracking-[.16em] text-emerald-800">WRC Hanchan Result</p>
+            <div className="mt-2 space-y-1 text-sm font-bold">
+              {state.matchResult.rankings.map((entry) => (
+                <div key={entry.seat} className="grid grid-cols-[2.5rem_1fr_auto] gap-2">
+                  <span>#{entry.rank}</span>
+                  <span>{SEAT_LABEL[entry.seat]}</span>
+                  <span>{entry.score.toLocaleString()} · {entry.uma >= 0 ? '+' : ''}{entry.uma}P</span>
+                </div>
+              ))}
+            </div>
+            {state.matchResult.remainingRiichiSticks > 0 && <p className="mt-2 text-xs font-bold text-amber-800">Riichi deposits remain on the table: {state.matchResult.remainingRiichiSticks}.</p>}
+          </div>
+        )}
         <div className="mt-6 flex justify-center gap-3">
-          <button type="button" onClick={onNextHand} className="rounded-lg bg-[#0b6749] px-7 py-3 font-black text-white hover:bg-[#07553b]">Next Hand</button>
+          {state.matchEnded ? (
+            <p className="rounded-lg bg-amber-100 px-5 py-3 font-black text-emerald-950">South round complete · Match finished</p>
+          ) : <button type="button" onClick={onNextHand} className="rounded-lg bg-[#0b6749] px-7 py-3 font-black text-white hover:bg-[#07553b]">Next Hand</button>}
           <button type="button" onClick={onNewGame} className="rounded-lg border border-[#0b6749] px-5 py-3 font-black text-[#0b6749] hover:bg-emerald-50">New Match</button>
         </div>
       </div>
     </div>
   );
+}
+
+function drawReason(reason: NonNullable<GameState['result']>['reason']): string {
+  return 'Exhaustive draw · no tiles remain.';
 }

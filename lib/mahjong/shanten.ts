@@ -282,48 +282,63 @@ export function waitingTiles(
  * those are scored by their own rule, not by block structure.
  */
 export function decomposeWin(counts: number[], meldCount = 0): HandSet[] | null {
-  const work = [...counts];
+  return decomposeWins(counts, meldCount)[0] ?? null;
+}
 
-  const recurse = (start: number, need: number, acc: HandSet[]): HandSet[] | null => {
+/**
+ * Enumerate every standard-hand decomposition. A completed hand can have more
+ * than one legal grouping; Riichi scoring must use the grouping that produces
+ * the highest legal value (not simply the first DFS result).
+ */
+export function decomposeWins(counts: number[], meldCount = 0): HandSet[][] {
+  const work = [...counts];
+  const found: HandSet[][] = [];
+
+  const recurse = (start: number, need: number, acc: HandSet[]): void => {
     let i = start;
     while (i < TILE_KINDS && work[i] === 0) i += 1;
-    if (i >= TILE_KINDS) return need === 0 ? acc : null;
-    if (need === 0) return null;
+    if (i >= TILE_KINDS) {
+      if (need === 0) found.push(acc);
+      return;
+    }
+    if (need === 0) return;
 
     if (work[i] >= 3) {
       work[i] -= 3;
-      const found = recurse(i, need - 1, [
+      recurse(i, need - 1, [
         ...acc,
         { kind: 'triplet', tile: tileFromIndex(i) }
       ]);
       work[i] += 3;
-      if (found) return found;
     }
 
     if (canStartRun(i) && work[i + 1] > 0 && work[i + 2] > 0) {
       work[i] -= 1;
       work[i + 1] -= 1;
       work[i + 2] -= 1;
-      const found = recurse(i, need - 1, [
+      recurse(i, need - 1, [
         ...acc,
         { kind: 'run', tile: tileFromIndex(i) }
       ]);
       work[i] += 1;
       work[i + 1] += 1;
       work[i + 2] += 1;
-      if (found) return found;
     }
-
-    return null;
   };
 
   for (let i = 0; i < TILE_KINDS; i += 1) {
     if (work[i] < 2) continue;
     work[i] -= 2;
-    const sets = recurse(0, 4 - meldCount, []);
+    const start = found.length;
+    recurse(0, 4 - meldCount, []);
     work[i] += 2;
-    if (sets) return [...sets, { kind: 'pair', tile: tileFromIndex(i) }];
+    // The recursion is run before restoring the pair. Its results belong to
+    // this pair only, so append it immediately instead of retaining a mutable
+    // pair reference.
+    for (let index = start; index < found.length; index += 1) {
+      found[index] = [...found[index], { kind: 'pair', tile: tileFromIndex(i) }];
+    }
   }
 
-  return null;
+  return found;
 }

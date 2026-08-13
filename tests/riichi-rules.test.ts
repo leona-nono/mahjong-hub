@@ -5,16 +5,26 @@ import {
   countDora,
   nextDora,
   riichiBasePoints,
-  roundFu
+  roundFu,
+  visibleDoraIndicators
 } from '@/lib/mahjong/riichi';
 import { scoreHand } from '@/lib/mahjong/scoring';
 import {
+  availableConcealedKans,
+  availableAddedKans,
+  calculateRiichiMatchResult,
   createGame,
+  declareAddedKan,
+  declareConcealedKan,
+  declareRiichi,
   discard,
+  drawTile,
   isPermanentFuriten,
+  startNextHand,
   submitClaim,
   type Seat
 } from '@/lib/mahjong/engine';
+import { chooseMove } from '@/lib/mahjong/ai';
 import type { Tile } from '@/lib/mahjong/tiles';
 
 const hand = (value: string): Tile[] => value.split(' ') as Tile[];
@@ -111,7 +121,242 @@ describe('WRC furiten', () => {
   });
 });
 
+describe('WRC Riichi turn locks', () => {
+  it('records Double Riichi only before any call and on the first discard', () => {
+    let state = createGame({ ruleset: 'riichi', seed: 13 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 p2 p3 p4 s6 s7 s8 z1 m9');
+    state = declareRiichi(state, 0);
+    state = discard(state, 'm9');
+
+    expect(state.players[0].declaredReady).toBe(true);
+    expect(state.players[0].doubleReady).toBe(true);
+  });
+
+  it('uses ordinary Riichi after a call has occurred', () => {
+    let state = createGame({ ruleset: 'riichi', seed: 131 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.callsMade = true;
+    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 p2 p3 p4 s6 s7 s8 z1 m9');
+    state = declareRiichi(state, 0);
+    state = discard(state, 'm9');
+
+    expect(state.players[0].doubleReady).toBe(false);
+  });
+
+  it('makes a Riichi bot tsumogiri the drawn tile', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 14 });
+    state.turn = 1 as Seat;
+    state.phase = 'discard';
+    state.players[1].declaredReady = true;
+    state.players[1].lastDrawn = 'p9';
+    state.players[1].hand = hand('m1 m2 m3 m4 m5 m6 p2 p3 p4 s6 s7 s8 z1 p9');
+
+    expect(chooseMove(state, 1)).toEqual({ type: 'discard', tile: 'p9' });
+  });
+
+  it('cancels ippatsu after a concealed kan', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 15 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].hand = hand('m1 m1 m1 m1 m2 m3 m4 p2 p3 p4 s6 s7 s8 z1');
+    state.players[1].ippatsuEligible = true;
+
+    const afterKan = declareConcealedKan(state, 0, 'm1');
+    expect(afterKan.players[1].ippatsuEligible).toBe(false);
+  });
+
+  it('continues after four identical first-wind discards under strict WRC', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 16 });
+    state.turn = 3 as Seat;
+    state.phase = 'discard';
+    for (const player of state.players) player.hand = hand('m1 m2 m3 m4 m5 m6 p1 p2 p3 s1 s2 s3 z2');
+    state.players[0].discards = ['z1'];
+    state.players[1].discards = ['z1'];
+    state.players[2].discards = ['z1'];
+    state.players[3].hand = hand('z1');
+
+    const result = discard(state, 'z1');
+    expect(result.phase).toBe('draw');
+    expect(result.result).toBeNull();
+  });
+
+  it('continues after four Riichi declarations under strict WRC', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 17 });
+    state.turn = 3 as Seat;
+    state.phase = 'discard';
+    for (const player of state.players) {
+      player.hand = hand('m1 m2 m3 m4 m5 m6 p1 p2 p3 s1 s2 s3 z2');
+      player.declaredReady = true;
+    }
+    state.players[3].hand = hand('z1');
+    state.players[3].lastDrawn = 'z1';
+
+    const result = discard(state, 'z1');
+    expect(result.phase).toBe('draw');
+    expect(result.result).toBeNull();
+  });
+});
+
+describe('WRC kan flow', () => {
+  it('allows a Riichi concealed kan only when its waits remain unchanged', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 18 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].declaredReady = true;
+    state.players[0].lastDrawn = 'm1';
+    state.players[0].hand = hand('m1 m1 m1 m1 m2 m3 m4 p2 p3 p4 s6 s7 s8 z1');
+
+    expect(availableConcealedKans(state, 0)).toEqual(['m1']);
+    const result = declareConcealedKan(state, 0, 'm1');
+    expect(result.players[0].melds).toMatchObject([{ kind: 'kan', tiles: ['m1', 'm1', 'm1', 'm1'] }]);
+  });
+
+  it('opens a chankan window for a Riichi added kan and counts it as yaku', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 19 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].melds = [{ kind: 'pon', tiles: hand('m1 m1 m1'), from: 2 }];
+    state.players[0].hand = hand('m1 m2 m2 m3 m3 m4 m4 p1 p2 p3 s1');
+    state.players[1].hand = hand('m2 m3 m4 p2 p3 p4 s2 s3 s4 z1 z1 z1 m1');
+
+    expect(availableAddedKans(state, 0)).toContain('m1');
+    const opened = declareAddedKan(state, 0, 'm1', 1000);
+    expect(opened.phase).toBe('added-kan-claim');
+    const ron = opened.claims[1]?.find((claim) => claim.kind === 'ron');
+    expect(ron).toBeDefined();
+    const result = submitClaim(opened, 1, ron!);
+    expect(result.result?.winner).toBe(1);
+    expect(result.result?.score?.patterns.map((pattern) => pattern.id)).toContain('robbingKong');
+  });
+
+  it('counts a self-drawn replacement win as Rinshan Kaihou', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 20 });
+    state.players[0].melds = [{ kind: 'kan', tiles: hand('m1 m1 m1 m1'), concealed: true }];
+    state.players[0].hand = hand('m2 m3 m4 p2 p3 p4 s2 s3 s4 z1 z1');
+    state.players[0].lastDrawWasReplacement = true;
+
+    const score = scoreHand({ state, seat: 0, winningTile: 'z1', selfDrawn: true });
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('rinshanKaihou');
+  });
+
+  it('reveals one additional Dora indicator after each completed kan', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 21 });
+    state.players[0].melds = [{ kind: 'kan', tiles: hand('m1 m1 m1 m1'), concealed: true }];
+
+    expect(visibleDoraIndicators(state)).toHaveLength(2);
+  });
+
+  it('continues after a fourth kan and prevents a fifth kan under strict WRC', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 23 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].hand = hand('m1 m1 m1 m1 m2 m3 m4 p2 p3 p4 s6 s7 s8 z1');
+    state.players[1].melds = [{ kind: 'kan', tiles: hand('p1 p1 p1 p1'), concealed: true }];
+    state.players[2].melds = [{ kind: 'kan', tiles: hand('s1 s1 s1 s1'), concealed: true }];
+    state.players[3].melds = [{ kind: 'kan', tiles: hand('z1 z1 z1 z1'), concealed: true }];
+
+    const result = declareConcealedKan(state, 0, 'm1');
+    expect(result.phase).toBe('discard');
+    expect(result.result).toBeNull();
+    expect(availableConcealedKans(result, 0)).toEqual([]);
+  });
+
+  it('allows one player to declare all four kans', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 24 });
+    state.turn = 0;
+    state.phase = 'discard';
+    state.players[0].hand = hand('m1 m1 m1 m1 m2 m3 m4 p2 p3 p4 s6 s7 s8 z1');
+    state.players[0].melds = [
+      { kind: 'kan', tiles: hand('p1 p1 p1 p1'), concealed: true },
+      { kind: 'kan', tiles: hand('s1 s1 s1 s1'), concealed: true },
+      { kind: 'kan', tiles: hand('z1 z1 z1 z1'), concealed: true }
+    ];
+
+    const result = declareConcealedKan(state, 0, 'm1');
+    expect(result.phase).toBe('discard');
+    expect(result.result).toBeNull();
+    expect(result.players[0].melds.filter((meld) => meld.kind === 'kan')).toHaveLength(4);
+  });
+});
+
+describe('WRC match lifecycle', () => {
+  it('ends the match after South 4 when the dealer changes', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 26 });
+    state.phase = 'over';
+    state.handNumber = 7;
+    state.dealer = 0;
+    state.result = { kind: 'win', winner: 1 };
+
+    const result = startNextHand(state);
+    expect(result.matchEnded).toBe(true);
+    expect(result.handNumber).toBe(7);
+  });
+
+  it('keeps South 4 when its dealer continues', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 27 });
+    state.phase = 'over';
+    state.handNumber = 7;
+    state.dealer = 0;
+    state.result = { kind: 'win', winner: 0 };
+
+    const result = startNextHand(state);
+    expect(result.matchEnded).toBe(false);
+    expect(result.handNumber).toBe(7);
+    expect(result.roundWind).toBe('z2');
+  });
+
+  it('settles WRC noten payment and keeps East when East is tenpai', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 271 });
+    state.phase = 'draw';
+    state.wallIndex = state.deadWallIndex;
+    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 p2 p3 p4 s6 s7 s8 z1');
+    state.players[1].hand = hand('m1 m1 m2 m3 m4 p1 p2 p3 s1 s2 s3 z2 z3');
+    state.players[2].hand = hand('m1 m1 m2 m3 m4 p1 p2 p3 s1 s2 s3 z2 z3');
+    state.players[3].hand = hand('m1 m1 m2 m3 m4 p1 p2 p3 s1 s2 s3 z2 z3');
+
+    const drawn = drawTile(state);
+    expect(drawn.result).toMatchObject({ kind: 'draw', reason: 'exhaustive', tenpaiSeats: [0] });
+    expect(drawn.players[0].score).toBe(33000);
+    expect(drawn.players[1].score).toBe(29000);
+    expect(startNextHand(drawn).dealer).toBe(0);
+  });
+
+  it('calculates WRC uma and splits it when players tie', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 28 });
+    state.players[0].score = 36000;
+    state.players[1].score = 36000;
+    state.players[2].score = 28000;
+    state.players[3].score = 20000;
+    state.riichiSticks = 2;
+
+    const result = calculateRiichiMatchResult(state);
+    expect(result.rankings.find((entry) => entry.seat === 0)).toMatchObject({ rank: 1, uma: 10, hanchanScore: 16 });
+    expect(result.rankings.find((entry) => entry.seat === 1)).toMatchObject({ rank: 1, uma: 10, hanchanScore: 16 });
+    expect(result.remainingRiichiSticks).toBe(2);
+  });
+});
+
 describe('Riichi yaku and fu', () => {
+  it('uses lower values for open ittsuu, sanshoku, chanta and junchan', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 211 });
+    state.players[0].melds = [{ kind: 'chi', tiles: hand('m1 m2 m3'), from: 3 }];
+    state.players[0].hand = hand('m4 m5 m6 m7 m8 m9 p1 p2 p3 z1 z1');
+    const score = scoreHand({ state, seat: 0, winningTile: 'p3', selfDrawn: true });
+
+    expect(score.patterns.find((pattern) => pattern.id === 'ittsuu')?.value).toBe(1);
+  });
+
+  it('adds Haitei on the final live-wall self draw', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 212 });
+    state.wallIndex = state.deadWallIndex;
+    state.players[0].hand = hand('m2 m3 m4 m3 m4 m5 p3 p4 p5 s5 s6 s7 p6 p6');
+    const score = scoreHand({ state, seat: 0, winningTile: 's7', selfDrawn: true });
+
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('haiteiRaoyue');
+  });
   it('scores closed pinfu tsumo at 20 fu', () => {
     const state = createGame({ ruleset: 'riichi', seed: 21 });
     state.players[0].hand = hand('m2 m3 m4 m3 m4 m5 p3 p4 p5 s5 s6 s7 p6 p6');
@@ -128,5 +373,53 @@ describe('Riichi yaku and fu', () => {
 
     expect(score.patterns.map((pattern) => pattern.id)).toContain('ittsuu');
     expect(score.patterns.find((pattern) => pattern.id === 'ittsuu')?.value).toBe(2);
+  });
+
+  it('gives a double-wind pair only two fu, not four', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 29 });
+    state.roundWind = 'z1';
+    state.players[0].seatWind = 'z1';
+    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 p1 p2 p3 s1 s2 s3 z1 z1');
+    const score = scoreHand({ state, seat: 0, winningTile: 's3', selfDrawn: false });
+
+    expect(score.fu).toBe(30);
+  });
+
+  it('treats a ron-completed concealed triplet as open for fu', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 30 });
+    state.players[0].hand = hand('m1 m1 m2 m3 m4 p2 p3 p4 s2 s3 s4 z1 z1');
+    const score = scoreHand({ state, seat: 0, winningTile: 'm1', selfDrawn: false });
+
+    expect(score.fu).toBe(40);
+  });
+
+  it('requires an honour for Chanta', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 31 });
+    state.players[0].hand = hand('m1 m2 m3 m7 m8 m9 p1 p2 p3 s7 s8 s9 m1 m1');
+    const score = scoreHand({ state, seat: 0, winningTile: 'm1', selfDrawn: true });
+
+    expect(score.patterns.map((pattern) => pattern.id)).not.toContain('chanta');
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('junchan');
+  });
+
+  it('scores genuine yakuman cumulatively in WRC', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 32 });
+    state.players[1].discards = ['p1'];
+    state.players[0].hand = hand('z1 z1 z1 z2 z2 z2 z3 z3 z3 z4 z4 z4 z5 z5');
+    const score = scoreHand({ state, seat: 0, winningTile: 'z5', selfDrawn: true });
+
+    expect(score.yakumanCount).toBe(3);
+    // Non-dealer triple yakuman tsumo: each opponent pays 48,000.
+    expect(score.points).toBe(144000);
+  });
+
+  it('recognises WRC Nine Gates', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 33 });
+    state.players[1].discards = ['p1'];
+    state.players[0].hand = hand('m1 m1 m1 m2 m3 m4 m5 m5 m6 m7 m8 m9 m9 m9');
+    const score = scoreHand({ state, seat: 0, winningTile: 'm5', selfDrawn: true });
+
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('nineGates');
+    expect(score.yakumanCount).toBe(1);
   });
 });

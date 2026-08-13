@@ -9,6 +9,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
+    "assets:tiles": "node scripts/generate-mahjong-tile-webp.mjs",
     "postinstall": "prisma generate"
   },
   "dependencies": {

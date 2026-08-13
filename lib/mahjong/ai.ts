@@ -107,6 +107,13 @@ export function chooseMove(
 
   if (canDeclareTsumo(state, seat)) return { type: 'tsumo' };
 
+  // A declared Riichi hand is locked to tsumogiri.  This check must happen
+  // before the generic discard heuristic, otherwise a bot can select an
+  // illegal tile and stall its own turn.
+  if (state.ruleset === 'riichi' && player.declaredReady && player.lastDrawn) {
+    return { type: 'discard', tile: player.lastDrawn };
+  }
+
   // Kan only when it does not break a hand that is already close to ready.
   if (difficulty !== 'easy') {
     const kans = availableConcealedKans(state, seat);

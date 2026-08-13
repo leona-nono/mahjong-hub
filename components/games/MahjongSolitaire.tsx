@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import TileFace from './TileFace';
+import TileFace, { useTraditionalTilePreload } from './TileFace';
 import {
   isCleared,
   isExposed,
@@ -34,6 +34,7 @@ export default function MahjongSolitaire({
   defaultLayout = 'turtle',
   onWin
 }: MahjongSolitaireProps) {
+  useTraditionalTilePreload();
   const t = useTranslations('solitaire');
   const [layout, setLayout] = useState<SolitaireLayout>(defaultLayout);
   const [board, setBoard] = useState<Board>(() =>

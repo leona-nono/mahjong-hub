@@ -6,6 +6,7 @@ import TileFace, { TileBack } from './TileFace';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 import { playMahjongSound, primeMahjongAudio } from '@/lib/mahjong/sound';
+import { visibleDoraIndicators } from '@/lib/mahjong/riichi';
 
 const HUMAN: Seat = 0;
 const NAMES: Record<Seat, string> = { 0: 'YOU', 1: 'SOUTH', 2: 'WEST', 3: 'NORTH' };
@@ -54,6 +55,14 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
   const resultScore = state.result?.winner === HUMAN
     ? state.result.score
     : state.result?.winners?.find((winner) => winner.seat === HUMAN)?.score;
+  const winnerSeat = state.result?.winner ?? state.result?.winners?.[0]?.seat;
+  const winnerScore = state.result?.score ?? state.result?.winners?.[0]?.score;
+  const opponentWon = state.phase === 'over' && winnerSeat !== undefined && winnerSeat !== HUMAN;
+  const revealedTiles = winnerSeat === undefined ? [] : [
+    ...state.players[winnerSeat].hand,
+    ...(state.result?.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
+  ];
+  const winnerMelds = winnerSeat === undefined ? [] : state.players[winnerSeat].melds;
   const hintStatus = (() => {
     if (!showHints || !hints) return null;
     if (tsumoEvaluation?.complete) {
@@ -116,7 +125,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
         {isRiichi && (
           <div className="absolute right-[23%] top-[29%] rounded-md bg-black/30 p-1 text-center text-[8px] font-bold text-amber-200">
             <span className="block">DORA</span>
-            <TileFace tile={state.wall[state.wall.length - 5]} size="sm" traditional />
+            <div className="flex gap-px">{visibleDoraIndicators(state).map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}</div>
           </div>
         )}
 
@@ -230,7 +239,31 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                   </span>
                 </div>
               )}
-              <button type="button" onClick={onNextHand} className="mt-4 w-full rounded-xl bg-emerald-700 py-3 font-black text-white shadow-lg">{isZh ? '继续下一局' : 'Next Hand'}</button>
+              {state.matchEnded && state.matchResult && (
+                <div className="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-left text-xs font-bold text-emerald-950">
+                  <p className="mb-1 text-center text-sm font-black">WRC HANCHAN RESULT</p>
+                  {state.matchResult.rankings.map((entry) => <p key={entry.seat}>#{entry.rank} · {NAMES[entry.seat]} · {entry.score.toLocaleString()} · {entry.uma >= 0 ? '+' : ''}{entry.uma}P</p>)}
+                </div>
+              )}
+              {opponentWon && (
+                <div className="mt-3 rounded-xl border border-emerald-200 bg-white/90 p-3 text-left">
+                  <p className="text-center text-xs font-black uppercase tracking-[.12em] text-emerald-800">Winning Hand · {NAMES[winnerSeat]}</p>
+                  <p className="mt-1 text-center text-[10px] font-bold text-slate-500">Complete hand revealed for review</p>
+                  {winnerScore && <p className="mt-1 text-center text-[11px] font-black text-amber-700">{isRiichi ? `${winnerScore.han ?? winnerScore.total} Han · ${winnerScore.fu ?? 0} Fu · ${winnerScore.points ?? 0} points` : `${winnerScore.total} ${isZh ? '番' : 'Fan'} · ${winnerScore.points ?? 0} points`}</p>}
+                  <div className="mt-2 flex flex-wrap justify-center gap-0.5">
+                    {revealedTiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional highlight={Boolean(state.result?.loser !== undefined && index === revealedTiles.length - 1)} />)}
+                  </div>
+                  {winnerMelds.length > 0 && (
+                    <div className="mt-2 border-t border-emerald-100 pt-2">
+                      <p className="mb-1 text-center text-[10px] font-black text-emerald-800">Called melds / Kongs</p>
+                      <div className="flex flex-wrap justify-center gap-2">
+                        {winnerMelds.map((meld, meldIndex) => <div key={meldIndex} className="flex gap-px rounded bg-emerald-50 p-0.5">{meld.tiles.map((tile, tileIndex) => <TileFace key={`${tile}-${tileIndex}`} tile={tile} size="xs" traditional />)}</div>)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {!state.matchEnded && <button type="button" onClick={onNextHand} className="mt-4 w-full rounded-xl bg-emerald-700 py-3 font-black text-white shadow-lg">{isZh ? '继续下一局' : 'Next Hand'}</button>}
               <button type="button" onClick={onNewGame} className="mt-2 w-full rounded-xl border border-emerald-700 py-2 text-sm font-black text-emerald-800">{isZh ? '新对局' : 'New Match'}</button>
             </div>
           </div>

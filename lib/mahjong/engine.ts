@@ -20,7 +20,7 @@ import {
   WINDS,
   type Tile
 } from './tiles';
-import { isWinningHand, shanten, waitingTiles } from './shanten';
+import { decomposeWin, isWinningHand, shanten, waitingTiles } from './shanten';
 import { scoreHand, type ScoreResult } from './scoring';
 
 import { calculateRiichiPayment } from './riichi';
@@ -93,7 +93,10 @@ export interface PlayerState {
   isBot: boolean;
   /** Set once the player has declared a ready hand (riichi ruleset). */
   declaredReady: boolean;
+  /** True when Riichi was declared before any player had called a meld. */
+  doubleReady: boolean;
   riichiPending: boolean;
+  doubleRiichiPending: boolean;
   temporaryFuriten: boolean;
   ippatsuEligible: boolean;
   /** Drawn tile kept separately so a declared Riichi hand can only tsumogiri. */
@@ -114,6 +117,9 @@ export interface ClaimOption {
 
 export interface GameResult {
   kind: 'win' | 'draw';
+  /** Product-visible explanation for an exhaustive or abortive draw. */
+  reason?: 'exhaustive';
+  tenpaiSeats?: Seat[];
   /** Single winner (tsumo, or ron under HK / CO). */
   winner?: Seat;
   loser?: Seat;
@@ -123,6 +129,12 @@ export interface GameResult {
    * win the same discard and each is paid by the discarder.
    */
   winners?: Array<{ seat: Seat; loser?: Seat; score: ScoreResult }>;
+}
+
+export interface RiichiMatchResult {
+  rankings: Array<{ seat: Seat; rank: number; score: number; uma: number; hanchanScore: number }>;
+  /** WRC riichi deposits remain unclaimed when the hanchan ends. */
+  remainingRiichiSticks: number;
 }
 
 export interface GameState {
@@ -157,6 +169,11 @@ export interface GameState {
   seed: number;
   riichiSticks: number;
   honba: number;
+  /** A called meld prevents later first-turn Riichi from being Double Riichi. */
+  callsMade: boolean;
+  /** Riichi product matches finish after South 4 once the dealer changes. */
+  matchEnded?: boolean;
+  matchResult?: RiichiMatchResult;
 }
 
 const DEAD_WALL_SIZE = 14;
@@ -206,7 +223,9 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     score: ruleset === 'riichi' ? 30000 : 78000,
     isBot: seat !== humanSeat,
     declaredReady: false,
+    doubleReady: false,
     riichiPending: false,
+    doubleRiichiPending: false,
     temporaryFuriten: false,
     ippatsuEligible: false
   }));
@@ -239,7 +258,8 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     log: [],
     seed,
     riichiSticks: 0,
-    honba: 0
+    honba: 0,
+    callsMade: false
   };
 
   return state;
@@ -253,9 +273,20 @@ export function createGame(options: CreateGameOptions = {}): GameState {
 export function startNextHand(state: GameState): GameState {
   if (state.phase !== 'over') return state;
   const winner = state.result?.winner;
-  const dealerKeepsSeat = state.result?.kind === 'draw' || winner === state.dealer;
+  const dealerKeepsSeat = state.result?.kind === 'draw'
+    ? Boolean(state.result.tenpaiSeats?.includes(state.dealer))
+    : winner === state.dealer;
   const dealer = dealerKeepsSeat ? state.dealer : nextSeat(state.dealer);
   const handNumber = state.handNumber + (dealerKeepsSeat ? 0 : 1);
+  // East/South match: South 4 is the final scheduled hand. A dealer
+  // continuation stays in South 4; a dealer change ends the match.
+  if (state.ruleset === 'riichi' && state.handNumber === 7 && !dealerKeepsSeat) {
+    const finished = clone(state);
+    finished.matchEnded = true;
+    finished.matchResult = calculateRiichiMatchResult(finished);
+    finished.log.push('South round complete: WRC hanchan ends.');
+    return finished;
+  }
   const humanSeat = state.players.find((player) => !player.isBot)?.seat ?? 0;
   const next = createGame({
     ruleset: state.ruleset,
@@ -268,6 +299,8 @@ export function startNextHand(state: GameState): GameState {
   next.roundWind = WINDS[Math.floor(handNumber / 4) % 4];
   next.honba = state.honba;
   next.riichiSticks = state.riichiSticks;
+  next.matchEnded = false;
+  next.matchResult = undefined;
   for (const seat of SEATS) {
     next.players[seat].score = state.players[seat].score;
     next.players[seat].seatWind = WINDS[(seat - dealer + 4) % 4];
@@ -313,11 +346,12 @@ function meldCount(player: PlayerState): number {
 export function drawTile(state: GameState): GameState {
   if (state.phase !== 'draw') return state;
   const next = clone(state);
+  const tenpai: Seat[] = [];
 
   if (tilesRemaining(next) <= 0) {
     next.phase = 'over';
     if (next.ruleset === 'riichi') {
-      const tenpai = SEATS.filter((seat) => seatShanten(next, seat) === 0);
+      tenpai.push(...SEATS.filter((seat) => seatShanten(next, seat) === 0));
       if (tenpai.length > 0 && tenpai.length < 4) {
         const gain = 3000 / tenpai.length;
         const loss = 3000 / (4 - tenpai.length);
@@ -329,7 +363,11 @@ export function drawTile(state: GameState): GameState {
       next.honba += 1;
       next.log.push('Exhaustive draw: 3,000-point noten payment settled.');
     }
-    next.result = { kind: 'draw' };
+    next.result = {
+      kind: 'draw',
+      reason: 'exhaustive',
+      tenpaiSeats: next.ruleset === 'riichi' ? tenpai : undefined
+    };
     next.log.push('Wall exhausted — the hand is drawn.');
     return next;
   }
@@ -408,6 +446,7 @@ export function declareRiichi(state: GameState, seat: Seat): GameState {
   if (availableRiichiDiscards(state, seat).length === 0) return state;
   const next = clone(state);
   next.players[seat].riichiPending = true;
+  next.players[seat].doubleRiichiPending = next.players[seat].discards.length === 0 && !next.callsMade;
   next.log.push('Seat ' + seat + ' announces riichi.');
   return next;
 }
@@ -415,22 +454,43 @@ export function declareRiichi(state: GameState, seat: Seat): GameState {
 export function availableConcealedKans(state: GameState, seat: Seat): Tile[] {
   if (state.phase !== 'discard' || state.turn !== seat) return [];
   const player = state.players[seat];
+  if (state.ruleset === 'riichi' && totalKans(state) >= 4) return [];
   if (player.hand.length % 3 !== 2) return [];
   const counts = handCounts(player);
   const tiles: Tile[] = [];
   for (let i = 0; i < counts.length; i += 1) {
-    if (counts[i] === 4) tiles.push(tileFromIndex(i));
+    if (counts[i] !== 4) continue;
+    const tile = tileFromIndex(i);
+    if (!player.declaredReady || riichiKanPreservesWaits(state, seat, tile)) tiles.push(tile);
   }
   return tiles;
 }
 
+/** WRC product rule: a Riichi ankan is legal only when its wait set is unchanged. */
+function riichiKanPreservesWaits(state: GameState, seat: Seat, tile: Tile): boolean {
+  const player = state.players[seat];
+  if (!player.lastDrawn) return false;
+  const before = [...player.hand];
+  if (!removeTile(before, player.lastDrawn)) return false;
+  const after = [...player.hand];
+  for (let i = 0; i < 4; i += 1) {
+    if (!removeTile(after, tile)) return false;
+  }
+  const beforeWaits = waitingTiles(toCounts(before), meldCount(player), 'riichi').sort();
+  const afterWaits = waitingTiles(toCounts(after), meldCount(player) + 1, 'riichi').sort();
+  const fixedTripletForEveryWait = beforeWaits.every((wait) => {
+    const winning = toCounts([...before, wait]);
+    const sets = decomposeWin(winning, meldCount(player));
+    return sets?.some((set) => set.kind === 'triplet' && set.tile === tile);
+  });
+  return beforeWaits.length > 0 && fixedTripletForEveryWait && beforeWaits.length === afterWaits.length && beforeWaits.every((value, index) => value === afterWaits[index]);
+}
+
 /** Added Kongs: promote an already exposed Pung with a self-drawn fourth tile. */
 export function availableAddedKans(state: GameState, seat: Seat): Tile[] {
-  // Added-kan robbing is implemented for the Hong Kong product ruleset.  Do
-  // not accidentally change the existing Riichi rules while this variant is
-  // still being expanded.
-  if (state.ruleset !== 'hongkong') return [];
+  if (state.ruleset !== 'hongkong' && state.ruleset !== 'riichi') return [];
   if (state.phase !== 'discard' || state.turn !== seat) return [];
+  if (state.ruleset === 'riichi' && totalKans(state) >= 4) return [];
   const player = state.players[seat];
   return player.melds
     .filter((meld) => meld.kind === 'pon' && !meld.concealed && player.hand.includes(meld.tiles[0]))
@@ -443,12 +503,17 @@ export function availableKans(state: GameState, seat: Seat): Tile[] {
 
 export function declareConcealedKan(state: GameState, seat: Seat, tile: Tile): GameState {
   if (!availableConcealedKans(state, seat).includes(tile)) return state;
-  if (state.ruleset === 'riichi' && state.players[seat].declaredReady) return state;
   const next = clone(state);
   const player = next.players[seat];
   for (let i = 0; i < 4; i += 1) removeTile(player.hand, tile);
   player.melds.push({ kind: 'kan', tiles: [tile, tile, tile, tile], concealed: true });
+  next.callsMade = true;
   drawReplacement(next, seat);
+  // Any call, including a concealed kan, breaks ippatsu for every declared
+  // Riichi hand. The next Dora indicator is derived from the kan count.
+  if (next.ruleset === 'riichi') {
+    for (const participant of next.players) participant.ippatsuEligible = false;
+  }
   next.log.push(`Seat ${seat} declares a concealed kan.`);
   next.phase = 'discard';
   return next;
@@ -459,7 +524,7 @@ export function declareConcealedKan(state: GameState, seat: Seat, tile: Tile): G
  * Kong win until every eligible opponent has passed or claimed Ron.
  */
 export function declareAddedKan(state: GameState, seat: Seat, tile: Tile, now = Date.now()): GameState {
-  if (state.ruleset !== 'hongkong') return state;
+  if (state.ruleset !== 'hongkong' && state.ruleset !== 'riichi') return state;
   if (!availableAddedKans(state, seat).includes(tile)) return state;
   const next = clone(state);
   const meldIndex = next.players[seat].melds.findIndex(
@@ -491,11 +556,15 @@ function completeAddedKan(state: GameState, seat: Seat, tile: Tile, meldIndex: n
   const player = state.players[seat];
   if (!removeTile(player.hand, tile)) return state;
   player.melds[meldIndex] = { ...player.melds[meldIndex], kind: 'kan', tiles: [tile, tile, tile, tile] };
+  state.callsMade = true;
   drawReplacement(state, seat);
   state.turn = seat;
   state.phase = 'discard';
   state.lastDiscard = null;
   state.pendingAddedKan = undefined;
+  if (state.ruleset === 'riichi') {
+    for (const participant of state.players) participant.ippatsuEligible = false;
+  }
   state.log.push(`Seat ${seat} completes an added kan.`);
   return state;
 }
@@ -524,6 +593,8 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
   if (player.riichiPending) {
     player.riichiPending = false;
     player.declaredReady = true;
+    player.doubleReady = player.doubleRiichiPending;
+    player.doubleRiichiPending = false;
     player.score -= 1000;
     player.ippatsuEligible = true;
     next.riichiSticks += 1;
@@ -542,13 +613,40 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
   next.submitted = {};
 
   if (Object.keys(next.claims).length === 0) {
-    next.turn = nextSeat(next.turn);
-    next.phase = 'draw';
+    return advanceAfterUnclaimedDiscard(next);
   } else {
     next.claimOpenedAt = now;
     next.phase = 'claim';
   }
   return next;
+}
+
+/** WRC final scoring: no oka, +15/+5/-5/-15 uma, split on equal scores. */
+export function calculateRiichiMatchResult(state: GameState): RiichiMatchResult {
+  const ordered = [...SEATS].sort((a, b) => state.players[b].score - state.players[a].score);
+  const umas = [15, 5, -5, -15];
+  const rankings: RiichiMatchResult['rankings'] = [];
+  let offset = 0;
+  while (offset < ordered.length) {
+    const score = state.players[ordered[offset]].score;
+    const tied = ordered.slice(offset).filter((seat) => state.players[seat].score === score);
+    const uma = umas.slice(offset, offset + tied.length).reduce((sum, value) => sum + value, 0) / tied.length;
+    for (const seat of tied) {
+      rankings.push({ seat, rank: offset + 1, score, uma, hanchanScore: (score - 30000) / 1000 + uma });
+    }
+    offset += tied.length;
+  }
+  return { rankings, remainingRiichiSticks: state.riichiSticks };
+}
+
+function advanceAfterUnclaimedDiscard(state: GameState): GameState {
+  state.turn = nextSeat(state.turn);
+  state.phase = 'draw';
+  return state;
+}
+
+function totalKans(state: GameState): number {
+  return state.players.reduce((total, player) => total + player.melds.filter((meld) => meld.kind === 'kan').length, 0);
 }
 
 /**
@@ -707,9 +805,7 @@ export function maybeResolveClaims(state: GameState): GameState {
   next.submitted = {};
 
   if (!best) {
-    next.turn = nextSeat(discardInfo.from);
-    next.phase = 'draw';
-    return next;
+    return advanceAfterUnclaimedDiscard(next);
   }
 
   if (best.option.kind === 'ron') {
@@ -729,6 +825,7 @@ export function maybeResolveClaims(state: GameState): GameState {
   const kind: MeldKind =
     best.option.kind === 'chi' ? 'chi' : best.option.kind === 'kan' ? 'kan' : 'pon';
   caller.melds.push({ kind, tiles: meldTiles, from: discardInfo.from });
+  next.callsMade = true;
   if (next.ruleset === 'riichi') {
     for (const participant of next.players) participant.ippatsuEligible = false;
   }
@@ -793,7 +890,8 @@ function finishWithWin(
       winner: seat,
       dealer: state.dealer,
       selfDrawn,
-      honba: state.honba
+      honba: state.honba,
+      yakumanCount: score.yakumanCount
     });
     score.points = payment.winnerGain;
     score.paymentLabel = payment.label;
