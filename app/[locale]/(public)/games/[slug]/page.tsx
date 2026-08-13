@@ -8,6 +8,7 @@ import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
+import { alternatesFor } from '@/lib/seo';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -33,12 +34,7 @@ export async function generateMetadata({
   return {
     title: game.title,
     description: game.description,
-    alternates: {
-      canonical: url,
-      languages: Object.fromEntries(
-        LOCALES.map((l) => [l, `${SITE}/${l}/games/${slug}`])
-      )
-    },
+    alternates: alternatesFor(locale, `/games/${slug}`),
     openGraph: {
       title: game.title,
       description: game.description,
@@ -82,7 +78,7 @@ export default async function GamePage({
       url: `${SITE}/${locale}/games/${slug}`,
       genre: 'Puzzle',
       gamePlatform: ['Web Browser', 'Mobile Web'],
-      playMode: game.players && game.players > 1 ? 'SinglePlayer' : 'SinglePlayer',
+      playMode: game.players && game.players > 1 ? 'MultiPlayer' : 'SinglePlayer',
       numberOfPlayers: {
         '@type': 'QuantitativeValue',
         value: game.players ?? 1

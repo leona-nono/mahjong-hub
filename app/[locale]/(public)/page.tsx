@@ -5,6 +5,9 @@ import GameCard from '@/components/GameCard';
 import DailyCheckIn from '@/components/DailyCheckIn';
 import { Link } from '@/i18n/navigation';
 
+// Canonical + hreflang alternates are provided by the (public) layout —
+// see app/[locale]/(public)/layout.tsx. A page-level `alternates` here would
+// not emit its `languages` (Next 15.5 quirk on the `[locale]` index route).
 export default async function HomePage({
   params
 }: {
@@ -19,14 +22,75 @@ export default async function HomePage({
   const native = getLocalizedGames(getNativeGames(), locale);
   const all = getLocalizedGames(getGames(), locale);
 
-  const jsonLd = {
+  // FAQPage structured data (English — our primary SEO target language) so
+  // Google can surface rich Q&A results on the homepage.
+  const faqPage = {
     '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: ts('name'),
-    description: ts('tagline'),
-    url: 'https://mahjonggame.org',
-    inLanguage: ['en', 'zh', 'zh-TW', 'ja', 'ko']
+    '@type': 'FAQPage',
+    inLanguage: 'en',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What is Mahjong Hub?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Mahjong Hub is a free online collection of rainbow-themed mahjong games, including mahjong solitaire, connect (match) puzzles and tile-matching modes. Play instantly in your browser with no download required.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Do I need to sign up or log in?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. Every game is free to play without an account. You only sign in if you want to save progress, earn daily check-in points, or sync your play across devices.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Is Mahjong Hub really free?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. All games are completely free with no paywalls, and gameplay is never blocked by forced advertisements.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I play on my phone?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. Mahjong Hub is fully responsive and works on phones, tablets and desktop browsers, so there is no app to install.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'How do you play mahjong solitaire?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Match two free tiles that share the same symbol to remove them. A tile is "free" when nothing is on top of it and at least one side is open. Clear the entire board to win.'
+        }
+      },
+      {
+        '@type': 'Question',
+        name: 'Which mahjong game types are available?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We offer original rainbow mahjong solitaire layouts, connect/match puzzles and classic tile-matching modes, with new game types added over time.'
+        }
+      }
+    ]
   };
+
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: ts('name'),
+      description: ts('tagline'),
+      url: 'https://mahjonggame.org',
+      inLanguage: ['en', 'zh', 'zh-TW', 'ja', 'ko']
+    },
+    faqPage
+  ];
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
