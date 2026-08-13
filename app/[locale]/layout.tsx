@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import '@/app/globals.css';
 import Providers from '@/components/providers';
+import Analytics from '@/components/Analytics';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -26,7 +27,13 @@ export const metadata: Metadata = {
       ja: '/ja',
       ko: '/ko'
     }
-  }
+  },
+  // GSC site verification (meta-tag method). Set the env var in Vercel; when
+  // absent, Next omits the tag. DNS TXT verification in Cloudflare is an
+  // equally valid alternative that needs no code.
+  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
+    : undefined
 };
 
 // Some mobile in-app browsers otherwise select a desktop layout viewport
@@ -73,6 +80,7 @@ export default async function LocaleLayout({
           >
             {children}
           </Providers>
+          <Analytics />
         </NextIntlClientProvider>
       </body>
     </html>

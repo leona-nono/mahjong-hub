@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
 import { getGames } from '@/data/games';
+import { getBlogPosts } from '@/data/blog';
 
 const BASE = 'https://mahjonggame.org';
 
@@ -15,6 +16,7 @@ const BASE = 'https://mahjonggame.org';
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   const nativeGames = getGames().filter((g) => g.gameType === 'native');
+  const blogPosts = getBlogPosts();
   const lastModified = new Date();
 
   const alternatesFor = (path: string) =>
@@ -38,6 +40,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       alternates: { languages: alternatesFor('/games') }
     });
+
+    // Blog hub + every article. These are the core SEO landing pages, so they
+    // must be in the sitemap with full hreflang alternates.
+    entries.push({
+      url: `${BASE}/${locale}/blog`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+      alternates: { languages: alternatesFor('/blog') }
+    });
+
+    for (const post of blogPosts) {
+      const path = `/blog/${post.slug}`;
+      entries.push({
+        url: `${BASE}/${locale}${path}`,
+        lastModified,
+        changeFrequency: 'monthly',
+        priority: 0.7,
+        alternates: { languages: alternatesFor(path) }
+      });
+    }
 
     for (const game of nativeGames) {
       const path = `/games/${game.slug}`;
