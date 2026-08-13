@@ -196,7 +196,9 @@ export default function MahjongTable({
     setState((current) => submitClaim(current, HUMAN, option));
   };
 
-  if (ruleset === 'hongkong' || ruleset === 'riichi') {
+  // The rules engine remains ruleset-specific; the tabletop presentation is
+  // shared so every four-player game has an immediately legible tile table.
+  if (ruleset === 'hongkong' || ruleset === 'riichi' || ruleset === 'chinese-official') {
     return (
       <HongKongTable
         state={state}

@@ -13,7 +13,7 @@ const NAMES: Record<Seat, string> = { 0: 'YOU', 1: 'SOUTH', 2: 'WEST', 3: 'NORTH
 
 export interface MobileMahjongTableProps {
   state: GameState;
-  variant: 'hongkong' | 'riichi';
+  variant: 'hongkong' | 'riichi' | 'chinese-official';
   paused: boolean;
   soundEnabled: boolean;
   hongKongMode: HongKongMode;
@@ -49,6 +49,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
   } = props;
   const human = state.players[HUMAN];
   const isRiichi = variant === 'riichi';
+  const isMcr = variant === 'chinese-official';
   const voiceLocale = isRiichi ? 'japanese' as const : 'cantonese' as const;
   const locale = useLocale();
   const isZh = locale.startsWith('zh');
@@ -90,7 +91,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
           <Tool onClick={onToggleSound} active={soundEnabled}>{soundEnabled ? 'Sound' : 'Muted'}</Tool>
         </div>
         <div className="flex gap-1">
-          {!isRiichi && (
+          {variant === 'hongkong' && (
             <Tool
               onClick={() => onHongKongMode(hongKongMode === 'casual' ? 'standard' : 'casual')}
               active={hongKongMode === 'casual'}
@@ -117,7 +118,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
         <Discards state={state} seat={0} className="bottom-[25%] left-1/2 -translate-x-1/2" />
 
         <div className="absolute left-1/2 top-[44%] z-10 flex h-24 w-28 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-4 border-[#242632] bg-[#080b10] shadow-xl">
-          <span className="text-[9px] font-bold tracking-[.2em] text-cyan-300">{isRiichi ? 'RIICHI' : 'HONG KONG'}</span>
+          <span className="text-[9px] font-bold tracking-[.2em] text-cyan-300">{isRiichi ? 'RIICHI' : isMcr ? 'CHINESE MCR' : 'HONG KONG'}</span>
           <strong className="text-lg font-medium text-cyan-100">{roundLabel}</strong>
           <span className="text-2xl font-light text-cyan-200">{tilesRemaining(state)}</span>
           <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-[9px] font-black">{NAMES[state.turn]}</span>
@@ -140,8 +141,8 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
               <div className="w-full rounded-lg border border-amber-300/60 bg-amber-50 px-3 py-2 text-center text-[11px] font-black text-amber-950 shadow-xl">
                 <span className="block text-sm">{isZh ? '牌型已经完成' : 'HAND COMPLETE'}</span>
                 {isZh
-                  ? `当前 ${tsumoEvaluation.score?.total ?? 0} 番，香港麻将需要 ${tsumoEvaluation.minimum} 番才能胡；还差 ${Math.max(0, tsumoEvaluation.minimum - (tsumoEvaluation.score?.total ?? 0))} 番。`
-                  : `${tsumoEvaluation.score?.total ?? 0} Fan now; ${tsumoEvaluation.minimum} Fan required to win.`}
+                    ? `当前 ${tsumoEvaluation.score?.total ?? 0} ${isMcr ? '分' : '番'}，${isMcr ? '国标麻将' : '香港麻将'}需要 ${tsumoEvaluation.minimum} ${isMcr ? '分' : '番'}才能胡；还差 ${Math.max(0, tsumoEvaluation.minimum - (tsumoEvaluation.score?.total ?? 0))}${isMcr ? '分' : '番'}。`
+                  : `${tsumoEvaluation.score?.total ?? 0} ${isMcr ? 'points' : 'Fan'} now; ${tsumoEvaluation.minimum} ${isMcr ? 'points' : 'Fan'} required to win.`}
                 {tsumoEvaluation.score?.patterns.length ? (
                   <span className="mt-1 block text-[10px] font-bold text-amber-800">
                     {isZh ? '已有番种：' : 'Current patterns: '}
@@ -179,6 +180,12 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                   {meld.tiles.map((tile, tileIndex) => <TileFace key={tileIndex} tile={tile} size="sm" traditional />)}
                 </div>
               ))}
+            </div>
+          )}
+          {isMcr && human.flowers.length > 0 && (
+            <div className="mb-1 flex items-center justify-center gap-px">
+              <span className="mr-1 text-[9px] font-black text-amber-200">{isZh ? '花牌' : 'Flowers'}</span>
+              {human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
             </div>
           )}
           <div className="flex w-max min-w-full items-end justify-center px-0.5">
@@ -230,7 +237,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                   <strong className="block text-xl text-rose-700">
                     {isRiichi
                       ? `${resultScore.han ?? resultScore.total} Han · ${resultScore.fu ?? 0} Fu`
-                      : `${resultScore.total} ${isZh ? '番' : 'Fan'}`}
+                      : `${resultScore.total} ${isMcr ? (isZh ? '分' : 'points') : (isZh ? '番' : 'Fan')}`}
                   </strong>
                   {resultScore.points && (
                     <span className="mt-1 block text-xs font-black text-emerald-800">{resultScore.points} points · {resultScore.paymentLabel}</span>
@@ -250,7 +257,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                 <div className="mt-3 rounded-xl border border-emerald-200 bg-white/90 p-3 text-left">
                   <p className="text-center text-xs font-black uppercase tracking-[.12em] text-emerald-800">Winning Hand · {NAMES[winnerSeat]}</p>
                   <p className="mt-1 text-center text-[10px] font-bold text-slate-500">Complete hand revealed for review</p>
-                  {winnerScore && <p className="mt-1 text-center text-[11px] font-black text-amber-700">{isRiichi ? `${winnerScore.han ?? winnerScore.total} Han · ${winnerScore.fu ?? 0} Fu · ${winnerScore.points ?? 0} points` : `${winnerScore.total} ${isZh ? '番' : 'Fan'} · ${winnerScore.points ?? 0} points`}</p>}
+                  {winnerScore && <p className="mt-1 text-center text-[11px] font-black text-amber-700">{isRiichi ? `${winnerScore.han ?? winnerScore.total} Han · ${winnerScore.fu ?? 0} Fu · ${winnerScore.points ?? 0} points` : `${winnerScore.total} ${isMcr ? (isZh ? '分' : 'points') : (isZh ? '番' : 'Fan')} · ${winnerScore.points ?? 0} points`}</p>}
                   <div className="mt-2 flex flex-wrap justify-center gap-0.5">
                     {revealedTiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional highlight={Boolean(state.result?.loser !== undefined && index === revealedTiles.length - 1)} />)}
                   </div>

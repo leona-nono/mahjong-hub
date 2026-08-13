@@ -17,7 +17,7 @@ const SEAT_LABEL: Record<Seat, string> = { 0: 'East', 1: 'South', 2: 'West', 3: 
 const WIND_LABEL: Record<Tile, string> = { z1: 'East', z2: 'South', z3: 'West', z4: 'North' };
 interface HongKongTableProps {
   state: GameState;
-  variant?: 'hongkong' | 'riichi';
+  variant?: 'hongkong' | 'riichi' | 'chinese-official';
   riichiDiscards?: Tile[];
   paused: boolean;
   difficulty: Difficulty;
@@ -78,8 +78,13 @@ export default function HongKongTable({
   const human = state.players[HUMAN];
   const currentWind = SEAT_LABEL[state.turn];
   const isRiichi = variant === 'riichi';
+  const isMcr = variant === 'chinese-official';
   const voiceLocale = isRiichi ? 'japanese' as const : 'cantonese' as const;
-  const gameName = isRiichi ? 'Japanese Riichi' : 'Hong Kong';
+  const gameName = isRiichi ? 'Japanese Riichi' : isMcr ? 'Chinese Official · MCR' : 'Hong Kong';
+  const scoreUnit = isRiichi ? 'Han' : isMcr ? 'Points' : 'Fan';
+  // A stable three-side wall makes the remaining wall and table orientation
+  // readable; it does not expose any opponent's concealed hand.
+  const wallTiles = Math.max(6, Math.min(18, Math.ceil(tilesRemaining(state) / 4)));
   const roundLabel = `${WIND_LABEL[state.roundWind]} ${state.handNumber % 4 + 1}`;
   const tableShellRef = useRef<HTMLElement>(null);
   const [showScoring, setShowScoring] = useState(false);
@@ -178,7 +183,7 @@ export default function HongKongTable({
             }} active={soundEnabled}>
               {soundEnabled ? 'Sound On' : 'Sound Off'}
             </TableToolButton>
-            {!isRiichi && (
+            {variant === 'hongkong' && (
               <label className="flex h-9 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
                 Mode
                 <select
@@ -222,19 +227,19 @@ export default function HongKongTable({
           <div className="absolute left-4 top-3 z-20 text-xl font-semibold text-emerald-100/45">Rate: 10</div>
 
           <div className="absolute left-1/2 top-8 -translate-x-1/2">
-            <ConcealedRack seat={3} count={state.players[3].hand.length} />
+            <ConcealedRack seat={3} count={wallTiles} />
           </div>
           <div className="absolute left-[15%] top-1/2 -translate-y-1/2">
-            <ConcealedRack seat={2} count={state.players[2].hand.length} vertical />
+            <ConcealedRack seat={2} count={wallTiles} vertical />
           </div>
           <div className="absolute right-[15%] top-1/2 -translate-y-1/2">
-            <ConcealedRack seat={1} count={state.players[1].hand.length} vertical />
+            <ConcealedRack seat={1} count={wallTiles} vertical />
           </div>
 
-          <PlayerBadge state={state} seat={3} className="right-[19%] top-[11%]" />
-          <PlayerBadge state={state} seat={2} className="left-5 top-[39%]" />
-          <PlayerBadge state={state} seat={1} className="right-5 top-[39%]" />
-          <PlayerBadge state={state} seat={0} className="bottom-[16%] left-[12%]" human />
+          <PlayerBadge state={state} seat={3} className="right-[19%] top-[11%]" showFlowers={isMcr} />
+          <PlayerBadge state={state} seat={2} className="left-5 top-[39%]" showFlowers={isMcr} />
+          <PlayerBadge state={state} seat={1} className="right-5 top-[39%]" showFlowers={isMcr} />
+          <PlayerBadge state={state} seat={0} className="bottom-[16%] left-[12%]" human showFlowers={isMcr} />
 
           <div className="pointer-events-none absolute left-[28%] right-[28%] top-[18%] h-[48%] border border-[#003d2f]">
             <span className="absolute -left-[13%] top-[18%] h-[78%] w-[15%] skew-x-[-9deg] border border-[#003d2f]" />
@@ -258,6 +263,11 @@ export default function HongKongTable({
             <CenterWind position="bottom" active={state.turn === 0}>E</CenterWind>
             <CenterWind position="left" active={state.turn === 2}>W</CenterWind>
           </div>
+          {isMcr && (
+            <div className="absolute left-1/2 top-[57%] z-10 -translate-x-1/2 rounded-full border border-emerald-200/30 bg-[#063d30]/90 px-3 py-1 text-[10px] font-black tracking-[.12em] text-emerald-100">
+              144 TILES · FLOWERS REPLACED · 8-POINT GATE
+            </div>
+          )}
           {isRiichi && (
             <div className="absolute left-[58%] top-[24%] z-10 rounded-lg bg-black/30 p-2 text-center text-[10px] font-bold uppercase tracking-wider text-amber-200">
               <span className="mb-1 block">Dora indicators</span>
@@ -306,7 +316,7 @@ export default function HongKongTable({
               )}
               {tsumoEvaluation?.complete && !tsumoEvaluation.legal && (
                 <div className="max-w-md rounded-lg border border-amber-300/40 bg-amber-50 px-4 py-2 text-sm font-bold text-amber-950">
-                  <span className="block">Complete hand: {tsumoEvaluation.score?.total ?? 0} Fan. This table requires {tsumoEvaluation.minimum} Fan, so it cannot be declared as a win.</span>
+                  <span className="block">Complete hand: {tsumoEvaluation.score?.total ?? 0} {scoreUnit}. This table requires {tsumoEvaluation.minimum} {scoreUnit}, so it cannot be declared as a win.</span>
                   {tsumoEvaluation.score?.patterns.length ? <span className="mt-1 block text-xs">Current patterns: {tsumoEvaluation.score.patterns.map((pattern) => pattern.label).join(' · ')}</span> : null}
                   {variant === 'hongkong' && hongKongMode === 'standard' ? (
                     <button type="button" onClick={() => onHongKongMode('casual')} className="mt-2 rounded-md bg-emerald-700 px-3 py-1.5 text-xs font-black text-white">Switch to Casual (new hand)</button>
@@ -338,8 +348,8 @@ export default function HongKongTable({
                 <span>
                   {tsumoEvaluation?.complete
                     ? tsumoEvaluation.legal
-                      ? `Winning hand - ${tsumoEvaluation.score?.total ?? 0} Fan`
-                      : `Complete hand - ${tsumoEvaluation.score?.total ?? 0}/${tsumoEvaluation.minimum} Fan required`
+                    ? `Winning hand - ${tsumoEvaluation.score?.total ?? 0} ${scoreUnit}`
+                      : `Complete hand - ${tsumoEvaluation.score?.total ?? 0}/${tsumoEvaluation.minimum} ${scoreUnit} required`
                     : hints.shanten <= 0
                       ? t('ready', { tiles: hints.waits.map(tileFace).join(' ') || '-' })
                       : t('awayFromReady', { n: hints.shanten })}
@@ -355,6 +365,12 @@ export default function HongKongTable({
                     ))}
                   </div>
                 ))}
+              </div>
+            )}
+            {isMcr && human.flowers.length > 0 && (
+              <div className="absolute bottom-[84px] right-0 flex items-center gap-1 rounded-lg bg-amber-50/95 px-2 py-1 text-[10px] font-black text-emerald-950 shadow-lg">
+                <span>Flowers</span>
+                {human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}
               </div>
             )}
             <div className="flex items-end justify-center gap-[2px]">
@@ -403,6 +419,13 @@ export default function HongKongTable({
                   <li><strong>Riichi:</strong> closed tenpai may place a 1,000-point stick.</li>
                   <li><strong>Head-bump:</strong> only the first Ron claimant in turn order wins.</li>
                   <li><strong>No red fives:</strong> this WRC table uses the standard 136 tiles.</li>
+                </>
+              ) : isMcr ? (
+                <>
+                  <li><strong>144-tile wall:</strong> flowers and seasons are exposed immediately and replaced from the wall.</li>
+                  <li><strong>8-point gate:</strong> a complete hand must score at least 8 points before it may win.</li>
+                  <li><strong>Training table:</strong> the score panel explains recognised patterns while the remaining MCR catalogue is being completed.</li>
+                  <li><strong>Open information:</strong> claimed melds, flowers and the winner&apos;s full hand are revealed after settlement.</li>
                 </>
               ) : (
                 <>
@@ -462,12 +485,14 @@ function PlayerBadge({
   state,
   seat,
   className,
-  human = false
+  human = false,
+  showFlowers = false
 }: {
   state: GameState;
   seat: Seat;
   className: string;
   human?: boolean;
+  showFlowers?: boolean;
 }) {
   const active = state.turn === seat && state.phase !== 'over';
   const colors = ['from-sky-300 to-cyan-600', 'from-orange-300 to-rose-500', 'from-violet-300 to-fuchsia-600', 'from-lime-300 to-emerald-600'];
@@ -481,6 +506,11 @@ function PlayerBadge({
         <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-amber-300 text-[9px] text-amber-900">G</span>
         {state.players[seat].score}
       </div>
+      {showFlowers && state.players[seat].flowers.length > 0 && (
+        <div className="mt-1 flex max-w-24 justify-center gap-px rounded bg-amber-50/90 p-0.5">
+          {state.players[seat].flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
+        </div>
+      )}
     </div>
   );
 }

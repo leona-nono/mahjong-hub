@@ -8,7 +8,7 @@ export type GameCategory =
   | 'four-player';
 
 /** Which in-house component renders a native game. */
-export type NativeGame = 'mahjong-table' | 'mahjong-connect' | 'mahjong-solitaire';
+export type NativeGame = 'mahjong-table' | 'mahjong-connect' | 'mahjong-solitaire' | 'american-mahjong';
 export type GameType = 'iframe' | 'native' | 'coming-soon';
 
 /**
@@ -254,18 +254,6 @@ export const games: GameConfig[] = [
     featured: true
   },
   {
-    slug: 'american-mahjong',
-    pageName: 'american-mahjong',
-    title: 'American Mahjong',
-    description: 'American Mahjong with Charleston, Jokers, Flowers, and card-based winning patterns.',
-    category: 'four-player',
-    gameType: 'coming-soon',
-    navGroup: 'classic',
-    region: 'america',
-    players: 4,
-    featured: true
-  },
-  {
     slug: 'sichuan-mahjong',
     pageName: 'sichuan-mahjong',
     title: 'Sichuan Mahjong',
@@ -334,7 +322,10 @@ export const games: GameConfig[] = [
     title: 'American Mahjong',
     description: 'American Mahjong with Charleston, Jokers, Flowers, and card-based winning patterns.',
     category: 'four-player',
-    gameType: 'coming-soon',
+    gameType: 'native',
+    native: 'american-mahjong',
+    navGroup: 'classic',
+    region: 'america',
     players: 4,
     featured: true,
     content: {

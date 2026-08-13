@@ -5,6 +5,7 @@ import { useCallback } from 'react';
 import MahjongTable from './MahjongTable';
 import MahjongConnect from './MahjongConnect';
 import MahjongSolitaire from './MahjongSolitaire';
+import AmericanMahjongTable from './AmericanMahjongTable';
 import { awardPoints } from '@/lib/points';
 import type { NativeGame, NativeRuleset } from '@/data/games';
 
@@ -34,6 +35,10 @@ export default function NativeGameMount({
 
   if (native === 'mahjong-table') {
     return <MahjongTable defaultRuleset={ruleset ?? 'hongkong'} onWin={handleWin} />;
+  }
+
+  if (native === 'american-mahjong') {
+    return <AmericanMahjongTable onWin={handleWin} />;
   }
 
   if (native === 'mahjong-connect') {
