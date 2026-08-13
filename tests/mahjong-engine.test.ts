@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  BONUS_TILES,
   buildWall,
   sortTiles,
   tileFromIndex,
@@ -51,6 +52,13 @@ describe('tiles', () => {
     expect(counts.every((c) => c === 4)).toBe(true);
   });
 
+  it('builds MCR’s 144-tile wall with one copy of each Flower / Season', () => {
+    const wall = buildWall([], true);
+    expect(wall).toHaveLength(144);
+    expect(wall.filter((tile) => BONUS_TILES.includes(tile))).toEqual(BONUS_TILES);
+    expect(toCounts(wall).every((c) => c === 4)).toBe(true);
+  });
+
   it('round-trips tile ids through their index', () => {
     for (let i = 0; i < 34; i += 1) {
       expect(tileIndex(tileFromIndex(i))).toBe(i);
@@ -67,6 +75,30 @@ describe('Hong Kong product tile set', () => {
     expect(state.wall.filter((tile) => tile === 'z6')).toHaveLength(4);
     expect(state.wall.filter((tile) => tile === 'z7')).toHaveLength(4);
     expect(RULESETS.hongkong.excludedTiles).toEqual(['z5']);
+  });
+});
+
+describe('Chinese Official MCR tile flow', () => {
+  it('uses a 144-tile wall and keeps bonus tiles outside every player hand', () => {
+    const state = createGame({ ruleset: 'chinese-official', seed: 20260813 });
+    expect(state.wall).toHaveLength(144);
+    for (const player of state.players) {
+      expect(player.hand).toHaveLength(13);
+      expect(player.hand.some((tile) => BONUS_TILES.includes(tile))).toBe(false);
+    }
+  });
+
+  it('exposes a drawn Flower / Season and replaces it from the back wall', () => {
+    const state = createGame({ ruleset: 'chinese-official', seed: 11 });
+    state.wallIndex = 52;
+    state.deadWallIndex = 130;
+    state.wall[52] = 'f1';
+    state.wall[130] = 'm1';
+    const next = drawTile(state);
+    expect(next.players[0].flowers).toContain('f1');
+    expect(next.players[0].hand).toContain('m1');
+    expect(next.players[0].hand).toHaveLength(14);
+    expect(next.deadWallIndex).toBe(131);
   });
 });
 describe('shanten', () => {

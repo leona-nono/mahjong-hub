@@ -36,6 +36,13 @@ export const WINDS: Tile[] = ['z1', 'z2', 'z3', 'z4'];
 /** Dragon honours: White (haku), Green (hatsu), Red (chun). */
 export const DRAGONS: Tile[] = ['z5', 'z6', 'z7'];
 
+/** MCR Flowers / Seasons: exposed immediately, never counted as hand tiles. */
+export const BONUS_TILES: Tile[] = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8'];
+
+export function isBonusTile(tile: Tile): boolean {
+  return BONUS_TILES.includes(tile);
+}
+
 export function makeTile(suit: Suit, rank: number): Tile {
   return `${suit}${rank}`;
 }
@@ -50,6 +57,7 @@ export function tileRank(tile: Tile): number {
 
 /** Map a tile id to its 0..33 index. */
 export function tileIndex(tile: Tile): number {
+  if (isBonusTile(tile)) throw new Error(`Bonus tile ${tile} has no 34-kind hand index.`);
   return SUIT_OFFSET[tileSuit(tile)] + tileRank(tile) - 1;
 }
 
@@ -111,7 +119,7 @@ export const ORPHAN_TILES: Tile[] = [
  * Build a fresh 136-tile wall (no flowers/seasons — those are cosmetic in the
  * rulesets we ship and only add bookkeeping).
  */
-export function buildWall(excludedTiles: readonly Tile[] = []): Tile[] {
+export function buildWall(excludedTiles: readonly Tile[] = [], includeBonusTiles = false): Tile[] {
   const wall: Tile[] = [];
   const excluded = new Set(excludedTiles);
   for (let i = 0; i < TILE_KINDS; i += 1) {
@@ -119,6 +127,7 @@ export function buildWall(excludedTiles: readonly Tile[] = []): Tile[] {
     if (excluded.has(tile)) continue;
     for (let c = 0; c < COPIES_PER_TILE; c += 1) wall.push(tile);
   }
+  if (includeBonusTiles) wall.push(...BONUS_TILES);
   return wall;
 }
 
@@ -147,7 +156,9 @@ export function shuffle<T>(items: T[], rng: () => number): T[] {
 /** Convert a hand of tiles into a 34-length count array. */
 export function toCounts(tiles: Tile[]): number[] {
   const counts = new Array<number>(TILE_KINDS).fill(0);
-  for (const tile of tiles) counts[tileIndex(tile)] += 1;
+  for (const tile of tiles) {
+    if (!isBonusTile(tile)) counts[tileIndex(tile)] += 1;
+  }
   return counts;
 }
 
@@ -162,7 +173,10 @@ export function fromCounts(counts: number[]): Tile[] {
 
 /** Sort tiles into conventional display order (m, p, s, z; ascending rank). */
 export function sortTiles(tiles: Tile[]): Tile[] {
-  return [...tiles].sort((a, b) => tileIndex(a) - tileIndex(b));
+  const displayIndex = (tile: Tile) => isBonusTile(tile)
+    ? TILE_KINDS + BONUS_TILES.indexOf(tile)
+    : tileIndex(tile);
+  return [...tiles].sort((a, b) => displayIndex(a) - displayIndex(b));
 }
 
 const SUIT_LABEL: Record<Suit, string> = {
@@ -184,6 +198,9 @@ const HONOUR_LABEL: Record<number, string> = {
 
 /** Short CJK face label used on the tile faces in the UI. */
 export function tileFace(tile: Tile): string {
+  if (isBonusTile(tile)) {
+    return ['春', '夏', '秋', '冬', '梅', '兰', '竹', '菊'][tileRank(tile) - 1] ?? '花';
+  }
   const suit = tileSuit(tile);
   const rank = tileRank(tile);
   if (suit === 'z') return HONOUR_LABEL[rank];
@@ -209,6 +226,9 @@ const SUIT_NAME: Record<Suit, string> = {
 
 /** Accessible English name, used for aria-labels and alt text (also good SEO). */
 export function tileName(tile: Tile): string {
+  if (isBonusTile(tile)) {
+    return ['Spring', 'Summer', 'Autumn', 'Winter', 'Plum', 'Orchid', 'Bamboo', 'Chrysanthemum'][tileRank(tile) - 1] ?? 'Flower';
+  }
   const suit = tileSuit(tile);
   const rank = tileRank(tile);
   if (suit === 'z') return HONOUR_NAME[rank];

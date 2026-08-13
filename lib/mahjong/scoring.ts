@@ -44,6 +44,8 @@ export interface ScorePattern {
 
 export interface ScoreResult {
   total: number;
+  /** MCR's 8-point gate excludes Flower / Season bonus points. */
+  qualifyingTotal?: number;
   patterns: ScorePattern[];
   /** True when the hand is a limit hand for the ruleset. */
   limit: boolean;
@@ -147,6 +149,15 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   const pushRiichiValue = (id: string, label: string, closedValue: number, openValue = closedValue) => {
     patterns.push({ id, label, value: isConcealed ? closedValue : openValue });
   };
+
+  // MCR awards one point for every exposed Flower / Season. These are real
+  // settlement points, but cannot be used to satisfy the 8-point declaration
+  // threshold by themselves (or in combination with fewer than 8 hand points).
+  if (ruleset === 'chinese-official') {
+    for (const flower of player.flowers) {
+      patterns.push({ id: 'flower', label: `Flower / Season (${flower})`, value: 1 });
+    }
+  }
 
   if (ruleset === 'riichi' && player.declaredReady && isConcealed) {
     if (player.doubleReady) push('doubleRiichi', 'Double Riichi');
@@ -587,11 +598,15 @@ function finalise(
   paymentLabel?: string
 ): ScoreResult {
   const raw = patterns.reduce((sum, p) => sum + p.value, 0);
+  const qualifyingRaw = ruleset === 'chinese-official'
+    ? patterns.filter((pattern) => pattern.id !== 'flower').reduce((sum, pattern) => sum + pattern.value, 0)
+    : raw;
   const yakumanCount = patterns.filter((pattern) => pattern.yakuman).length;
   const cap = LIMIT[ruleset];
   const total = ruleset === 'riichi' && yakumanCount > 0 ? 13 * yakumanCount : Math.min(raw, cap);
   return {
     total,
+    qualifyingTotal: ruleset === 'chinese-official' ? Math.min(qualifyingRaw, cap) : undefined,
     patterns,
     limit: forcedLimit || raw >= cap || yakumanCount > 0,
     legalYaku: ruleset !== 'riichi' || forcedLimit || yakumanCount > 0 || patterns.some(
