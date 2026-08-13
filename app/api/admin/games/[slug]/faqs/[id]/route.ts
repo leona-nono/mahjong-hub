@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import { revalidateGamePaths } from '@/lib/revalidate-games';
 import {
   ALL_LOCALES,
   MAX_ANSWER,
@@ -12,13 +13,13 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-type Params = { params: Promise<{ id: string }> };
+type Params = { params: Promise<{ slug: string; id: string }> };
 
 /** PUT /api/admin/games/[slug]/faqs/[id] — update a FAQ entry. */
 export async function PUT(req: NextRequest, { params }: Params) {
   const guard = await requireAdmin();
   if (guard) return guard;
-  const { id } = await params;
+  const { slug, id } = await params;
   const body = await req.json();
 
   const err =
@@ -46,6 +47,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
   }
 
   const faq = await prisma.gameFaq.update({ where: { id }, data });
+  revalidateGamePaths(slug);
   return NextResponse.json({ faq });
 }
 
@@ -53,8 +55,9 @@ export async function PUT(req: NextRequest, { params }: Params) {
 export async function DELETE(_req: NextRequest, { params }: Params) {
   const guard = await requireAdmin();
   if (guard) return guard;
-  const { id } = await params;
+  const { slug, id } = await params;
 
   await prisma.gameFaq.delete({ where: { id } });
+  revalidateGamePaths(slug);
   return NextResponse.json({ ok: true });
 }

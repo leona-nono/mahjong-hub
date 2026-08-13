@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import { revalidateGamePaths } from '@/lib/revalidate-games';
 import {
   GAME_CATEGORIES,
   MAX_DESC,
@@ -65,5 +66,6 @@ export async function POST(req: NextRequest) {
       sortOrder: sortOrder ?? 0
     }
   });
+  revalidateGamePaths();
   return NextResponse.json({ game }, { status: 201 });
 }

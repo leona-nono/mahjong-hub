@@ -15,7 +15,7 @@
 | 测试 | vitest 2.1.9（node 环境，纯逻辑） |
 | 样式 | Tailwind CSS 3.4 |
 
-**总结论**：项目可正常构建、类型检查通过、141 个单元测试全部通过。P1 SEO 三项任务（sitemap x-default、根 layout hreflang、首页 canonical + FAQPage JSON-LD）全部完成并经运行态 curl 验证。但存在若干**架构级问题**（静态数据与 CMS 脱节、缺 migrations、重复 slug）以及**测试覆盖盲区**（无 auth/API/i18n/组件/SEO 测试），详见第 6、7 节。
+**总结论**：项目可正常构建、类型检查通过、153 个单元测试全部通过。P1 SEO 三项任务（sitemap x-default、根 layout hreflang、首页 canonical + FAQPage JSON-LD）全部完成并经运行态 curl 验证。最严重的架构问题——**静态数据源与运营后台（CMS）脱节**——已修复（DB 覆盖层 + 静态灌库 + ISR/后台 revalidate，详见第 6.1 节），`data/games.ts` 的 3 个重复 slug 也已消除。剩余问题（缺 migrations、测试盲区）及后续建议见第 6、8 节。
 
 ---
 
@@ -65,9 +65,11 @@
  ✓ tests/admin-validators.test.ts      (30)
  ✓ tests/riichi-rules.test.ts          (34)
  ✓ tests/mahjong-solitaire.test.ts     (21)
- ✓ tests/mahjong-engine.test.ts        (39)
- Test Files  7 passed | Tests  141 passed
+ ✓ tests/mahjong-engine.test.ts        (46)
+ Test Files  7 passed | Tests  153 passed
 ```
+
+> 注：本报告撰写时为 144 用例；期间协作者并入 MCR 规则扩展提交（`3a759a3`/`698b87c`），新增 engine/sound/riichi/hongkong 用例 9 个，当前共 153 个全部通过。
 
 覆盖的纯逻辑模块：麻将引擎、连连看（connect）、接龙（solitaire，含"洗牌保证可解"）、日麻/港式规则、音效、后台校验器。`vitest.config.ts` 显式说明"聚焦纯服务端模块"，`server-only` 被打桩为空模块。
 
@@ -93,21 +95,58 @@
 ## 6. 架构 / 代码审查发现的问题
 
 ### 🔴 高
-1. **静态数据源与后台 CMS 完全脱节**
-   公共站点全部读 `data/games.ts`（25 个 slug 条目）/ `data/blog.ts`（6 篇），而 `lib/db.ts` + `app/api/admin/*` 的 Prisma CMS（13 个 model）只服务运营后台。后台新增/编辑的游戏**不会**出现在前台，反之亦然。这是双数据源治理问题，SEO 内容与 CMS 无联动。
+1. ~~**静态数据源与后台 CMS 完全脱节**~~ —— ✅ **已修复**（2026-08-13）
+   公共站点全部读 `data/games.ts`（25 个 slug 条目）/ `data/blog.ts`（6 篇），而 `lib/db.ts` + `app/api/admin/*` 的 Prisma CMS（13 个 model）只服务运营后台。后台新增/编辑的游戏**不会**出现在前台，反之亦然。
+   **修复方案见第 6.1 节（DB 覆盖层 + 静态灌库 + ISR/revalidate）。**
 
-2. **`prisma/` 缺 migrations**
+2. **`prisma/` 缺 migrations** —— 待办
    仅 `prisma/schema.prisma`，无 `prisma/migrations/`。schema 变更只能靠 `prisma db push` 同步，无版本化迁移历史，多环境/回滚存在风险。
 
 ### 🟡 中
-3. **重复 slug（3 个）**
-   `data/games.ts` 中 `sichuan-mahjong`（行 234/270）、`taiwan-mahjong`（246/302）、`american-mahjong`（258/333）各出现两次。`games/[slug]` 的 `generateStaticParams` 会为重复 slug 生成重复参数，`getLocalizedGame(slug)` 只返回首个匹配，导致其一被遮蔽、URL 冲突。
+3. **重复 slug（3 个）** —— ✅ **已修复**（2026-08-13）
+   `sichuan-mahjong` / `taiwan-mahjong` / `american-mahjong` 各出现两次（第一条有 navGroup/region 无 content，第二条有 content 无 navGroup/region），已合并为单条保留全部字段。`generateStaticParams` 不再为重复 slug 生成重复参数。合并后 `data/games.ts` 共 **18 个唯一 slug**，与 DB `Game` 表一一对应（seed 后已同步）。
 
 4. **测试覆盖盲区**（详见第 7 节）：无 auth / API / i18n / 组件 / SEO 测试。
 
 ### 🟢 低（已修复）
 5. **`playMode` 恒为 SinglePlayer**（`games/[slug]/page.tsx`）
    原 `game.players > 1 ? 'SinglePlayer' : 'SinglePlayer'` 三元两分支相同，已修复为 `'MultiPlayer' : 'SinglePlayer'`（已验证 `hong-kong-mahjong` 输出 `MultiPlayer`）。
+
+---
+
+## 6.1 架构修复：静态数据源 ↔ 运营后台（CMS）同步 🔴→✅
+
+### 方案（用户确认）：B+C —— DB 覆盖层 + 静态灌库 + ISR/后台 revalidate
+
+静态 `data/games.ts` 保留为**结构底座**（native 组件、ruleset、navGroup、region、players、长文 content 等渲染必需字段，DB 无这些字段）；DB 作为**运营覆写层**（title/description/iframeUrl/featured/active/sortOrder/FAQ/多语言内容以 DB 为准）；DB 不可用时自动回退静态数据，构建不受影响。
+
+### 改动清单
+
+| 文件 | 说明 |
+|---|---|
+| `data/games.ts` | 合并 3 组重复 slug，25 → 18 个唯一条目 |
+| `scripts/seed-games.ts` + `package.json` `seed` 命令 | 把静态目录 upsert 进 `Game` 表（缺失才创建，回填英文 FAQ，永不覆盖已编辑行；幂等） |
+| `lib/games-db.ts`（新） | server-only DB 覆盖层：`getMergedGames`/`getMergedLocalizedGame`/`getMergedFeaturedGames`/`getMergedNativeGames`/`getMergedGamesByNavGroup`/`getMergedClassicByRegion`/`getMergedRelatedGames`。`applyOverlay` 覆写运营字段，`isActive=false` 隐藏，DB-only slug 映射为 iframe 游戏，`React cache` 每次请求/构建至多一次 DB 往返，DB 异常静默回退静态 |
+| `app/[locale]/(public)/page.tsx` / `games/page.tsx` / `classic` / `solitaire` / `games/[slug]/page.tsx` / `app/sitemap.ts` | 全部改用覆盖层异步函数；公共页加 `export const revalidate = 300`（ISR） |
+| `components/GameCard.tsx` | 移除内部重复本地化（会丢 DB 覆写），改为信任父级传入的 merged+localized game |
+| `components/IframeSection.tsx` | related 兜底由父级传 `fallbackGames`（merged），不再内部静态查询 |
+| `lib/revalidate-games.ts`（新） | `revalidateGamePaths(slug?)`：5 个 locale 的首页/列表页/详情页 + sitemap 全量失效 |
+| `app/api/admin/games/route.ts`、`[slug]/route.ts`、`faqs/route.ts`、`faqs/[id]/route.ts`、`features/[locale]/route.ts` | 所有写操作成功后调用 `revalidateGamePaths(slug)` → 后台保存**秒级**生效 |
+| admin 游戏列表/编辑/FAQ/Features 页 | 支持 DB-only 游戏（静态查不到但 DB 有行时不再 404，列表合并显示 CMS 徽标） |
+
+### 验证结果
+
+| 项 | 结果 |
+|---|---|
+| `tsc --noEmit` | ✅ 0 错误 |
+| vitest | ✅ 153/153（含协作者并入的 MCR 用例） |
+| `next build` | ✅ 成功（SSG 全量生成） |
+| 运行态 `/en`、`/en/games`、`/en/games/hong-kong-mahjong`、`/sitemap.xml` | ✅ 全 200 |
+| **DB 覆盖层端到端** | 把 DB `hong-kong-mahjong.title` 改为哨兵值 `…DB-Overlay-Test` → 重建后页面渲染哨兵 title；改回原值 → 页面恢复。证明前台**读取 DB 覆写**而非静态 |
+| **revalidatePath 秒级生效** | 临时 debug 路由调用 `revalidateGamePaths` 后，DB 变更立即反映到前台（无需等 ISR 周期） |
+| **seed 同步** | 静态 18 个唯一 slug 与 DB `Game` 表 18 行一一对应，FAQ 20 条回填 |
+
+> 临时验证路由 `app/api/debug-revalidate` 已删除；DB 已还原。
 
 ---
 
@@ -128,10 +167,11 @@
 ## 8. 建议优先级
 
 1. **P0**：补 `prisma/migrations`（先 `prisma migrate dev --name init` 生成基线迁移）。
-2. **P0**：消除 `data/games.ts` 重复 slug（明确保留/合并策略）。
-3. **P1**：打通静态数据与 CMS（或明确单一数据源），避免前台/后台内容不一致。
-4. **P2**：为 auth / 关键 API / SEO metadata 补测试。
-5. **P2**：初始化 ESLint（`Strict` 配置），纳入 CI。
+2. ~~**P0**：消除 `data/games.ts` 重复 slug~~ —— ✅ 已修复
+3. ~~**P1**：打通静态数据与 CMS（或明确单一数据源）~~ —— ✅ 已修复（第 6.1 节）
+4. **P1**：把 `data/blog.ts`（6 篇）同样纳入 CMS 管理（当前 blog 无 DB model，后台无 blog 入口），实现全站内容单一数据源。
+5. **P2**：为 auth / 关键 API / SEO metadata / games-db 覆盖层补测试。
+6. **P2**：初始化 ESLint（`Strict` 配置），纳入 CI。
 
 ---
 

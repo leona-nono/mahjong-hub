@@ -1,9 +1,18 @@
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
-import { getFeaturedGames, getGames, getNativeGames, getLocalizedGames } from '@/data/games';
+import {
+  getMergedFeaturedGames,
+  getMergedGames,
+  getMergedLocalizedGames,
+  getMergedNativeGames
+} from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import DailyCheckIn from '@/components/DailyCheckIn';
 import { Link } from '@/i18n/navigation';
+
+// ISR: re-render at most every 5 minutes so CMS edits show up without a
+// redeploy (admin writes also trigger revalidatePath for instant refresh).
+export const revalidate = 300;
 
 // Canonical + hreflang alternates are provided by the (public) layout —
 // see app/[locale]/(public)/layout.tsx. A page-level `alternates` here would
@@ -18,9 +27,9 @@ export default async function HomePage({
 
   const t = await getTranslations('home');
   const ts = await getTranslations('site');
-  const featured = getLocalizedGames(getFeaturedGames(), locale);
-  const native = getLocalizedGames(getNativeGames(), locale);
-  const all = getLocalizedGames(getGames(), locale);
+  const featured = getMergedLocalizedGames(await getMergedFeaturedGames(), locale);
+  const native = getMergedLocalizedGames(await getMergedNativeGames(), locale);
+  const all = getMergedLocalizedGames(await getMergedGames(), locale);
 
   // FAQPage structured data (English — our primary SEO target language) so
   // Google can surface rich Q&A results on the homepage.

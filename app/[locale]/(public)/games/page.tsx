@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
-import { getGames } from '@/data/games';
+import { getMergedGames, getMergedLocalizedGames } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import { alternatesFor } from '@/lib/seo';
+
+export const revalidate = 300;
 
 export async function generateMetadata({
   params
@@ -23,7 +25,7 @@ export default async function GamesPage({
   setRequestLocale(locale);
 
   const t = await getTranslations('collection');
-  const games = getGames();
+  const games = getMergedLocalizedGames(await getMergedGames(), locale);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">

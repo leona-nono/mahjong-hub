@@ -1,6 +1,5 @@
 import { Link } from '@/i18n/navigation';
 import type { GameConfig } from '@/data/games';
-import { getLocalizedGame } from '@/data/games';
 
 /** Category accent so the grid is scannable at a glance. */
 const ACCENT: Record<string, string> = {
@@ -18,7 +17,10 @@ export default function GameCard({
   game: GameConfig;
   locale?: string;
 }) {
-  const g = locale === 'en' ? game : getLocalizedGame(game.slug, locale) ?? game;
+  // The parent (page) already passes a merged DB-overlay + localized game.
+  // Re-localizing here would silently drop CMS edits (title/description), so
+  // we trust the caller. `locale` is kept for API compatibility.
+  const g = game;
   const isNative = g.gameType === 'native';
   const isComingSoon = g.gameType === 'coming-soon';
 

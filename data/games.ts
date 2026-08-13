@@ -239,40 +239,6 @@ export const games: GameConfig[] = [
     navGroup: 'classic',
     region: 'sichuan',
     players: 4,
-    featured: true
-  },
-  {
-    slug: 'taiwan-mahjong',
-    pageName: 'taiwan-mahjong',
-    title: 'Taiwan Mahjong',
-    description: 'Taiwanese 16-tile Mahjong with Flower replacement and Tai-based scoring.',
-    category: 'four-player',
-    gameType: 'coming-soon',
-    navGroup: 'classic',
-    region: 'taiwan',
-    players: 4,
-    featured: true
-  },
-  {
-    slug: 'american-mahjong',
-    pageName: 'american-mahjong',
-    title: 'American Mahjong',
-    description: 'American Mahjong with Charleston, Jokers, Flowers, and card-based winning patterns.',
-    category: 'four-player',
-    gameType: 'coming-soon',
-    navGroup: 'classic',
-    region: 'america',
-    players: 4,
-    featured: true
-  },
-  {
-    slug: 'sichuan-mahjong',
-    pageName: 'sichuan-mahjong',
-    title: 'Sichuan Mahjong',
-    description: 'Sichuan Blood Battle Mahjong with Exchange Three, a forbidden suit, and continued play after the first win.',
-    category: 'four-player',
-    gameType: 'coming-soon',
-    players: 4,
     featured: true,
     content: {
       intro: 'Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.',
@@ -304,6 +270,8 @@ export const games: GameConfig[] = [
     description: 'Taiwanese 16-tile Mahjong with Flower replacement and Tai-based scoring.',
     category: 'four-player',
     gameType: 'coming-soon',
+    navGroup: 'classic',
+    region: 'taiwan',
     players: 4,
     featured: true,
     content: {
@@ -335,6 +303,8 @@ export const games: GameConfig[] = [
     description: 'American Mahjong with Charleston, Jokers, Flowers, and card-based winning patterns.',
     category: 'four-player',
     gameType: 'coming-soon',
+    navGroup: 'classic',
+    region: 'america',
     players: 4,
     featured: true,
     content: {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
+import { revalidateGamePaths } from '@/lib/revalidate-games';
 import {
   GAME_CATEGORIES,
   MAX_DESC,
@@ -86,6 +87,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
   if ('active' in body) data.isActive = !!body.active;
 
   const game = await prisma.game.update({ where: { slug }, data });
+  revalidateGamePaths(slug);
   return NextResponse.json({ game });
 }
 
@@ -96,5 +98,6 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
   const { slug } = await params;
 
   await prisma.game.delete({ where: { slug } });
+  revalidateGamePaths(slug);
   return NextResponse.json({ ok: true });
 }
