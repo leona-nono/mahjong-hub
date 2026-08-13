@@ -20,10 +20,26 @@ export function calculateHongKongPayment(input: {
   selfDrawn: boolean;
   winner: Seat;
   loser?: Seat;
+  /**
+   * Product pao / 包牌: the player who supplied the decisive exposed meld
+   * carries the full settlement. This is recorded by the engine at the call,
+   * rather than inferred after a hand has been rearranged for scoring.
+   */
+  liabilitySeat?: Seat;
 }): HongKongPayment {
   const fan = Math.max(0, Math.min(HONG_KONG_FAN_CAP, input.fan));
   const base = 2 ** fan;
   const payments: Partial<Record<Seat, number>> = {};
+  if (input.liabilitySeat !== undefined && input.liabilitySeat !== input.winner) {
+    const total = input.selfDrawn ? base * 6 : base * 4;
+    payments[input.liabilitySeat] = total;
+    return {
+      base,
+      winnerGain: total,
+      payments,
+      label: `包牌：seat ${input.liabilitySeat} pays ${total} (${input.selfDrawn ? 'self-draw' : 'discard win'})`
+    };
+  }
   if (input.selfDrawn) {
     for (const seat of [0, 1, 2, 3] as Seat[]) {
       if (seat !== input.winner) payments[seat] = base * 2;

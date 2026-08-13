@@ -167,6 +167,14 @@ export interface GameState {
   pendingAddedKan?: { seat: Seat; tile: Tile; meldIndex: number };
   /** Scoring-only context for the win currently being resolved. */
   winContext?: 'replacement' | 'rob-kong';
+  /**
+   * Hong Kong product 包牌 liability. Set only by the discard that completes
+   * the fourth exposed meld or third exposed Dragon set. A concealed kan
+   * never creates liability; a later qualifying call replaces the prior one.
+   */
+  hongKongLiability?: { seat: Seat; winner: Seat; reason: 'four-open-melds' | 'three-open-dragons' };
+  /** WRC pao / responsibility payment, recorded when the decisive called set is made. */
+  riichiLiabilities: Array<{ seat: Seat; winner: Seat; yakuman: 'bigThreeDragons' | 'bigFourWinds' | 'fourKans' }>;
   result: GameResult | null;
   log: string[];
   seed: number;
@@ -274,7 +282,8 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     seed,
     riichiSticks: 0,
     honba: 0,
-    callsMade: false
+    callsMade: false,
+    riichiLiabilities: []
   };
 
   return state;
@@ -338,6 +347,7 @@ function clone(state: GameState): GameState {
     claims: { ...state.claims },
     submitted: { ...state.submitted },
     pendingAddedKan: state.pendingAddedKan ? { ...state.pendingAddedKan } : undefined,
+    riichiLiabilities: state.riichiLiabilities.map((liability) => ({ ...liability })),
     log: [...state.log]
   };
 }
@@ -864,6 +874,8 @@ export function maybeResolveClaims(state: GameState): GameState {
   const kind: MeldKind =
     best.option.kind === 'chi' ? 'chi' : best.option.kind === 'kan' ? 'kan' : 'pon';
   caller.melds.push({ kind, tiles: meldTiles, from: discardInfo.from });
+  recordHongKongLiability(next, best.seat, discardInfo.from);
+  recordRiichiLiability(next, best.seat, discardInfo.from, kind);
   next.callsMade = true;
   if (next.ruleset === 'riichi') {
     for (const participant of next.players) participant.ippatsuEligible = false;
@@ -876,6 +888,43 @@ export function maybeResolveClaims(state: GameState): GameState {
   next.phase = 'discard';
   next.lastDiscard = null;
   return next;
+}
+
+/** Record the product-defined Hong Kong 包牌 trigger at the moment of the call. */
+function recordHongKongLiability(state: GameState, callerSeat: Seat, providerSeat: Seat): void {
+  if (state.ruleset !== 'hongkong') return;
+  const exposed = state.players[callerSeat].melds.filter((meld) => !meld.concealed);
+  const dragonMelds = exposed.filter((meld) => ['z5', 'z6', 'z7'].includes(meld.tiles[0])).length;
+  if (dragonMelds >= 3) {
+    state.hongKongLiability = { seat: providerSeat, winner: callerSeat, reason: 'three-open-dragons' };
+    state.log.push(`Hong Kong 包牌: seat ${providerSeat} supplied the third exposed Dragon set.`);
+  } else if (exposed.length >= 4) {
+    state.hongKongLiability = { seat: providerSeat, winner: callerSeat, reason: 'four-open-melds' };
+    state.log.push(`Hong Kong 包牌: seat ${providerSeat} supplied the fourth exposed meld.`);
+  }
+}
+
+/** WRC 2025 pao: third called dragon, fourth called wind, or fourth called quad. */
+function recordRiichiLiability(
+  state: GameState,
+  callerSeat: Seat,
+  providerSeat: Seat,
+  kind: MeldKind
+): void {
+  if (state.ruleset !== 'riichi') return;
+  const melds = state.players[callerSeat].melds;
+  const has = (yakuman: 'bigThreeDragons' | 'bigFourWinds' | 'fourKans') =>
+    state.riichiLiabilities.some((entry) => entry.winner === callerSeat && entry.yakuman === yakuman);
+  const add = (yakuman: 'bigThreeDragons' | 'bigFourWinds' | 'fourKans', message: string) => {
+    if (has(yakuman)) return;
+    state.riichiLiabilities.push({ seat: providerSeat, winner: callerSeat, yakuman });
+    state.log.push(`WRC pao: seat ${providerSeat} is liable for ${message} by seat ${callerSeat}.`);
+  };
+  const dragonSets = melds.filter((meld) => meld.kind !== 'chi' && ['z5', 'z6', 'z7'].includes(meld.tiles[0])).length;
+  const windSets = melds.filter((meld) => meld.kind !== 'chi' && ['z1', 'z2', 'z3', 'z4'].includes(meld.tiles[0])).length;
+  if (dragonSets >= 3) add('bigThreeDragons', 'Big Three Dragons');
+  if (windSets >= 4) add('bigFourWinds', 'Big Four Winds');
+  if (kind === 'kan' && melds.filter((meld) => meld.kind === 'kan').length >= 4) add('fourKans', 'Four Kans');
 }
 
 /** Declare a self-drawn win for the seat currently holding 14 tiles. */
@@ -923,6 +972,9 @@ function finishWithWin(
   state.phase = 'over';
   state.result = { kind: 'win', winner: seat, loser, score };
   if (state.ruleset === 'riichi') {
+    const liability = state.riichiLiabilities.find((entry) =>
+      entry.winner === seat && score.patterns.some((pattern) => pattern.id === entry.yakuman)
+    );
     const payment = calculateRiichiPayment({
       han: score.han ?? score.total,
       fu: score.fu ?? 30,
@@ -930,11 +982,13 @@ function finishWithWin(
       dealer: state.dealer,
       selfDrawn,
       honba: state.honba,
-      yakumanCount: score.yakumanCount
+      yakumanCount: score.yakumanCount,
+      loser,
+      liability: liability ? { seat: liability.seat, yakumanCount: 1 } : undefined
     });
     score.points = payment.winnerGain;
     score.paymentLabel = payment.label;
-    if (selfDrawn) {
+    if (Object.keys(payment.payments).length > 0) {
       for (const payer of SEATS) {
         if (payer === seat) continue;
         state.players[payer].score -= payment.payments[payer] ?? 0;
@@ -952,7 +1006,13 @@ function finishWithWin(
     return state;
   }
   if (state.ruleset === 'hongkong') {
-    const payment = calculateHongKongPayment({ fan: score.total, selfDrawn, winner: seat, loser });
+    const payment = calculateHongKongPayment({
+      fan: score.total,
+      selfDrawn,
+      winner: seat,
+      loser,
+      liabilitySeat: state.hongKongLiability?.winner === seat ? state.hongKongLiability.seat : undefined
+    });
     score.points = payment.winnerGain;
     score.paymentLabel = payment.label;
     for (const payer of SEATS) {

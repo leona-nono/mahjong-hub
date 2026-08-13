@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
+import { isBonusTile, tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
 
 export type TileSize = 'xs' | 'sm' | 'md' | 'lg' | 'table' | 'xl';
 
@@ -43,19 +43,25 @@ const TRADITIONAL_TILE_FILES: Record<Tile, string> = {
   p1: '010.png', p2: '011.png', p3: '012.png', p4: '013.png', p5: '014.png', p6: '015.png', p7: '016.png', p8: '017.png', p9: '018.png',
   s1: '019.png', s2: '020.png', s3: '021.png', s4: '022.png', s5: '023.png', s6: '024.png', s7: '025.png', s8: '026.png', s9: '027.png',
   z1: '028.png', z2: '029.png', z3: '030.png', z4: '031.png',
-  z5: '034.png', z6: '033.png', z7: '032.png'
+  z5: '034.png', z6: '033.png', z7: '032.png',
+  // Existing project-owned artwork: Spring/Summer/Autumn/Winter, then
+  // Plum/Orchid/Bamboo/Chrysanthemum. These are only enabled by MCR.
+  f1: '037.png', f2: '038.png', f3: '039.png', f4: '040.png',
+  f5: '041.png', f6: '042.png', f7: '043.png', f8: '044.png'
 };
 
 function traditionalTilePngSrc(tile: Tile): string {
   const file = TRADITIONAL_TILE_FILES[tile];
   return file
-    ? '/assets/mahjong-hongkong/tiles-display/' + file
+    ? `/assets/mahjong-hongkong/${isBonusTile(tile) ? 'tiles' : 'tiles-display'}/` + file
     : '/assets/mahjong-chinese/source-5-crops/tile-42.png';
 }
 
 function traditionalTileWebpSrc(tile: Tile): string {
   const file = TRADITIONAL_TILE_FILES[tile];
-  return file ? '/assets/mahjong-hongkong/tiles-webp-v1/' + file.replace(/\.png$/, '.webp') : traditionalTilePngSrc(tile);
+  return file && !isBonusTile(tile)
+    ? '/assets/mahjong-hongkong/tiles-webp-v1/' + file.replace(/\.png$/, '.webp')
+    : traditionalTilePngSrc(tile);
 }
 
 const TRADITIONAL_TILE_SRCS = Object.keys(TRADITIONAL_TILE_FILES).map((tile) => traditionalTileWebpSrc(tile));
@@ -92,7 +98,7 @@ export default function TileFace({
   const interactive = Boolean(onClick) && !disabled;
   const face = traditional ? (
     <picture>
-      <source srcSet={traditionalTileWebpSrc(tile)} type="image/webp" />
+      {!isBonusTile(tile) && <source srcSet={traditionalTileWebpSrc(tile)} type="image/webp" />}
       <img
         src={traditionalTilePngSrc(tile)}
         alt=""

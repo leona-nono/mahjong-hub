@@ -282,6 +282,35 @@ describe('WRC kan flow', () => {
   });
 });
 
+describe('WRC 2025 responsibility payment (pao)', () => {
+  it('makes the liable player pay a single yakuman in full on self draw', () => {
+    const payment = calculateRiichiPayment({
+      han: 13,
+      fu: 40,
+      winner: 0,
+      dealer: 0,
+      selfDrawn: true,
+      liability: { seat: 2, yakumanCount: 1 }
+    });
+    expect(payment.payments).toEqual({ 2: 48000 });
+    expect(payment.winnerGain).toBe(48000);
+  });
+
+  it('splits the liable yakuman with the discarder on ron', () => {
+    const payment = calculateRiichiPayment({
+      han: 13,
+      fu: 40,
+      winner: 0,
+      dealer: 0,
+      selfDrawn: false,
+      loser: 1,
+      liability: { seat: 2, yakumanCount: 1 }
+    });
+    expect(payment.payments).toEqual({ 2: 24000, 1: 24000 });
+    expect(payment.winnerGain).toBe(48000);
+  });
+});
+
 describe('WRC match lifecycle', () => {
   it('ends the match after South 4 when the dealer changes', () => {
     const state = createGame({ ruleset: 'riichi', seed: 26 });

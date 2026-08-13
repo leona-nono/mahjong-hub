@@ -3,6 +3,7 @@
 import type { Tile } from './tiles';
 
 export type MahjongSound = 'shuffle' | 'draw' | 'discard' | 'chi' | 'pon' | 'kan' | 'win' | 'toggle';
+export type MahjongVoiceLocale = 'cantonese' | 'japanese' | 'none';
 
 let audioContext: AudioContext | null = null;
 
@@ -73,31 +74,53 @@ function preferredCantoneseVoice(): SpeechSynthesisVoice | undefined {
     voices.find((voice) => /cantonese|hong kong|hiumaan|hiu maan/i.test(voice.name));
 }
 
-function announceCall(sound: MahjongSound, tile?: Tile): void {
+function preferredJapaneseVoice(): SpeechSynthesisVoice | undefined {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return undefined;
+  const voices = window.speechSynthesis.getVoices();
+  return voices.find((voice) => /^ja-jp/i.test(voice.lang)) ?? voices.find((voice) => /japanese|kyoko|otoya/i.test(voice.name));
+}
+
+export function japaneseTileLabel(tile: Tile): string {
+  const ranks = ['イー', 'リャン', 'サン', 'スー', 'ウー', 'ロー', 'チー', 'パー', 'キュー'];
+  const rank = ranks[Number(tile.slice(1)) - 1] ?? '';
+  if (tile[0] === 'm') return `${rank}マン`;
+  if (tile[0] === 'p') return `${rank}ピン`;
+  if (tile[0] === 's') return `${rank}ソウ`;
+  const honours: Record<string, string> = { z1: 'トン', z2: 'ナン', z3: 'シャー', z4: 'ペー', z5: 'ハク', z6: 'ハツ', z7: 'チュン' };
+  return honours[tile] ?? tile;
+}
+
+function announceCall(sound: MahjongSound, tile: Tile | undefined, voiceLocale: MahjongVoiceLocale): void {
+  if (voiceLocale === 'none') return;
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-  const words: Partial<Record<MahjongSound, string>> = {
+  const cantonese: Partial<Record<MahjongSound, string>> = {
     chi: '\u5403',
     pon: '\u78b0',
     kan: '\u6760',
     win: '\u80e1'
   };
-  const word = sound === 'discard' && tile ? cantoneseTileLabel(tile) : words[sound];
+  const japanese: Partial<Record<MahjongSound, string>> = {
+    chi: 'チー', pon: 'ポン', kan: 'カン', win: 'ツモ'
+  };
+  const word = sound === 'discard' && tile
+    ? (voiceLocale === 'japanese' ? japaneseTileLabel(tile) : cantoneseTileLabel(tile))
+    : (voiceLocale === 'japanese' ? japanese[sound] : cantonese[sound]);
   if (!word) return;
   const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = 'zh-HK';
-  const voice = preferredCantoneseVoice();
+  utterance.lang = voiceLocale === 'japanese' ? 'ja-JP' : 'zh-HK';
+  const voice = voiceLocale === 'japanese' ? preferredJapaneseVoice() : preferredCantoneseVoice();
   if (voice) utterance.voice = voice;
   utterance.rate = 1.08;
   utterance.pitch = 0.9;
   utterance.volume = 0.82;
   window.speechSynthesis.speak(utterance);
 }
-export function playMahjongSound(sound: MahjongSound, tile?: Tile, announce = true): void {
-  if (announce) announceCall(sound, tile);
+export function playMahjongSound(sound: MahjongSound, tile?: Tile, voiceLocale: MahjongVoiceLocale = 'cantonese', announce = true): void {
+  if (announce) announceCall(sound, tile, voiceLocale);
   const context = getContext();
   if (!context) return;
   if (context.state === 'suspended') {
-    void context.resume().then(() => playMahjongSound(sound, tile, false));
+    void context.resume().then(() => playMahjongSound(sound, tile, voiceLocale, false));
     return;
   }
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { cantoneseTileLabel } from '@/lib/mahjong/sound';
+import { cantoneseTileLabel, japaneseTileLabel } from '@/lib/mahjong/sound';
 
 describe('Hong Kong discard voice labels', () => {
   it('uses Cantonese table terminology for suits and honours', () => {
@@ -10,5 +10,14 @@ describe('Hong Kong discard voice labels', () => {
     expect(cantoneseTileLabel('z1')).toBe('\u6771\u98a8');
     expect(cantoneseTileLabel('z6')).toBe('\u767c\u8ca1');
     expect(cantoneseTileLabel('z7')).toBe('\u7d05\u4e2d');
+  });
+});
+
+describe('Riichi discard voice labels', () => {
+  it('uses Japanese tile calls for suits and honours', () => {
+    expect(japaneseTileLabel('m3')).toBe('サンマン');
+    expect(japaneseTileLabel('p2')).toBe('リャンピン');
+    expect(japaneseTileLabel('s7')).toBe('チーソウ');
+    expect(japaneseTileLabel('z5')).toBe('ハク');
   });
 });

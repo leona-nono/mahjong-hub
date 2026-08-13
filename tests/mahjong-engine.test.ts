@@ -41,6 +41,7 @@ import {
 } from '@/lib/mahjong/engine';
 import { chooseClaim, chooseMove } from '@/lib/mahjong/ai';
 import { scoreHand } from '@/lib/mahjong/scoring';
+import { MCR_FANS, applyDirectMcrExclusions, hasCompleteMcrCatalogue } from '@/lib/mahjong/mcr-catalog';
 
 const hand = (spec: string): Tile[] => spec.split(' ') as Tile[];
 
@@ -99,6 +100,44 @@ describe('Chinese Official MCR tile flow', () => {
     expect(next.players[0].hand).toContain('m1');
     expect(next.players[0].hand).toHaveLength(14);
     expect(next.deadWallIndex).toBe(131);
+  });
+});
+
+describe('Chinese Official MCR scoring catalogue', () => {
+  it('keeps the official 81 fans in chart order and keeps Flowers outside the 8-point gate', () => {
+    expect(hasCompleteMcrCatalogue()).toBe(true);
+    expect(MCR_FANS).toHaveLength(81);
+    expect(MCR_FANS[0]).toMatchObject({ number: 1, id: 'big-four-winds', points: 88 });
+    expect(MCR_FANS[80]).toMatchObject({ number: 81, id: 'flower-tiles', points: 1, bonusOnly: true });
+  });
+
+  it('applies direct Account-Once exclusions using the higher official fan', () => {
+    const selected = applyDirectMcrExclusions([
+      { id: 'little-three-dragons' as const, points: 64 },
+      { id: 'two-dragon-pungs' as const, points: 6 },
+      { id: 'dragon-pung' as const, points: 2 }
+    ]);
+    expect(selected.map((fan) => fan.id)).toEqual(['little-three-dragons']);
+  });
+
+  it('uses MCR’s official Little Three Dragons value and does not double-count Dragon Pungs', () => {
+    const state = createGame({ ruleset: 'chinese-official', seed: 42 });
+    state.players[0].hand = hand('z5 z5 z5 z6 z6 z6 z7 z7 m1 m2 m3 p1 p2 p3');
+    const score = scoreHand({ state, seat: 0, winningTile: 'p3', selfDrawn: false });
+    expect(score.patterns.map((pattern) => pattern.id)).toEqual(expect.arrayContaining(['littleThreeDragons', 'concealed']));
+    expect(score.patterns.map((pattern) => pattern.id)).not.toEqual(expect.arrayContaining(['dragonTriplet']));
+    expect(score.total).toBe(66);
+    expect(score.qualifyingTotal).toBe(66);
+  });
+
+  it('uses Fully Concealed Hand instead of stacking self draw and Concealed Hand', () => {
+    const state = createGame({ ruleset: 'chinese-official', seed: 43 });
+    state.players[0].hand = hand('m1 m2 m3 m2 m3 m4 p4 p5 p6 s6 s7 s8 z1 z1');
+    state.players[0].flowers = [];
+    const score = scoreHand({ state, seat: 0, winningTile: 'z1', selfDrawn: true });
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('fullyConcealed');
+    expect(score.patterns.map((pattern) => pattern.id)).not.toEqual(expect.arrayContaining(['selfDraw', 'concealed']));
+    expect(score.total).toBe(6); // All Chows (2) + Fully Concealed Hand (4)
   });
 });
 describe('shanten', () => {

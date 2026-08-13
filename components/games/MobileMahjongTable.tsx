@@ -49,6 +49,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
   } = props;
   const human = state.players[HUMAN];
   const isRiichi = variant === 'riichi';
+  const voiceLocale = isRiichi ? 'japanese' as const : 'cantonese' as const;
   const locale = useLocale();
   const isZh = locale.startsWith('zh');
   const humanWon = state.result?.winner === HUMAN || state.result?.winners?.some((winner) => winner.seat === HUMAN);
@@ -192,7 +193,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                     if (!human.riichiPending || riichiDiscards.includes(selected)) {
                       // Speech must run inside the tap gesture on mobile;
                       // deferred React effects are often blocked by the browser.
-                      if (soundEnabled) playMahjongSound('discard', selected);
+                      if (soundEnabled) playMahjongSound('discard', selected, voiceLocale);
                       onDiscard(selected);
                     }
                   }}

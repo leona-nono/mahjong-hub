@@ -7,6 +7,8 @@ export interface RiichiPayment {
   label: string;
 }
 
+export type RiichiLiabilityYakuman = 'bigThreeDragons' | 'bigFourWinds' | 'fourKans';
+
 export function nextDora(indicator: Tile): Tile {
   const suit = tileSuit(indicator);
   const rank = tileRank(indicator);
@@ -56,11 +58,54 @@ export function calculateRiichiPayment(input: {
   honba?: number;
   /** Genuine yakuman stack in WRC; counted yakuman stays one yakuman. */
   yakumanCount?: number;
+  /** WRC pao applies only to the yakuman the liable player enabled. */
+  liability?: { seat: Seat; yakumanCount: number };
+  /** Seat that discarded the winning tile on ron. */
+  loser?: Seat;
 }): RiichiPayment {
-  const { han, fu, winner, dealer, selfDrawn, honba = 0, yakumanCount = 0 } = input;
+  const { han, fu, winner, dealer, selfDrawn, honba = 0, yakumanCount = 0, liability, loser } = input;
   const base = riichiBasePoints(han, fu, yakumanCount);
   const payments: Partial<Record<Seat, number>> = {};
   const seats: Seat[] = [0, 1, 2, 3];
+
+  if (liability && liability.yakumanCount > 0) {
+    const liableBase = 8000 * liability.yakumanCount;
+    const otherBase = Math.max(0, base - liableBase);
+    const fullMultiplier = winner === dealer ? 6 : 4;
+    const totalYakuman = liableBase * fullMultiplier;
+    if (selfDrawn) {
+      // The liable player pays the entire liable yakuman; the remaining hand
+      // (if any stacked yakuman) is split under normal tsumo rules.
+      let winnerGain = totalYakuman;
+      payments[liability.seat] = totalYakuman;
+      if (otherBase > 0) {
+        for (const seat of seats) {
+          if (seat === winner) continue;
+          const share = ceil100(otherBase * (winner === dealer || seat === dealer ? 2 : 1)) + honba * 100;
+          payments[seat] = (payments[seat] ?? 0) + share;
+          winnerGain += share;
+        }
+      } else {
+        // Honba belongs to the liability payment in the single-yakuman case.
+        payments[liability.seat] = (payments[liability.seat] ?? 0) + honba * 300;
+        winnerGain += honba * 300;
+      }
+      return { winnerGain, payments, label: `Pao ${payments[liability.seat]} · ${totalYakuman} yakuman liability` };
+    }
+    // On ron, liability and discarder split the corresponding yakuman.
+    // If the liable player also discarded the winning tile, they pay it all.
+    const liableShare = Math.ceil(totalYakuman / 2 / 100) * 100;
+    const discarderShare = totalYakuman - liableShare + honba * 300;
+    if (liability.seat === loser) {
+      const fullPayment = totalYakuman + honba * 300 + otherBase * fullMultiplier;
+      payments[liability.seat] = fullPayment;
+      return { winnerGain: fullPayment, payments, label: `Pao ron ${fullPayment}` };
+    }
+    payments[liability.seat] = liableShare;
+    if (loser !== undefined) payments[loser] = discarderShare + otherBase * fullMultiplier;
+    const winnerGain = (payments[liability.seat] ?? 0) + (loser === undefined ? 0 : payments[loser] ?? 0);
+    return { winnerGain, payments, label: `Pao split ${payments[liability.seat]} / ${loser === undefined ? 0 : payments[loser]}` };
+  }
 
   if (!selfDrawn) {
     const ron = ceil100(base * (winner === dealer ? 6 : 4)) + honba * 300;

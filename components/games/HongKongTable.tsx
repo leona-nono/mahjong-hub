@@ -78,6 +78,7 @@ export default function HongKongTable({
   const human = state.players[HUMAN];
   const currentWind = SEAT_LABEL[state.turn];
   const isRiichi = variant === 'riichi';
+  const voiceLocale = isRiichi ? 'japanese' as const : 'cantonese' as const;
   const gameName = isRiichi ? 'Japanese Riichi' : 'Hong Kong';
   const roundLabel = `${WIND_LABEL[state.roundWind]} ${state.handNumber % 4 + 1}`;
   const tableShellRef = useRef<HTMLElement>(null);
@@ -91,7 +92,7 @@ export default function HongKongTable({
     if (!previous || !soundEnabled) return;
 
     if (!previous.result && state.result?.kind === 'win') {
-      playMahjongSound('win');
+      playMahjongSound('win', undefined, voiceLocale);
       return;
     }
 
@@ -101,7 +102,7 @@ export default function HongKongTable({
       const changedPlayer = state.players.find((player, seat) => player.melds.length > previous.players[seat].melds.length);
       const melds = changedPlayer?.melds;
       const kind = melds?.[melds.length - 1]?.kind;
-      if (kind) playMahjongSound(kind);
+      if (kind) playMahjongSound(kind, undefined, voiceLocale);
       return;
     }
 
@@ -111,12 +112,12 @@ export default function HongKongTable({
       // Mobile human discards already announce inside the user gesture. Keep
       // this state effect for desktop and bot discards without double speech.
       if (state.lastDiscard?.from === HUMAN && typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) return;
-      playMahjongSound('discard', state.lastDiscard?.tile);
+      playMahjongSound('discard', state.lastDiscard?.tile, voiceLocale);
       return;
     }
 
-    if (state.wallIndex > previous.wallIndex) playMahjongSound('draw');
-  }, [state, soundEnabled]);
+    if (state.wallIndex > previous.wallIndex) playMahjongSound('draw', undefined, voiceLocale);
+  }, [state, soundEnabled, voiceLocale]);
 
   return (
     <section ref={tableShellRef} className="overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none">
@@ -141,7 +142,7 @@ export default function HongKongTable({
         onToggleSound={() => {
           primeMahjongAudio();
           setSoundEnabled((enabled) => {
-            if (!enabled) playMahjongSound('toggle');
+            if (!enabled) playMahjongSound('toggle', undefined, voiceLocale);
             return !enabled;
           });
         }}
@@ -162,7 +163,7 @@ export default function HongKongTable({
             </TableToolButton>
             <TableToolButton onClick={() => {
               primeMahjongAudio();
-              if (soundEnabled) playMahjongSound('shuffle');
+              if (soundEnabled) playMahjongSound('shuffle', undefined, voiceLocale);
               onNewGame();
             }}>↻ New Game</TableToolButton>
             <TableToolButton onClick={onToggleHints} active={showHints}>
@@ -171,7 +172,7 @@ export default function HongKongTable({
             <TableToolButton onClick={() => {
               primeMahjongAudio();
               setSoundEnabled((enabled) => {
-                if (!enabled) playMahjongSound('toggle');
+                if (!enabled) playMahjongSound('toggle', undefined, voiceLocale);
                 return !enabled;
               });
             }} active={soundEnabled}>

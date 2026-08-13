@@ -59,6 +59,7 @@ export default function MahjongTable({
 }: MahjongTableProps) {
   const t = useTranslations('mahjong');
   const [ruleset, setRuleset] = useState<Ruleset>(defaultRuleset);
+  const isMcr = ruleset === 'chinese-official';
   const traditional = ruleset === 'hongkong' || ruleset === 'chinese-official';
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
   const [hongKongMode, setHongKongMode] = useState<HongKongMode>('casual');
@@ -310,8 +311,8 @@ export default function MahjongTable({
           <WallRail position="left" />
           <WallRail position="right" />
           <WallRail position="bottom" />
-          <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-44 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-950/80 bg-[#10131d] p-4 text-center shadow-2xl">
-            <div className="text-[10px] uppercase tracking-[.24em] text-emerald-300">Hong Kong</div>
+          <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-52 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-950/80 bg-[#10131d] p-4 text-center shadow-2xl">
+            <div className="text-[10px] uppercase tracking-[.24em] text-emerald-300">{isMcr ? 'MCR TRAINING' : 'HONG KONG'}</div>
             <div className="mt-2 text-3xl font-light text-cyan-200">East 1</div>
             <div className="mt-1 text-xs text-slate-400">牌墙 {tilesRemaining(state)} · {SEAT_LABEL[state.turn]} 回合</div>
           </div>
@@ -325,8 +326,15 @@ export default function MahjongTable({
           </span>
         </div>
 
+        {isMcr && (
+          <div className="relative z-10 mb-3 rounded-xl border border-amber-200/30 bg-amber-100/10 px-3 py-2 text-xs text-amber-50">
+            <strong className="mr-2 text-amber-200">MCR 训练赛开发中</strong>
+            已支持 144 张、花季补花与 8 分起和；完整 81 番计分和国标专属结算正在实现。
+          </div>
+        )}
+
         {traditional && (<div className="mb-3 grid grid-cols-2 gap-2 rounded-xl border border-white/15 bg-black/10 p-2 text-center text-[10px] font-semibold uppercase tracking-[.18em] text-emerald-100 sm:grid-cols-4">{(["East", "South", "West", "North"] as const).map((seat) => (<span key={seat} className={SEAT_LABEL[state.turn] === seat ? "rounded-lg bg-amber-300/25 py-1 text-amber-100" : "py-1 opacity-70"}>{seat} {SEAT_LABEL[state.turn] === seat ? "· PLAYING" : ""}</span>))}</div>)}
-        <div className={traditional ? "relative z-10 mt-36 rounded-xl border border-white/10 bg-black/15 p-2" : ""}><DiscardPool state={state} traditional={traditional} /></div>
+        <div className={traditional ? "relative z-10 mt-28 rounded-xl border border-white/10 bg-black/15 p-2" : ""}><DiscardPool state={state} traditional={traditional} /></div>
       </div>
 
       {/* Result banner */}
@@ -421,6 +429,15 @@ export default function MahjongTable({
           </div>
         )}
 
+        {isMcr && human.flowers.length > 0 && (
+          <div className="mb-2 flex flex-wrap items-center gap-1.5 rounded-lg border border-amber-200/60 bg-amber-50 p-2">
+            <span className="mr-1 text-xs font-bold text-amber-800">补花区 · {human.flowers.length} 张</span>
+            {human.flowers.map((tile, index) => (
+              <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />
+            ))}
+          </div>
+        )}
+
         <div className="flex flex-wrap gap-1">
           {human.hand.map((tile, i) => (
             <TileFace
@@ -470,6 +487,12 @@ function OpponentPanel({ state, seat, traditional }: { state: GameState; seat: S
               ))}
             </div>
           ))}
+        </div>
+      )}
+      {state.ruleset === 'chinese-official' && player.flowers.length > 0 && (
+        <div className="mt-1 flex flex-wrap items-center gap-0.5">
+          <span className="mr-1 text-[10px] text-amber-100">花 {player.flowers.length}</span>
+          {player.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
         </div>
       )}
     </div>

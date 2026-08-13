@@ -33,6 +33,7 @@ import {
 } from './shanten';
 import type { GameState, Seat, Ruleset } from './engine';
 import { calculateRiichiPayment, countDora, roundFu, uraDoraIndicators, visibleDoraIndicators } from './riichi';
+import { applyDirectMcrExclusions, type McrFanId } from './mcr-catalog';
 
 export interface ScorePattern {
   id: string;
@@ -63,6 +64,7 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   chickenHand: { base: 1, riichi: 0, 'chinese-official': 0 },
   selfDraw: { base: 1, 'chinese-official': 1, riichi: 1 },
   replacementWin: { base: 1 },
+  lastTileWin: { base: 1 },
   rinshanKaihou: { base: 0, riichi: 1 },
   robbingKong: { base: 1, riichi: 1 },
   riichi: { base: 0, riichi: 1 },
@@ -81,9 +83,9 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   honroutou: { base: 0, riichi: 2 },
   sanankou: { base: 0, riichi: 2 },
   sankantsu: { base: 0, riichi: 2 },
-  smallFourWinds: { base: 0, riichi: 13 },
-  bigFourWinds: { base: 0, riichi: 13 },
-  allTerminals: { base: 0, riichi: 13 },
+  smallFourWinds: { base: 10, 'chinese-official': 64, riichi: 13 },
+  bigFourWinds: { base: 10, riichi: 13 },
+  allTerminals: { base: 10, 'chinese-official': 64, riichi: 13 },
   allGreen: { base: 0, riichi: 13 },
   fourKans: { base: 0, riichi: 13 },
   concealed: { base: 1, 'chinese-official': 2, riichi: 1 },
@@ -95,9 +97,10 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   allTriplets: { base: 3, 'chinese-official': 6, riichi: 2 },
   halfFlush: { base: 3, 'chinese-official': 6, riichi: 2 },
   sevenPairs: { base: 4, 'chinese-official': 24, riichi: 2 },
-  littleThreeDragons: { base: 5, 'chinese-official': 6, riichi: 2 },
+  littleThreeDragons: { base: 5, 'chinese-official': 64, riichi: 2 },
+  fullyConcealed: { base: 0, 'chinese-official': 4 },
   fullFlush: { base: 7, 'chinese-official': 24, riichi: 6 },
-  allTerminalsHonours: { base: 10, 'chinese-official': 32, riichi: 13 },
+  allTerminalsHonours: { base: 1, 'chinese-official': 32, riichi: 13 },
   allHonours: { base: 10, 'chinese-official': 64, riichi: 13 },
   bigThreeDragons: { base: 8, 'chinese-official': 88, riichi: 13 },
   fourConcealedTriplets: { base: 10, 'chinese-official': 64, riichi: 13 },
@@ -219,8 +222,12 @@ export function scoreHand(input: ScoreInput): ScoreResult {
       const noHonours = allTiles.every((tile) => tileSuit(tile) !== 'z');
       if (noHonours) {
         pushYakuman('allTerminals', 'All Terminals');
+      } else {
+        push('honroutou', 'All Terminals and Honours');
       }
-      push('honroutou', 'All Terminals and Honours');
+    } else if (allTiles.every((tile) => tileSuit(tile) !== 'z')) {
+      push('allTerminals', 'All Terminals');
+      if (ruleset === 'hongkong') return finalise(patterns, ruleset, true);
     } else {
       push('allTerminalsHonours', 'All Terminals and Honours');
     }
@@ -249,13 +256,21 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     }
   }
 
-  if (ruleset === 'riichi') {
+  if (ruleset === 'riichi' || ruleset === 'hongkong') {
     const windCounts = (['z1', 'z2', 'z3', 'z4'] as Tile[]).map((tile) => allCounts[tileIndex(tile)]);
     if (windCounts.filter((count) => count >= 3).length === 4) {
-      pushYakuman('bigFourWinds', 'Big Four Winds');
+      if (ruleset === 'riichi') pushYakuman('bigFourWinds', 'Big Four Winds');
+      else {
+        push('bigFourWinds', 'Big Four Winds');
+        return finalise(patterns, ruleset, true);
+      }
     }
     if (windCounts.filter((count) => count >= 3).length === 3 && windCounts.some((count) => count === 2)) {
-      pushYakuman('smallFourWinds', 'Little Four Winds');
+      if (ruleset === 'riichi') pushYakuman('smallFourWinds', 'Little Four Winds');
+      else {
+        push('smallFourWinds', 'Little Four Winds');
+        return finalise(patterns, ruleset, true);
+      }
     }
   }
   if (dragonSets === 2 && dragonPairs === 1) {
@@ -330,8 +345,19 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   }
 
   // --- Conditions of the win itself ----------------------------------------
-  if (selfDrawn && (ruleset !== 'riichi' || isConcealed)) push('selfDraw', 'Self Draw');
-  if (isConcealed && ruleset !== 'riichi') push('concealed', 'Fully Concealed');
+  if (ruleset === 'hongkong' && state.wallIndex === state.deadWallIndex && !player.lastDrawWasReplacement) {
+    push('lastTileWin', selfDrawn ? 'Last Tile Draw' : 'Last Tile Claim');
+  }
+  if (ruleset === 'chinese-official' && isConcealed) {
+    // MCR separates Concealed Hand (ron, 2) from Fully Concealed Hand
+    // (self-draw, 4). The latter includes the self-draw condition, so it
+    // replaces — rather than stacks with — the two lower entries.
+    if (selfDrawn) push('fullyConcealed', 'Fully Concealed Hand');
+    else push('concealed', 'Concealed Hand');
+  } else {
+    if (selfDrawn && (ruleset !== 'riichi' || isConcealed)) push('selfDraw', 'Self Draw');
+    if (isConcealed && ruleset !== 'riichi') push('concealed', 'Fully Concealed');
+  }
   if (ruleset === 'hongkong' && selfDrawn && player.lastDrawWasReplacement) {
     push('replacementWin', 'Win on Kong Replacement');
   }
@@ -597,17 +623,26 @@ function finalise(
   points?: number,
   paymentLabel?: string
 ): ScoreResult {
-  const raw = patterns.reduce((sum, p) => sum + p.value, 0);
+  const effectivePatterns = ruleset === 'chinese-official'
+    ? applyMcrDirectExclusions(patterns)
+    : patterns;
+  const raw = effectivePatterns.reduce((sum, p) => sum + p.value, 0);
   const qualifyingRaw = ruleset === 'chinese-official'
-    ? patterns.filter((pattern) => pattern.id !== 'flower').reduce((sum, pattern) => sum + pattern.value, 0)
+    ? effectivePatterns.filter((pattern) => pattern.id !== 'flower').reduce((sum, pattern) => sum + pattern.value, 0)
     : raw;
-  const yakumanCount = patterns.filter((pattern) => pattern.yakuman).length;
+  const yakumanCount = effectivePatterns.filter((pattern) => pattern.yakuman).length;
   const cap = LIMIT[ruleset];
-  const total = ruleset === 'riichi' && yakumanCount > 0 ? 13 * yakumanCount : Math.min(raw, cap);
+  // MCR has 88-point individual fans, not an 88-point total cap. A legal
+  // hand may combine compatible fans above 88, so preserve the full total.
+  const total = ruleset === 'riichi' && yakumanCount > 0
+    ? 13 * yakumanCount
+    : ruleset === 'chinese-official'
+      ? raw
+      : Math.min(raw, cap);
   return {
     total,
-    qualifyingTotal: ruleset === 'chinese-official' ? Math.min(qualifyingRaw, cap) : undefined,
-    patterns,
+    qualifyingTotal: ruleset === 'chinese-official' ? qualifyingRaw : undefined,
+    patterns: effectivePatterns,
     limit: forcedLimit || raw >= cap || yakumanCount > 0,
     legalYaku: ruleset !== 'riichi' || forcedLimit || yakumanCount > 0 || patterns.some(
       (pattern) => pattern.id !== 'dora' && pattern.id !== 'uraDora'
@@ -618,6 +653,48 @@ function finalise(
     paymentLabel,
     yakumanCount: yakumanCount || undefined
   };
+}
+
+/** Existing detector identifiers mapped to the official MCR catalogue ids. */
+const MCR_PATTERN_IDS: Readonly<Record<string, McrFanId>> = {
+  flower: 'flower-tiles',
+  selfDraw: 'self-drawn',
+  concealed: 'concealed-hand',
+  fullyConcealed: 'fully-concealed-hand',
+  allSimples: 'all-simples',
+  allSequences: 'all-chows',
+  dragonTriplet: 'dragon-pung',
+  seatWind: 'seat-wind',
+  roundWind: 'prevalent-wind',
+  allTriplets: 'all-pungs',
+  halfFlush: 'half-flush',
+  sevenPairs: 'seven-pairs',
+  littleThreeDragons: 'little-three-dragons',
+  fullFlush: 'full-flush',
+  allTerminalsHonours: 'all-terminals-honors',
+  allHonours: 'all-honors',
+  bigThreeDragons: 'big-three-dragons',
+  fourConcealedTriplets: 'four-concealed-pungs',
+  thirteenOrphans: 'thirteen-orphans'
+};
+
+/**
+ * Apply only exclusions whose source and target have already been detected.
+ * Structural alternatives (for example overlapping chow arrangements) are
+ * selected separately as their detectors are implemented.
+ */
+function applyMcrDirectExclusions(patterns: ScorePattern[]): ScorePattern[] {
+  const mapped = patterns
+    .map((pattern) => ({ pattern, mcrId: MCR_PATTERN_IDS[pattern.id] }))
+    .filter((entry): entry is { pattern: ScorePattern; mcrId: McrFanId } => Boolean(entry.mcrId));
+  const retainedMcr = new Set(applyDirectMcrExclusions(mapped.map((entry) => ({
+    id: entry.mcrId,
+    points: entry.pattern.value
+  }))).map((entry) => entry.id));
+  return patterns.filter((pattern) => {
+    const mcrId = MCR_PATTERN_IDS[pattern.id];
+    return !mcrId || retainedMcr.has(mcrId);
+  });
 }
 
 /** Convenience for the UI: a one-line summary of a score result. */

@@ -246,40 +246,42 @@ const RIICHI_CONTENT: Record<LocaleCode, Partial<GameContent>> = {
 const CHINESE_OFFICIAL_CONTENT: Record<LocaleCode, Partial<GameContent>> = {
   en: {
     intro:
-      'Chinese Official, also called Mahjong Competition Rules, is the ruleset used for international tournament play. Its eight-point minimum forces you to build a hand with real structure rather than racing to the first complete shape, which makes it the most demanding of the three rulesets here.',
+      'This Chinese Official Mahjong (MCR) training table uses the 144-tile wall, immediately exposes and replaces Flowers and Seasons, and enforces the eight-point win gate. The official 81-fan catalogue is being integrated in audited layers, so it is not yet a tournament adjudicator.',
     howToPlay: [
       'Standard four-player mahjong: draw, discard, and build four sets plus a pair.',
-      'A hand must be worth at least eight points before it can be declared. Simple hands with no pattern do not qualify.',
-      'Points come from patterns — flushes, all-triplets, dragon and wind sets, and many more — which stack together.',
+      'Flowers and Seasons are exposed immediately and replaced from the back of the wall. They score one point each, but never count toward the eight-point declaration gate.',
+      'A hand must be worth at least eight non-Flower points before it can be declared. Simple hands with no pattern do not qualify.',
+      'MCR scores 81 official elements with Account-Once, Non-Repeat, Non-Separation and Non-Identical restrictions; the in-game scorer will expose only verified elements while the remaining checks are completed.',
       'Because the minimum is high, calling tiles to rush a weak hand is usually a losing plan.'
     ],
     tips: [
       'Pick a direction in the first few turns. Flush hands and all-triplet hands are the most reliable ways to clear eight points.',
-      'Dragon and seat-wind triplets are worth taking even at the cost of a turn, because they combine with almost everything else.',
+      'Dragon and seat-wind triplets are useful building blocks, but watch for exclusions: a higher MCR fan can replace lower implied fans rather than stack with them.',
       'A hand one tile from complete but worth only six points is not yet a hand. Keep improving it.'
     ],
     faq: [
       { question: 'Why can I not declare a win on a complete hand?', answer: 'Chinese Official requires eight points minimum. If your completed hand scores less, the win cannot be declared and play continues.' },
-      { question: 'Is the scoring here complete?', answer: 'It covers the common patterns rather than the full official table. It is built for learning and casual play, not for tournament adjudication.' }
+      { question: 'Is the scoring here complete?', answer: 'No. The 81-fan catalogue and direct exclusions are being added first, then every detector and overlapping decomposition will be validated with fixtures. This training table is not a tournament adjudicator yet.' }
     ]
   },
   zh: {
     intro:
-      '国标麻将，即中国麻将竞赛规则，是国际赛事使用的规则。它要求至少八番才能胡牌，迫使你构建真正有结构的牌型，而不是抢第一个成型的手牌——这也是三种规则中最考验功力的。',
+      '这是国标麻将（MCR）训练牌桌：已采用 144 张牌、花季牌翻开后从牌尾补牌，并执行 8 分起和。官方 81 项计分元素正在按可审计的规则层接入，因此当前不作为赛事裁判器使用。',
     howToPlay: [
       '标准的四人麻将：摸牌、打牌，凑出四组搭子加一对将牌。',
-      '胡牌前手牌至少值八番。没有番型的简单手牌不能胡。',
-      '番来自各种牌型——清一色、碰碰胡、箭牌和风牌刻子等——它们可以叠加。',
+      '摸到春夏秋冬、梅兰竹菊时立即翻开，从牌尾补一张；每张花季牌计 1 分，但不计入胡牌所需的 8 分。',
+      '胡牌前，除花季分外的牌型至少值 8 分；没有番型的简单手牌不能胡。',
+      '国标共 81 项计分元素，并受不重复、不可拆分、不可同组重复使用及计一次等原则约束；游戏只会展示已验证接入的计分项。',
       '由于门槛很高，靠叫牌凑一副弱牌通常不是好主意。'
     ],
     tips: [
       '开局几手就选定方向。清一色和碰碰胡是凑够八番最可靠的途径。',
-      '箭牌和门风刻子值得吃，即使损失一手牌，因为它们能搭配几乎所有其他牌型。',
+      '箭牌和门风刻子是可靠的搭子，但注意高分番可能排除其已包含的低分番，不能简单相加。',
       '差一张就成型但只值六番的手牌还不算完成。继续改进它。'
     ],
     faq: [
       { question: '为什么手牌成型了却不能胡？', answer: '国标要求最低八番。如果成型的手牌分数不足，不能宣布胡牌，游戏继续。' },
-      { question: '这里的计分完整吗？', answer: '它覆盖常见番型，而非完整的官方番种表。它面向学习和娱乐，不是赛事裁判用。' }
+      { question: '这里的计分完整吗？', answer: '还没有。当前先接入 81 番目录与可直接判定的排除关系，再为每一种牌型及重叠拆分补充测试。此训练牌桌暂不用于赛事裁判。' }
     ]
   },
   'zh-TW': {

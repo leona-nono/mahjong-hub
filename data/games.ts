@@ -191,7 +191,7 @@ export const games: GameConfig[] = [
     pageName: 'chinese-official-mahjong',
     title: 'Chinese Official Mahjong',
     description:
-      'Chinese Official (MCR) mahjong with the eight-point minimum — the international tournament ruleset.',
+      'Chinese Official Mahjong (MCR) training table — 144 tiles, Flower replacement, and an eight-point win gate.',
     category: 'four-player',
     gameType: 'native',
     native: 'mahjong-table',
@@ -201,18 +201,17 @@ export const games: GameConfig[] = [
     players: 4,
     content: {
       intro:
-        'Chinese Official, also called Mahjong Competition Rules (MCR), is the four-player international tournament ruleset. It uses 144 tiles, including Flowers and Seasons, and requires a legal hand to reach at least eight points from its official scoring elements.',
+        'This is our Chinese Official Mahjong (MCR) training table. It already uses 144 tiles, exposes and replaces Flowers and Seasons, and enforces the eight-point win gate. The full 81-element competition scorer and its exclusion rules are still in development, so this page must not be used as a tournament adjudicator.',
       howToPlay: [
         'Standard four-player mahjong: draw, discard, and build four sets plus a pair.',
-        'A hand must be worth at least eight points before it can be declared. Simple hands with no pattern do not qualify.',
-        'Points come from patterns — flushes, all-triplets, dragon and wind sets, and many more — which stack together.',
-        'Because the minimum is high, calling tiles to rush a weak hand is usually a losing plan.'
+        'Reveal every Flower or Season immediately in the Flower area, then take a replacement from the back of the wall.',
+        'A hand must be worth at least eight qualifying points before it can be declared. Flower points do not meet that gate on their own.',
+        'The current scorer covers only a training subset; use the result to learn the turn flow, not to certify a competition score.'
       ],
       tips: [
-        'Pick a direction in the first few turns. Flush hands and all-triplet hands are the most reliable ways to clear eight points.',
-        'Dragon and seat-wind triplets are worth taking even at the cost of a turn, because they combine with almost everything else.',
-        'A hand one tile from complete but worth only six points is not yet a hand. Keep improving it.'
-        ,'Check the score before calling a win: MCR has overlap and exclusion rules, so visible patterns do not always stack.'
+        'Treat this build as a practice table while the official 81 scoring elements are being added.',
+        'A hand one tile from complete but below eight qualifying points is not a legal win; keep improving its scoring structure.',
+        'When the full scorer arrives it will explain included and excluded elements, rather than simply adding every visible pattern.'
       ],
       faq: [
         {
@@ -223,7 +222,7 @@ export const games: GameConfig[] = [
         {
           question: 'Is the scoring here complete?',
           answer:
-            'It covers the common patterns rather than the full official table. It is built for learning and casual play, not for tournament adjudication.'
+            'No. This training version implements the 144-tile and Flower replacement flow plus an initial scoring subset. The complete official 81-element table and its exclusions are still being implemented.'
         }
       ]
     }
