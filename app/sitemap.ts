@@ -1,25 +1,19 @@
 import type { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
-import { getMergedNativeGames } from '@/lib/games-db'
+import { games } from '@/data/games';
 import { getBlogPosts } from '@/data/blog';
 
 const BASE = 'https://mahjonggame.org';
 
 /**
- * Only pages we actually want indexed go in here.
- *
- * Native game pages are our own content (full rules copy + structured data) and
- * get a high priority. Iframe game pages are noindex in their metadata, so
- * listing them would send Search Console a contradictory signal — they are
- * deliberately excluded.
- *
- * We read the merged catalogue (static base + CMS overlay) so admin edits
- * — hiding a game via `isActive`, renaming a native game, or publishing a new
- * CMS-native game — are reflected without a redeploy.
+ * Built from the static catalogue only — no Prisma.
+ * Hitting the DB here previously made /sitemap.xml a serverless function
+ * (and 500 when Neon was slow). Admin CMS overlay is not required for
+ * crawlers; native slugs live in `data/games.ts`.
  */
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
-  const nativeGames = await getMergedNativeGames();
+  const nativeGames = games.filter((g) => g.gameType === 'native');
   const blogPosts = getBlogPosts();
   const lastModified = new Date();
 

@@ -28,7 +28,7 @@ export default function NativeGameMount({
   const handleWin = useCallback(
     (points: number) => {
       // Cap the award so a long session cannot farm points from one board.
-      awardPoints(Math.min(Math.max(points, 1), 50), `win:${slug}`);
+      void awardPoints(Math.min(Math.max(points, 1), 50), 'game_win', slug);
     },
     [slug]
   );

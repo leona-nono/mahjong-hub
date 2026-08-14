@@ -103,6 +103,7 @@ model PointTransaction {
 model DailyBonus {
   userId        String   @id
   lastClaimDate DateTime
+  streak        Int      @default(1)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
