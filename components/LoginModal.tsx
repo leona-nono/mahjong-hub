@@ -80,7 +80,21 @@ export default function LoginModal({
         redirect: false
       });
       if (result?.error) {
-        setError(t('loginFailed'));
+        // Configuration = provider id / env mismatch; EmailSignin = SMTP failure
+        if (result.error === 'Configuration') {
+          setError(t('emailMisconfigured'));
+        } else if (
+          result.error === 'EmailSignin' ||
+          result.error === 'Verification'
+        ) {
+          setError(t('emailSendFailed'));
+        } else {
+          setError(t('loginFailed'));
+        }
+        return;
+      }
+      if (result?.ok === false) {
+        setError(t('emailSendFailed'));
         return;
       }
       const until = Date.now() + COOLDOWN_SECONDS * 1000;
@@ -88,7 +102,7 @@ export default function LoginModal({
       setCooldown(COOLDOWN_SECONDS);
       setEmailSent(true);
     } catch {
-      setError(t('loginFailed'));
+      setError(t('emailSendFailed'));
     } finally {
       setEmailSending(false);
     }

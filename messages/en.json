@@ -70,7 +70,9 @@
     "emailSend": "Send login link",
     "emailSent": "Login link sent. Check your inbox (and spam) and click it within 24 hours. Please do not request multiple links.",
     "emailSendAgain": "Resend in {n}s",
-    "emailInvalid": "Please enter a valid email address."
+    "emailInvalid": "Please enter a valid email address.",
+    "emailSendFailed": "Could not send the login email. Check spam later, or try again. If it keeps failing, SMTP settings need fixing.",
+    "emailMisconfigured": "Email login is not configured correctly on the server. Please try another sign-in method."
   },
   "points": {
     "youHave": "You have {n} pts"

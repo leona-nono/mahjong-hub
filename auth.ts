@@ -56,22 +56,39 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ...(emailConfigured
       ? [
           Nodemailer({
+            // Client LoginModal calls signIn('email'). Auth.js default id is
+            // "nodemailer" — without this alias, magic-link never sends.
+            id: 'email',
+            name: 'Email',
             server: process.env.AUTH_EMAIL_SERVER!,
             from: process.env.AUTH_EMAIL_FROM!,
             maxAge: 24 * 60 * 60,
             async sendVerificationRequest({ identifier, url, provider }) {
               const { host } = new URL(url);
               const transport = nodemailer.createTransport(provider.server);
-              await transport.sendMail({
-                to: identifier,
-                from: provider.from,
-                subject: `Sign in to ${host}`,
-                text: `Sign in to ${host}\n\n${url}\n\nIf you didn't request this, you can ignore this email.`,
-                html: `<p>Sign in to <strong>${host}</strong></p><p><a href="${url}" style="display:inline-block;padding:10px 18px;background:#ef5b5b;color:#fff;border-radius:999px;text-decoration:none;font-weight:bold;">Sign in</a></p><p>If you didn't request this email, you can safely ignore it.</p>`
-              });
-            },
-          }),
+              try {
+                const info = await transport.sendMail({
+                  to: identifier,
+                  from: provider.from,
+                  subject: `Sign in to ${host}`,
+                  text: `Sign in to ${host}\n\n${url}\n\nIf you didn't request this, you can ignore this email.`,
+                  html: `<p>Sign in to <strong>${host}</strong></p><p><a href="${url}" style="display:inline-block;padding:10px 18px;background:#ef5b5b;color:#fff;border-radius:999px;text-decoration:none;font-weight:bold;">Sign in</a></p><p>If you didn't request this email, you can safely ignore it.</p>`
+                });
+                if (process.env.NODE_ENV !== 'production') {
+                  console.info('[auth/email] sent', {
+                    to: identifier,
+                    messageId: info.messageId,
+                    accepted: info.accepted,
+                    rejected: info.rejected
+                  });
+                }
+              } catch (err) {
+                console.error('[auth/email] SMTP send failed', err);
+                throw new Error('EMAIL_SEND_FAILED');
+              }
+            }
+          })
         ]
-      : []),
+      : [])
   ],
 });
