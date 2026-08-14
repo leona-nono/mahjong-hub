@@ -126,7 +126,18 @@
     "undo": "Undo",
     "shuffle": "Shuffle",
     "restart": "Restart",
-    "cleared": "Board cleared! {n} points."
+    "cleared": "Board cleared! {n} points.",
+    "lessons": "Lessons",
+    "freePlay": "Free play",
+    "nextLesson": "Next lesson",
+    "coachSkip": "Got it",
+    "coachFree": "Only free tiles can be matched — nothing on top, and at least one side open. Highlighted tiles are free right now.",
+    "coachFlower": "Seasons match any season; flowers match any flower. Try pairing two different season or flower tiles.",
+    "coachDead": "Sometimes no free pair remains — that is a dead end. Use Rescue to reshuffle the rest into a solvable board.",
+    "coachDeadPrompt": "This is a dead end. Tap Rescue to continue — that is the lesson.",
+    "deadPrompt": "No moves left — rescue reshuffles remaining tiles (solvable).",
+    "rescue": "Rescue",
+    "noFreeUndo": "No free undos left ({n}/level). Points/ad unlock later."
   },
   "daily": {
     "title": "Daily Check-in",

@@ -1,17 +1,20 @@
 /**
- * Mahjong Solitaire (单人麻将消除) — layout geometry.
+ * Mahjong Solitaire layout geometry.
  *
- * A layout is a set of slots, each described by a (layer, row, col) triple.
- * Layer 0 is the base of the stack; a tile at (layer, row, col) rests directly
- * on the tile at (layer - 1, row, col), so every higher layer is strictly
- * contained in the one below it. This module only knows geometry — it does not
- * know about tile faces or game state — and exposes the shared exposure
- * primitive that both the board model and the generator use.
- *
- * Written from scratch; the rules are public game mechanics.
+ * Layouts:
+ * - `flat36` (36) — single-layer teaching boards (levels 1–2)
+ * - `mini` (72) — early / mid teaching
+ * - `turtle` (74) — legacy compact turtle (kept for continuity)
+ * - `classic` (144) — full Shanghai stack (P0 target)
+ * - `pyramid` (90) — alternate shape
  */
 
-export type SolitaireLayout = 'turtle' | 'pyramid';
+export type SolitaireLayout =
+  | 'flat36'
+  | 'mini'
+  | 'turtle'
+  | 'classic'
+  | 'pyramid';
 
 export interface Pos {
   row: number;
@@ -19,66 +22,131 @@ export interface Pos {
   layer: number;
 }
 
-// ---------------------------------------------------------------------------
-// Layout definitions
-// ---------------------------------------------------------------------------
-
 interface LayerSpec {
-  /** Absolute row of the first string in `rows` (layer 0 starts at 0). */
   rowOffset: number;
+  colOffset?: number;
   rows: string[];
 }
-
-/** Classic turtle (龟甲): a wide oval, a smaller oval on top, a little cap. */
-const TURTLE_LAYERS: LayerSpec[] = [
-  {
-    rowOffset: 0,
-    rows: [
-      '....XX....', // 2
-      '...XXXX...', // 4
-      '..XXXXXX..', // 6
-      '.XXXXXXXX.', // 8
-      'XXXXXXXXXX', // 10
-      '.XXXXXXXX.', // 8
-      '..XXXXXX..', // 6
-      '...XXXX...', // 4
-      '....XX....' // 2  -> 50
-    ]
-  },
-  {
-    rowOffset: 2,
-    rows: [
-      '..XXXX..', // 4
-      '.XXXXXX.', // 6
-      '.XXXXXX.', // 6
-      '..XXXX..' // 4  -> 20
-    ]
-  },
-  {
-    rowOffset: 3,
-    rows: [
-      '..XX..', // 2
-      '..XX..' // 2  -> 4
-    ]
-  }
-];
-
-/** Pyramid (金字塔): centred triangles stacked so each sits inside the one below. */
-const PYRAMID_SIDES = [11, 9, 7, 5, 3];
-const PYRAMID_COL_CENTER = 6;
 
 function positionsFromLayers(layers: LayerSpec[]): Pos[] {
   const positions: Pos[] = [];
   layers.forEach((layer, layerIdx) => {
+    const colOff = layer.colOffset ?? 0;
     layer.rows.forEach((rowStr, r) => {
       const row = layer.rowOffset + r;
       for (let col = 0; col < rowStr.length; col += 1) {
-        if (rowStr[col] === 'X') positions.push({ row, col, layer: layerIdx });
+        if (rowStr[col] === 'X') {
+          positions.push({ row, col: col + colOff, layer: layerIdx });
+        }
       }
     });
   });
   return positions;
 }
+
+/** Single-layer teaching board: 6×6 = 36. */
+const FLAT36_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: ['XXXXXX', 'XXXXXX', 'XXXXXX', 'XXXXXX', 'XXXXXX', 'XXXXXX']
+  }
+];
+
+/** Teaching board: 72 tiles, 2 layers. */
+const MINI_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      '..XXXXXX..',
+      '.XXXXXXXX.',
+      'XXXXXXXXXX',
+      'XXXXXXXXXX',
+      '.XXXXXXXX.',
+      '..XXXXXX..'
+    ]
+  },
+  {
+    rowOffset: 1,
+    colOffset: 1,
+    rows: [
+      '..XXXX..',
+      '.XXXXXX.',
+      '.XXXXXX.',
+      '..XXXX..'
+    ]
+  }
+];
+
+/** Compact turtle (74) — existing product layout. */
+const TURTLE_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      '....XX....',
+      '...XXXX...',
+      '..XXXXXX..',
+      '.XXXXXXXX.',
+      'XXXXXXXXXX',
+      '.XXXXXXXX.',
+      '..XXXXXX..',
+      '...XXXX...',
+      '....XX....'
+    ]
+  },
+  {
+    rowOffset: 2,
+    rows: [
+      '..XXXX..',
+      '.XXXXXX.',
+      '.XXXXXX.',
+      '..XXXX..'
+    ]
+  },
+  {
+    rowOffset: 3,
+    rows: ['..XX..', '..XX..']
+  }
+];
+
+/**
+ * Classic 144 stack: 80 + 48 + 16.
+ * Each upper layer sits inside the one below (no floating tiles).
+ */
+const CLASSIC_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      'XXXXXXXXXX',
+      'XXXXXXXXXX',
+      'XXXXXXXXXX',
+      'XXXXXXXXXX',
+      'XXXXXXXXXX',
+      'XXXXXXXXXX',
+      'XXXXXXXXXX',
+      'XXXXXXXXXX'
+    ]
+  },
+  {
+    rowOffset: 1,
+    colOffset: 1,
+    rows: [
+      'XXXXXXXX',
+      'XXXXXXXX',
+      'XXXXXXXX',
+      'XXXXXXXX',
+      'XXXXXXXX',
+      'XXXXXXXX'
+    ]
+  },
+  {
+    rowOffset: 2,
+    colOffset: 3,
+    rows: ['XXXX', 'XXXX', 'XXXX', 'XXXX']
+  }
+];
+
+const PYRAMID_SIDES = [11, 9, 7, 5, 3];
+const PYRAMID_COL_CENTER = 6;
 
 function positionsForPyramid(): Pos[] {
   const positions: Pos[] = [];
@@ -96,25 +164,24 @@ function positionsForPyramid(): Pos[] {
 }
 
 const LAYOUTS: Record<SolitaireLayout, Pos[]> = {
+  flat36: positionsFromLayers(FLAT36_LAYERS),
+  mini: positionsFromLayers(MINI_LAYERS),
   turtle: positionsFromLayers(TURTLE_LAYERS),
+  classic: positionsFromLayers(CLASSIC_LAYERS),
   pyramid: positionsForPyramid()
 };
 
-/** All slots of a layout, in a fixed order (stable across boards). */
 export function positionsFor(layout: SolitaireLayout): Pos[] {
   return LAYOUTS[layout];
 }
 
-// ---------------------------------------------------------------------------
-// Neighbour lookup (pure geometry)
-// ---------------------------------------------------------------------------
+export function layoutTileCount(layout: SolitaireLayout): number {
+  return LAYOUTS[layout].length;
+}
 
 export interface NeighborMaps {
-  /** Index of the tile directly above (same row/col, layer + 1), or -1. */
   above: Int32Array;
-  /** Index of the tile to the left (same layer, col - 1), or -1. */
   left: Int32Array;
-  /** Index of the tile to the right (same layer, col + 1), or -1. */
   right: Int32Array;
 }
 
@@ -145,14 +212,6 @@ export function getNeighbors(layout: SolitaireLayout): NeighborMaps {
   return maps;
 }
 
-/**
- * The exposure rule — "左右有一侧空且顶部无遮挡": the tile is free on at least
- * one side at its own layer, and nothing rests directly on top of it.
- *
- * `present[i]` marks whether slot `i` currently holds a tile (removed slots and
- * never-filled slots both count as "empty"). This is the shared primitive the
- * board model and the solvable generator both reason over.
- */
 export function isExposedFor(
   nb: NeighborMaps,
   present: boolean[],
