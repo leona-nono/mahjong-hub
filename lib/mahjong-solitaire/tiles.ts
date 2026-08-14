@@ -31,6 +31,14 @@ export function canMatchTiles(a: Tile, b: Tile): boolean {
   return a === b;
 }
 
+/** Match-key for solvable shuffle / pair pools (wild groups collapse). */
+export function toMatchKey(tile: Tile): string {
+  const g = matchGroup(tile);
+  if (g === 'season') return 'season';
+  if (g === 'flower') return 'flower';
+  return tile;
+}
+
 /**
  * Full 144-tile multiset: 4× each of 34 suited/honours + 8 unique bonus tiles.
  */

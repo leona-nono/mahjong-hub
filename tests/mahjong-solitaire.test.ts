@@ -10,7 +10,7 @@ import {
   removePair,
   type Board
 } from '@/lib/mahjong-solitaire/board';
-import { createBoard, reshuffle, rescue } from '@/lib/mahjong-solitaire/generator';
+import { createBoard, reshuffle, rescue, generateSolvable, verifyByReplay, shuffleSolvable } from '@/lib/mahjong-solitaire/generator';
 import {
   availableMoves,
   findHint,
@@ -30,6 +30,7 @@ import {
 } from '@/lib/mahjong-solitaire/tiles';
 import {
   measureDifficulty,
+  profileDifficulty,
   simulateGreedyClear
 } from '@/lib/mahjong-solitaire/difficulty';
 import {
@@ -135,6 +136,25 @@ describe('createBoard', () => {
       }
     }
   });
+
+  it('generateSolvable passes replay verification', () => {
+    const gen = generateSolvable({
+      layout: 'flat36',
+      seed: 77,
+      includeBonus: false
+    });
+    expect(gen).not.toBeNull();
+    if (!gen) return;
+    expect(verifyByReplay(gen.board, gen.solutionOrder)).toBe(true);
+    expect(gen.solutionOrder).toHaveLength(18);
+  });
+
+  it('classic deals also pass replay verification', () => {
+    const gen = generateSolvable({ layout: 'classic', seed: 42 });
+    expect(gen).not.toBeNull();
+    if (!gen) return;
+    expect(verifyByReplay(gen.board, gen.solutionOrder)).toBe(true);
+  });
 });
 
 describe('match + undo budget', () => {
@@ -193,12 +213,37 @@ describe('rescue + difficulty', () => {
     expect(rescued.remaining).toBeGreaterThan(0);
   });
 
+  it('shuffleSolvable preserves remaining count and is replay-safe', () => {
+    let board = createBoard({ layout: 'mini', seed: 8 });
+    const pair = findHint(board)!;
+    board = removePair(board, pair[0], pair[1]);
+    const left = board.remaining;
+    const shuffled = shuffleSolvable(board, 321);
+    expect(shuffled).not.toBeNull();
+    if (!shuffled) return;
+    expect(shuffled.board.remaining).toBe(left);
+    expect(verifyByReplay(shuffled.board, shuffled.solutionOrder)).toBe(true);
+  });
+
   it('measureDifficulty reports branch width and diversity', () => {
     const board = createBoard({ layout: 'mini', seed: 5 });
     const m = measureDifficulty(board);
     expect(m.branchWidth).toBeGreaterThan(0);
     expect(m.remaining).toBe(board.remaining);
     expect(m.faceDiversity).toBeGreaterThan(0);
+  });
+
+  it('profileDifficulty clears flat36 with branch stats', () => {
+    const board = createBoard({
+      layout: 'flat36',
+      seed: 44,
+      includeBonus: false
+    });
+    const p = profileDifficulty(board);
+    expect(p.solved).toBe(true);
+    expect(p.steps).toBe(18);
+    expect(p.avgBranch).toBeGreaterThan(0);
+    expect(p.minBranch).toBeGreaterThan(0);
   });
 
   it('simulateGreedyClear finishes flat36 without excessive rescues', () => {

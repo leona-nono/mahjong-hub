@@ -35,6 +35,7 @@ model User {
   point        UserPoint?
   transactions PointTransaction[]
   dailyBonus   DailyBonus?
+  itemLedger   ItemLedger[]
 }
 
 model Account {
@@ -106,6 +107,21 @@ model DailyBonus {
   streak        Int      @default(1)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/// Append-only solitaire item ledger. Balance = SUM(delta) per (userId, itemType).
+model ItemLedger {
+  id        String   @id @default(cuid())
+  userId    String
+  itemType  String // hint | undo | shuffle | rescue
+  delta     Int
+  reason    String // starter | buy | consume | ad_grant | grant
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, itemType])
+  @@index([userId, createdAt])
 }
 
 // ── FaWeb 运营后台扩展 (Site/Game/FAQ/Features/i18n/Themes) ──────────

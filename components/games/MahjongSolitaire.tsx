@@ -11,8 +11,8 @@ import {
   removePair,
   type Board
 } from '@/lib/mahjong-solitaire/board';
-import { createBoard, rescue, reshuffle } from '@/lib/mahjong-solitaire/generator';
-import { findHint, isDead, undo } from '@/lib/mahjong-solitaire/solver';
+import { createBoard } from '@/lib/mahjong-solitaire/generator';
+import { isDead } from '@/lib/mahjong-solitaire/solver';
 import { measureDifficulty } from '@/lib/mahjong-solitaire/difficulty';
 import type { SolitaireLayout } from '@/lib/mahjong-solitaire/layouts';
 import { FREE_UNDO_PER_LEVEL } from '@/lib/mahjong-solitaire/tiles';
@@ -27,11 +27,24 @@ import {
   nextLevelId,
   type LevelDef
 } from '@/lib/mahjong-solitaire/levels';
+import {
+  applyHint,
+  applyRescue,
+  applyShuffle,
+  applyUndo,
+  isItemUnlocked,
+  starsForLevel,
+  type ItemType
+} from '@/lib/mahjong-solitaire/items';
+import {
+  useSolitaireItems,
+  type PayChannel
+} from '@/lib/solitaire-items';
 import { tileName } from '@/lib/mahjong/tiles';
+import { usePoints } from '@/lib/points';
 
 export interface MahjongSolitaireProps {
   defaultLayout?: SolitaireLayout;
-  /** Start on a teaching level id (e.g. teach-1). */
   defaultLevelId?: string;
   onWin?: (points: number) => void;
 }
@@ -43,12 +56,20 @@ const STACK_Y = 16;
 
 type PlayMode = 'level' | 'free';
 
+type OfferState = {
+  item: ItemType;
+  /** After paying, run this effect */
+  run: (channel: PayChannel) => Promise<void>;
+} | null;
+
 export default function MahjongSolitaire({
   defaultLayout = 'classic',
   defaultLevelId = 'teach-1',
   onWin
 }: MahjongSolitaireProps) {
   const t = useTranslations('solitaire');
+  const { points } = usePoints();
+  const items = useSolitaireItems();
   const initialLevel = getLevel(defaultLevelId) ?? TEACHING_LEVELS[0];
 
   const [mode, setMode] = useState<PlayMode>('level');
@@ -64,8 +85,16 @@ export default function MahjongSolitaire({
   });
   const [status, setStatus] = useState<'playing' | 'won' | 'dead'>('playing');
   const [paused, setPaused] = useState(false);
-  const [undoMsg, setUndoMsg] = useState<string | null>(null);
+  const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [coachDismissed, setCoachDismissed] = useState(false);
+  const [itemUses, setItemUses] = useState(0);
+  const [offer, setOffer] = useState<OfferState>(null);
+
+  const unlockCtx = {
+    lessonsCleared: items.progress.lessonsCleared,
+    seenDeadEnd: items.progress.seenDeadEnd,
+    freePlay: mode === 'free'
+  };
 
   useEffect(() => {
     if (mode !== 'free') return;
@@ -78,15 +107,22 @@ export default function MahjongSolitaire({
     setStatus('playing');
   }, [defaultLayout, mode]);
 
-  const restartLevel = (next: LevelDef) => {
-    setLevel(next);
-    setBoard(createLevelBoard(next));
+  const resetRoundMeta = () => {
     setSelected(null);
     setHint(null);
     setScoreState({ score: 0, combo: 0, lastMatchAt: 0 });
     setStatus('playing');
-    setUndoMsg(null);
+    setStatusMsg(null);
+    setItemUses(0);
+    setOffer(null);
+    items.resetLevelAds();
+  };
+
+  const restartLevel = (next: LevelDef) => {
+    setLevel(next);
+    setBoard(createLevelBoard(next));
     setCoachDismissed(false);
+    resetRoundMeta();
   };
 
   const restartFree = (nextLayout: SolitaireLayout = layout) => {
@@ -96,22 +132,18 @@ export default function MahjongSolitaire({
         seed: Math.floor(Math.random() * 2 ** 31)
       })
     );
-    setSelected(null);
-    setHint(null);
-    setScoreState({ score: 0, combo: 0, lastMatchAt: 0 });
-    setStatus('playing');
-    setUndoMsg(null);
+    resetRoundMeta();
   };
 
   const geometry = useMemo(() => {
-    const points = board.positions.map((p) => ({
+    const pts = board.positions.map((p) => ({
       x: p.col * CELL_W - p.layer * STACK_X,
       y: p.row * CELL_H - p.layer * STACK_Y
     }));
-    const minX = Math.min(...points.map((pt) => pt.x));
-    const minY = Math.min(...points.map((pt) => pt.y));
-    const maxX = Math.max(...points.map((pt) => pt.x));
-    const maxY = Math.max(...points.map((pt) => pt.y));
+    const minX = Math.min(...pts.map((pt) => pt.x));
+    const minY = Math.min(...pts.map((pt) => pt.y));
+    const maxX = Math.max(...pts.map((pt) => pt.x));
+    const maxY = Math.max(...pts.map((pt) => pt.y));
     return {
       minX,
       minY,
@@ -122,6 +154,12 @@ export default function MahjongSolitaire({
 
   const metrics = measureDifficulty(board);
   const showCoach = mode === 'level' && !coachDismissed;
+  const stars = starsForLevel({
+    cleared: status === 'won',
+    itemUses
+  });
+
+  const bumpItemUse = () => setItemUses((n) => n + 1);
 
   const handleTile = (index: number) => {
     if (status !== 'playing' || paused) return;
@@ -154,6 +192,7 @@ export default function MahjongSolitaire({
     if (isCleared(next)) {
       setBoard(next);
       setStatus('won');
+      if (mode === 'level') items.markLessonCleared(level.order);
       onWin?.(Math.min(scored.score, 50));
       return;
     }
@@ -161,42 +200,98 @@ export default function MahjongSolitaire({
     if (isDead(next)) {
       setBoard(next);
       setStatus('dead');
+      items.markDeadSeen();
     } else {
       setBoard(next);
     }
   };
 
-  const showHint = () => {
+  const runHint = async (channel: PayChannel) => {
     if (status !== 'playing' || paused) return;
-    const pair = findHint(board);
-    if (pair) {
-      setHint(pair);
-      setScoreState((s) => ({ ...s, score: Math.max(0, s.score - 2) }));
-    }
-  };
-
-  const handleUndo = () => {
-    const result = undo(board);
-    if (!result.ok) {
-      setUndoMsg(
-        result.reason === 'no_free_undo'
-          ? t('noFreeUndo', { n: FREE_UNDO_PER_LEVEL })
-          : null
-      );
+    const paid = await items.tryConsume('hint', channel);
+    if (!paid.ok) {
+      if (paid.reason === 'empty') setOffer({ item: 'hint', run: runHint });
       return;
     }
-    setUndoMsg(null);
-    setBoard(result.board);
+    const r = applyHint(board);
+    if (!r.ok) {
+      setStatusMsg(t('noMoves'));
+      return;
+    }
+    setHint(r.pair);
+    bumpItemUse();
+    setOffer(null);
+  };
+
+  const runUndo = async (channel: PayChannel) => {
+    // Free undos first — no inventory
+    const freeTry = applyUndo(board);
+    if (freeTry.ok && freeTry.usedFree) {
+      setBoard(freeTry.board);
+      setSelected(null);
+      setHint(null);
+      setStatusMsg(null);
+      if (status === 'won' || status === 'dead') setStatus('playing');
+      setOffer(null);
+      return;
+    }
+    if (freeTry.ok && !freeTry.usedFree) {
+      // shouldn't happen without spendItem
+    }
+
+    const paid = await items.tryConsume('undo', channel);
+    if (!paid.ok) {
+      if (paid.reason === 'empty' || paid.reason === undefined) {
+        setOffer({ item: 'undo', run: runUndo });
+        setStatusMsg(t('noFreeUndo', { n: FREE_UNDO_PER_LEVEL }));
+      }
+      return;
+    }
+    const r = applyUndo(board, { spendItem: true });
+    if (!r.ok) {
+      setStatusMsg(null);
+      return;
+    }
+    setBoard(r.board);
     setSelected(null);
     setHint(null);
+    bumpItemUse();
+    setOffer(null);
     if (status === 'won' || status === 'dead') setStatus('playing');
   };
 
-  const handleRescue = () => {
-    setBoard(rescue(board));
-    setStatus('playing');
+  const runShuffle = async (channel: PayChannel) => {
+    if (status !== 'playing' && status !== 'dead') return;
+    const paid = await items.tryConsume('shuffle', channel);
+    if (!paid.ok) {
+      if (paid.reason === 'empty') setOffer({ item: 'shuffle', run: runShuffle });
+      return;
+    }
+    const r = applyShuffle(board);
+    if (!r.ok) return;
+    setBoard(r.board);
     setSelected(null);
     setHint(null);
+    setStatus('playing');
+    bumpItemUse();
+    setOffer(null);
+  };
+
+  const runRescue = async (channel: PayChannel) => {
+    if (status !== 'dead') return;
+    const paid = await items.tryConsume('rescue', channel);
+    if (!paid.ok) {
+      if (paid.reason === 'empty') setOffer({ item: 'rescue', run: runRescue });
+      return;
+    }
+    const r = applyRescue(board);
+    if (!r.ok) return;
+    setBoard(r.board);
+    setSelected(null);
+    setHint(null);
+    setStatus('playing');
+    bumpItemUse();
+    setOffer(null);
   };
 
   const enterFree = () => {
@@ -204,6 +299,28 @@ export default function MahjongSolitaire({
     setLayout(defaultLayout);
     restartFree(defaultLayout);
     setCoachDismissed(true);
+  };
+
+  const itemBtn = (
+    type: ItemType,
+    label: string,
+    onClick: () => void,
+    disabled?: boolean
+  ) => {
+    const unlocked = isItemUnlocked(type, unlockCtx);
+    const count = items.inventory[type] ?? 0;
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={disabled || !unlocked}
+        title={!unlocked ? t('itemLocked') : undefined}
+        className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-200 hover:bg-[#2c4b57] disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        {label}
+        <span className="ml-1 text-xs text-amber-200">×{count}</span>
+      </button>
+    );
   };
 
   return (
@@ -260,32 +377,15 @@ export default function MahjongSolitaire({
           branch {metrics.branchWidth}
         </span>
 
-        <button
-          type="button"
-          onClick={showHint}
-          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-200 hover:bg-[#2c4b57]"
-        >
-          {t('hint')}
-        </button>
-        <button
-          type="button"
-          onClick={handleUndo}
-          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-200 hover:bg-[#2c4b57]"
-        >
-          {t('undo')}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setBoard((b) => reshuffle(b));
-            setSelected(null);
-            setHint(null);
-            setStatus('playing');
-          }}
-          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-200 hover:bg-[#2c4b57]"
-        >
-          {t('shuffle')}
-        </button>
+        {itemBtn('hint', t('hint'), () => void runHint('inventory'), status !== 'playing' || paused)}
+        {itemBtn('undo', t('undo'), () => void runUndo('inventory'), paused)}
+        {itemBtn(
+          'shuffle',
+          t('shuffle'),
+          () => void runShuffle('inventory'),
+          (status !== 'playing' && status !== 'dead') || paused
+        )}
+
         <button
           type="button"
           onClick={() => setPaused((value) => !value)}
@@ -326,13 +426,51 @@ export default function MahjongSolitaire({
         </div>
       )}
 
-      {undoMsg && (
-        <p className="mb-2 text-center text-xs text-amber-200">{undoMsg}</p>
+      {(statusMsg || items.msg) && (
+        <p className="mb-2 text-center text-xs text-amber-200">
+          {statusMsg || items.msg}
+        </p>
+      )}
+
+      {offer && (
+        <div className="mb-3 rounded-2xl border border-violet-400/40 bg-violet-500/10 p-4 text-sm text-violet-50">
+          <p className="font-semibold">{t('needItem', { item: t(offer.item) })}</p>
+          <p className="mt-1 text-xs text-violet-100/80">
+            {t('pointsBalance', { n: points })} · {t('itemPrice', { n: items.prices[offer.item] })}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => void offer.run('points')}
+              className="rounded-full bg-violet-500 px-4 py-2 font-bold text-white"
+            >
+              {t('buyWithPoints', { n: items.prices[offer.item] })}
+            </button>
+            <button
+              type="button"
+              onClick={() => void offer.run('ad')}
+              className="rounded-full border border-violet-300 px-4 py-2 font-medium"
+            >
+              {t('watchAdOnce')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setOffer(null)}
+              className="rounded-full px-3 py-2 text-violet-200/80"
+            >
+              {t('cancel')}
+            </button>
+          </div>
+        </div>
       )}
 
       {status === 'won' && (
         <div className="mb-3 rounded-2xl bg-emerald-500/20 p-4 text-center text-sm font-bold text-emerald-200">
           <p>{t('cleared', { n: scoreState.score })}</p>
+          <p className="mt-1 text-amber-200">
+            {'★'.repeat(stars)}
+            {'☆'.repeat(3 - stars)}
+          </p>
           {mode === 'level' && nextLevelId(level.id) && (
             <button
               type="button"
@@ -365,13 +503,38 @@ export default function MahjongSolitaire({
               ? t('coachDeadPrompt')
               : t('deadPrompt')}
           </p>
-          <button
-            type="button"
-            onClick={handleRescue}
-            className="rounded-full bg-amber-500 px-4 py-2 font-bold text-slate-900"
-          >
-            {t('rescue')}
-          </button>
+          <div className="flex flex-wrap justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => void runRescue('inventory')}
+              className="rounded-full bg-amber-500 px-4 py-2 font-bold text-slate-900"
+            >
+              {t('rescue')} ×{items.inventory.rescue}
+            </button>
+            <button
+              type="button"
+              onClick={() => void runRescue('points')}
+              className="rounded-full border border-amber-300 px-4 py-2 font-medium"
+            >
+              {t('buyWithPoints', { n: items.prices.rescue })}
+            </button>
+            <button
+              type="button"
+              onClick={() => void runRescue('ad')}
+              className="rounded-full border border-amber-300 px-4 py-2 font-medium"
+            >
+              {t('watchAdRescue')}
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                mode === 'level' ? restartLevel(level) : restartFree()
+              }
+              className="rounded-full px-4 py-2 text-amber-100/70"
+            >
+              {t('giveUp')}
+            </button>
+          </div>
         </div>
       )}
 

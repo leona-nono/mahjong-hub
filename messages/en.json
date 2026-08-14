@@ -137,7 +137,17 @@
     "coachDeadPrompt": "This is a dead end. Tap Rescue to continue — that is the lesson.",
     "deadPrompt": "No moves left — rescue reshuffles remaining tiles (solvable).",
     "rescue": "Rescue",
-    "noFreeUndo": "No free undos left ({n}/level). Points/ad unlock later."
+    "noFreeUndo": "No free undos left ({n}/level). Use an Undo item, points, or a short video.",
+    "itemLocked": "This tool unlocks as you progress.",
+    "needItem": "No {item} left — pick a way to continue.",
+    "itemPrice": "Costs {n} points",
+    "pointsBalance": "Your points: {n}",
+    "buyWithPoints": "Spend {n} points",
+    "watchAdOnce": "Watch a short video (demo) for 1 use",
+    "watchAdRescue": "Watch video to rescue (demo)",
+    "giveUp": "Restart",
+    "cancel": "Cancel",
+    "noMoves": "No matching free pair right now."
   },
   "daily": {
     "title": "Daily Check-in",

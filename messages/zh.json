@@ -137,7 +137,17 @@
     "coachDeadPrompt": "这就是死局。点「解围」继续——本关就是教这个。",
     "deadPrompt": "没有可走步了——解围会把剩余牌重排成可解局面。",
     "rescue": "解围",
-    "noFreeUndo": "本关免费撤销已用完（{n} 次）。积分/广告解锁稍后接入。"
+    "noFreeUndo": "本关免费撤销已用完（{n} 次）。可用撤销道具、积分或短视频续一次。",
+    "itemLocked": "该道具将随进度解锁。",
+    "needItem": "没有{item}了——选一种方式继续。",
+    "itemPrice": "需要 {n} 积分",
+    "pointsBalance": "当前积分：{n}",
+    "buyWithPoints": "花 {n} 积分",
+    "watchAdOnce": "看短视频试用 1 次（演示）",
+    "watchAdRescue": "看视频解围（演示）",
+    "giveUp": "认输重开",
+    "cancel": "取消",
+    "noMoves": "当前没有可配的自由牌。"
   },
   "daily": {
     "title": "每日签到",

@@ -137,7 +137,17 @@
     "coachDeadPrompt": "行き止まりです。レスキューを押して進みましょう。",
     "deadPrompt": "手がありません。レスキューで残りを再配置します。",
     "rescue": "レスキュー",
-    "noFreeUndo": "無料アンドゥを使い切りました（{n}/ステージ）。"
+    "noFreeUndo": "無料アンドゥを使い切りました（{n}/ステージ）。アイテム・ポイント・動画で続行できます。",
+    "itemLocked": "進行に応じて解除されます。",
+    "needItem": "{item}がありません。続け方を選んでください。",
+    "itemPrice": "{n} ポイント",
+    "pointsBalance": "所持ポイント：{n}",
+    "buyWithPoints": "{n} ポイントで使う",
+    "watchAdOnce": "短い動画で1回（デモ）",
+    "watchAdRescue": "動画でレスキュー（デモ）",
+    "giveUp": "やり直す",
+    "cancel": "キャンセル",
+    "noMoves": "今はマッチできるフリー牌がありません。"
   },
   "daily": {
     "title": "デイリーチェックイン",

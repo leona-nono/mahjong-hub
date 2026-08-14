@@ -1,18 +1,16 @@
 /**
- * Difficulty metrics for a live board (design: smooth curve, not cliff).
+ * Difficulty metrics — live snapshot + lookahead profile (curve tuning).
  */
 
 import { type Board, isCleared, removePair } from './board';
 import { rescue } from './generator';
 import { findPairs, isDead } from './solver';
 
+/** Cheap live snapshot (safe for UI every frame). */
 export interface DifficultyMetrics {
-  /** Current open matching pairs. */
   branchWidth: number;
   remaining: number;
-  /** Higher = fewer branches relative to tiles left. */
   hardnessScore: number;
-  /** Distinct face ids still on board (diversity proxy). */
   faceDiversity: number;
 }
 
@@ -34,17 +32,67 @@ export function measureDifficulty(board: Board): DifficultyMetrics {
   };
 }
 
+/**
+ * 1-step lookahead clear profile (design: curve tuning, not solvability proof).
+ * Prefer this offline / in tests — not on every React render for classic 144.
+ */
+export interface DifficultyProfile {
+  solved: boolean;
+  steps: number;
+  /** Average simultaneous matching pairs (higher = easier). */
+  avgBranch: number;
+  /** Lowest simultaneous matching pairs (lower = easier to dead-end). */
+  minBranch: number;
+}
+
+export function profileDifficulty(board: Board): DifficultyProfile {
+  let current: Board = {
+    ...board,
+    tiles: [...board.tiles],
+    history: [...board.history]
+  };
+  let sum = 0;
+  let minB = Infinity;
+  let steps = 0;
+
+  while (current.remaining > 0) {
+    const moves = findPairs(current);
+    if (moves.length === 0) break;
+
+    let best = moves[0];
+    let bestScore = -1;
+    const capped = moves.slice(0, 12);
+    for (const [i, j] of capped) {
+      const trial = removePair(current, i, j);
+      const score = findPairs(trial).length;
+      if (score > bestScore) {
+        bestScore = score;
+        best = [i, j];
+      }
+    }
+    current = removePair(current, best[0], best[1]);
+    sum += moves.length;
+    minB = Math.min(minB, moves.length);
+    steps += 1;
+  }
+
+  return {
+    solved: isCleared(current),
+    steps,
+    avgBranch: steps > 0 ? sum / steps : 0,
+    minBranch: minB === Infinity ? 0 : minB
+  };
+}
+
 export interface ClearSimResult {
-  /** Greedy match steps taken (excluding rescues). */
   greedyMoves: number;
-  /** Times the board went dead and needed a simulated rescue. */
   deadEnds: number;
   cleared: boolean;
 }
 
 /**
- * Greedy clear simulation: always take the first available pair.
- * Counts dead-ends (proxy for “shuffles needed” under naive play).
+ * Naive greedy clear: always take the first available pair.
+ * Counts dead-ends (proxy for shuffles needed under weak play).
  */
 export function simulateGreedyClear(
   board: Board,
@@ -80,7 +128,6 @@ export function simulateGreedyClear(
   };
 }
 
-/** True when the opening position already has no moves (should be rare). */
 export function opensDead(board: Board): boolean {
   return isDead(board);
 }

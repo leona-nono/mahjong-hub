@@ -1,5 +1,6 @@
 /**
- * Solvable deal generation from the 144-tile multiset (or a subset for smaller layouts).
+ * Solvable deal generation — reverse placement + replay proof + solvable shuffle.
+ * Adapted from the design reverse-generator (geometric bottom-up + free-pair fallback).
  */
 
 import { createRng, type Tile } from '../mahjong/tiles';
@@ -7,25 +8,43 @@ import {
   getNeighbors,
   isExposedFor,
   positionsFor,
+  type NeighborMaps,
+  type Pos,
   type SolitaireLayout
 } from './layouts';
-import { type Board, withFreshUndoBudget } from './board';
+import { type Board, withFreshUndoBudget, canMatch, removePair } from './board';
 import {
   FLOWER_TILES,
   SEASON_TILES,
   buildWall144,
-  canMatchTiles
+  canMatchTiles,
+  toMatchKey
 } from './tiles';
 
 export interface BoardOptions {
   layout?: SolitaireLayout;
   seed?: number;
-  /** Include season/flower tiles (default: true when board needs ≥20 pairs). */
+  /** Include season/flower tiles (default: true when board needs ≥18 pairs). */
   includeBonus?: boolean;
   /** Prefer excluding lookalike ranks 6 & 9 for early teaching. */
   avoidLookalikes?: boolean;
   /** Force at least one season wild pair + one flower wild pair when bonus is on. */
   forceFlowerPairs?: boolean;
+  maxRetries?: number;
+}
+
+export interface PairEntry {
+  matchKey: string;
+  /** Concrete faces assigned to the two slots (may differ for season/flower). */
+  a: Tile;
+  b: Tile;
+}
+
+export interface GeneratedBoard {
+  board: Board;
+  /** Placement order; reverse is a legal clear path (replay proof). */
+  solutionOrder: Array<[number, number]>;
+  seed: number;
 }
 
 function shuffleInPlace<T>(arr: T[], rng: () => number): void {
@@ -33,6 +52,12 @@ function shuffleInPlace<T>(arr: T[], rng: () => number): void {
     const j = Math.floor(rng() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
+}
+
+function shuffleCopy<T>(arr: T[], rng: () => number): T[] {
+  const out = [...arr];
+  shuffleInPlace(out, rng);
+  return out;
 }
 
 const LOOKALIKE_RANKS = new Set([6, 9]);
@@ -43,11 +68,17 @@ function isLookalike(tile: Tile): boolean {
   return LOOKALIKE_RANKS.has(Number(tile.slice(1)));
 }
 
-/**
- * Pick `pairCount` matching pairs from the 144 wall.
- * Returns null if the wall cannot supply enough pairs under the given filters.
- */
-function pickFacePairs(
+function resolveDealOpts(options: BoardOptions, pairCount: number) {
+  const includeBonus = options.includeBonus ?? pairCount >= 18;
+  return {
+    includeBonus,
+    avoidLookalikes: options.avoidLookalikes ?? false,
+    forceFlowerPairs: options.forceFlowerPairs ?? false
+  };
+}
+
+/** Build a multiset of matching pairs from the 144 wall under filters. */
+export function buildPairPool(
   pairCount: number,
   rng: () => number,
   opts: {
@@ -55,8 +86,7 @@ function pickFacePairs(
     avoidLookalikes: boolean;
     forceFlowerPairs: boolean;
   }
-): Tile[] | null {
-  const faces: Tile[] = [];
+): PairEntry[] | null {
   const wall = buildWall144().filter((t) => {
     if (!opts.includeBonus && (SEASON_TILES.includes(t) || FLOWER_TILES.includes(t))) {
       return false;
@@ -73,10 +103,14 @@ function pickFacePairs(
     buckets.set(t, list);
   }
 
-  const takeFromBucket = (id: Tile): boolean => {
+  const pairs: PairEntry[] = [];
+
+  const takeExact = (id: Tile): boolean => {
     const list = buckets.get(id);
     if (!list || list.length < 2) return false;
-    faces.push(list.pop()!, list.pop()!);
+    const a = list.pop()!;
+    const b = list.pop()!;
+    pairs.push({ matchKey: toMatchKey(a), a, b });
     return true;
   };
 
@@ -84,14 +118,16 @@ function pickFacePairs(
     const available = group.filter((id) => (buckets.get(id)?.length ?? 0) > 0);
     if (available.length < 2) {
       for (const id of group) {
-        if ((buckets.get(id)?.length ?? 0) >= 2) return takeFromBucket(id);
+        if ((buckets.get(id)?.length ?? 0) >= 2) return takeExact(id);
       }
       return false;
     }
     shuffleInPlace(available, rng);
-    const a = available[0];
-    const b = available[1];
-    faces.push(buckets.get(a)!.pop()!, buckets.get(b)!.pop()!);
+    const ta = available[0];
+    const tb = available[1];
+    const a = buckets.get(ta)!.pop()!;
+    const b = buckets.get(tb)!.pop()!;
+    pairs.push({ matchKey: toMatchKey(a), a, b });
     return true;
   };
 
@@ -106,44 +142,43 @@ function pickFacePairs(
   shuffleInPlace(exactIds, rng);
 
   let guard = 0;
-  while (faces.length / 2 < pairCount && guard < 10000) {
+  while (pairs.length < pairCount && guard < 10000) {
     guard += 1;
     let progressed = false;
     for (const id of exactIds) {
-      if (faces.length / 2 >= pairCount) break;
-      if (takeFromBucket(id)) progressed = true;
+      if (pairs.length >= pairCount) break;
+      if (takeExact(id)) progressed = true;
     }
     if (!progressed) {
-      if (
-        opts.includeBonus &&
-        (takeWild(SEASON_TILES) || takeWild(FLOWER_TILES))
-      ) {
+      if (opts.includeBonus && (takeWild(SEASON_TILES) || takeWild(FLOWER_TILES))) {
         continue;
       }
       break;
     }
   }
 
-  if (faces.length !== pairCount * 2) return null;
-  return faces;
+  if (pairs.length !== pairCount) return null;
+  return pairs;
 }
 
-function dealSolvable(
-  positions: { row: number; col: number; layer: number }[],
-  nb: ReturnType<typeof getNeighbors>,
-  rng: () => number,
-  present: boolean[],
-  facePairs: Tile[]
-): (Tile | null)[] | null {
+/**
+ * Reverse deal: repeatedly pick two currently-free active slots (clear simulation),
+ * then assign pair types in reverse so solutionOrder reverse-replays that path.
+ */
+function reverseGenerate(
+  positions: Pos[],
+  nb: NeighborMaps,
+  active: boolean[],
+  pairs: PairEntry[],
+  rng: () => number
+): { tiles: (Tile | null)[]; solutionOrder: Array<[number, number]> } | null {
   const n = positions.length;
-  const state = [...present];
-  const total = state.reduce((sum, v) => sum + (v ? 1 : 0), 0);
-  if (total % 2 !== 0) return null;
-  const totalPairs = total / 2;
-  if (facePairs.length < totalPairs * 2) return null;
+  const state = [...active];
+  const total = state.reduce((s, v) => s + (v ? 1 : 0), 0);
+  if (total !== pairs.length * 2) return null;
 
-  const pairs: [number, number][] = [];
-  while (pairs.length < totalPairs) {
+  const clearOrder: Array<[number, number]> = [];
+  while (clearOrder.length < pairs.length) {
     const exposed: number[] = [];
     for (let i = 0; i < n; i += 1) {
       if (state[i] && isExposedFor(nb, state, i)) exposed.push(i);
@@ -154,89 +189,177 @@ function dealSolvable(
     if (ib >= ia) ib += 1;
     const a = exposed[ia];
     const b = exposed[ib];
-    pairs.push([a, b]);
+    clearOrder.push([a, b]);
     state[a] = false;
     state[b] = false;
   }
 
+  // Placement order = reverse of clear order (design: reverse = legal clear path)
+  const solutionOrder = clearOrder.slice().reverse();
   const tiles: (Tile | null)[] = new Array(n).fill(null);
-  pairs.forEach(([a, b], i) => {
-    tiles[a] = facePairs[i * 2];
-    tiles[b] = facePairs[i * 2 + 1];
+  solutionOrder.forEach(([a, b], i) => {
+    tiles[a] = pairs[i].a;
+    tiles[b] = pairs[i].b;
   });
-  return tiles;
+  return { tiles, solutionOrder };
 }
 
-function resolveDealOpts(options: BoardOptions, pairCount: number) {
-  const includeBonus = options.includeBonus ?? pairCount >= 18;
-  return {
-    includeBonus,
-    avoidLookalikes: options.avoidLookalikes ?? false,
-    forceFlowerPairs: options.forceFlowerPairs ?? false
+/**
+ * Replay proof: reverse of solutionOrder must be a legal clear path
+ * under free + match rules (including flower wilds).
+ * Supports mid-game boards (already-cleared slots stay null).
+ */
+export function verifyByReplay(
+  board: Board,
+  solutionOrder: Array<[number, number]>
+): boolean {
+  let current: Board = {
+    ...board,
+    tiles: [...board.tiles],
+    history: []
   };
+  for (let k = solutionOrder.length - 1; k >= 0; k -= 1) {
+    const [i, j] = solutionOrder[k];
+    if (!canMatch(current, i, j)) return false;
+    current = removePair(current, i, j);
+  }
+  return current.remaining === 0;
 }
 
-export function createBoard(options: BoardOptions = {}): Board {
+function boardFromTiles(
+  layout: SolitaireLayout,
+  positions: Pos[],
+  tiles: (Tile | null)[],
+  seed: number,
+  freshUndo: boolean
+): Board {
+  const remaining = tiles.reduce((n, t) => n + (t !== null ? 1 : 0), 0);
+  const base: Board = {
+    layout,
+    positions,
+    tiles,
+    remaining,
+    history: [],
+    freeUndosLeft: 0,
+    seed
+  };
+  return freshUndo ? withFreshUndoBudget(base) : base;
+}
+
+/** Generate a solvable board with replay-proven solution order. */
+export function generateSolvable(
+  options: BoardOptions = {}
+): GeneratedBoard | null {
   const layout = options.layout ?? 'classic';
   const seed = options.seed ?? Math.floor(Math.random() * 2 ** 31);
+  const maxRetries = options.maxRetries ?? 500;
   const positions = positionsFor(layout);
   const nb = getNeighbors(layout);
   const pairCount = positions.length / 2;
   const dealOpts = resolveDealOpts(options, pairCount);
+  const active = new Array<boolean>(positions.length).fill(true);
 
-  let tiles: (Tile | null)[] | null = null;
-  for (let attempt = 0; attempt < 240; attempt += 1) {
-    const rng = createRng(seed + attempt);
-    const faces = pickFacePairs(pairCount, rng, dealOpts);
-    if (!faces) continue;
-    const present = new Array<boolean>(positions.length).fill(true);
-    tiles = dealSolvable(positions, nb, rng, present, faces);
-    if (tiles) break;
+  for (let attempt = 0; attempt < maxRetries; attempt += 1) {
+    const s = (seed + attempt * 2654435761) >>> 0;
+    const rng = createRng(s);
+    const pool = buildPairPool(pairCount, rng, dealOpts);
+    if (!pool) continue;
+    const pairs = shuffleCopy(pool, rng);
+    const res = reverseGenerate(positions, nb, active, pairs, rng);
+    if (!res) continue;
+    const board = boardFromTiles(layout, positions, res.tiles, s, true);
+    if (!verifyByReplay(board, res.solutionOrder)) continue;
+    return { board, solutionOrder: res.solutionOrder, seed: s };
   }
-  if (!tiles) {
-    throw new Error(`could not deal a solvable ${layout} board`);
+  return null;
+}
+
+export function createBoard(options: BoardOptions = {}): Board {
+  const generated = generateSolvable(options);
+  if (!generated) {
+    throw new Error(
+      `could not deal a solvable ${options.layout ?? 'classic'} board`
+    );
+  }
+  return generated.board;
+}
+
+/**
+ * Solvable shuffle: keep remaining match-key multiset, reassign faces via reverse gen.
+ */
+export function shuffleSolvable(
+  board: Board,
+  seed = Date.now(),
+  maxRetries = 500
+): GeneratedBoard | null {
+  const remainingIdx: number[] = [];
+  for (let i = 0; i < board.tiles.length; i += 1) {
+    if (board.tiles[i] !== null) remainingIdx.push(i);
+  }
+  if (remainingIdx.length % 2 !== 0) return null;
+  if (remainingIdx.length === 0) {
+    return { board, solutionOrder: [], seed };
   }
 
-  return withFreshUndoBudget({
-    layout,
-    positions,
-    tiles,
-    remaining: positions.length,
-    history: [],
-    freeUndosLeft: 0,
-    seed
-  });
+  // Rebuild pair pool from remaining match keys (preserve wild groups)
+  const byKey = new Map<string, Tile[]>();
+  for (const i of remainingIdx) {
+    const t = board.tiles[i]!;
+    const k = toMatchKey(t);
+    const list = byKey.get(k) ?? [];
+    list.push(t);
+    byKey.set(k, list);
+  }
+
+  const pairs: PairEntry[] = [];
+  for (const [k, list] of byKey) {
+    if (list.length % 2 !== 0) return null;
+    for (let p = 0; p < list.length; p += 2) {
+      pairs.push({ matchKey: k, a: list[p], b: list[p + 1] });
+    }
+  }
+
+  const positions = board.positions;
+  const nb = getNeighbors(board.layout);
+  const active = board.tiles.map((t) => t !== null);
+
+  for (let attempt = 0; attempt < maxRetries; attempt += 1) {
+    const s = (seed + attempt * 40503) >>> 0;
+    const rng = createRng(s);
+    const shuffled = shuffleCopy(pairs, rng);
+    // Randomize wild concrete faces within each pair
+    for (const p of shuffled) {
+      if (p.matchKey === 'season' || p.matchKey === 'flower') {
+        if (rng() < 0.5) {
+          const tmp = p.a;
+          p.a = p.b;
+          p.b = tmp;
+        }
+      }
+    }
+    const res = reverseGenerate(positions, nb, active, shuffled, rng);
+    if (!res) continue;
+
+    // Keep cleared slots null; only rewrite remaining
+    const tiles = board.tiles.map((t, i) => (active[i] ? res.tiles[i] : null));
+    const next = {
+      ...board,
+      tiles,
+      remaining: remainingIdx.length,
+      history: [],
+      seed: s
+      // freeUndosLeft preserved
+    };
+    if (!verifyByReplay(next, res.solutionOrder)) continue;
+    return { board: next, solutionOrder: res.solutionOrder, seed: s };
+  }
+  return null;
 }
 
 export function reshuffle(board: Board, seed = Date.now()): Board {
-  const positions = board.positions;
-  const nb = getNeighbors(board.layout);
-  const present = board.tiles.map((t) => t !== null);
-  const pairCount = present.filter(Boolean).length / 2;
-  if (pairCount <= 0) return board;
-
-  const dealOpts = resolveDealOpts({}, pairCount);
-  // Keep leftover faces when possible (preserve bonus presence from current board)
-  const hasBonus = board.tiles.some(
-    (t) => t && (SEASON_TILES.includes(t) || FLOWER_TILES.includes(t))
-  );
-  dealOpts.includeBonus = hasBonus || pairCount >= 18;
-
-  for (let attempt = 0; attempt < 200; attempt += 1) {
-    const rng = createRng(seed + attempt);
-    const faces = pickFacePairs(pairCount, rng, dealOpts);
-    if (!faces) continue;
-    const tiles = dealSolvable(positions, nb, rng, present, faces);
-    if (tiles) {
-      return {
-        ...board,
-        tiles,
-        history: [],
-        seed: seed + attempt
-        // freeUndosLeft preserved — shuffle is a tool, not a new level
-      };
-    }
-  }
+  const generated = shuffleSolvable(board, seed);
+  if (generated) return generated.board;
+  // Last resort: full new deal (resets undo budget)
   return createBoard({ layout: board.layout, seed: seed + 200 });
 }
 
