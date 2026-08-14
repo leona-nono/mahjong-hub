@@ -25,6 +25,7 @@ import {
   canMatchTiles,
   FREE_UNDO_PER_LEVEL,
   artKeyForTile,
+  tileArtSrc,
   SEASON_TILES,
   FLOWER_TILES
 } from '@/lib/mahjong-solitaire/tiles';
@@ -85,7 +86,11 @@ describe('solitaire tiles + art keys', () => {
     expect(artKeyForTile('m5')).toBe('man-05');
     expect(artKeyForTile('z5')).toBe('dragon-white');
     expect(artKeyForTile('f1')).toBe('season-spring');
+    expect(tileArtSrc('m5')).toBe('/assets/mahjong-solitaire/tiles/man-05.png');
+    expect(tileArtSrc('z7')).toBe('/assets/mahjong-solitaire/tiles/dragon-red.png');
+    expect(tileArtSrc('f1')).toBe('/assets/mahjong-solitaire/tiles/season-spring.svg');
   });
+
 });
 
 describe('layouts', () => {

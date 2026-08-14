@@ -88,7 +88,10 @@ export function artKeyForTile(tile: Tile): string {
 }
 
 export function tileArtSrc(tile: Tile): string {
-  return `/assets/mahjong-solitaire/tiles/${artKeyForTile(tile)}.svg`;
+  const key = artKeyForTile(tile);
+  // 34 standard faces are photos from Mahjong-set; bonus/special stay SVG.
+  const ext = tile[0] === 'f' ? 'svg' : 'png';
+  return `/assets/mahjong-solitaire/tiles/${key}.${ext}`;
 }
 
 export function tileBackSrc(): string {

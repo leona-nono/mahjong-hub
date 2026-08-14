@@ -35,7 +35,7 @@ export default function SolitaireTileFace({
       draggable={false}
       data-match-group={group}
       className={[
-        'inline-block rounded-lg bg-[#fffdf8] object-cover shadow-sm select-none',
+        'inline-block rounded-md object-cover shadow-sm select-none',
         SIZE_CLASS[size],
         selected ? 'ring-2 ring-amber-400' : '',
         hinted ? 'ring-2 ring-sky-400' : '',
