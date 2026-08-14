@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
 import { prisma } from '@/lib/db';
 import { GAME_WIN_MAX, START_GAME_POINTS } from '@/lib/points-rules';
 import { checkinStateForUser, grantFirstLoginIfNeeded } from '@/lib/points-server';
-
-async function requireUserId() {
-  const session = await auth();
-  const userId = session?.user && (session.user as { id?: string }).id;
-  return userId || null;
-}
+import { requireUserId } from '@/lib/require-user';
 
 export async function GET() {
   const userId = await requireUserId();

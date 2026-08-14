@@ -23,3 +23,37 @@ export function checkinRewardForStreak(streak: number): number {
 export function nextCheckinReward(streak: number): number {
   return checkinRewardForStreak(streak + 1);
 }
+
+/** Noon UTC for a YYYY-MM-DD so the calendar day survives Date round-trips. */
+export function utcNoon(dateStr: string): Date {
+  return new Date(`${dateStr}T12:00:00.000Z`);
+}
+
+export function checkinPlan(
+  lastClaimDate: string | null,
+  storedStreak: number,
+  today = utcDateString()
+): {
+  claimedToday: boolean;
+  streak: number;
+  todayReward: number;
+  nextReward: number;
+} {
+  const safeStored = Math.max(1, storedStreak);
+  if (lastClaimDate === today) {
+    return {
+      claimedToday: true,
+      streak: safeStored,
+      todayReward: checkinRewardForStreak(safeStored),
+      nextReward: nextCheckinReward(safeStored)
+    };
+  }
+  const streak =
+    lastClaimDate === addUtcDays(today, -1) ? safeStored + 1 : 1;
+  return {
+    claimedToday: false,
+    streak,
+    todayReward: checkinRewardForStreak(streak),
+    nextReward: nextCheckinReward(streak)
+  };
+}

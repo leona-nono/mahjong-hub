@@ -3,10 +3,9 @@ import { prisma } from '@/lib/db';
 import {
   CHECKIN_REWARDS,
   FIRST_LOGIN_BONUS,
-  addUtcDays,
-  checkinRewardForStreak,
-  nextCheckinReward,
-  utcDateString
+  checkinPlan,
+  utcDateString,
+  utcNoon
 } from '@/lib/points-rules';
 
 export type CheckInState = {
@@ -18,20 +17,87 @@ export type CheckInState = {
 
 export async function checkinStateForUser(userId: string): Promise<CheckInState> {
   const bonus = await prisma.dailyBonus.findUnique({ where: { userId } });
+  return checkinPlan(
+    bonus?.lastClaimDate ? utcDateString(bonus.lastClaimDate) : null,
+    bonus?.streak ?? 1
+  );
+}
+
+export async function claimDailyCheckInForUser(userId: string): Promise<{
+  granted: boolean;
+  alreadyClaimed: boolean;
+  amount: number;
+  total: number;
+  checkIn: CheckInState;
+}> {
+  await grantFirstLoginIfNeeded(userId);
+
   const today = utcDateString();
-  const streak = Math.max(1, bonus?.streak ?? 1);
-  const last = bonus?.lastClaimDate ? utcDateString(bonus.lastClaimDate) : null;
-  const claimedToday = last === today;
-  const displayStreak = claimedToday
-    ? streak
-    : last === addUtcDays(today, -1)
-      ? streak
-      : 1;
+  const bonus = await prisma.dailyBonus.findUnique({ where: { userId } });
+  const plan = checkinPlan(
+    bonus?.lastClaimDate ? utcDateString(bonus.lastClaimDate) : null,
+    bonus?.streak ?? 1,
+    today
+  );
+
+  if (plan.claimedToday) {
+    const row = await prisma.userPoint.findUnique({ where: { userId } });
+    return {
+      granted: false,
+      alreadyClaimed: true,
+      amount: 0,
+      total: row?.total ?? 0,
+      checkIn: plan
+    };
+  }
+
+  const amount = plan.todayReward;
+  const updated = await prisma.$transaction(async (tx) => {
+    const again = await tx.dailyBonus.findUnique({ where: { userId } });
+    const againPlan = checkinPlan(
+      again?.lastClaimDate ? utcDateString(again.lastClaimDate) : null,
+      again?.streak ?? 1,
+      today
+    );
+    if (againPlan.claimedToday) {
+      const row = await tx.userPoint.findUnique({ where: { userId } });
+      return { alreadyClaimed: true as const, total: row?.total ?? 0 };
+    }
+
+    await tx.dailyBonus.upsert({
+      where: { userId },
+      create: {
+        userId,
+        lastClaimDate: utcNoon(today),
+        streak: plan.streak
+      },
+      update: {
+        lastClaimDate: utcNoon(today),
+        streak: plan.streak
+      }
+    });
+    const pointRow = await tx.userPoint.upsert({
+      where: { userId },
+      create: { userId, total: amount },
+      update: { total: { increment: amount } }
+    });
+    await tx.pointTransaction.create({
+      data: {
+        userId,
+        amount,
+        reason: 'daily_checkin'
+      }
+    });
+    return { alreadyClaimed: false as const, total: pointRow.total };
+  });
+
+  const checkIn = await checkinStateForUser(userId);
   return {
-    claimedToday,
-    streak: displayStreak,
-    todayReward: checkinRewardForStreak(displayStreak),
-    nextReward: nextCheckinReward(displayStreak)
+    granted: !updated.alreadyClaimed,
+    alreadyClaimed: updated.alreadyClaimed,
+    amount: updated.alreadyClaimed ? 0 : amount,
+    total: updated.total,
+    checkIn
   };
 }
 

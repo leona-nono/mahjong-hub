@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   CHECKIN_REWARDS,
   addUtcDays,
+  checkinPlan,
   checkinRewardForStreak,
   utcDateString
 } from '@/lib/points-rules';
@@ -12,6 +13,29 @@ describe('points-rules', () => {
     expect(checkinRewardForStreak(7)).toBe(300);
     expect(checkinRewardForStreak(8)).toBe(50);
     expect(CHECKIN_REWARDS).toHaveLength(7);
+  });
+
+  it('plans first claim and consecutive days', () => {
+    expect(checkinPlan(null, 1, '2026-08-14')).toMatchObject({
+      claimedToday: false,
+      streak: 1,
+      todayReward: 50
+    });
+    expect(checkinPlan('2026-08-14', 1, '2026-08-14')).toMatchObject({
+      claimedToday: true,
+      streak: 1,
+      todayReward: 50
+    });
+    expect(checkinPlan('2026-08-14', 1, '2026-08-15')).toMatchObject({
+      claimedToday: false,
+      streak: 2,
+      todayReward: 80
+    });
+    expect(checkinPlan('2026-08-13', 3, '2026-08-15')).toMatchObject({
+      claimedToday: false,
+      streak: 1,
+      todayReward: 50
+    });
   });
 
   it('adds utc days across month bounds', () => {

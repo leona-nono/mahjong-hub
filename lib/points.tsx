@@ -121,12 +121,9 @@ export async function awardPoints(
   }
 }
 
-export async function claimDailyCheckIn(): Promise<AwardResult & { alreadyClaimed?: boolean }> {
-  if (!getAuthState().user) {
-    openLogin();
-    return { granted: false, needLogin: true };
-  }
-
+export async function claimDailyCheckIn(): Promise<
+  AwardResult & { alreadyClaimed?: boolean; error?: string }
+> {
   try {
     const res = await fetch('/api/points/check-in', {
       method: 'POST',
@@ -134,7 +131,7 @@ export async function claimDailyCheckIn(): Promise<AwardResult & { alreadyClaime
     });
     if (res.status === 401) {
       openLogin();
-      return { granted: false, needLogin: true };
+      return { granted: false, needLogin: true, error: 'unauthorized' };
     }
     const data = (await res.json()) as {
       granted?: boolean;
@@ -142,11 +139,23 @@ export async function claimDailyCheckIn(): Promise<AwardResult & { alreadyClaime
       total?: number;
       amount?: number;
       checkIn?: CheckInState;
+      error?: string;
     };
+    if (!res.ok) {
+      return {
+        granted: false,
+        needLogin: false,
+        error: data.error ?? 'unavailable'
+      };
+    }
     if (typeof data.total === 'number') {
-      const nextAwards = data.granted && data.amount
-        ? [{ amount: data.amount, reason: 'daily_checkin', at: Date.now() }, ...state.recentAwards].slice(0, 50)
-        : state.recentAwards;
+      const nextAwards =
+        data.granted && data.amount
+          ? [
+              { amount: data.amount, reason: 'daily_checkin', at: Date.now() },
+              ...state.recentAwards
+            ].slice(0, 50)
+          : state.recentAwards;
       setState({
         points: data.total,
         checkIn: data.checkIn ?? state.checkIn,
@@ -159,7 +168,7 @@ export async function claimDailyCheckIn(): Promise<AwardResult & { alreadyClaime
       alreadyClaimed: !!data.alreadyClaimed
     };
   } catch {
-    return { granted: false, needLogin: false };
+    return { granted: false, needLogin: false, error: 'unavailable' };
   }
 }
 

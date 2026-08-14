@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth';
 import { usePoints, claimDailyCheckIn } from '@/lib/points';
@@ -8,9 +9,12 @@ import { CHECKIN_REWARDS } from '@/lib/points-rules';
 
 export default function DailyCheckIn() {
   const t = useTranslations('daily');
-  const { user } = useAuth();
-  const { points, checkIn } = usePoints();
+  const { status } = useSession();
+  const { openLogin } = useAuth();
+  const { points, checkIn, hydrated } = usePoints();
   const [pending, setPending] = useState(false);
+  const [error, setError] = useState('');
+  const loggedIn = status === 'authenticated';
 
   const streak = checkIn?.streak ?? 1;
   const claimedToday = checkIn?.claimedToday ?? false;
@@ -19,10 +23,19 @@ export default function DailyCheckIn() {
   const cycleDay = ((streak - 1) % 7) + 1;
 
   const claim = async () => {
-    if (pending) return;
+    if (pending || claimedToday) return;
+    if (!loggedIn) {
+      openLogin();
+      return;
+    }
     setPending(true);
+    setError('');
     try {
-      await claimDailyCheckIn();
+      const result = await claimDailyCheckIn();
+      if (result.needLogin) return;
+      if (!result.granted && !result.alreadyClaimed) {
+        setError(t('claimFailed'));
+      }
     } finally {
       setPending(false);
     }
@@ -45,7 +58,7 @@ export default function DailyCheckIn() {
         <button
           type="button"
           onClick={claim}
-          disabled={claimedToday || pending}
+          disabled={claimedToday || pending || (loggedIn && !hydrated)}
           className={`mt-4 w-full rounded-full px-6 py-3 text-sm font-bold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-10 ${
             claimedToday
               ? 'bg-gray-200 text-gray-500'
@@ -54,6 +67,8 @@ export default function DailyCheckIn() {
         >
           {claimedToday ? t('claimed') : t('claim')}
         </button>
+
+        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 
         {claimedToday && (
           <p className="mt-3 text-sm text-gray-600">
@@ -100,7 +115,7 @@ export default function DailyCheckIn() {
           </p>
         </div>
 
-        {!user && <p className="mt-3 text-xs text-gray-400">{t('guestNote')}</p>}
+        {!loggedIn && <p className="mt-3 text-xs text-gray-400">{t('guestNote')}</p>}
       </div>
     </section>
   );

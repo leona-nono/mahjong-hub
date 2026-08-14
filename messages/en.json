@@ -161,6 +161,7 @@
     "pointsTip": "What can points be used for?",
     "tipBody": "Points unlock beautiful tile backs, table skins and effects — coming soon!",
     "yourPoints": "Your points: {n}",
-    "guestNote": "Sign in to save points to your account. Guests cannot earn points."
+    "guestNote": "Sign in to save points to your account. Guests cannot earn points.",
+    "claimFailed": "Check-in could not be saved. Refresh and try again."
   }
 }
