@@ -80,7 +80,7 @@ export default function LazyIframe({
             setActive(true);
             // Earning points is gated behind login: guests keep playing,
             // but are prompted to sign in the moment points would be awarded.
-            awardPoints(10, 'start_game');
+            void awardPoints(10, 'start_game');
           }}
           className="absolute inset-0 flex flex-col items-center justify-center gap-3 rainbow-card"
           aria-label={t('play')}

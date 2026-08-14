@@ -9,7 +9,7 @@ const GAME_LIST_PATHS = ['/games', '/games/classic', '/games/solitaire'];
  *
  * Called after any admin write — create/update/delete of a game, its FAQs or
  * its features — so CMS edits appear on the frontend without waiting for the
- * ISR interval (`revalidate = 300`) or a redeploy.
+ * ISR interval (`revalidate = 86400`) or a redeploy.
  *
  * @param slug The affected game. When omitted (new game) only the listing /
  *             home pages are purged, since the detail page does not exist yet.

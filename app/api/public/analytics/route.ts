@@ -18,10 +18,17 @@ export async function GET() {
       where: { key: 'analytics' }
     });
     const value = (row?.value ?? {}) as { ga?: string; gtm?: string };
-    return NextResponse.json({
-      ga: value.ga ?? '',
-      gtm: value.gtm ?? ''
-    });
+    return NextResponse.json(
+      {
+        ga: value.ga ?? '',
+        gtm: value.gtm ?? ''
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=86400'
+        }
+      }
+    );
   } catch {
     // DB unreachable — fail silent, just don't load analytics.
     return NextResponse.json({ ga: '', gtm: '' });

@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { PUBLIC_REVALIDATE_SECONDS } from '@/lib/cache';
 import { CLASSIC_REGIONS } from '@/data/games';
 import { getMergedClassicByRegion, getMergedLocalizedGames } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import { alternatesFor } from '@/lib/seo';
 
-export const revalidate = 300;
+export const revalidate = PUBLIC_REVALIDATE_SECONDS;
 
 export async function generateMetadata({
   params

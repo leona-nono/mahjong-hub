@@ -1,63 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/db';
+import { GAME_WIN_MAX, START_GAME_POINTS } from '@/lib/points-rules';
+import { checkinStateForUser, grantFirstLoginIfNeeded } from '@/lib/points-server';
 
-/**
- * GET /api/points
- *   Returns the authenticated user's authoritative points total from the
- *   database. Client store keeps using localStorage as an optimistic cache,
- *   but treats this response as the source of truth on each page load.
- *
- * POST /api/points
- *   Awards points server-side. Guards:
- *     • session required (401 otherwise — middleware also enforces this)
- *     • amount: positive integer ≤ 100
- *     • reason: must be in the whitelist (forwarded by client modules)
- *     • reason/day cap to limit blast radius of any client-side bug or
- *       abusive script (e.g. max 200 from `start_game` per day)
- *   Writes are wrapped in a transaction so the running total in
- *   UserPoint and the row in PointTransaction either both land or both
- *   roll back.
- */
-
-const REASON_WHITELIST = [
-  'start_game',
-  'daily_visit',
-  'leaderboard_view',
-  'achievement'
-] as const;
-type Reason = (typeof REASON_WHITELIST)[number];
-
-// Per-reason cap (points/day). Tuned low enough that an attacker
-// scripting the API cannot drain anything meaningful, high enough that
-// a real player never trips it.
-const DAILY_CAP: Record<Reason, number> = {
-  start_game: 200,
-  daily_visit: 50,
-  leaderboard_view: 0, // read-only, no points awarded
-  achievement: 100
-};
-
-function isReason(value: unknown): value is Reason {
-  return (
-    typeof value === 'string' &&
-    (REASON_WHITELIST as readonly string[]).includes(value)
-  );
+async function requireUserId() {
+  const session = await auth();
+  const userId = session?.user && (session.user as { id?: string }).id;
+  return userId || null;
 }
 
 export async function GET() {
-  const session = await auth();
-  const userId = session?.user && (session.user as { id?: string }).id;
+  const userId = await requireUserId();
   if (!userId) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
-  const row = await prisma.userPoint.findUnique({ where: { userId } });
-  return NextResponse.json({ total: row?.total ?? 0 });
+
+  try {
+    await grantFirstLoginIfNeeded(userId);
+    const row = await prisma.userPoint.findUnique({ where: { userId } });
+    const checkIn = await checkinStateForUser(userId);
+    return NextResponse.json({
+      total: row?.total ?? 0,
+      checkIn
+    });
+  } catch {
+    return NextResponse.json({ error: 'unavailable' }, { status: 503 });
+  }
+}
+
+const AWARD_REASONS = ['start_game', 'game_win'] as const;
+type AwardReason = (typeof AWARD_REASONS)[number];
+
+const DAILY_CAP: Record<AwardReason, number> = {
+  start_game: 50,
+  game_win: 200
+};
+
+function isAwardReason(value: unknown): value is AwardReason {
+  return (
+    typeof value === 'string' &&
+    (AWARD_REASONS as readonly string[]).includes(value)
+  );
 }
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  const userId = session?.user && (session.user as { id?: string }).id;
+  const userId = await requireUserId();
   if (!userId) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
@@ -70,50 +58,60 @@ export async function POST(req: NextRequest) {
   }
   const b = body as { amount?: unknown; reason?: unknown; gameSlug?: unknown };
 
-  const amount = Number(b.amount);
-  if (!Number.isInteger(amount) || amount <= 0 || amount > 100) {
-    return NextResponse.json({ error: 'invalid amount' }, { status: 400 });
-  }
-  if (!isReason(b.reason)) {
+  if (!isAwardReason(b.reason)) {
     return NextResponse.json({ error: 'invalid reason' }, { status: 400 });
   }
+
   const gameSlug =
     typeof b.gameSlug === 'string' && b.gameSlug.length > 0 && b.gameSlug.length <= 64
       ? b.gameSlug
       : null;
 
-  const cap = DAILY_CAP[b.reason];
-  if (cap === 0) {
-    return NextResponse.json({ error: 'reason does not award points' }, { status: 400 });
+  if (b.reason === 'game_win' && !gameSlug) {
+    return NextResponse.json({ error: 'gameSlug required' }, { status: 400 });
   }
 
+  const amount =
+    b.reason === 'start_game'
+      ? START_GAME_POINTS
+      : Math.min(GAME_WIN_MAX, Math.max(1, Math.floor(Number(b.amount) || 0)));
+
+  if (!Number.isInteger(amount) || amount <= 0) {
+    return NextResponse.json({ error: 'invalid amount' }, { status: 400 });
+  }
+
+  const cap = DAILY_CAP[b.reason];
   const since = new Date();
   since.setUTCHours(0, 0, 0, 0);
 
-  const today = await prisma.pointTransaction.aggregate({
-    where: { userId, reason: b.reason, createdAt: { gte: since } },
-    _sum: { amount: true }
-  });
-  const used = today._sum.amount ?? 0;
-  if (used + amount > cap) {
-    return NextResponse.json(
-      { error: 'daily cap exceeded', cap, used },
-      { status: 429 }
-    );
+  try {
+    const today = await prisma.pointTransaction.aggregate({
+      where: { userId, reason: b.reason, createdAt: { gte: since } },
+      _sum: { amount: true }
+    });
+    const used = today._sum.amount ?? 0;
+    if (used + amount > cap) {
+      const row = await prisma.userPoint.findUnique({ where: { userId } });
+      return NextResponse.json(
+        { error: 'daily cap exceeded', cap, used, total: row?.total ?? 0, granted: false },
+        { status: 429 }
+      );
+    }
+
+    const updated = await prisma.$transaction(async (tx) => {
+      const row = await tx.userPoint.upsert({
+        where: { userId },
+        create: { userId, total: amount },
+        update: { total: { increment: amount } }
+      });
+      await tx.pointTransaction.create({
+        data: { userId, amount, reason: b.reason, gameSlug }
+      });
+      return row;
+    });
+
+    return NextResponse.json({ total: updated.total, granted: true, amount });
+  } catch {
+    return NextResponse.json({ error: 'unavailable' }, { status: 503 });
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updated = await prisma.$transaction(async (tx: any) => {
-    const row = await tx.userPoint.upsert({
-      where: { userId },
-      create: { userId, total: amount },
-      update: { total: { increment: amount } }
-    });
-    await tx.pointTransaction.create({
-      data: { userId, amount, reason: b.reason, gameSlug }
-    });
-    return row;
-  });
-
-  return NextResponse.json({ total: updated.total, granted: true });
 }

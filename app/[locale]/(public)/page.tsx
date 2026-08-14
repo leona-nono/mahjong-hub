@@ -9,10 +9,9 @@ import {
 import GameCard from '@/components/GameCard';
 import DailyCheckIn from '@/components/DailyCheckIn';
 import { Link } from '@/i18n/navigation';
+import { PUBLIC_REVALIDATE_SECONDS } from '@/lib/cache';
 
-// ISR: re-render at most every 5 minutes so CMS edits show up without a
-// redeploy (admin writes also trigger revalidatePath for instant refresh).
-export const revalidate = 300;
+export const revalidate = PUBLIC_REVALIDATE_SECONDS;
 
 // Canonical + hreflang alternates are provided by the (public) layout —
 // see app/[locale]/(public)/layout.tsx. A page-level `alternates` here would

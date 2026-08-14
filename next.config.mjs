@@ -3,9 +3,41 @@ import { fileURLToPath } from 'node:url';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
+const securityHeaders = [
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), payment=()'
+  },
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload'
+  },
+  {
+    key: 'Content-Security-Policy',
+    value: [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "object-src 'none'",
+      "frame-ancestors 'self'",
+      "img-src 'self' data: blob: https:",
+      "font-src 'self' data:",
+      "style-src 'self' 'unsafe-inline'",
+      // Next.js + Auth.js + GA/GTM. Iframe games are third-party hosts.
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://region1.google-analytics.com",
+      "frame-src 'self' https: https://www.googletagmanager.com"
+    ].join('; ')
+  }
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
   // Keep production file tracing inside this repository. On this Windows
   // workspace the inferred parent can include a protected "My Documents"
   // junction, which otherwise makes `next build` fail while scanning files.
@@ -14,13 +46,19 @@ const nextConfig = {
   // webpack server bundle so the production compiler does not crawl protected
   // Windows profile junctions while resolving that binary.
   serverExternalPackages: ['@prisma/client', '@prisma/engines'],
+  // We do not use next/image yet. Leaving optimization on with a wildcard
+  // remote host would both weaken security and bill Image Optimization.
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: '**' }]
+    unoptimized: true
   },
   async headers() {
     return [
       {
-        source: '/assets/mahjong-hongkong/tiles-webp-v1/:path*',
+        source: '/:path*',
+        headers: securityHeaders
+      },
+      {
+        source: '/assets/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }]
       }
     ];
