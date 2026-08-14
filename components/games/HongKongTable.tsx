@@ -82,6 +82,8 @@ export default function HongKongTable({
   const voiceLocale = isRiichi ? 'japanese' as const : 'cantonese' as const;
   const gameName = isRiichi ? 'Japanese Riichi' : isMcr ? 'Chinese Official · MCR' : 'Hong Kong';
   const scoreUnit = isRiichi ? 'Han' : isMcr ? 'Points' : 'Fan';
+  const mcrQualifying = tsumoEvaluation?.score?.qualifyingTotal ?? 0;
+  const mcrFlowers = human.flowers.length;
   // A stable three-side wall makes the remaining wall and table orientation
   // readable; it does not expose any opponent's concealed hand.
   const wallTiles = Math.max(6, Math.min(18, Math.ceil(tilesRemaining(state) / 4)));
@@ -89,7 +91,26 @@ export default function HongKongTable({
   const tableShellRef = useRef<HTMLElement>(null);
   const [showScoring, setShowScoring] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const previousState = useRef<GameState | null>(null);
+
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      setIsFullscreen(document.fullscreenElement === tableShellRef.current);
+    };
+    document.addEventListener('fullscreenchange', syncFullscreenState);
+    syncFullscreenState();
+    return () => document.removeEventListener('fullscreenchange', syncFullscreenState);
+  }, []);
+
+  const enterFullscreen = () => {
+    const shell = tableShellRef.current;
+    if (!shell) return;
+    // Apply the layout before the browser dispatches fullscreenchange. Some
+    // Chromium builds paint the first fullscreen frame before that event.
+    setIsFullscreen(true);
+    void shell.requestFullscreen().catch(() => setIsFullscreen(false));
+  };
 
   useEffect(() => {
     const previous = previousState.current;
@@ -125,7 +146,7 @@ export default function HongKongTable({
   }, [state, soundEnabled, voiceLocale]);
 
   return (
-    <section ref={tableShellRef} className="overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none">
+    <section ref={tableShellRef} className={`mahjong-table-shell ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
       <MobileMahjongTable
         state={state}
         variant={variant}
@@ -158,10 +179,13 @@ export default function HongKongTable({
         onTsumo={onTsumo}
         onKan={onKan}
         onRiichi={onRiichi}
-        onFullscreen={() => tableShellRef.current?.requestFullscreen()}
+        onFullscreen={enterFullscreen}
       />
-      <div className="hidden min-w-[980px] lg:block">
-        <div className="mb-2 flex h-11 items-center justify-between gap-3">
+      <div
+        className="mahjong-desktop-shell hidden min-w-[980px] lg:block"
+        style={isFullscreen ? { display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 16px)' } : undefined}
+      >
+        <div className="mahjong-table-toolbar mb-2 flex h-11 items-center justify-between gap-3" style={isFullscreen ? { flex: '0 0 44px', marginBottom: 0 } : undefined}>
           <div className="flex items-center gap-2">
             <TableToolButton onClick={onTogglePause} active={paused}>
               {paused ? '▶ Continue' : 'Ⅱ Pause'}
@@ -221,19 +245,22 @@ export default function HongKongTable({
           </div>
         </div>
 
-        <div className="relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-[#00553e] shadow-[inset_0_0_90px_rgba(0,30,22,.34)]">
+        <div
+          className="mahjong-desktop-board relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-[#00553e] shadow-[inset_0_0_90px_rgba(0,30,22,.34)]"
+          style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}
+        >
           <div className="absolute inset-y-0 left-0 w-[11%] bg-[linear-gradient(105deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute inset-y-0 right-0 w-[11%] bg-[linear-gradient(255deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute left-4 top-3 z-20 text-xl font-semibold text-emerald-100/45">Rate: 10</div>
 
           <div className="absolute left-1/2 top-8 -translate-x-1/2">
-            <ConcealedRack seat={3} count={wallTiles} />
+            <ConcealedRack seat={3} count={state.players[3].hand.length} orientation="top" />
           </div>
           <div className="absolute left-[15%] top-1/2 -translate-y-1/2">
-            <ConcealedRack seat={2} count={wallTiles} vertical />
+            <ConcealedRack seat={2} count={state.players[2].hand.length} orientation="left" />
           </div>
           <div className="absolute right-[15%] top-1/2 -translate-y-1/2">
-            <ConcealedRack seat={1} count={wallTiles} vertical />
+            <ConcealedRack seat={1} count={state.players[1].hand.length} orientation="right" />
           </div>
 
           <PlayerBadge state={state} seat={3} className="right-[19%] top-[11%]" showFlowers={isMcr} />
@@ -266,6 +293,15 @@ export default function HongKongTable({
           {isMcr && (
             <div className="absolute left-1/2 top-[57%] z-10 -translate-x-1/2 rounded-full border border-emerald-200/30 bg-[#063d30]/90 px-3 py-1 text-[10px] font-black tracking-[.12em] text-emerald-100">
               144 TILES · FLOWERS REPLACED · 8-POINT GATE
+            </div>
+          )}
+          {isMcr && (
+            <div className="absolute right-[12%] top-[56%] z-20 w-52 rounded-xl border border-amber-200/25 bg-[#063d30]/95 p-3 text-xs text-emerald-50 shadow-xl">
+              <p className="font-black uppercase tracking-[.14em] text-amber-200">MCR score coach</p>
+              <div className="mt-2 flex justify-between"><span>Qualifying hand</span><strong>{mcrQualifying}/8</strong></div>
+              <div className="mt-1 flex justify-between"><span>Flowers / seasons</span><strong>+{mcrFlowers}</strong></div>
+              <p className="mt-2 text-[10px] leading-4 text-emerald-100/75">Flower points are paid, but never count toward the 8-point win gate.</p>
+              {tsumoEvaluation?.score?.patterns.length ? <p className="mt-2 border-t border-white/10 pt-2 text-[10px] leading-4 text-amber-50">{tsumoEvaluation.score.patterns.map((pattern) => `${pattern.label} +${pattern.value}`).join(' · ')}</p> : null}
             </div>
           )}
           {isRiichi && (
@@ -397,11 +433,11 @@ export default function HongKongTable({
           )}
         </div>
 
-        <div className="flex h-10 items-center justify-between bg-[#15583e] px-3 text-sm font-semibold text-emerald-100/75">
+        <div className="mahjong-table-footer flex h-10 items-center justify-between bg-[#15583e] px-3 text-sm font-semibold text-emerald-100/75" style={isFullscreen ? { flex: '0 0 40px' } : undefined}>
           <span>{gameName} Mahjong</span>
           <div className="flex gap-2">
             <button type="button" onClick={() => setShowScoring(true)} className="rounded px-2 py-1 hover:bg-white/10">Scoring Tips</button>
-            <button type="button" onClick={() => tableShellRef.current?.requestFullscreen()} className="rounded px-2 py-1 hover:bg-white/10">Full Screen</button>
+            <button type="button" onClick={enterFullscreen} className="rounded px-2 py-1 hover:bg-white/10">Full Screen</button>
           </div>
         </div>
       </div>
@@ -469,12 +505,18 @@ function TableToolButton({
   );
 }
 
-function ConcealedRack({ count, vertical = false }: { seat: Seat; count: number; vertical?: boolean }) {
+function ConcealedRack({ count, orientation }: { seat: Seat; count: number; orientation: 'top' | 'left' | 'right' }) {
+  const vertical = orientation !== 'top';
+  const perspective = orientation === 'top'
+    ? '[transform:perspective(900px)_rotateX(38deg)] origin-top'
+    : orientation === 'left'
+      ? '[transform:perspective(900px)_rotateY(-34deg)] origin-left'
+      : '[transform:perspective(900px)_rotateY(34deg)] origin-right';
   return (
-    <div className={`flex ${vertical ? 'flex-col' : ''} gap-px`} aria-hidden="true">
+    <div className={`flex ${vertical ? 'flex-col' : ''} ${perspective}`} aria-label={`Opponent concealed hand: ${count} tiles`}>
       {Array.from({ length: Math.min(count, 14) }, (_, index) => (
-        <span key={index} className={vertical ? '-my-[5px]' : '-mx-[2px]'}>
-          <TileBack size="table" />
+        <span key={index} className={`relative ${vertical ? '-my-[5px]' : '-mx-[2px]'}`}>
+          <TileBack size="table" className="relative before:absolute before:inset-x-1 before:top-1 before:h-1 before:rounded-full before:bg-white/35" />
         </span>
       ))}
     </div>

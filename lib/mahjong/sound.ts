@@ -3,7 +3,7 @@
 import type { Tile } from './tiles';
 
 export type MahjongSound = 'shuffle' | 'draw' | 'discard' | 'chi' | 'pon' | 'kan' | 'win' | 'toggle';
-export type MahjongVoiceLocale = 'cantonese' | 'japanese' | 'none';
+export type MahjongVoiceLocale = 'cantonese' | 'japanese' | 'english' | 'none';
 
 let audioContext: AudioContext | null = null;
 
@@ -79,6 +79,10 @@ function preferredJapaneseVoice(): SpeechSynthesisVoice | undefined {
   const voices = window.speechSynthesis.getVoices();
   return voices.find((voice) => /^ja-jp/i.test(voice.lang)) ?? voices.find((voice) => /japanese|kyoko|otoya/i.test(voice.name));
 }
+function preferredEnglishVoice(): SpeechSynthesisVoice | undefined {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return undefined;
+  return window.speechSynthesis.getVoices().find((voice) => /^en(-us|-gb)?$/i.test(voice.lang));
+}
 
 export function japaneseTileLabel(tile: Tile): string {
   const ranks = ['イー', 'リャン', 'サン', 'スー', 'ウー', 'ロー', 'チー', 'パー', 'キュー'];
@@ -87,6 +91,15 @@ export function japaneseTileLabel(tile: Tile): string {
   if (tile[0] === 'p') return `${rank}ピン`;
   if (tile[0] === 's') return `${rank}ソウ`;
   const honours: Record<string, string> = { z1: 'トン', z2: 'ナン', z3: 'シャー', z4: 'ペー', z5: 'ハク', z6: 'ハツ', z7: 'チュン' };
+  return honours[tile] ?? tile;
+}
+export function englishTileLabel(tile: Tile): string {
+  const rank = Number(tile.slice(1));
+  const ranks = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  if (tile[0] === 'm') return ranks[rank - 1] + ' character';
+  if (tile[0] === 'p') return ranks[rank - 1] + ' dot';
+  if (tile[0] === 's') return ranks[rank - 1] + ' bamboo';
+  const honours: Record<string, string> = { z1: 'east wind', z2: 'south wind', z3: 'west wind', z4: 'north wind', z5: 'white dragon', z6: 'green dragon', z7: 'red dragon' };
   return honours[tile] ?? tile;
 }
 
@@ -102,13 +115,16 @@ function announceCall(sound: MahjongSound, tile: Tile | undefined, voiceLocale: 
   const japanese: Partial<Record<MahjongSound, string>> = {
     chi: 'チー', pon: 'ポン', kan: 'カン', win: 'ツモ'
   };
+  const english: Partial<Record<MahjongSound, string>> = {
+    shuffle: 'Shuffling tiles', draw: 'Draw', discard: 'Discard', chi: 'Chi', pon: 'Pung', kan: 'Kong', win: 'Mah Jongg'
+  };
   const word = sound === 'discard' && tile
-    ? (voiceLocale === 'japanese' ? japaneseTileLabel(tile) : cantoneseTileLabel(tile))
-    : (voiceLocale === 'japanese' ? japanese[sound] : cantonese[sound]);
+    ? (voiceLocale === 'japanese' ? japaneseTileLabel(tile) : voiceLocale === 'cantonese' ? cantoneseTileLabel(tile) : englishTileLabel(tile))
+    : (voiceLocale === 'japanese' ? japanese[sound] : voiceLocale === 'cantonese' ? cantonese[sound] : english[sound]);
   if (!word) return;
   const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = voiceLocale === 'japanese' ? 'ja-JP' : 'zh-HK';
-  const voice = voiceLocale === 'japanese' ? preferredJapaneseVoice() : preferredCantoneseVoice();
+  utterance.lang = voiceLocale === 'japanese' ? 'ja-JP' : voiceLocale === 'cantonese' ? 'zh-HK' : 'en-US';
+  const voice = voiceLocale === 'japanese' ? preferredJapaneseVoice() : voiceLocale === 'cantonese' ? preferredCantoneseVoice() : preferredEnglishVoice();
   if (voice) utterance.voice = voice;
   utterance.rate = 1.08;
   utterance.pitch = 0.9;

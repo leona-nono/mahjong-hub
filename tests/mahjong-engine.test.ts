@@ -126,8 +126,10 @@ describe('Chinese Official MCR scoring catalogue', () => {
     const score = scoreHand({ state, seat: 0, winningTile: 'p3', selfDrawn: false });
     expect(score.patterns.map((pattern) => pattern.id)).toEqual(expect.arrayContaining(['littleThreeDragons', 'concealed']));
     expect(score.patterns.map((pattern) => pattern.id)).not.toEqual(expect.arrayContaining(['dragonTriplet']));
-    expect(score.total).toBe(66);
-    expect(score.qualifyingTotal).toBe(66);
+    // The expanded MCR detector adds One Voided Suit (1) to the 64-point
+    // Little Three Dragons + Concealed Hand shape.
+    expect(score.total).toBe(67);
+    expect(score.qualifyingTotal).toBe(67);
   });
 
   it('uses Fully Concealed Hand instead of stacking self draw and Concealed Hand', () => {
@@ -138,6 +140,23 @@ describe('Chinese Official MCR scoring catalogue', () => {
     expect(score.patterns.map((pattern) => pattern.id)).toContain('fullyConcealed');
     expect(score.patterns.map((pattern) => pattern.id)).not.toEqual(expect.arrayContaining(['selfDraw', 'concealed']));
     expect(score.total).toBe(6); // All Chows (2) + Fully Concealed Hand (4)
+  });
+
+  it('detects implemented chow fans from the selected MCR decomposition', () => {
+    const state = createGame({ ruleset: 'chinese-official', seed: 44 });
+    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 m7 m8 m9 p1 p2 z1 z1');
+    const score = scoreHand({ state, seat: 0, winningTile: 'p3', selfDrawn: false });
+    expect(score.patterns.map((pattern) => pattern.id)).toEqual(expect.arrayContaining(['pureStraight', 'allSequences']));
+    expect(score.patterns.find((pattern) => pattern.id === 'pureStraight')?.value).toBe(16);
+  });
+
+  it('selects high-value implemented MCR shifted structures and applies exclusions', () => {
+    const state = createGame({ ruleset: 'chinese-official', seed: 45 });
+    state.players[0].hand = hand('m1 m1 m1 m1 m2 m2 m2 m2 m3 m3 m3 m3 m5 m5');
+    const score = scoreHand({ state, seat: 0, winningTile: 'm5', selfDrawn: true });
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('quadrupleChow');
+    expect(score.patterns.map((pattern) => pattern.id)).not.toContain('pureTripleChow');
+    expect(score.patterns.map((pattern) => pattern.id)).not.toContain('pureDoubleChow');
   });
 });
 describe('shanten', () => {

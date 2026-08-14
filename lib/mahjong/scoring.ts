@@ -95,6 +95,30 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   seatWind: { base: 1, 'chinese-official': 2, riichi: 1 },
   roundWind: { base: 1, 'chinese-official': 2, riichi: 1 },
   allTriplets: { base: 3, 'chinese-official': 6, riichi: 2 },
+  pureStraight: { base: 0, 'chinese-official': 16 },
+  mixedTripleChow: { base: 0, 'chinese-official': 8 },
+  mixedShiftedChows: { base: 0, 'chinese-official': 6 },
+  triplePung: { base: 0, 'chinese-official': 16 },
+  pureTripleChow: { base: 0, 'chinese-official': 24 },
+  pureDoubleChow: { base: 0, 'chinese-official': 1 },
+  mixedDoubleChow: { base: 0, 'chinese-official': 1 },
+  shortStraight: { base: 0, 'chinese-official': 1 },
+  doublePungs: { base: 0, 'chinese-official': 2 },
+  pungTerminalsHonours: { base: 0, 'chinese-official': 1 },
+  threeConcealedPungs: { base: 0, 'chinese-official': 16 },
+  twoConcealedPungs: { base: 0, 'chinese-official': 2 },
+  allTypes: { base: 0, 'chinese-official': 6 },
+  oneVoidedSuit: { base: 0, 'chinese-official': 1 },
+  noHonours: { base: 0, 'chinese-official': 1 },
+  quadrupleChow: { base: 0, 'chinese-official': 48 },
+  fourShiftedPungs: { base: 0, 'chinese-official': 48 },
+  fourShiftedChows: { base: 0, 'chinese-official': 32 },
+  allEvenPungs: { base: 0, 'chinese-official': 24 },
+  pureShiftedPungs: { base: 0, 'chinese-official': 24 },
+  pureShiftedChows: { base: 0, 'chinese-official': 16 },
+  upperTiles: { base: 0, 'chinese-official': 24 },
+  middleTiles: { base: 0, 'chinese-official': 24 },
+  lowerTiles: { base: 0, 'chinese-official': 24 },
   halfFlush: { base: 3, 'chinese-official': 6, riichi: 2 },
   sevenPairs: { base: 4, 'chinese-official': 24, riichi: 2 },
   littleThreeDragons: { base: 5, 'chinese-official': 64, riichi: 2 },
@@ -177,7 +201,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     return finalise(patterns, ruleset, true);
   }
 
-  const decompositions = ruleset === 'riichi'
+  const decompositions = ruleset === 'riichi' || ruleset === 'chinese-official'
     ? decomposeWins(counts, player.melds.length)
     : (() => {
         const one = decomposeWin(counts, player.melds.length);
@@ -185,6 +209,8 @@ export function scoreHand(input: ScoreInput): ScoreResult {
       })();
   const sets = ruleset === 'riichi'
     ? selectBestRiichiDecomposition(decompositions, player.melds, winningTile, selfDrawn, isConcealed, player.seatWind, state.roundWind)
+    : ruleset === 'chinese-official'
+      ? selectBestMcrDecomposition(decompositions, player.melds, winningTile, selfDrawn)
     : decompositions[0] ?? null;
   const isSevenPairs =
     isConcealed && sets === null && shantenSevenPairs(counts, ruleset) === -1;
@@ -237,6 +263,16 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   }
   if (allTiles.every(isSimple)) {
     push('allSimples', 'All Simples');
+  }
+  if (ruleset === 'chinese-official') {
+    if (suitsUsed.size === 2) push('oneVoidedSuit', 'One Voided Suit');
+    if (honourCount === 0) push('noHonours', 'No Honors');
+    const hasWind = allTiles.some((tile) => ['z1', 'z2', 'z3', 'z4'].includes(tile));
+    const hasDragon = allTiles.some((tile) => ['z5', 'z6', 'z7'].includes(tile));
+    if (suitsUsed.size === 3 && hasWind && hasDragon) push('allTypes', 'All Types');
+    if (allTiles.every((tile) => tileSuit(tile) !== 'z' && tileRank(tile) >= 7)) push('upperTiles', 'Upper Tiles');
+    if (allTiles.every((tile) => tileSuit(tile) !== 'z' && tileRank(tile) >= 4 && tileRank(tile) <= 6)) push('middleTiles', 'Middle Tiles');
+    if (allTiles.every((tile) => tileSuit(tile) !== 'z' && tileRank(tile) <= 3)) push('lowerTiles', 'Lower Tiles');
   }
 
   // --- Dragons -------------------------------------------------------------
@@ -317,7 +353,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
           return finalise(patterns, ruleset, true);
         }
       }
-      push('allTriplets', 'All Triplets');
+      if (ruleset !== 'chinese-official') push('allTriplets', 'All Triplets');
     }
     if (ruleset === 'riichi') {
       const valuePair = Boolean(pair && (isDragon(pair) || pair === player.seatWind || pair === state.roundWind));
@@ -338,6 +374,8 @@ export function scoreHand(input: ScoreInput): ScoreResult {
         pushYakuman('fourKans', 'Four Kans');
       }
       if (player.melds.filter((meld) => meld.kind === 'kan').length >= 3) push('sankantsu', 'Three Kans');
+    } else if (ruleset === 'chinese-official') {
+      pushMcrStructuralPatterns(push, blocks, runBlocks, tripletBlocks, concealedTriplets);
     } else if (runBlocks.length === 4 && isConcealed) {
       push('allSequences', 'All Sequences');
     }
@@ -655,6 +693,182 @@ function finalise(
   };
 }
 
+function hasPureTripleChow(blocks: HandSet[]): boolean {
+  const count = new Map<string, number>();
+  for (const block of blocks) {
+    if (block.kind !== 'run') continue;
+    count.set(block.tile, (count.get(block.tile) ?? 0) + 1);
+  }
+  return [...count.values()].some((amount) => amount >= 3);
+}
+
+function hasQuadrupleChow(blocks: HandSet[]): boolean {
+  const count = new Map<string, number>();
+  for (const block of blocks) {
+    if (block.kind !== 'run') continue;
+    count.set(block.tile, (count.get(block.tile) ?? 0) + 1);
+  }
+  return [...count.values()].some((amount) => amount >= 4);
+}
+
+/** Consecutive same-suit pungs, e.g. 222/333/444 or four shifted pungs. */
+function hasShiftedPungs(blocks: HandSet[], required: number): boolean {
+  for (const suit of ['m', 'p', 's']) {
+    const ranks = new Set(blocks.filter((block) => block.kind === 'triplet' && tileSuit(block.tile) === suit).map((block) => tileRank(block.tile)));
+    for (let start = 1; start <= 10 - required; start += 1) {
+      if (Array.from({ length: required }, (_, offset) => start + offset).every((rank) => ranks.has(rank))) return true;
+    }
+  }
+  return false;
+}
+
+/** Consecutive same-suit chow starts, e.g. 123/234/345. */
+function hasShiftedChows(blocks: HandSet[], required: number): boolean {
+  for (const suit of ['m', 'p', 's']) {
+    const ranks = new Set(blocks.filter((block) => block.kind === 'run' && tileSuit(block.tile) === suit).map((block) => tileRank(block.tile)));
+    for (let start = 1; start <= 8 - required; start += 1) {
+      if (Array.from({ length: required }, (_, offset) => start + offset).every((rank) => ranks.has(rank))) return true;
+    }
+  }
+  return false;
+}
+
+function hasMixedDoubleChow(blocks: HandSet[]): boolean {
+  for (let rank = 1; rank <= 7; rank += 1) {
+    const matches = ['m', 'p', 's'].filter((suit) => blocks.some((block) => block.kind === 'run' && block.tile === `${suit}${rank}`));
+    if (matches.length >= 2) return true;
+  }
+  return false;
+}
+
+function hasShortStraight(blocks: HandSet[]): boolean {
+  for (const suit of ['m', 'p', 's']) {
+    const starts = blocks
+      .filter((block) => block.kind === 'run' && tileSuit(block.tile) === suit)
+      .map((block) => tileRank(block.tile));
+    if (starts.some((start) => starts.includes(start + 3))) return true;
+  }
+  return false;
+}
+
+/** Three chows in all suits whose starts are consecutive in any suit order. */
+function hasMixedShiftedChows(blocks: HandSet[]): boolean {
+  const startsBySuit = new Map<Suit, number[]>();
+  for (const suit of ['m', 'p', 's'] as Suit[]) {
+    startsBySuit.set(suit, blocks.filter((block) => block.kind === 'run' && tileSuit(block.tile) === suit).map((block) => tileRank(block.tile)));
+  }
+  for (let start = 1; start <= 5; start += 1) {
+    const needed = [start, start + 1, start + 2];
+    const suits = ['m', 'p', 's'] as Suit[];
+    if (suits.some((suit) => needed.some((rank) => startsBySuit.get(suit)!.includes(rank))) &&
+      needed.every((rank) => suits.some((suit) => startsBySuit.get(suit)!.includes(rank)))) {
+      const assignments = suits.flatMap((suit) => startsBySuit.get(suit)!.filter((rank) => needed.includes(rank)).map((rank) => `${suit}${rank}`));
+      if (assignments.length >= 3) {
+        for (const a of suits) for (const b of suits) for (const c of suits) {
+          if (new Set([a, b, c]).size === 3 && startsBySuit.get(a)!.includes(start) && startsBySuit.get(b)!.includes(start + 1) && startsBySuit.get(c)!.includes(start + 2)) return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+function hasDoublePungs(blocks: HandSet[]): boolean {
+  for (let rank = 1; rank <= 9; rank += 1) {
+    if (['m', 'p', 's'].filter((suit) => blocks.some((block) => block.kind === 'triplet' && block.tile === `${suit}${rank}`)).length >= 2) return true;
+  }
+  return false;
+}
+
+/**
+ * MCR may have more than one legal 4-meld + pair partition.  Unlike the old
+ * first-match implementation, choose the partition with the highest value
+ * among the MCR structure fans that this scorer can currently recognise.
+ *
+ * Global fans (flushes, flowers, winds and win circumstances) are identical
+ * for every partition, so intentionally do not appear here.  This keeps the
+ * selection deterministic while avoiding a false claim that unimplemented
+ * catalogue entries are being evaluated.
+ */
+function selectBestMcrDecomposition(
+  candidates: HandSet[][],
+  melds: Array<{ kind: 'chi' | 'pon' | 'kan'; tiles: Tile[]; concealed?: boolean }>,
+  winningTile: Tile,
+  selfDrawn: boolean
+): HandSet[] | null {
+  if (candidates.length === 0) return null;
+  const withMelds = (sets: HandSet[]) => [
+    ...sets,
+    ...melds.map((meld) => ({
+      kind: (meld.kind === 'chi' ? 'run' : 'triplet') as HandSet['kind'],
+      tile: meld.tiles[0],
+      open: !meld.concealed
+    }))
+  ];
+  const potential = (sets: HandSet[]) => {
+    const blocks = withMelds(sets);
+    const runs = blocks.filter((block) => block.kind === 'run');
+    const trips = blocks.filter((block) => block.kind === 'triplet');
+    const concealedTrips = trips.filter((block) => !block.open && (selfDrawn || block.tile !== winningTile)).length;
+    return mcrStructuralValue(blocks, runs, trips, concealedTrips);
+  };
+  return candidates.reduce((best, candidate) => potential(candidate) > potential(best) ? candidate : best);
+}
+
+function mcrStructuralValue(blocks: HandSet[], runs: HandSet[], trips: HandSet[], concealedTrips: number): number {
+  let total = 0;
+  if (trips.length === 4) total += value('allTriplets', 'chinese-official');
+  if (hasQuadrupleChow(runs)) total += value('quadrupleChow', 'chinese-official');
+  if (hasShiftedPungs(trips, 4)) total += value('fourShiftedPungs', 'chinese-official');
+  else if (hasShiftedPungs(trips, 3)) total += value('pureShiftedPungs', 'chinese-official');
+  if (hasShiftedChows(runs, 4)) total += value('fourShiftedChows', 'chinese-official');
+  else if (hasShiftedChows(runs, 3)) total += value('pureShiftedChows', 'chinese-official');
+  if (trips.length === 4 && blocks.every((block) => tileSuit(block.tile) !== 'z' && tileRank(block.tile) % 2 === 0)) total += value('allEvenPungs', 'chinese-official');
+  if (hasPureTripleChow(runs)) total += value('pureTripleChow', 'chinese-official');
+  else if (countIdenticalRunPairs(runs) > 0) total += value('pureDoubleChow', 'chinese-official');
+  if (hasIttsuu(runs)) total += value('pureStraight', 'chinese-official');
+  if (hasSanshokuDoujun(runs)) total += value('mixedTripleChow', 'chinese-official');
+  if (hasMixedShiftedChows(runs)) total += value('mixedShiftedChows', 'chinese-official');
+  if (hasMixedDoubleChow(runs)) total += value('mixedDoubleChow', 'chinese-official');
+  if (hasShortStraight(runs)) total += value('shortStraight', 'chinese-official');
+  if (hasSanshokuDoukou(trips)) total += value('triplePung', 'chinese-official');
+  if (hasDoublePungs(trips)) total += value('doublePungs', 'chinese-official');
+  if (trips.some((block) => isTerminalOrHonour(block.tile))) total += value('pungTerminalsHonours', 'chinese-official');
+  if (concealedTrips >= 3) total += value('threeConcealedPungs', 'chinese-official');
+  else if (concealedTrips >= 2) total += value('twoConcealedPungs', 'chinese-official');
+  if (runs.length === 4 && blocks.length === 5) total += value('allSequences', 'chinese-official');
+  return total;
+}
+
+function pushMcrStructuralPatterns(
+  push: (id: keyof typeof VALUES, label: string) => void,
+  blocks: HandSet[],
+  runs: HandSet[],
+  trips: HandSet[],
+  concealedTrips: number
+): void {
+  if (trips.length === 4) push('allTriplets', 'All Pungs');
+  if (runs.length === 4 && blocks.length === 5) push('allSequences', 'All Chows');
+  if (hasQuadrupleChow(runs)) push('quadrupleChow', 'Quadruple Chow');
+  if (hasShiftedPungs(trips, 4)) push('fourShiftedPungs', 'Four Shifted Pungs');
+  else if (hasShiftedPungs(trips, 3)) push('pureShiftedPungs', 'Pure Shifted Pungs');
+  if (hasShiftedChows(runs, 4)) push('fourShiftedChows', 'Four Shifted Chows');
+  else if (hasShiftedChows(runs, 3)) push('pureShiftedChows', 'Pure Shifted Chows');
+  if (trips.length === 4 && blocks.every((block) => tileSuit(block.tile) !== 'z' && tileRank(block.tile) % 2 === 0)) push('allEvenPungs', 'All Even Pungs');
+  if (hasPureTripleChow(runs)) push('pureTripleChow', 'Pure Triple Chow');
+  else if (countIdenticalRunPairs(runs) > 0) push('pureDoubleChow', 'Pure Double Chow');
+  if (hasIttsuu(runs)) push('pureStraight', 'Pure Straight');
+  if (hasSanshokuDoujun(runs)) push('mixedTripleChow', 'Mixed Triple Chow');
+  if (hasMixedShiftedChows(runs)) push('mixedShiftedChows', 'Mixed Shifted Chows');
+  if (hasMixedDoubleChow(runs)) push('mixedDoubleChow', 'Mixed Double Chow');
+  if (hasShortStraight(runs)) push('shortStraight', 'Short Straight');
+  if (hasSanshokuDoukou(trips)) push('triplePung', 'Triple Pung');
+  if (hasDoublePungs(trips)) push('doublePungs', 'Double Pungs');
+  if (trips.some((block) => isTerminalOrHonour(block.tile))) push('pungTerminalsHonours', 'Pung of Terminals or Honors');
+  if (concealedTrips >= 3) push('threeConcealedPungs', 'Three Concealed Pungs');
+  else if (concealedTrips >= 2) push('twoConcealedPungs', 'Two Concealed Pungs');
+}
+
 /** Existing detector identifiers mapped to the official MCR catalogue ids. */
 const MCR_PATTERN_IDS: Readonly<Record<string, McrFanId>> = {
   flower: 'flower-tiles',
@@ -667,6 +881,30 @@ const MCR_PATTERN_IDS: Readonly<Record<string, McrFanId>> = {
   seatWind: 'seat-wind',
   roundWind: 'prevalent-wind',
   allTriplets: 'all-pungs',
+  pureStraight: 'pure-straight',
+  mixedTripleChow: 'mixed-triple-chow',
+  mixedShiftedChows: 'mixed-shifted-chows',
+  triplePung: 'triple-pung',
+  pureTripleChow: 'pure-triple-chow',
+  pureDoubleChow: 'pure-double-chow',
+  mixedDoubleChow: 'mixed-double-chow',
+  shortStraight: 'short-straight',
+  doublePungs: 'double-pungs',
+  pungTerminalsHonours: 'pung-terminals-honors',
+  threeConcealedPungs: 'three-concealed-pungs',
+  twoConcealedPungs: 'two-concealed-pungs',
+  allTypes: 'all-types',
+  oneVoidedSuit: 'one-voided-suit',
+  noHonours: 'no-honors',
+  quadrupleChow: 'quadruple-chow',
+  fourShiftedPungs: 'four-shifted-pungs',
+  fourShiftedChows: 'four-shifted-chows',
+  allEvenPungs: 'all-even-pungs',
+  pureShiftedPungs: 'pure-shifted-pungs',
+  pureShiftedChows: 'pure-shifted-chows',
+  upperTiles: 'upper-tiles',
+  middleTiles: 'middle-tiles',
+  lowerTiles: 'lower-tiles',
   halfFlush: 'half-flush',
   sevenPairs: 'seven-pairs',
   littleThreeDragons: 'little-three-dragons',

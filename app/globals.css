@@ -64,3 +64,52 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 10px 30px -12px rgba(116, 143, 252, 0.35);
 }
+
+/*
+ * The four-player table has a fixed comfortable height in the page, but that
+ * same fixed height left unused canvas beneath the footer in browser full
+ * screen.  Make the three visual table regions consume the fullscreen viewport
+ * as one grid instead: toolbar, playing surface, then footer.
+ */
+.mahjong-table-shell:fullscreen,
+.mahjong-table-shell:-webkit-full-screen,
+.mahjong-table-shell--fullscreen {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  overflow: hidden;
+  padding: 8px;
+  border-radius: 0;
+  background: #176845;
+}
+
+.mahjong-table-shell:fullscreen .mahjong-desktop-shell,
+.mahjong-table-shell:-webkit-full-screen .mahjong-desktop-shell,
+.mahjong-table-shell--fullscreen .mahjong-desktop-shell {
+  display: flex !important;
+  flex-direction: column;
+  height: calc(100vh - 16px);
+  height: calc(100dvh - 16px);
+}
+
+.mahjong-table-shell:fullscreen .mahjong-table-toolbar,
+.mahjong-table-shell:-webkit-full-screen .mahjong-table-toolbar,
+.mahjong-table-shell--fullscreen .mahjong-table-toolbar {
+  flex: 0 0 44px;
+  margin-bottom: 0;
+}
+
+.mahjong-table-shell:fullscreen .mahjong-desktop-board,
+.mahjong-table-shell:-webkit-full-screen .mahjong-desktop-board,
+.mahjong-table-shell--fullscreen .mahjong-desktop-board {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+}
+
+.mahjong-table-shell:fullscreen .mahjong-table-footer,
+.mahjong-table-shell:-webkit-full-screen .mahjong-table-footer,
+.mahjong-table-shell--fullscreen .mahjong-table-footer {
+  flex: 0 0 40px;
+}

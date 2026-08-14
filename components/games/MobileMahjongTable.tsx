@@ -112,15 +112,17 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
         <Rack count={9} vertical className="left-2 top-[37%]" />
         <Rack count={9} vertical className="right-2 top-[37%]" />
 
-        <Discards state={state} seat={3} className="left-1/2 top-[28%] -translate-x-1/2" />
-        <Discards state={state} seat={2} className="left-[18%] top-[39%]" />
-        <Discards state={state} seat={1} className="right-[18%] top-[39%]" />
-        <Discards state={state} seat={0} className="bottom-[25%] left-1/2 -translate-x-1/2" />
+        {/* Mobile-safe discard lanes: left/right discards sit outside the
+            scoreboard footprint, so no opponent tile is hidden behind it. */}
+        <Discards state={state} seat={3} className="left-1/2 top-[29%] -translate-x-1/2" />
+        <Discards state={state} seat={2} className="left-[15%] top-[41%]" />
+        <Discards state={state} seat={1} className="right-[15%] top-[41%]" />
+        <Discards state={state} seat={0} className="bottom-[27%] left-1/2 -translate-x-1/2" />
 
-        <div className="absolute left-1/2 top-[44%] z-10 flex h-24 w-28 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-4 border-[#242632] bg-[#080b10] shadow-xl">
+        <div className="absolute left-1/2 top-[47%] z-10 flex h-20 w-[5.4rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-4 border-[#242632] bg-[#080b10] shadow-xl">
           <span className="text-[9px] font-bold tracking-[.2em] text-cyan-300">{isRiichi ? 'RIICHI' : isMcr ? 'CHINESE MCR' : 'HONG KONG'}</span>
-          <strong className="text-lg font-medium text-cyan-100">{roundLabel}</strong>
-          <span className="text-2xl font-light text-cyan-200">{tilesRemaining(state)}</span>
+          <strong className="text-base font-medium text-cyan-100">{roundLabel}</strong>
+          <span className="text-xl font-light text-cyan-200">{tilesRemaining(state)}</span>
           <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-[9px] font-black">{NAMES[state.turn]}</span>
         </div>
 
@@ -318,10 +320,13 @@ function Rack({ count, vertical = false, className }: { count: number; vertical?
 function Discards({ state, seat, className }: { state: GameState; seat: Seat; className: string }) {
   const recent = state.players[seat].discards.slice(-6);
   return (
-    <div className={'absolute z-[5] grid w-[60px] grid-cols-3 gap-px ' + className}>
+    <div className={'absolute z-[15] w-[54px] rounded-md bg-[#003d2f]/70 p-0.5 shadow-[0_1px_5px_rgba(0,0,0,.3)] ' + className}>
+      <span className="mb-px block text-center text-[7px] font-black tracking-wide text-amber-200">P{seat + 1} DISCARD</span>
+      <div className="grid grid-cols-3 gap-px">
       {recent.map((tile, index) => (
-        <span key={tile + index} className="scale-75"><TileFace tile={tile} size="sm" traditional muted={index !== recent.length - 1} /></span>
+        <span key={tile + index} className={index === recent.length - 1 ? 'scale-[.68] rounded ring-1 ring-amber-300' : 'scale-[.68]'}><TileFace tile={tile} size="sm" traditional muted={index !== recent.length - 1} /></span>
       ))}
+      </div>
     </div>
   );
 }
