@@ -13,13 +13,12 @@ import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
-import { PUBLIC_REVALIDATE_SECONDS } from '@/lib/cache';
 import { alternatesFor } from '@/lib/seo';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
 
-export const revalidate = PUBLIC_REVALIDATE_SECONDS;
+export const revalidate = 86_400;
 
 export async function generateStaticParams() {
   const games = await getMergedGames();

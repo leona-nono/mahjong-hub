@@ -61,18 +61,19 @@ export async function POST(req: NextRequest) {
   if (!isAwardReason(b.reason)) {
     return NextResponse.json({ error: 'invalid reason' }, { status: 400 });
   }
+  const reason = b.reason;
 
   const gameSlug =
     typeof b.gameSlug === 'string' && b.gameSlug.length > 0 && b.gameSlug.length <= 64
       ? b.gameSlug
       : null;
 
-  if (b.reason === 'game_win' && !gameSlug) {
+  if (reason === 'game_win' && !gameSlug) {
     return NextResponse.json({ error: 'gameSlug required' }, { status: 400 });
   }
 
   const amount =
-    b.reason === 'start_game'
+    reason === 'start_game'
       ? START_GAME_POINTS
       : Math.min(GAME_WIN_MAX, Math.max(1, Math.floor(Number(b.amount) || 0)));
 
@@ -80,13 +81,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'invalid amount' }, { status: 400 });
   }
 
-  const cap = DAILY_CAP[b.reason];
+  const cap = DAILY_CAP[reason];
   const since = new Date();
   since.setUTCHours(0, 0, 0, 0);
 
   try {
     const today = await prisma.pointTransaction.aggregate({
-      where: { userId, reason: b.reason, createdAt: { gte: since } },
+      where: { userId, reason, createdAt: { gte: since } },
       _sum: { amount: true }
     });
     const used = today._sum.amount ?? 0;
@@ -105,7 +106,7 @@ export async function POST(req: NextRequest) {
         update: { total: { increment: amount } }
       });
       await tx.pointTransaction.create({
-        data: { userId, amount, reason: b.reason, gameSlug }
+        data: { userId, amount, reason, gameSlug }
       });
       return row;
     });

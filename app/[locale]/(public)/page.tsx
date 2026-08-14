@@ -9,9 +9,7 @@ import {
 import GameCard from '@/components/GameCard';
 import DailyCheckIn from '@/components/DailyCheckIn';
 import { Link } from '@/i18n/navigation';
-import { PUBLIC_REVALIDATE_SECONDS } from '@/lib/cache';
-
-export const revalidate = PUBLIC_REVALIDATE_SECONDS;
+export const revalidate = 86_400;
 
 // Canonical + hreflang alternates are provided by the (public) layout —
 // see app/[locale]/(public)/layout.tsx. A page-level `alternates` here would
