@@ -11,7 +11,6 @@ import {
 import IframeSection from '@/components/IframeSection';
 import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
-import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
 import { alternatesFor } from '@/lib/seo';
 
@@ -143,8 +142,6 @@ export default async function GamePage({
           fallbackGames={related.map((g) => ({ slug: g.slug, title: g.title }))}
         />
       )}
-
-      <AdSlot />
 
       {isNative && content && (
         <div className="mt-10 grid gap-8 md:grid-cols-2">

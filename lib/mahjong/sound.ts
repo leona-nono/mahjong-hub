@@ -2,10 +2,11 @@
 
 import type { Tile } from './tiles';
 
-export type MahjongSound = 'shuffle' | 'draw' | 'discard' | 'chi' | 'pon' | 'kan' | 'win' | 'toggle';
+export type MahjongSound = 'build' | 'shuffle' | 'deal' | 'draw' | 'discard' | 'flower' | 'chi' | 'pon' | 'kan' | 'win' | 'toggle';
 export type MahjongVoiceLocale = 'cantonese' | 'japanese' | 'english' | 'none';
 
 let audioContext: AudioContext | null = null;
+let openingTimers: ReturnType<typeof setTimeout>[] = [];
 
 function getContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
@@ -74,6 +75,26 @@ function preferredCantoneseVoice(): SpeechSynthesisVoice | undefined {
     voices.find((voice) => /cantonese|hong kong|hiumaan|hiu maan/i.test(voice.name));
 }
 
+/** Clear stale speech when a hand is restarted, paused, or settled. Browser
+ * speech synthesis otherwise keeps utterances from an earlier table state and
+ * can announce a tile after the player has already moved on. */
+export function stopMahjongSpeech(): void {
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+}
+
+/** A cancellable mechanical opening sequence: build the wall, shuffle it, then
+ * deal. Keeping this on one timeline prevents three independent sounds from
+ * colliding when the player starts a new hand twice in quick succession. */
+export function playMahjongOpeningSequence(voiceLocale: MahjongVoiceLocale): void {
+  openingTimers.forEach((timer) => clearTimeout(timer));
+  openingTimers = [];
+  playMahjongSound('build', undefined, voiceLocale, false);
+  openingTimers.push(setTimeout(() => playMahjongSound('shuffle', undefined, voiceLocale, false), 280));
+  openingTimers.push(setTimeout(() => playMahjongSound('deal', undefined, voiceLocale, false), 980));
+}
+
 function preferredJapaneseVoice(): SpeechSynthesisVoice | undefined {
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return undefined;
   const voices = window.speechSynthesis.getVoices();
@@ -106,6 +127,10 @@ export function englishTileLabel(tile: Tile): string {
 function announceCall(sound: MahjongSound, tile: Tile | undefined, voiceLocale: MahjongVoiceLocale): void {
   if (voiceLocale === 'none') return;
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  // A deal/draw is a high-frequency mechanical action. Speaking it creates a
+  // queue that is guaranteed to lag behind the table. Keep it as a clack only;
+  // speech is reserved for meaningful, visible calls and discards.
+  if (sound === 'build' || sound === 'shuffle' || sound === 'deal' || sound === 'draw' || sound === 'flower' || sound === 'toggle') return;
   const cantonese: Partial<Record<MahjongSound, string>> = {
     chi: '\u5403',
     pon: '\u78b0',
@@ -122,6 +147,9 @@ function announceCall(sound: MahjongSound, tile: Tile | undefined, voiceLocale: 
     ? (voiceLocale === 'japanese' ? japaneseTileLabel(tile) : voiceLocale === 'cantonese' ? cantoneseTileLabel(tile) : englishTileLabel(tile))
     : (voiceLocale === 'japanese' ? japanese[sound] : voiceLocale === 'cantonese' ? cantonese[sound] : english[sound]);
   if (!word) return;
+  // The spoken call belongs to the latest visible event. Do not let an old
+  // discard survive into a later draw, claim window, or even a new hand.
+  window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(word);
   utterance.lang = voiceLocale === 'japanese' ? 'ja-JP' : voiceLocale === 'cantonese' ? 'zh-HK' : 'en-US';
   const voice = voiceLocale === 'japanese' ? preferredJapaneseVoice() : voiceLocale === 'cantonese' ? preferredCantoneseVoice() : preferredEnglishVoice();
@@ -142,11 +170,23 @@ export function playMahjongSound(sound: MahjongSound, tile?: Tile, voiceLocale: 
 
   const now = context.currentTime + 0.01;
   switch (sound) {
+    case 'build':
+      // Four compact wall-building taps: a heavier, lower sound than a draw.
+      [0, 0.075, 0.15, 0.225].forEach((offset, index) => tileClack(context, now + offset, 0.7 + index * 0.08));
+      tone(context, 118, now + 0.04, 0.28, 0.04, 'triangle');
+      break;
     case 'shuffle':
       Array.from({ length: 14 }, (_, index) => index).forEach((index) => {
         tileClack(context, now + index * 0.035, 0.34 + (index % 3) * 0.08);
       });
       tone(context, 135, now, 0.58, 0.035, 'sawtooth');
+      break;
+    case 'deal':
+      // A brisk four-player deal. It is deliberately sound-only: browser
+      // speech cannot remain in sync with a rapid sequence of concealed tiles.
+      Array.from({ length: 12 }, (_, index) => index).forEach((index) => {
+        tileClack(context, now + index * 0.055, 0.38 + (index % 4) * 0.04);
+      });
       break;
     case 'draw':
       tileClack(context, now, 0.42);
@@ -155,6 +195,14 @@ export function playMahjongSound(sound: MahjongSound, tile?: Tile, voiceLocale: 
       break;
     case 'discard':
       tileClack(context, now, 1);
+      tone(context, 255, now + 0.04, 0.075, 0.045, 'triangle');
+      break;
+    case 'flower':
+      // Expose → replace: a tile on the table followed by a short, distinct
+      // acknowledgement. No voice is used because flower chains can be fast.
+      tileClack(context, now, 0.62);
+      tone(context, 740, now + 0.07, 0.13, 0.07, 'sine');
+      tone(context, 990, now + 0.15, 0.16, 0.065, 'sine');
       break;
     case 'chi':
       tileClack(context, now, 0.65);

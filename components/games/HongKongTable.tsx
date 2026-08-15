@@ -9,7 +9,9 @@ import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, ty
 import { describeScore } from '@/lib/mahjong/scoring';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 import type { Difficulty } from '@/lib/mahjong/ai';
-import { playMahjongSound, primeMahjongAudio } from '@/lib/mahjong/sound';
+import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/lib/mahjong/sound';
+import MahjongAccessibilityPanel, { useMahjongPreferences } from './MahjongAccessibilityPanel';
+import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
 import { visibleDoraIndicators } from '@/lib/mahjong/riichi';
 
 const HUMAN: Seat = 0;
@@ -84,13 +86,17 @@ export default function HongKongTable({
   const scoreUnit = isRiichi ? 'Han' : isMcr ? 'Points' : 'Fan';
   const mcrQualifying = tsumoEvaluation?.score?.qualifyingTotal ?? 0;
   const mcrFlowers = human.flowers.length;
+  // Settlement is auditable: a winning hand turns every concealed rack face-up.
+  const revealAllHands = state.phase === 'over' && state.result?.kind === 'win';
   // A stable three-side wall makes the remaining wall and table orientation
   // readable; it does not expose any opponent's concealed hand.
   const wallTiles = Math.max(6, Math.min(18, Math.ceil(tilesRemaining(state) / 4)));
   const roundLabel = `${WIND_LABEL[state.roundWind]} ${state.handNumber % 4 + 1}`;
   const tableShellRef = useRef<HTMLElement>(null);
   const [showScoring, setShowScoring] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const { preferences, setPreference } = useMahjongPreferences();
+  const soundEnabled = preferences.soundEnabled;
+  const [showAccessibility, setShowAccessibility] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const previousState = useRef<GameState | null>(null);
 
@@ -109,7 +115,34 @@ export default function HongKongTable({
     // Apply the layout before the browser dispatches fullscreenchange. Some
     // Chromium builds paint the first fullscreen frame before that event.
     setIsFullscreen(true);
+    trackMahjongEvent('mahjong_fullscreen', { variant });
     void shell.requestFullscreen().catch(() => setIsFullscreen(false));
+  };
+
+  const toggleSound = () => {
+    primeMahjongAudio();
+    const next = !soundEnabled;
+    if (!next) stopMahjongSpeech();
+    setPreference('soundEnabled', next);
+    if (next) playMahjongSound('toggle', undefined, voiceLocale);
+    trackMahjongEvent('mahjong_sound_changed', { variant, enabled: next });
+  };
+
+  const startNewGame = () => {
+    stopMahjongSpeech();
+    primeMahjongAudio();
+    if (soundEnabled) playMahjongOpeningSequence(voiceLocale);
+    onNewGame();
+  };
+
+  const continueNextHand = () => {
+    stopMahjongSpeech();
+    onNextHand();
+  };
+
+  const togglePause = () => {
+    if (!paused) stopMahjongSpeech();
+    onTogglePause();
   };
 
   useEffect(() => {
@@ -132,6 +165,13 @@ export default function HongKongTable({
       return;
     }
 
+    const previousFlowers = previous.players.reduce((total, player) => total + player.flowers.length, 0);
+    const currentFlowers = state.players.reduce((total, player) => total + player.flowers.length, 0);
+    if (currentFlowers > previousFlowers) {
+      playMahjongSound('flower', undefined, voiceLocale, false);
+      return;
+    }
+
     const previousDiscards = previous.players.reduce((total, player) => total + player.discards.length, 0);
     const currentDiscards = state.players.reduce((total, player) => total + player.discards.length, 0);
     if (currentDiscards > previousDiscards) {
@@ -146,7 +186,7 @@ export default function HongKongTable({
   }, [state, soundEnabled, voiceLocale]);
 
   return (
-    <section ref={tableShellRef} className={`mahjong-table-shell ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
+    <section ref={tableShellRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
       <MobileMahjongTable
         state={state}
         variant={variant}
@@ -162,24 +202,19 @@ export default function HongKongTable({
         kanTiles={kanTiles}
         riichiDiscards={riichiDiscards}
         roundLabel={roundLabel}
-        onTogglePause={onTogglePause}
+        onTogglePause={togglePause}
         onHongKongMode={onHongKongMode}
         onToggleHints={onToggleHints}
-        onToggleSound={() => {
-          primeMahjongAudio();
-          setSoundEnabled((enabled) => {
-            if (!enabled) playMahjongSound('toggle', undefined, voiceLocale);
-            return !enabled;
-          });
-        }}
-        onNewGame={onNewGame}
-        onNextHand={onNextHand}
+        onToggleSound={toggleSound}
+        onNewGame={startNewGame}
+        onNextHand={continueNextHand}
         onDiscard={onDiscard}
         onClaim={onClaim}
         onTsumo={onTsumo}
         onKan={onKan}
         onRiichi={onRiichi}
         onFullscreen={enterFullscreen}
+        onAccessibility={() => setShowAccessibility(true)}
       />
       <div
         className="mahjong-desktop-shell hidden min-w-[980px] lg:block"
@@ -187,24 +222,14 @@ export default function HongKongTable({
       >
         <div className="mahjong-table-toolbar mb-2 flex h-11 items-center justify-between gap-3" style={isFullscreen ? { flex: '0 0 44px', marginBottom: 0 } : undefined}>
           <div className="flex items-center gap-2">
-            <TableToolButton onClick={onTogglePause} active={paused}>
+            <TableToolButton onClick={togglePause} active={paused}>
               {paused ? '▶ Continue' : 'Ⅱ Pause'}
             </TableToolButton>
-            <TableToolButton onClick={() => {
-              primeMahjongAudio();
-              if (soundEnabled) playMahjongSound('shuffle', undefined, voiceLocale);
-              onNewGame();
-            }}>↻ New Game</TableToolButton>
+            <TableToolButton onClick={startNewGame}>↻ New Game</TableToolButton>
             <TableToolButton onClick={onToggleHints} active={showHints}>
               ◇ Hints
             </TableToolButton>
-            <TableToolButton onClick={() => {
-              primeMahjongAudio();
-              setSoundEnabled((enabled) => {
-                if (!enabled) playMahjongSound('toggle', undefined, voiceLocale);
-                return !enabled;
-              });
-            }} active={soundEnabled}>
+            <TableToolButton onClick={toggleSound} active={soundEnabled}>
               {soundEnabled ? 'Sound On' : 'Sound Off'}
             </TableToolButton>
             {variant === 'hongkong' && (
@@ -234,6 +259,7 @@ export default function HongKongTable({
                 <option className="text-slate-900" value="hard">{t('hard')}</option>
               </select>
             </label>
+            <TableToolButton onClick={() => setShowAccessibility(true)}>Aa</TableToolButton>
           </div>
           <div className="flex items-center gap-4 text-emerald-100">
             <span className="flex items-end gap-1" aria-label="Connection good">
@@ -252,15 +278,16 @@ export default function HongKongTable({
           <div className="absolute inset-y-0 left-0 w-[11%] bg-[linear-gradient(105deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute inset-y-0 right-0 w-[11%] bg-[linear-gradient(255deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute left-4 top-3 z-20 text-xl font-semibold text-emerald-100/45">Rate: 10</div>
+          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-[10px] font-bold tracking-wide text-emerald-50">Practice table · all three opponents are AI</p>
 
           <div className="absolute left-1/2 top-8 -translate-x-1/2">
-            <ConcealedRack seat={3} count={state.players[3].hand.length} orientation="top" />
+            <ConcealedRack seat={3} count={state.players[3].hand.length} tiles={revealAllHands ? state.players[3].hand : undefined} orientation="top" />
           </div>
           <div className="absolute left-[15%] top-1/2 -translate-y-1/2">
-            <ConcealedRack seat={2} count={state.players[2].hand.length} orientation="left" />
+            <ConcealedRack seat={2} count={state.players[2].hand.length} tiles={revealAllHands ? state.players[2].hand : undefined} orientation="left" />
           </div>
           <div className="absolute right-[15%] top-1/2 -translate-y-1/2">
-            <ConcealedRack seat={1} count={state.players[1].hand.length} orientation="right" />
+            <ConcealedRack seat={1} count={state.players[1].hand.length} tiles={revealAllHands ? state.players[1].hand : undefined} orientation="right" />
           </div>
 
           <PlayerBadge state={state} seat={3} className="right-[19%] top-[11%]" showFlowers={isMcr} />
@@ -316,7 +343,7 @@ export default function HongKongTable({
           {paused && (
             <button
               type="button"
-              onClick={onTogglePause}
+              onClick={togglePause}
               className="absolute inset-0 z-40 flex items-center justify-center bg-black/55 text-4xl font-semibold text-amber-100 backdrop-blur-[2px]"
             >
               ▶ Continue Game
@@ -429,7 +456,7 @@ export default function HongKongTable({
           </div>
 
           {state.phase === 'over' && state.result && (
-            <HongKongResultBanner state={state} onNewGame={onNewGame} onNextHand={onNextHand} />
+            <HongKongResultBanner state={state} onNewGame={startNewGame} onNextHand={continueNextHand} />
           )}
         </div>
 
@@ -481,6 +508,7 @@ export default function HongKongTable({
           </div>
         </div>
       )}
+      {showAccessibility && <MahjongAccessibilityPanel preferences={preferences} onChange={(key, value) => { setPreference(key, value); trackMahjongEvent('mahjong_accessibility_changed', { setting: key, value: String(value) }); }} onClose={() => setShowAccessibility(false)} />}
     </section>
   );
 }
@@ -505,18 +533,20 @@ function TableToolButton({
   );
 }
 
-function ConcealedRack({ count, orientation }: { seat: Seat; count: number; orientation: 'top' | 'left' | 'right' }) {
+function ConcealedRack({ count, tiles, orientation }: { seat: Seat; count: number; tiles?: Tile[]; orientation: 'top' | 'left' | 'right' }) {
   const vertical = orientation !== 'top';
   const perspective = orientation === 'top'
-    ? '[transform:perspective(900px)_rotateX(38deg)] origin-top'
+    ? '[transform:perspective(1100px)_rotateX(18deg)] origin-top'
     : orientation === 'left'
-      ? '[transform:perspective(900px)_rotateY(-34deg)] origin-left'
-      : '[transform:perspective(900px)_rotateY(34deg)] origin-right';
+      ? '[transform:perspective(1100px)_rotateY(-18deg)] origin-left'
+      : '[transform:perspective(1100px)_rotateY(18deg)] origin-right';
   return (
-    <div className={`flex ${vertical ? 'flex-col' : ''} ${perspective}`} aria-label={`Opponent concealed hand: ${count} tiles`}>
+    <div className={`mahjong-standing-rack mahjong-standing-rack--${orientation} flex ${vertical ? 'flex-col' : ''} ${perspective}`} aria-label={`Opponent concealed hand: ${count} tiles`}>
       {Array.from({ length: Math.min(count, 14) }, (_, index) => (
-        <span key={index} className={`relative ${vertical ? '-my-[5px]' : '-mx-[2px]'}`}>
-          <TileBack size="table" className="relative before:absolute before:inset-x-1 before:top-1 before:h-1 before:rounded-full before:bg-white/35" />
+        <span key={index} className={`mahjong-standing-tile mahjong-standing-tile--${orientation} ${vertical ? '-my-[5px]' : '-mx-[2px]'}`}>
+          {tiles?.[index]
+            ? <TileFace tile={tiles[index]} size="table" traditional />
+            : <TileBack size="table" className="mahjong-standing-tile__face" />}
         </span>
       ))}
     </div>
@@ -607,11 +637,10 @@ function HongKongResultBanner({ state, onNewGame, onNextHand }: { state: GameSta
   const humanWon = result.winner === HUMAN || result.winners?.some((item) => item.seat === HUMAN);
   const winnerSeat = result.winner ?? result.winners?.[0]?.seat;
   const winner = winnerSeat === HUMAN ? 'You' : SEAT_LABEL[winnerSeat as Seat];
-  const revealedTiles = winnerSeat === undefined ? [] : [
-    ...state.players[winnerSeat].hand,
-    ...(result.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
+  const reviewTiles = (seat: Seat) => [
+    ...state.players[seat].hand,
+    ...(seat === winnerSeat && result.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
   ];
-  const winnerMelds = winnerSeat === undefined ? [] : state.players[winnerSeat].melds;
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-[3px]">
       <div className="max-h-[92vh] min-w-[380px] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#f4f0df] p-8 text-center text-emerald-950 shadow-[0_0_70px_rgba(251,191,36,.38)]">
@@ -641,17 +670,17 @@ function HongKongResultBanner({ state, onNewGame, onNextHand }: { state: GameSta
               <div className="mt-5 rounded-xl border border-emerald-200 bg-white/80 p-4 text-left">
                 <p className="text-center text-sm font-black uppercase tracking-[.16em] text-emerald-800">Winning Hand · {winner}</p>
                 <p className="mt-1 text-center text-xs font-bold text-slate-500">All concealed tiles, called melds and the winning tile are revealed for review.</p>
-                <div className="mt-3 flex flex-wrap justify-center gap-1">
-                  {revealedTiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="md" traditional highlight={Boolean(result.loser !== undefined && index === revealedTiles.length - 1)} />)}
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  {([0, 1, 2, 3] as Seat[]).map((seat) => {
+                    const isWinner = seat === winnerSeat;
+                    const tiles = reviewTiles(seat);
+                    return <div key={seat} className={`rounded-lg border p-2 ${isWinner ? 'border-amber-400 bg-amber-50' : 'border-emerald-100 bg-white'}`}>
+                      <p className="text-center text-[11px] font-black text-emerald-800">{seat === HUMAN ? 'You' : SEAT_LABEL[seat]}{isWinner ? ' - WINNER' : ''}</p>
+                      <div className="mt-1 flex flex-wrap justify-center gap-px">{tiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional highlight={Boolean(isWinner && result.loser !== undefined && index === tiles.length - 1)} />)}</div>
+                      {state.players[seat].melds.length > 0 && <div className="mt-1 flex flex-wrap justify-center gap-1 border-t border-emerald-100 pt-1">{state.players[seat].melds.map((meld, meldIndex) => <div key={meldIndex} className="flex gap-px rounded bg-emerald-50 p-0.5">{meld.tiles.map((tile, tileIndex) => <TileFace key={`${tile}-${tileIndex}`} tile={tile} size="xs" traditional />)}</div>)}</div>}
+                    </div>;
+                  })}
                 </div>
-                {winnerMelds.length > 0 && (
-                  <div className="mt-3 border-t border-emerald-100 pt-3">
-                    <p className="mb-2 text-center text-xs font-black text-emerald-800">Called melds / Kongs</p>
-                    <div className="flex flex-wrap justify-center gap-3">
-                      {winnerMelds.map((meld, meldIndex) => <div key={meldIndex} className="flex gap-px rounded-lg bg-emerald-50 p-1">{meld.tiles.map((tile, tileIndex) => <TileFace key={`${tile}-${tileIndex}`} tile={tile} size="sm" traditional />)}</div>)}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </>

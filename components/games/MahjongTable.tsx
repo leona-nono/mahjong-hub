@@ -33,6 +33,7 @@ import {
 import { chooseClaim, chooseMove, type Difficulty } from '@/lib/mahjong/ai';
 import { describeScore } from '@/lib/mahjong/scoring';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
+import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
 
 const HUMAN: Seat = 0;
 
@@ -73,9 +74,14 @@ export default function MahjongTable({
     (nextRuleset: Ruleset = ruleset, nextHongKongMode: HongKongMode = hongKongMode) => {
       setState(createGame({ ruleset: nextRuleset, humanSeat: HUMAN, hongKongMode: nextHongKongMode }));
       setPaused(false);
+      trackMahjongEvent('mahjong_game_started', { variant: nextRuleset, mode: nextRuleset === 'hongkong' ? nextHongKongMode : 'default', source: 'new_hand' });
     },
     [ruleset, hongKongMode]
   );
+
+  useEffect(() => {
+    trackMahjongEvent('mahjong_game_started', { variant: defaultRuleset, source: 'initial_load' });
+  }, [defaultRuleset]);
 
   // --- Game driver --------------------------------------------------------
   // Everything that is not a human decision is advanced here on a timer, so the
