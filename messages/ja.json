@@ -32,15 +32,6 @@
     "originalTitle": "オリジナル",
     "originalSubtitle": "自社開発の四人麻雀と連結。無料・インストール不要。"
   },
-  "portal": {
-    "categories": "カテゴリ",
-    "solitaire": "ソリティア",
-    "classic": "クラシック",
-    "connect": "連結",
-    "tileMatch": "タイルマッチ",
-    "beginners": "ガイド",
-    "viewAll": "すべて見る"
-  },
   "game": {
     "play": "プレイ",
     "loading": "読み込み中…",
@@ -79,7 +70,9 @@
     "emailSend": "ログインリンクを送信",
     "emailSent": "ログインリンクを送信しました。受信トレイ（迷惑メール含む）を確認し、24時間以内にリンクをクリックしてください。複数回の送信はお控えください。",
     "emailSendAgain": "{n} 秒後に再送信",
-    "emailInvalid": "有効なメールアドレスを入力してください。"
+    "emailInvalid": "有効なメールアドレスを入力してください。",
+    "emailSendFailed": "ログインメールを送れませんでした。迷惑メールも確認するか、再試行してください。",
+    "emailMisconfigured": "メールログインの設定に問題があります。別の方法でサインインしてください。"
   },
   "points": {
     "youHave": "ポイント {n} 件"
@@ -135,18 +128,97 @@
     "undo": "取り消し",
     "shuffle": "シャッフル",
     "restart": "やり直す",
-    "cleared": "全消し！{n} 点。"
+    "cleared": "全消し！{n} 点。",
+    "lessons": "レッスン",
+    "freePlay": "フリープレイ",
+    "nextLesson": "次のレッスン",
+    "nextLevel": "次のレベル",
+    "campaign": "キャンペーン",
+    "levelN": "レベル {n}",
+    "bandEase": "易しい",
+    "bandRamp": "上昇",
+    "bandPeak": "ピーク",
+    "alphabetShort": "{n} 種類",
+    "dailyChallenge": "デイリーチャレンジ",
+    "dailyDone": "完了",
+    "streakN": "連続 {n}",
+    "guestClear": "ログインするとポイントと連続記録を保存できます。",
+    "alreadyCleared": "このレベルは受け取り済みです。",
+    "awardedPoints": "+{n} ポイント",
+    "playCampaign": "キャンペーンへ",
+    "coachSkip": "わかった",
+    "coachFree": "フリー牌だけマッチできます。上に載っておらず、左右どちらかが空いている牌です。ハイライトがフリー牌です。",
+    "coachFlower": "季節どうし・花どうしはどれでもマッチします。違う季節や花を合わせてみましょう。",
+    "coachDead": "手が尽きたら行き止まりです。レスキューで残りを再配置できます。",
+    "coachDeadPrompt": "行き止まりです。レスキューを押して進みましょう。",
+    "deadPrompt": "手がありません。レスキューで残りを再配置します。",
+    "rescue": "レスキュー",
+    "noFreeUndo": "無料アンドゥを使い切りました（{n}/ステージ）。アイテム・ポイント・動画で続行できます。",
+    "itemLocked": "進行に応じて解除されます。",
+    "needItem": "{item}がありません。続け方を選んでください。",
+    "itemPrice": "{n} ポイント",
+    "pointsBalance": "所持ポイント：{n}",
+    "buyWithPoints": "{n} ポイントで使う",
+    "watchAdOnce": "短い動画で1回（デモ）",
+    "watchAdRescue": "動画でレスキュー（デモ）",
+    "giveUp": "やり直す",
+    "cancel": "キャンセル",
+    "noMoves": "今はマッチできるフリー牌がありません。",
+    "a11yOpen": "アクセシビリティ"
+  },
+  "a11y": {
+    "title": "アクセシビリティ",
+    "done": "完了",
+    "blurb": "この端末に保存され、卓とソリティアで共有されます。",
+    "highContrast": "ハイコントラスト",
+    "reducedMotion": "動きを減らす",
+    "tileSize": "牌のサイズ",
+    "tileNormal": "標準",
+    "tileLarge": "大きめ"
+  },
+  "pwa": {
+    "installHint": "ホーム画面に追加するとすぐ開けます",
+    "installCta": "インストール",
+    "dismiss": "あとで"
   },
   "daily": {
     "title": "デイリーチェックイン",
     "todayReward": "今日の報酬：{n}ポイント（{day}日目）",
     "claimedReward": "チェックイン完了！+{n}ポイント（{day}日目）",
-    "claim": "チェックインして獲得",
-    "claimed": "今日はチェックイン済み",
+    "todayRewardShort": "今日 +{n}",
+    "claimedRewardShort": "受取済 +{n}",
+    "claim": "チェックイン",
+    "claimed": "済",
     "streakLine": "{days}日連続！明日は{n}ポイント",
+    "streakLineShort": "{days}日連続 · 明日 +{n}",
+    "cycleProgress": "今週 {filled}/7",
+    "dayShort": "D{day}",
+    "doneMark": "✓",
+    "weekAria": "7日間チェックイン進捗",
     "pointsTip": "ポイントの使い道は？",
     "tipBody": "ポイントで美しい牌背や牌卓スキン、エフェクトを交換できます！近日公開。",
-    "yourPoints": "あなたのポイント：{n}",
-    "guestNote": "ポイントは当面この端末に保存されます。"
+    "yourPoints": "{n} pt",
+    "guestNote": "ログイン後にポイントがアカウントへ保存されます。",
+    "claimFailed": "チェックインを保存できませんでした。更新して再試行してください。"
+  },
+  "challenge": {
+    "eyebrow": "本日",
+    "title": "デイリーチャレンジ",
+    "subtitle": "全員同じ盤面。クリアして連続記録を伸ばそう。",
+    "reward": "+{n} ポイント",
+    "streakBonus": "連続ボーナス +{n}",
+    "streak": "{n}日連続",
+    "cleared": "本日クリア済み",
+    "play": "今日の盤面を遊ぶ",
+    "playAgain": "もう一度"
+  },
+  "portal": {
+    "categories": "カテゴリ",
+    "solitaire": "ソリティア",
+    "classic": "クラシック",
+    "connect": "連結",
+    "tileMatch": "タイルマッチ",
+    "beginners": "ガイド",
+    "viewAll": "すべて見る"
   }
 }

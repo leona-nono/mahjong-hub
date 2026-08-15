@@ -2,7 +2,7 @@
 
 import { useLocale } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
-import { routing } from '@/i18n/routing';
+import { routing, type Locale } from '@/i18n/routing';
 
 const LABELS: Record<string, string> = {
   en: 'EN',
@@ -21,7 +21,11 @@ export default function LocaleSwitcher() {
     <select
       aria-label="Language"
       value={locale}
-      onChange={(e) => router.replace(pathname, { locale: e.target.value })}
+      onChange={(e) => {
+        const next = e.target.value as Locale;
+        if (!routing.locales.includes(next) || next === locale) return;
+        router.replace(pathname, { locale: next });
+      }}
       className="rounded-lg border border-portal-border bg-portal-panel px-2 py-1 text-xs font-semibold text-portal-text"
     >
       {routing.locales.map((l) => (

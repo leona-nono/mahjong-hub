@@ -32,15 +32,6 @@
     "originalTitle": "自研遊戲",
     "originalSubtitle": "自研四人麻將與連連看。免費，無需下載。"
   },
-  "portal": {
-    "categories": "分類",
-    "solitaire": "消除",
-    "classic": "經典",
-    "connect": "連連看",
-    "tileMatch": "配對",
-    "beginners": "教學",
-    "viewAll": "查看全部"
-  },
   "game": {
     "play": "開始遊戲",
     "loading": "遊戲載入中…",
@@ -79,7 +70,9 @@
     "emailSend": "傳送登入連結",
     "emailSent": "登入連結已傳送。請查收郵件（包括垃圾郵件）並在 24 小時內點擊。請勿重複傳送。",
     "emailSendAgain": "{n} 秒後可重新傳送",
-    "emailInvalid": "請輸入有效的電子郵件地址。"
+    "emailInvalid": "請輸入有效的電子郵件地址。",
+    "emailSendFailed": "登入郵件發送失敗。請檢查垃圾郵件，或稍後再試。若持續失敗，請檢查伺服器 SMTP 設定。",
+    "emailMisconfigured": "郵件登入未正確設定，請改用其他登入方式。"
   },
   "points": {
     "youHave": "你有 {n} 積分"
@@ -135,18 +128,97 @@
     "undo": "復原",
     "shuffle": "重排",
     "restart": "重新開始",
-    "cleared": "全部消除！{n} 分。"
+    "cleared": "全部消除！{n} 分。",
+    "lessons": "教學關",
+    "freePlay": "自由玩",
+    "nextLesson": "下一關",
+    "nextLevel": "下一關",
+    "campaign": "闖關",
+    "levelN": "第 {n} 關",
+    "bandEase": "輕鬆",
+    "bandRamp": "爬坡",
+    "bandPeak": "峰值",
+    "alphabetShort": "{n} 種牌",
+    "dailyChallenge": "每日挑戰",
+    "dailyDone": "已完成",
+    "streakN": "連勝 {n}",
+    "guestClear": "登入後可保存積分和連勝。",
+    "alreadyCleared": "本關已領過積分。",
+    "awardedPoints": "+{n} 積分",
+    "playCampaign": "去闖關",
+    "coachSkip": "知道了",
+    "coachFree": "只有「自由牌」才能配對：上方沒有壓牌，且左側或右側至少一側空出。高亮的就是目前自由牌。",
+    "coachFlower": "四季之間任意互配，四君子之間任意互配。試著點兩張不同的季節牌或花牌。",
+    "coachDead": "有時會出現沒有可配自由牌的死局。點「解圍」會把剩餘牌重排成可解局面。",
+    "coachDeadPrompt": "這就是死局。點「解圍」繼續——本關就是教這個。",
+    "deadPrompt": "沒有可走步了——解圍會把剩餘牌重排成可解局面。",
+    "rescue": "解圍",
+    "noFreeUndo": "本關免費復原已用完（{n} 次）。可用復原道具、積分或短影片續一次。",
+    "itemLocked": "該道具將隨進度解鎖。",
+    "needItem": "沒有{item}了——選一種方式繼續。",
+    "itemPrice": "需要 {n} 積分",
+    "pointsBalance": "目前積分：{n}",
+    "buyWithPoints": "花 {n} 積分",
+    "watchAdOnce": "看短影片試用 1 次（示範）",
+    "watchAdRescue": "看影片解圍（示範）",
+    "giveUp": "認輸重開",
+    "cancel": "取消",
+    "noMoves": "目前沒有可配的自由牌。",
+    "a11yOpen": "無障礙"
+  },
+  "a11y": {
+    "title": "無障礙設定",
+    "done": "完成",
+    "blurb": "保存在本裝置，四人桌與消除共用。",
+    "highContrast": "高對比度",
+    "reducedMotion": "減弱動效",
+    "tileSize": "牌面尺寸",
+    "tileNormal": "標準",
+    "tileLarge": "放大"
+  },
+  "pwa": {
+    "installHint": "加入主畫面，下次開啟更快",
+    "installCta": "安裝",
+    "dismiss": "以後再說"
   },
   "daily": {
     "title": "每日簽到",
     "todayReward": "今日可領取：{n} 積分（Day {day}）",
     "claimedReward": "簽到成功！+{n} 積分（Day {day}）",
-    "claim": "簽到領積分",
-    "claimed": "今日已簽到",
+    "todayRewardShort": "今日 +{n}",
+    "claimedRewardShort": "已領 +{n}",
+    "claim": "簽到",
+    "claimed": "已簽",
     "streakLine": "連續簽到 {days} 天，明天可得 {n} 積分",
+    "streakLineShort": "連簽 {days} 天 · 明日 +{n}",
+    "cycleProgress": "本週 {filled}/7",
+    "dayShort": "D{day}",
+    "doneMark": "✓",
+    "weekAria": "七天簽到進度",
     "pointsTip": "積分有什麼用？",
     "tipBody": "積分可兌換精美牌背、牌桌皮膚、特效！即將上線。",
-    "yourPoints": "你的積分：{n}",
-    "guestNote": "積分目前保存在本裝置上。"
+    "yourPoints": "{n} 積分",
+    "guestNote": "登入後積分才會記入帳號。",
+    "claimFailed": "簽到未能入帳，請重新整理後再試。"
+  },
+  "challenge": {
+    "eyebrow": "今日",
+    "title": "每日挑戰",
+    "subtitle": "全站同一盤牌，通關延續連勝。",
+    "reward": "+{n} 積分",
+    "streakBonus": "連勝獎勵 +{n}",
+    "streak": "連勝 {n} 天",
+    "cleared": "今日已通關",
+    "play": "開始今日挑戰",
+    "playAgain": "再玩一局"
+  },
+  "portal": {
+    "categories": "分類",
+    "solitaire": "消除",
+    "classic": "經典",
+    "connect": "連連看",
+    "tileMatch": "配對",
+    "beginners": "教學",
+    "viewAll": "查看全部"
   }
 }
