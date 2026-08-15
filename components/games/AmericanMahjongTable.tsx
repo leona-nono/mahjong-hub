@@ -5,7 +5,9 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import TileFace, { TileBack, useTraditionalTilePreload } from './TileFace';
 import { sortTiles, tileFace, type Tile } from '@/lib/mahjong/tiles';
 import { applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, exchangeAmericanJoker, getPracticeCard, legalAmericanClaims, ORIGINAL_PRACTICE_CARDS, passAmericanClaims, playAmericanDiscard, type AmericanGameState } from '@/lib/mahjong/american';
-import { playMahjongSound, primeMahjongAudio } from '@/lib/mahjong/sound';
+import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/lib/mahjong/sound';
+import MahjongAccessibilityPanel, { useMahjongPreferences } from './MahjongAccessibilityPanel';
+import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
 
 type CharlestonStep = 0 | 1 | 2 | 3;
 
@@ -56,6 +58,9 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   const [notice, setNotice] = useState('Choose exactly three tiles to begin the Charleston.');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [jokerExchangeMeld, setJokerExchangeMeld] = useState<number | null>(null);
+  const { preferences, setPreference } = useMahjongPreferences();
+  const [showAccessibility, setShowAccessibility] = useState(false);
+  const soundEnabled = preferences.soundEnabled;
 
   useEffect(() => {
     const syncFullscreenState = () => setIsFullscreen(document.fullscreenElement === tableRef.current);
@@ -68,7 +73,17 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
     const table = tableRef.current;
     if (!table) return;
     setIsFullscreen(true);
+    trackMahjongEvent('mahjong_fullscreen', { variant: 'american' });
     void table.requestFullscreen().catch(() => setIsFullscreen(false));
+  };
+
+  const toggleSound = () => {
+    primeMahjongAudio();
+    const next = !soundEnabled;
+    if (!next) stopMahjongSpeech();
+    setPreference('soundEnabled', next);
+    if (next) playMahjongSound('toggle', undefined, 'english');
+    trackMahjongEvent('mahjong_sound_changed', { variant: 'american', enabled: next });
   };
 
   const hand = autoSort ? sortAmerican(game.players[0].hand) : game.players[0].hand;
@@ -105,27 +120,35 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
 
   const reset = () => {
     primeMahjongAudio();
-    playMahjongSound('shuffle', undefined, 'english');
+    stopMahjongSpeech();
+    if (soundEnabled) playMahjongOpeningSequence('english');
     const next = createAmericanGame(Date.now());
-    next.players[0].hand.slice(0, 4).forEach((tile, index) => window.setTimeout(() => playMahjongSound('draw', tile as Tile, 'english'), 260 + index * 320));
     setGame(next);
     setSelected([]);
     setStep(0);
     setLastDiscard(null);
     setJokerExchangeMeld(null);
     setNotice('Choose exactly three tiles to begin the Charleston.');
+    trackMahjongEvent('mahjong_game_started', { variant: 'american', card: next.cardId, source: 'new_hand' });
   };
 
   const chooseCard = (cardId: string) => {
     primeMahjongAudio();
-    playMahjongSound('shuffle', undefined, 'english');
+    stopMahjongSpeech();
+    if (soundEnabled) playMahjongOpeningSequence('english');
     const next = createAmericanGame(Date.now(), cardId);
-    next.players[0].hand.slice(0, 4).forEach((tile, index) => window.setTimeout(() => playMahjongSound('draw', tile as Tile, 'english'), 260 + index * 320));
     setGame(next);
     setSelected([]); setStep(0); setLastDiscard(null);
     setJokerExchangeMeld(null);
     setNotice('New ' + getPracticeCard(cardId).title + ' hand. Choose 3 tiles to begin the Charleston.');
+    trackMahjongEvent('mahjong_game_started', { variant: 'american', card: cardId, source: 'card_selected' });
   };
+
+  useEffect(() => {
+    trackMahjongEvent('mahjong_game_started', { variant: 'american', card: game.cardId, source: 'initial_load' });
+    // The initial board is intentionally tracked once; subsequent hands use reset/chooseCard.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const secondCharleston = (play: boolean) => {
     try {
       const next = decideSecondCharleston(game, play);
@@ -135,20 +158,20 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   };
   const declare = () => {
     const result = declareAmericanMahJong(game);
-    if (result.declared) { playMahjongSound('win', undefined, 'english'); setGame(result.state); setNotice('MAH JONGG! ' + result.evaluation.message); onWin?.(card.points); }
+    if (result.declared) { if (soundEnabled) playMahjongSound('win', undefined, 'english'); setGame(result.state); setNotice('MAH JONGG! ' + result.evaluation.message); onWin?.(card.points); }
     else setNotice('Cannot declare Mah Jongg: ' + result.evaluation.message);
   };
   const claim = (kind: 'pung' | 'kong') => {
     try {
       const next = claimAmericanDiscard(game, 0, kind);
-      playMahjongSound(kind === 'pung' ? 'pon' : 'kan', undefined, 'english'); setGame(next); setNotice('You called ' + kind + '. You must discard a tile.');
+      if (soundEnabled) playMahjongSound(kind === 'pung' ? 'pon' : 'kan', undefined, 'english'); setGame(next); setNotice('You called ' + kind + '. You must discard a tile.');
     } catch (error) { setNotice(error instanceof Error ? error.message : 'Call failed.'); }
   };
   const claimMahJongg = () => {
     try {
       const result = claimAmericanMahJong(game);
       if (!result.declared) { setNotice(result.evaluation.message); return; }
-      playMahjongSound('win', undefined, 'english'); setGame(result.state); setNotice('MAH JONGG! ' + result.evaluation.message); onWin?.(card.points);
+      if (soundEnabled) playMahjongSound('win', undefined, 'english'); setGame(result.state); setNotice('MAH JONGG! ' + result.evaluation.message); onWin?.(card.points);
     } catch (error) { setNotice(error instanceof Error ? error.message : 'Mah Jongg claim failed.'); }
   };
   const passClaims = () => {
@@ -179,7 +202,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
     try {
       const direction = game.phase === 'courtesy' ? 'right' : game.charlestonRound === 2 ? (['left', 'across', 'right'] as const)[game.passIndex] : (['right', 'across', 'left'] as const)[game.passIndex];
       const next = applyAmericanPass(game, selectedTiles, direction);
-      playMahjongSound('draw', undefined, 'english');
+      if (soundEnabled) playMahjongSound('draw', undefined, 'english');
       setGame(next);
       setSelected([]);
       if (next.phase === 'second-charleston-choice') { setStep(3); setNotice('First Charleston complete. Choose whether to play the second Charleston.'); }
@@ -197,14 +220,14 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
     const tile = hand[index];
     try {
       const next = playAmericanDiscard(game, tile);
-      primeMahjongAudio(); playMahjongSound('discard', undefined, 'english'); setGame(next); setLastDiscard(tile);
+      primeMahjongAudio(); if (soundEnabled) playMahjongSound('discard', tile as Tile, 'english'); setGame(next); setLastDiscard(tile);
       setNotice(`You discarded ${tile.startsWith('j') ? 'a Joker' : tileFace(tile as Tile)}. The three bots used their actual concealed hands and the same wall.`);
       if (targetProgress.groups.every((group) => group.current === group.required)) onWin?.(card.points);
     } catch (error) { setNotice(error instanceof Error ? error.message : 'Discard failed.'); }
   };
 
   return (
-    <section ref={tableRef} className={`mahjong-table-shell ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3`}>
+    <section ref={tableRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3`}>
       {/* A browser at 110–125% zoom often reports <1024 CSS pixels.  The
           tabletop must still be the default on desktop-sized screens; only
           genuinely narrow phones use the compact interaction layout. */}
@@ -213,6 +236,8 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           <div className="flex gap-2">
             <TableButton onClick={reset}>↻ New Game</TableButton>
             <TableButton onClick={() => setAutoSort((value) => !value)} active={autoSort}>Sort By Suit</TableButton>
+            <TableButton onClick={toggleSound} active={soundEnabled}>{soundEnabled ? 'Sound On' : 'Sound Off'}</TableButton>
+            <TableButton onClick={() => setShowAccessibility(true)}>Aa</TableButton>
             <select aria-label="Original practice card" value={game.cardId} onChange={(event) => chooseCard(event.target.value)} className="h-9 rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-black text-white">
               {ORIGINAL_PRACTICE_CARDS.map((item) => <option key={item.id} value={item.id}>{item.title} · {item.points}</option>)}
             </select>
@@ -225,6 +250,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           <div className="absolute inset-y-0 left-0 w-[11%] bg-[linear-gradient(105deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute inset-y-0 right-0 w-[11%] bg-[linear-gradient(255deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute left-4 top-3 text-xl font-semibold leading-6 text-emerald-100/45">NMJL-STYLE<br />PRACTICE<br />Rate: 10</div>
+          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-[10px] font-bold tracking-wide text-emerald-50">Original practice table · all three opponents are AI · not an NMJL annual card</p>
 
           <Wall className="left-1/2 top-8 -translate-x-1/2" count={13} />
           <Wall className="left-[16%] top-1/2 -translate-y-1/2" count={13} vertical />
@@ -293,7 +319,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
       </div>
 
       <div className="min-h-[620px] bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_62%,#003c2d_100%)] p-3 text-white min-[700px]:hidden" style={isFullscreen ? { minHeight: '100dvh' } : undefined}>
-        <div className="flex items-center justify-between"><strong className="text-xs tracking-[.18em]">AMERICAN MAHJONG</strong><div className="flex gap-1"><button type="button" className="rounded bg-amber-300 px-3 py-1 text-xs font-black text-emerald-950" onClick={reset}>New</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={enterFullscreen}>Full</button></div></div>
+        <div className="flex items-center justify-between"><strong className="text-xs tracking-[.18em]">AMERICAN MAHJONG · AI</strong><div className="flex gap-1"><button type="button" className="rounded bg-amber-300 px-3 py-1 text-xs font-black text-emerald-950" onClick={reset}>New</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={toggleSound}>{soundEnabled ? 'Sound' : 'Muted'}</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={() => setShowAccessibility(true)}>Aa</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={enterFullscreen}>Full</button></div></div>
         <div className="mt-4 rounded-2xl border border-white/10 bg-[#003b2d]/90 p-4 text-center"><p className="text-lg font-black">{game.phase === 'second-charleston-choice' ? 'Second Charleston?' : game.phase === 'courtesy' ? 'Courtesy Pass' : inCharleston ? `Charleston ${game.charlestonRound}-${step + 1}` : 'Your turn'}</p><p className="mt-1 text-sm text-emerald-100">{notice}</p><p className="mt-2 text-[10px] text-emerald-200">{card.title} · original practice card · not an NMJL annual card</p></div>
         <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-emerald-100"><Opponent label="P4" /><Opponent label="P3" /><Opponent label="P2" /></div>
         <div className="mt-5 rounded-xl bg-black/25 p-3"><p className="text-center text-xs font-black">{inCharleston ? `Tap 3 tiles to pass · ${selected.length}/3` : 'Tap a tile to discard'}</p><div className="mt-3 flex flex-wrap justify-center gap-1">{hand.map((tile, index) => <AmericanTile key={`${tile}-${index}`} tile={tile} selected={selected.includes(index)} onClick={() => discard(index)} highlight={!inCharleston && index === hand.length - 1} compact />)}</div></div>
@@ -315,6 +341,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
         </div>
       </div>}
       {game.phase === 'ended' && game.settlement && <ResultReview game={game} onNew={reset} />}
+      {showAccessibility && <MahjongAccessibilityPanel preferences={preferences} onChange={(key, value) => { setPreference(key, value); trackMahjongEvent('mahjong_accessibility_changed', { setting: key, value: String(value) }); }} onClose={() => setShowAccessibility(false)} />}
     </section>
   );
 }
@@ -337,6 +364,7 @@ function ResultReview({ game, onNew }: { game: AmericanGameState; onNew: () => v
       <h2 className="text-center text-3xl font-black">MAH JONGG!</h2>
       <p className="mt-1 text-center font-bold">{game.settlement!.reason} · {game.settlement!.points} points</p>
       <p className="mt-3 text-sm font-bold">Winner: Seat {winner + 1}. All four hands are revealed for a fair review.</p>
+      <div className="mt-3 rounded-xl bg-emerald-950/10 p-3 text-sm"><strong>Settlement ledger</strong><div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">{game.settlement!.transfers.map((transfer, seat) => <span key={seat} className={`rounded-lg px-2 py-1 font-black ${transfer >= 0 ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-800'}`}>Seat {seat + 1}: {transfer >= 0 ? '+' : ''}{transfer}</span>)}</div></div>
       <div className="mt-3 grid gap-3 md:grid-cols-2">{game.players.map((player) => <div key={player.seat} className={`rounded-xl border p-3 ${player.seat === winner ? 'border-amber-400 bg-amber-50' : 'border-emerald-900/20 bg-white'}`}><p className="font-black">Seat {player.seat + 1} · {player.score >= 0 ? '+' : ''}{player.score}</p><div className="mt-2 flex flex-wrap gap-1">{[...player.hand, ...player.melds.flatMap((meld) => meld.tiles)].map((tile, index) => <AmericanTile key={index} tile={tile} compact />)}</div><p className="mt-2 text-xs">Discards: {player.discards.join(', ') || 'none'}</p></div>)}</div>
       <div className="mt-4 rounded-xl bg-emerald-950/10 p-3 text-xs"><strong>Replay log</strong>{game.history.map((entry, index) => <p key={index}>{index + 1}. {entry}</p>)}</div>
       <button type="button" onClick={onNew} className="mt-4 w-full rounded-xl bg-[#087052] py-3 font-black text-white">New hand</button>

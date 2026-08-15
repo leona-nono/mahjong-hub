@@ -89,7 +89,7 @@ export function resetPointsForGuest() {
 
 export async function awardPoints(
   amount: number,
-  reason: 'start_game' | 'game_win',
+  reason: 'start_game',
   gameSlug?: string
 ): Promise<AwardResult> {
   if (!getAuthState().user) {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { GAME_WIN_MAX, START_GAME_POINTS } from '@/lib/points-rules';
+import { START_GAME_POINTS } from '@/lib/points-rules';
 import { checkinStateForUser, grantFirstLoginIfNeeded } from '@/lib/points-server';
 import { requireUserId } from '@/lib/require-user';
 
@@ -23,12 +23,13 @@ export async function GET() {
   }
 }
 
-const AWARD_REASONS = ['start_game', 'game_win'] as const;
+// Browser-only game state cannot prove a win. Game-win points will return only
+// after the server match service issues a one-time settlement receipt.
+const AWARD_REASONS = ['start_game'] as const;
 type AwardReason = (typeof AWARD_REASONS)[number];
 
 const DAILY_CAP: Record<AwardReason, number> = {
   start_game: 50,
-  game_win: 200
 };
 
 function isAwardReason(value: unknown): value is AwardReason {
@@ -57,19 +58,8 @@ export async function POST(req: NextRequest) {
   }
   const reason = b.reason;
 
-  const gameSlug =
-    typeof b.gameSlug === 'string' && b.gameSlug.length > 0 && b.gameSlug.length <= 64
-      ? b.gameSlug
-      : null;
-
-  if (reason === 'game_win' && !gameSlug) {
-    return NextResponse.json({ error: 'gameSlug required' }, { status: 400 });
-  }
-
-  const amount =
-    reason === 'start_game'
-      ? START_GAME_POINTS
-      : Math.min(GAME_WIN_MAX, Math.max(1, Math.floor(Number(b.amount) || 0)));
+  const gameSlug = null;
+  const amount = START_GAME_POINTS;
 
   if (!Number.isInteger(amount) || amount <= 0) {
     return NextResponse.json({ error: 'invalid amount' }, { status: 400 });

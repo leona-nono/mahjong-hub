@@ -38,6 +38,7 @@ export interface MobileMahjongTableProps {
   onKan: (tile: Tile) => void;
   onRiichi?: () => void;
   onFullscreen: () => void;
+  onAccessibility: () => void;
 }
 
 export default function MobileMahjongTable(props: MobileMahjongTableProps) {
@@ -45,7 +46,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
     state, variant, paused, soundEnabled, hongKongMode, showHints, myTurn, myClaims, hints,
     canTsumo, tsumoEvaluation, kanTiles, riichiDiscards, roundLabel, onTogglePause,
     onToggleHints, onToggleSound, onHongKongMode, onNewGame, onNextHand, onDiscard, onClaim, onTsumo,
-    onKan, onRiichi, onFullscreen
+    onKan, onRiichi, onFullscreen, onAccessibility
   } = props;
   const human = state.players[HUMAN];
   const isRiichi = variant === 'riichi';
@@ -65,6 +66,10 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
     ...(state.result?.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
   ];
   const winnerMelds = winnerSeat === undefined ? [] : state.players[winnerSeat].melds;
+  const allReviewTiles = (seat: Seat) => [
+    ...state.players[seat].hand,
+    ...(seat === winnerSeat && state.result?.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
+  ];
   const hintStatus = (() => {
     if (!showHints || !hints) return null;
     if (tsumoEvaluation?.complete) {
@@ -89,6 +94,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
           <Tool onClick={() => { primeMahjongAudio(); onNewGame(); }}>New</Tool>
           <Tool onClick={onToggleHints} active={showHints}>Hint</Tool>
           <Tool onClick={onToggleSound} active={soundEnabled}>{soundEnabled ? 'Sound' : 'Muted'}</Tool>
+          <Tool onClick={onAccessibility}>Aa</Tool>
         </div>
         <div className="flex gap-1">
           {variant === 'hongkong' && (
@@ -104,13 +110,14 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
       </div>
 
       <div className="relative h-[calc(100%-3rem)] overflow-hidden bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_58%,#003c2d_100%)] landscape:h-[calc(100dvh-3rem)]">
+        <p className="absolute left-1/2 top-1 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#003d2f]/85 px-2 py-0.5 text-[9px] font-bold text-emerald-50">All opponents are AI</p>
         <Opponent state={state} seat={3} className="left-1/2 top-2 -translate-x-1/2" />
         <Opponent state={state} seat={2} className="left-1 top-[24%]" />
         <Opponent state={state} seat={1} className="right-1 top-[24%]" />
 
-        <Rack count={state.players[3].hand.length} className="left-1/2 top-[18%] -translate-x-1/2" />
-        <Rack count={9} vertical className="left-2 top-[37%]" />
-        <Rack count={9} vertical className="right-2 top-[37%]" />
+        <Rack count={state.players[3].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[3].hand : undefined} className="left-1/2 top-[18%] -translate-x-1/2" />
+        <Rack count={state.players[2].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[2].hand : undefined} vertical className="left-2 top-[37%]" />
+        <Rack count={state.players[1].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[1].hand : undefined} vertical className="right-2 top-[37%]" />
 
         {/* Mobile-safe discard lanes: left/right discards sit outside the
             scoreboard footprint, so no opponent tile is hidden behind it. */}
@@ -307,11 +314,11 @@ function Opponent({ state, seat, className }: { state: GameState; seat: Seat; cl
   );
 }
 
-function Rack({ count, vertical = false, className }: { count: number; vertical?: boolean; className: string }) {
+function Rack({ count, tiles, vertical = false, className }: { count: number; tiles?: Tile[]; vertical?: boolean; className: string }) {
   return (
     <div className={'absolute flex ' + (vertical ? 'flex-col ' : '') + className}>
       {Array.from({ length: Math.min(count, 14) }, (_, index) => (
-        <span key={index} className={vertical ? '-my-3' : '-mx-2'}><TileBack size="sm" /></span>
+        <span key={index} className={vertical ? '-my-3' : '-mx-2'}>{tiles?.[index] ? <TileFace tile={tiles[index]} size="xs" traditional /> : <TileBack size="sm" />}</span>
       ))}
     </div>
   );
