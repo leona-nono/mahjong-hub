@@ -164,7 +164,14 @@
     "giveUp": "Restart",
     "cancel": "Cancel",
     "noMoves": "No matching free pair right now.",
-    "a11yOpen": "Accessibility"
+    "a11yOpen": "Accessibility",
+    "fish": "Fish",
+    "butterfly": "Butterfly",
+    "gate": "Gate",
+    "layoutPicker": "Layouts",
+    "settings": "Settings",
+    "pause": "Pause",
+    "resume": "Resume"
   },
   "a11y": {
     "title": "Accessibility",
@@ -174,7 +181,15 @@
     "reducedMotion": "Reduce motion",
     "tileSize": "Tile size",
     "tileNormal": "Normal",
-    "tileLarge": "Large"
+    "tileLarge": "Large",
+    "settingsTitle": "Game settings",
+    "settingsBlurb": "Saved on this device. Shortcuts: H hint · Z undo · P pause.",
+    "highlightFree": "Highlight free tiles",
+    "tableTheme": "Table theme",
+    "themeTeal": "Teal felt",
+    "themeFelt": "Classic green",
+    "themeNight": "Night blue",
+    "hotkeysHint": "Desktop: H = hint, Z = undo, P = pause/resume."
   },
   "pwa": {
     "installHint": "Add to Home Screen for quicker play",

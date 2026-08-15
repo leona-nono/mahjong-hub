@@ -164,7 +164,14 @@
     "giveUp": "다시 시작",
     "cancel": "취소",
     "noMoves": "지금은 맞출 자유 패가 없습니다.",
-    "a11yOpen": "접근성"
+    "a11yOpen": "접근성",
+    "fish": "물고기",
+    "butterfly": "나비",
+    "gate": "문",
+    "layoutPicker": "배치",
+    "settings": "설정",
+    "pause": "일시정지",
+    "resume": "재개"
   },
   "a11y": {
     "title": "접근성",
@@ -174,7 +181,15 @@
     "reducedMotion": "움직임 줄이기",
     "tileSize": "패 크기",
     "tileNormal": "보통",
-    "tileLarge": "크게"
+    "tileLarge": "크게",
+    "settingsTitle": "게임 설정",
+    "settingsBlurb": "이 기기에 저장됩니다. 단축키: H 힌트 · Z 실행 취소 · P 일시정지.",
+    "highlightFree": "자유 패 강조",
+    "tableTheme": "테이블 테마",
+    "themeTeal": "청록",
+    "themeFelt": "클래식 그린",
+    "themeNight": "나이트 블루",
+    "hotkeysHint": "PC: H=힌트, Z=실행 취소, P=일시정지/재개."
   },
   "pwa": {
     "installHint": "홈 화면에 추가하면 더 빠르게 열 수 있어요",

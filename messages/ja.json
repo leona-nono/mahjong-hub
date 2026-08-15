@@ -164,7 +164,14 @@
     "giveUp": "やり直す",
     "cancel": "キャンセル",
     "noMoves": "今はマッチできるフリー牌がありません。",
-    "a11yOpen": "アクセシビリティ"
+    "a11yOpen": "アクセシビリティ",
+    "fish": "魚",
+    "butterfly": "蝶",
+    "gate": "門",
+    "layoutPicker": "レイアウト",
+    "settings": "設定",
+    "pause": "一時停止",
+    "resume": "再開"
   },
   "a11y": {
     "title": "アクセシビリティ",
@@ -174,7 +181,15 @@
     "reducedMotion": "動きを減らす",
     "tileSize": "牌のサイズ",
     "tileNormal": "標準",
-    "tileLarge": "大きめ"
+    "tileLarge": "大きめ",
+    "settingsTitle": "ゲーム設定",
+    "settingsBlurb": "この端末に保存。ショートカット：H ヒント · Z 取消 · P 一時停止。",
+    "highlightFree": "フリー牌をハイライト",
+    "tableTheme": "卓のテーマ",
+    "themeTeal": "ティール",
+    "themeFelt": "クラシック緑",
+    "themeNight": "ナイトブルー",
+    "hotkeysHint": "PC：H=ヒント、Z=取消、P=一時停止/再開。"
   },
   "pwa": {
     "installHint": "ホーム画面に追加するとすぐ開けます",

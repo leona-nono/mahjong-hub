@@ -164,7 +164,14 @@
     "giveUp": "認輸重開",
     "cancel": "取消",
     "noMoves": "目前沒有可配的自由牌。",
-    "a11yOpen": "無障礙"
+    "a11yOpen": "無障礙",
+    "fish": "魚",
+    "butterfly": "蝴蝶",
+    "gate": "城門",
+    "layoutPicker": "布局",
+    "settings": "設定",
+    "pause": "暫停",
+    "resume": "繼續"
   },
   "a11y": {
     "title": "無障礙設定",
@@ -174,7 +181,15 @@
     "reducedMotion": "減弱動效",
     "tileSize": "牌面尺寸",
     "tileNormal": "標準",
-    "tileLarge": "放大"
+    "tileLarge": "放大",
+    "settingsTitle": "遊戲設定",
+    "settingsBlurb": "保存在本裝置。快捷鍵：H 提示 · Z 復原 · P 暫停。",
+    "highlightFree": "高亮可點的自由牌",
+    "tableTheme": "桌面主題",
+    "themeTeal": "青綠",
+    "themeFelt": "經典綠",
+    "themeNight": "夜藍",
+    "hotkeysHint": "電腦端：H 提示，Z 復原，P 暫停/繼續。"
   },
   "pwa": {
     "installHint": "加入主畫面，下次開啟更快",

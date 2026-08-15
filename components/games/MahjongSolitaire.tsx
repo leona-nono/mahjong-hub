@@ -13,9 +13,8 @@ import {
 } from '@/lib/mahjong-solitaire/board';
 import { createBoard } from '@/lib/mahjong-solitaire/generator';
 import { isDead } from '@/lib/mahjong-solitaire/solver';
-import { measureDifficulty } from '@/lib/mahjong-solitaire/difficulty';
 import type { SolitaireLayout } from '@/lib/mahjong-solitaire/layouts';
-import { layoutTileCount } from '@/lib/mahjong-solitaire/layouts';
+import { FREE_PLAY_LAYOUTS, layoutTileCount } from '@/lib/mahjong-solitaire/layouts';
 import { FREE_UNDO_PER_LEVEL } from '@/lib/mahjong-solitaire/tiles';
 import {
   applyMatchScore,
@@ -23,7 +22,6 @@ import {
 } from '@/lib/mahjong-solitaire/scoring';
 import {
   TEACHING_LEVELS,
-  bandLabelKey,
   campaignOptions,
   createLevelBoard,
   getLevel,
@@ -335,7 +333,6 @@ export default function MahjongSolitaire({
     };
   }, [board.positions]);
 
-  const metrics = measureDifficulty(board);
   const showCoach = mode === 'level' && Boolean(level.coachKey) && !coachDismissed;
   const campaignUpto = Math.max(12, parseCampaignLevel(level.id) ?? 0);
   const campaignLevels = useMemo(
@@ -510,11 +507,61 @@ export default function MahjongSolitaire({
     setOffer(null);
   };
 
+  const hotkeys = useRef({
+    hint: runHint,
+    undo: runUndo,
+    togglePause: () => setPaused((v) => !v)
+  });
+  hotkeys.current = {
+    hint: runHint,
+    undo: runUndo,
+    togglePause: () => setPaused((v) => !v)
+  };
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'SELECT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      const key = event.key.toLowerCase();
+      if (key === 'p') {
+        event.preventDefault();
+        hotkeys.current.togglePause();
+        return;
+      }
+      if (key === 'h') {
+        event.preventDefault();
+        void hotkeys.current.hint('inventory');
+        return;
+      }
+      if (key === 'z') {
+        event.preventDefault();
+        void hotkeys.current.undo('inventory');
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   const enterFree = () => {
     setMode('free');
     setLayout(defaultLayout);
     restartFree(defaultLayout);
     setCoachDismissed(true);
+  };
+
+  const layoutLabel = (id: SolitaireLayout) => {
+    if (id === 'classic') return 'Classic 144';
+    if (id === 'mini') return 'Mini';
+    if (id === 'flat36') return 'Flat 36';
+    return t(id as 'turtle' | 'pyramid' | 'fish' | 'butterfly' | 'gate');
   };
 
   const itemBtn = (
@@ -545,12 +592,14 @@ export default function MahjongSolitaire({
       data-high-contrast={preferences.highContrast ? 'true' : 'false'}
       data-reduced-motion={preferences.reducedMotion ? 'true' : 'false'}
       data-tile-scale={preferences.tileScale}
+      data-table-theme={preferences.tableTheme}
     >
       {a11yOpen && (
         <MahjongAccessibilityPanel
           preferences={preferences}
           onChange={setPreference}
           onClose={() => setA11yOpen(false)}
+          solitaireExtras
         />
       )}
       <div className="sticky top-2 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-700 bg-[#172f39]/95 p-2 text-sm shadow-md backdrop-blur">
@@ -570,7 +619,7 @@ export default function MahjongSolitaire({
             setMode('level');
             restartLevel(next);
           }}
-          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100"
+          className="max-w-[11rem] rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100 sm:max-w-none"
           aria-label={t('layoutLabel')}
         >
           <optgroup label={t('lessons')}>
@@ -596,11 +645,11 @@ export default function MahjongSolitaire({
             ))}
           </optgroup>
           <optgroup label={t('freePlay')}>
-            <option value="free:classic">Classic 144</option>
-            <option value="free:mini">Mini 72</option>
-            <option value="free:turtle">{t('turtle')}</option>
-            <option value="free:pyramid">{t('pyramid')}</option>
-            <option value="free:flat36">Flat 36</option>
+            {FREE_PLAY_LAYOUTS.map((id) => (
+              <option key={id} value={`free:${id}`}>
+                {layoutLabel(id)}
+              </option>
+            ))}
           </optgroup>
         </select>
 
@@ -610,25 +659,9 @@ export default function MahjongSolitaire({
         <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-slate-300">
           {t('left', { n: board.remaining })}
         </span>
-        <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-amber-200">
-          ×{scoreState.combo || 1}
-        </span>
-        <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-slate-400">
-          undo {board.freeUndosLeft}/{FREE_UNDO_PER_LEVEL}
-        </span>
-        <span className="hidden rounded-full bg-[#213c47] px-3 py-1.5 text-slate-500 sm:inline">
-          branch {metrics.branchWidth}
-        </span>
-        {mode === 'level' && level.campaign && (
-          <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-sky-200/90">
-            {t('levelN', { n: level.campaign.level })} ·{' '}
-            {t(bandLabelKey(level.campaign.band))} ·{' '}
-            {t('alphabetShort', { n: level.campaign.alphabet })}
-          </span>
-        )}
-        {dailyHud && (
-          <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-amber-100/90">
-            {t('streakN', { n: dailyHud.streak })}
+        {scoreState.combo > 1 && (
+          <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-amber-200">
+            ×{scoreState.combo}
           </span>
         )}
 
@@ -644,17 +677,18 @@ export default function MahjongSolitaire({
         <button
           type="button"
           onClick={() => setPaused((value) => !value)}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-700"
+          className="rounded-full border border-slate-500 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100"
         >
-          {paused ? 'Resume' : 'Pause'}
+          {paused ? t('resume') : t('pause')}
         </button>
         <button
           type="button"
           onClick={() => setA11yOpen(true)}
           className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100 hover:bg-[#2c4b57]"
-          aria-label={t('a11yOpen')}
+          aria-label={t('settings')}
+          title={t('settings')}
         >
-          {t('a11yOpen')}
+          {t('settings')}
         </button>
         <button
           type="button"
@@ -666,6 +700,38 @@ export default function MahjongSolitaire({
           {t('restart')}
         </button>
       </div>
+
+      {mode === 'free' && (
+        <div className="mb-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+            {t('layoutPicker')}
+          </p>
+          <div className="portal-scrollbar flex gap-2 overflow-x-auto pb-1">
+            {FREE_PLAY_LAYOUTS.map((id) => {
+              const active = layout === id;
+              const n = layoutTileCount(id);
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => {
+                    setLayout(id);
+                    restartFree(id);
+                  }}
+                  className={`shrink-0 rounded-xl border px-3 py-2 text-left transition ${
+                    active
+                      ? 'border-emerald-400/70 bg-emerald-500/15 text-emerald-100'
+                      : 'border-slate-600 bg-[#213c47] text-slate-200 hover:border-slate-400'
+                  }`}
+                >
+                  <span className="block text-sm font-semibold">{layoutLabel(id)}</span>
+                  <span className="text-[11px] text-slate-400">{n} tiles</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {showCoach && (
         <div className="mb-3 flex flex-wrap items-start justify-between gap-2 rounded-2xl border border-sky-500/40 bg-sky-500/10 px-4 py-3 text-sm text-sky-50">
@@ -834,6 +900,13 @@ export default function MahjongSolitaire({
               level.tutorial === 'free_tile' &&
               exposed &&
               !isSelected;
+            const freeHighlight =
+              preferences.highlightFreeTiles &&
+              exposed &&
+              status === 'playing' &&
+              !paused &&
+              !isSelected &&
+              !isHinted;
 
             return (
               <button
@@ -847,7 +920,8 @@ export default function MahjongSolitaire({
                   exposed
                     ? 'cursor-pointer hover:-translate-y-1 hover:shadow-lg'
                     : 'cursor-default',
-                  coachHighlight ? 'ring-2 ring-sky-300/80' : ''
+                  coachHighlight ? 'ring-2 ring-sky-300/80' : '',
+                  freeHighlight ? 'solitaire-free-highlight' : ''
                 ].join(' ')}
                 style={{
                   left: p.col * CELL_W - p.layer * STACK_X - geometry.minX,

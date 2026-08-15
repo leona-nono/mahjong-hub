@@ -109,6 +109,9 @@ describe('layouts', () => {
     expect(layoutTileCount('classic')).toBe(144);
     expect(layoutTileCount('turtle')).toBe(74);
     expect(layoutTileCount('pyramid')).toBe(90);
+    expect(layoutTileCount('fish')).toBe(60);
+    expect(layoutTileCount('butterfly')).toBe(60);
+    expect(layoutTileCount('gate')).toBe(72);
     expect(layoutTileCount('mini') % 2).toBe(0);
   });
 });

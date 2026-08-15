@@ -3,11 +3,18 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
+export type TileScale = 'normal' | 'large';
+export type TableTheme = 'teal' | 'felt' | 'night';
+
 export interface MahjongPreferences {
   soundEnabled: boolean;
   highContrast: boolean;
   reducedMotion: boolean;
-  tileScale: 'normal' | 'large';
+  tileScale: TileScale;
+  /** Highlight free (playable) tiles — TheMahjong-style assist. */
+  highlightFreeTiles: boolean;
+  /** Board felt / backdrop theme. */
+  tableTheme: TableTheme;
 }
 
 const KEY = 'mahjong-hub.table-preferences.v1';
@@ -15,7 +22,9 @@ const DEFAULTS: MahjongPreferences = {
   soundEnabled: true,
   highContrast: false,
   reducedMotion: false,
-  tileScale: 'normal'
+  tileScale: 'normal',
+  highlightFreeTiles: true,
+  tableTheme: 'teal'
 };
 
 function readPreferences(): MahjongPreferences {
@@ -48,11 +57,14 @@ export function useMahjongPreferences() {
 export default function MahjongAccessibilityPanel({
   preferences,
   onChange,
-  onClose
+  onClose,
+  /** When true, show solitaire-only assists (free-tile highlight, table theme). */
+  solitaireExtras = false
 }: {
   preferences: MahjongPreferences;
   onChange: <K extends keyof MahjongPreferences>(key: K, value: MahjongPreferences[K]) => void;
   onClose: () => void;
+  solitaireExtras?: boolean;
 }) {
   const t = useTranslations('a11y');
   return (
@@ -64,7 +76,7 @@ export default function MahjongAccessibilityPanel({
     >
       <div className="w-full max-w-sm rounded-2xl border border-emerald-100/30 bg-[#f7f4e9] p-5 text-slate-900 shadow-2xl">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-black">{t('title')}</h2>
+          <h2 className="text-lg font-black">{solitaireExtras ? t('settingsTitle') : t('title')}</h2>
           <button
             type="button"
             onClick={onClose}
@@ -73,8 +85,17 @@ export default function MahjongAccessibilityPanel({
             {t('done')}
           </button>
         </div>
-        <p className="mt-2 text-sm text-slate-600">{t('blurb')}</p>
+        <p className="mt-2 text-sm text-slate-600">
+          {solitaireExtras ? t('settingsBlurb') : t('blurb')}
+        </p>
         <div className="mt-4 space-y-3 text-sm font-bold">
+          {solitaireExtras && (
+            <Setting
+              label={t('highlightFree')}
+              checked={preferences.highlightFreeTiles}
+              onChange={(checked) => onChange('highlightFreeTiles', checked)}
+            />
+          )}
           <Setting
             label={t('highContrast')}
             checked={preferences.highContrast}
@@ -91,7 +112,7 @@ export default function MahjongAccessibilityPanel({
               aria-label={t('tileSize')}
               value={preferences.tileScale}
               onChange={(event) =>
-                onChange('tileScale', event.target.value as MahjongPreferences['tileScale'])
+                onChange('tileScale', event.target.value as TileScale)
               }
               className="rounded-md border border-slate-300 bg-white px-2 py-1"
             >
@@ -99,6 +120,28 @@ export default function MahjongAccessibilityPanel({
               <option value="large">{t('tileLarge')}</option>
             </select>
           </label>
+          {solitaireExtras && (
+            <label className="flex items-center justify-between gap-4 rounded-xl border border-slate-200 p-3">
+              {t('tableTheme')}
+              <select
+                aria-label={t('tableTheme')}
+                value={preferences.tableTheme}
+                onChange={(event) =>
+                  onChange('tableTheme', event.target.value as TableTheme)
+                }
+                className="rounded-md border border-slate-300 bg-white px-2 py-1"
+              >
+                <option value="teal">{t('themeTeal')}</option>
+                <option value="felt">{t('themeFelt')}</option>
+                <option value="night">{t('themeNight')}</option>
+              </select>
+            </label>
+          )}
+          {solitaireExtras && (
+            <p className="rounded-xl border border-slate-200 bg-white/60 px-3 py-2 text-xs font-medium text-slate-600">
+              {t('hotkeysHint')}
+            </p>
+          )}
         </div>
       </div>
     </div>

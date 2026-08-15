@@ -14,7 +14,10 @@ export type SolitaireLayout =
   | 'mini'
   | 'turtle'
   | 'classic'
-  | 'pyramid';
+  | 'pyramid'
+  | 'fish'
+  | 'butterfly'
+  | 'gate';
 
 export interface Pos {
   row: number;
@@ -163,13 +166,86 @@ function positionsForPyramid(): Pos[] {
   return positions;
 }
 
+/** Fish silhouette — 60 tiles (even). */
+const FISH_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      '....XXXX....',
+      '...XXXXXX...',
+      '..XXXXXXXX..',
+      '.XXXXXXXXXX.',
+      '..XXXXXXXX..',
+      '...XXXXXX...',
+      '....XXXX....'
+    ]
+  },
+  {
+    rowOffset: 2,
+    colOffset: 2,
+    rows: ['..XXXX..', '.XXXXXX.', '..XXXX..']
+  }
+];
+
+/** Butterfly wings — 60 tiles. */
+const BUTTERFLY_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      'XX......XX',
+      'XXX....XXX',
+      'XXXX..XXXX',
+      'XXXXXXXXXX',
+      'XXXX..XXXX',
+      'XXX....XXX',
+      'XX......XX'
+    ]
+  },
+  {
+    rowOffset: 2,
+    colOffset: 1,
+    rows: ['..XXXX..', '.XXXXXX.', '..XXXX..']
+  }
+];
+
+/** Gate / wall strip — 72 tiles. */
+const GATE_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      'XXXXXXXXXXXXXXXX',
+      'XXXXXXXXXXXXXXXX',
+      'XXXXXXXXXXXXXXXX'
+    ]
+  },
+  {
+    rowOffset: 0,
+    colOffset: 2,
+    rows: ['XXXXXXXXXXXX', 'XXXXXXXXXXXX']
+  }
+];
+
 const LAYOUTS: Record<SolitaireLayout, Pos[]> = {
   flat36: positionsFromLayers(FLAT36_LAYERS),
   mini: positionsFromLayers(MINI_LAYERS),
   turtle: positionsFromLayers(TURTLE_LAYERS),
   classic: positionsFromLayers(CLASSIC_LAYERS),
-  pyramid: positionsForPyramid()
+  pyramid: positionsForPyramid(),
+  fish: positionsFromLayers(FISH_LAYERS),
+  butterfly: positionsFromLayers(BUTTERFLY_LAYERS),
+  gate: positionsFromLayers(GATE_LAYERS)
 };
+
+/** Named free-play layouts shown in the picker (excludes tiny teaching boards). */
+export const FREE_PLAY_LAYOUTS: SolitaireLayout[] = [
+  'classic',
+  'turtle',
+  'pyramid',
+  'fish',
+  'butterfly',
+  'gate',
+  'mini'
+];
 
 export function positionsFor(layout: SolitaireLayout): Pos[] {
   return LAYOUTS[layout];
