@@ -13,6 +13,8 @@ import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
 import ComingSoonGame from '@/components/ComingSoonGame';
 import { alternatesFor } from '@/lib/seo';
+import { utcDateString } from '@/lib/points-rules';
+import { dailyLevelId } from '@/lib/mahjong-solitaire/progress-rules';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -58,11 +60,14 @@ export async function generateMetadata({
 }
 
 export default async function GamePage({
-  params
+  params,
+  searchParams
 }: {
   params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<{ play?: string }>;
 }) {
   const { locale, slug } = await params;
+  const { play } = await searchParams;
   setRequestLocale(locale);
 
   const game = await getMergedLocalizedGame(slug, locale);
@@ -77,6 +82,10 @@ export default async function GamePage({
   const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
   const isHongKong = game.ruleset === 'hongkong';
+  const solitaireLevelId =
+    game.native === 'mahjong-solitaire' && play === 'daily'
+      ? dailyLevelId(utcDateString())
+      : undefined;
 
   const jsonLd: Record<string, unknown>[] = [];
   if (isNative) {
@@ -135,7 +144,12 @@ export default async function GamePage({
       {isComingSoon ? (
         <ComingSoonGame game={game} />
       ) : isNative && game.native ? (
-        <NativeGameMount native={game.native} ruleset={game.ruleset} slug={game.slug} />
+        <NativeGameMount
+          native={game.native}
+          ruleset={game.ruleset}
+          slug={game.slug}
+          defaultLevelId={solitaireLevelId}
+        />
       ) : (
         <IframeSection
           game={game}

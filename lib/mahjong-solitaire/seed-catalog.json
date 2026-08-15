@@ -1,0 +1,331 @@
+{
+  "version": 1,
+  "seedBase": 20260814,
+  "layout": "classic",
+  "entries": [
+    {
+      "level": 1,
+      "seed": 21260817,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 0,
+      "openBranch": 45
+    },
+    {
+      "level": 2,
+      "seed": 22261817,
+      "alphabet": 14,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 0,
+      "openBranch": 39
+    },
+    {
+      "level": 3,
+      "seed": 23260823,
+      "alphabet": 17,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 0,
+      "openBranch": 28
+    },
+    {
+      "level": 4,
+      "seed": 24260826,
+      "alphabet": 20,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 0,
+      "openBranch": 34
+    },
+    {
+      "level": 5,
+      "seed": 25263820,
+      "alphabet": 22,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 0,
+      "openBranch": 23
+    },
+    {
+      "level": 6,
+      "seed": 26262826,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 1,
+      "openBranch": 42
+    },
+    {
+      "level": 7,
+      "seed": 27263826,
+      "alphabet": 16,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 1,
+      "openBranch": 35
+    },
+    {
+      "level": 8,
+      "seed": 28260838,
+      "alphabet": 24,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 1,
+      "openBranch": 28
+    },
+    {
+      "level": 9,
+      "seed": 29262835,
+      "alphabet": 28,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 1,
+      "openBranch": 19
+    },
+    {
+      "level": 10,
+      "seed": 30263835,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 2,
+      "openBranch": 47
+    },
+    {
+      "level": 11,
+      "seed": 31262841,
+      "alphabet": 23,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 2,
+      "openBranch": 29
+    },
+    {
+      "level": 12,
+      "seed": 32261847,
+      "alphabet": 34,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 2,
+      "openBranch": 14
+    },
+    {
+      "level": 13,
+      "seed": 33260853,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 3,
+      "openBranch": 43
+    },
+    {
+      "level": 14,
+      "seed": 34263847,
+      "alphabet": 14,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 3,
+      "openBranch": 43
+    },
+    {
+      "level": 15,
+      "seed": 2689699611,
+      "alphabet": 17,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 3,
+      "openBranch": 34
+    },
+    {
+      "level": 16,
+      "seed": 36262856,
+      "alphabet": 20,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 3,
+      "openBranch": 26
+    },
+    {
+      "level": 17,
+      "seed": 37261862,
+      "alphabet": 22,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 3,
+      "openBranch": 28
+    },
+    {
+      "level": 18,
+      "seed": 38263859,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 4,
+      "openBranch": 47
+    },
+    {
+      "level": 19,
+      "seed": 39260871,
+      "alphabet": 16,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 4,
+      "openBranch": 39
+    },
+    {
+      "level": 20,
+      "seed": 40262868,
+      "alphabet": 24,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 4,
+      "openBranch": 21
+    },
+    {
+      "level": 21,
+      "seed": 41261874,
+      "alphabet": 28,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 4,
+      "openBranch": 19
+    },
+    {
+      "level": 22,
+      "seed": 42262874,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 5,
+      "openBranch": 51
+    },
+    {
+      "level": 23,
+      "seed": 43261880,
+      "alphabet": 23,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 5,
+      "openBranch": 22
+    },
+    {
+      "level": 24,
+      "seed": 2698698641,
+      "alphabet": 34,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 5,
+      "openBranch": 13
+    },
+    {
+      "level": 25,
+      "seed": 45262883,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 6,
+      "openBranch": 48
+    },
+    {
+      "level": 26,
+      "seed": 46262886,
+      "alphabet": 14,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 6,
+      "openBranch": 41
+    },
+    {
+      "level": 27,
+      "seed": 47260895,
+      "alphabet": 17,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 6,
+      "openBranch": 32
+    },
+    {
+      "level": 28,
+      "seed": 48263889,
+      "alphabet": 20,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 6,
+      "openBranch": 35
+    },
+    {
+      "level": 29,
+      "seed": 49260901,
+      "alphabet": 22,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 6,
+      "openBranch": 31
+    },
+    {
+      "level": 30,
+      "seed": 50260904,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 7,
+      "openBranch": 50
+    },
+    {
+      "level": 31,
+      "seed": 2705697665,
+      "alphabet": 16,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 7,
+      "openBranch": 32
+    },
+    {
+      "level": 32,
+      "seed": 52263901,
+      "alphabet": 24,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 7,
+      "openBranch": 24
+    },
+    {
+      "level": 33,
+      "seed": 53261910,
+      "alphabet": 28,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 7,
+      "openBranch": 17
+    },
+    {
+      "level": 34,
+      "seed": 54263907,
+      "alphabet": 12,
+      "layout": "classic",
+      "band": "ease",
+      "segment": 8,
+      "openBranch": 46
+    },
+    {
+      "level": 35,
+      "seed": 55263910,
+      "alphabet": 23,
+      "layout": "classic",
+      "band": "ramp",
+      "segment": 8,
+      "openBranch": 20
+    },
+    {
+      "level": 36,
+      "seed": 56263913,
+      "alphabet": 34,
+      "layout": "classic",
+      "band": "peak",
+      "segment": 8,
+      "openBranch": 19
+    }
+  ]
+}

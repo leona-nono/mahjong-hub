@@ -7,6 +7,7 @@ import {
   getMergedNativeGames
 } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
+import DailyChallengeCard from '@/components/DailyChallengeCard';
 import DailyCheckIn from '@/components/DailyCheckIn';
 import { Link } from '@/i18n/navigation';
 export const revalidate = 86_400;
@@ -121,7 +122,8 @@ export default async function HomePage({
         </Link>
       </section>
 
-      {/* Daily check-in */}
+      {/* Daily challenge first — retention hook above fold */}
+      <DailyChallengeCard />
       <DailyCheckIn />
 
       {/* Our own games — the differentiator, so they go above the fold. */}

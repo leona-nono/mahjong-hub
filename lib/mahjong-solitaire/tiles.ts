@@ -39,6 +39,15 @@ export function toMatchKey(tile: Tile): string {
   return tile;
 }
 
+/** Unique match-keys present (wild groups collapse). Used by alphabet tests. */
+export function uniqueMatchKeys(tiles: Iterable<Tile | null>): Set<string> {
+  const keys = new Set<string>();
+  for (const t of tiles) {
+    if (t) keys.add(toMatchKey(t));
+  }
+  return keys;
+}
+
 /**
  * Full 144-tile multiset: 4× each of 34 suited/honours + 8 unique bonus tiles.
  */

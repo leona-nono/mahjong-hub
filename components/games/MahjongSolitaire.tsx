@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import SolitaireTileFace from './SolitaireTileFace';
@@ -22,11 +22,18 @@ import {
 } from '@/lib/mahjong-solitaire/scoring';
 import {
   TEACHING_LEVELS,
+  applyServerDeal,
+  bandLabelKey,
+  campaignOptions,
   createLevelBoard,
   getLevel,
   nextLevelId,
+  parseCampaignLevel,
   type LevelDef
 } from '@/lib/mahjong-solitaire/levels';
+import { parseDailyLevelId, type SolitaireDeal } from '@/lib/mahjong-solitaire/progress-rules';
+import { recordGuestDailyClear } from '@/lib/mahjong-solitaire/daily-local';
+import { utcDateString } from '@/lib/points-rules';
 import {
   applyHint,
   applyRescue,
@@ -41,7 +48,7 @@ import {
   type PayChannel
 } from '@/lib/solitaire-items';
 import { tileName } from '@/lib/mahjong/tiles';
-import { usePoints } from '@/lib/points';
+import { applyLedgerTotal, usePoints } from '@/lib/points';
 
 export interface MahjongSolitaireProps {
   defaultLayout?: SolitaireLayout;
@@ -89,6 +96,15 @@ export default function MahjongSolitaire({
   const [coachDismissed, setCoachDismissed] = useState(false);
   const [itemUses, setItemUses] = useState(0);
   const [offer, setOffer] = useState<OfferState>(null);
+  const [dailyHud, setDailyHud] = useState<{
+    utcDay: string;
+    id: string;
+    cleared: boolean;
+    streak: number;
+  } | null>(null);
+  const [dealReady, setDealReady] = useState(true);
+  const startedAt = useRef(Date.now());
+  const submitting = useRef(false);
 
   const unlockCtx = {
     lessonsCleared: items.progress.lessonsCleared,
@@ -107,6 +123,46 @@ export default function MahjongSolitaire({
     setStatus('playing');
   }, [defaultLayout, mode]);
 
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch('/api/solitaire/daily', { credentials: 'same-origin' });
+        if (cancelled) return;
+        if (res.ok) {
+          const data = (await res.json()) as {
+            utcDay?: string;
+            deal?: SolitaireDeal;
+            cleared?: boolean;
+            streak?: number;
+          };
+          if (!data.deal || cancelled) return;
+          setDailyHud({
+            utcDay: data.utcDay ?? utcDateString(),
+            id: data.deal.id,
+            cleared: !!data.cleared,
+            streak: Number(data.streak) || 0
+          });
+          return;
+        }
+        const day = utcDateString();
+        const local = getLevel(`daily:${day}`);
+        if (local && !cancelled) {
+          setDailyHud({ utcDay: day, id: local.id, cleared: false, streak: 0 });
+        }
+      } catch {
+        const day = utcDateString();
+        const local = getLevel(`daily:${day}`);
+        if (local && !cancelled) {
+          setDailyHud({ utcDay: day, id: local.id, cleared: false, streak: 0 });
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const resetRoundMeta = () => {
     setSelected(null);
     setHint(null);
@@ -116,16 +172,47 @@ export default function MahjongSolitaire({
     setItemUses(0);
     setOffer(null);
     items.resetLevelAds();
+    startedAt.current = Date.now();
+    submitting.current = false;
   };
 
   const restartLevel = (next: LevelDef) => {
+    setMode('level');
     setLevel(next);
-    setBoard(createLevelBoard(next));
     setCoachDismissed(false);
+    setDealReady(false);
     resetRoundMeta();
+    void (async () => {
+      let def = next;
+      try {
+        const res = await fetch(
+          `/api/solitaire/level?id=${encodeURIComponent(next.id)}`,
+          { credentials: 'same-origin' }
+        );
+        if (res.ok) {
+          const deal = (await res.json()) as SolitaireDeal;
+          if (deal?.seed) def = applyServerDeal(next, deal);
+        }
+      } catch {
+        /* local fallback */
+      }
+      setLevel(def);
+      setBoard(createLevelBoard(def));
+      startedAt.current = Date.now();
+      setDealReady(true);
+    })();
   };
 
+  useEffect(() => {
+    if (!defaultLevelId || defaultLevelId.startsWith('teach-')) return;
+    const next = getLevel(defaultLevelId);
+    if (next) restartLevel(next);
+    // Sync server deal once when opened from homepage daily link.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultLevelId]);
+
   const restartFree = (nextLayout: SolitaireLayout = layout) => {
+    setDealReady(true);
     setBoard(
       createBoard({
         layout: nextLayout,
@@ -133,6 +220,63 @@ export default function MahjongSolitaire({
       })
     );
     resetRoundMeta();
+  };
+
+  const submitClear = async (score: number) => {
+    if (submitting.current) return;
+    submitting.current = true;
+    const durationMs = Date.now() - startedAt.current;
+    try {
+      const res = await fetch('/api/solitaire/complete', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          levelId: level.id,
+          seed: board.seed,
+          score,
+          itemUses,
+          durationMs
+        })
+      });
+      if (res.status === 401) {
+        if (parseDailyLevelId(level.id)) {
+          const g = recordGuestDailyClear();
+          setDailyHud((d) =>
+            d ? { ...d, cleared: true, streak: g.streak } : d
+          );
+        }
+        setStatusMsg(t('guestClear'));
+        return;
+      }
+      const data = (await res.json()) as {
+        awarded?: boolean;
+        alreadyCleared?: boolean;
+        amount?: number;
+        total?: number;
+        streak?: number;
+      };
+      if (typeof data.total === 'number') {
+        applyLedgerTotal(
+          data.total,
+          data.awarded && data.amount
+            ? { amount: data.amount, reason: 'solitaire_clear' }
+            : undefined
+        );
+      }
+      if (data.alreadyCleared) setStatusMsg(t('alreadyCleared'));
+      else if (data.awarded) setStatusMsg(t('awardedPoints', { n: data.amount ?? 0 }));
+      if (typeof data.streak === 'number') {
+        setDailyHud((d) =>
+          d ? { ...d, cleared: true, streak: data.streak as number } : d
+        );
+      } else if (parseDailyLevelId(level.id)) {
+        setDailyHud((d) => (d ? { ...d, cleared: true } : d));
+      }
+      onWin?.(data.amount ?? 0);
+    } catch {
+      submitting.current = false;
+    }
   };
 
   const geometry = useMemo(() => {
@@ -153,7 +297,12 @@ export default function MahjongSolitaire({
   }, [board.positions]);
 
   const metrics = measureDifficulty(board);
-  const showCoach = mode === 'level' && !coachDismissed;
+  const showCoach = mode === 'level' && Boolean(level.coachKey) && !coachDismissed;
+  const campaignUpto = Math.max(12, parseCampaignLevel(level.id) ?? 0);
+  const campaignLevels = useMemo(
+    () => campaignOptions(campaignUpto),
+    [campaignUpto]
+  );
   const stars = starsForLevel({
     cleared: status === 'won',
     itemUses
@@ -162,7 +311,7 @@ export default function MahjongSolitaire({
   const bumpItemUse = () => setItemUses((n) => n + 1);
 
   const handleTile = (index: number) => {
-    if (status !== 'playing' || paused) return;
+    if (status !== 'playing' || paused || !dealReady) return;
     if (!isExposed(board, index)) return;
 
     if (selected === null) {
@@ -193,7 +342,9 @@ export default function MahjongSolitaire({
       setBoard(next);
       setStatus('won');
       if (mode === 'level') items.markLessonCleared(level.order);
-      onWin?.(Math.min(scored.score, 50));
+      if (mode === 'level') {
+        void submitClear(scored.score);
+      }
       return;
     }
 
@@ -352,6 +503,21 @@ export default function MahjongSolitaire({
               </option>
             ))}
           </optgroup>
+          {dailyHud && (
+            <optgroup label={t('dailyChallenge')}>
+              <option value={dailyHud.id}>
+                {t('dailyChallenge')}
+                {dailyHud.cleared ? ` · ${t('dailyDone')}` : ''}
+              </option>
+            </optgroup>
+          )}
+          <optgroup label={t('campaign')}>
+            {campaignLevels.map((l) => (
+              <option key={l.id} value={l.id}>
+                {t('levelN', { n: l.campaign?.level ?? parseCampaignLevel(l.id) })}
+              </option>
+            ))}
+          </optgroup>
           <optgroup label={t('freePlay')}>
             <option value="free:classic">Classic 144</option>
             <option value="free:mini">Mini 72</option>
@@ -376,6 +542,18 @@ export default function MahjongSolitaire({
         <span className="hidden rounded-full bg-[#213c47] px-3 py-1.5 text-slate-500 sm:inline">
           branch {metrics.branchWidth}
         </span>
+        {mode === 'level' && level.campaign && (
+          <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-sky-200/90">
+            {t('levelN', { n: level.campaign.level })} ·{' '}
+            {t(bandLabelKey(level.campaign.band))} ·{' '}
+            {t('alphabetShort', { n: level.campaign.alphabet })}
+          </span>
+        )}
+        {dailyHud && (
+          <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-amber-100/90">
+            {t('streakN', { n: dailyHud.streak })}
+          </span>
+        )}
 
         {itemBtn('hint', t('hint'), () => void runHint('inventory'), status !== 'playing' || paused)}
         {itemBtn('undo', t('undo'), () => void runUndo('inventory'), paused)}
@@ -406,7 +584,9 @@ export default function MahjongSolitaire({
 
       {showCoach && (
         <div className="mb-3 flex flex-wrap items-start justify-between gap-2 rounded-2xl border border-sky-500/40 bg-sky-500/10 px-4 py-3 text-sm text-sky-50">
-          <p className="max-w-2xl leading-relaxed">{t(level.coachKey)}</p>
+          <p className="max-w-2xl leading-relaxed">
+            {level.coachKey ? t(level.coachKey) : null}
+          </p>
           <div className="flex gap-2">
             <button
               type="button"
@@ -481,10 +661,24 @@ export default function MahjongSolitaire({
               }}
               className="mt-3 rounded-full bg-emerald-500 px-4 py-2 font-bold text-slate-900"
             >
-              {t('nextLesson')}
+              {parseCampaignLevel(nextLevelId(level.id) ?? '') != null
+                ? t('nextLevel')
+                : t('nextLesson')}
             </button>
           )}
-          {mode === 'level' && !nextLevelId(level.id) && (
+          {mode === 'level' && parseDailyLevelId(level.id) && (
+            <button
+              type="button"
+              onClick={() => {
+                const next = getLevel('lv-1');
+                if (next) restartLevel(next);
+              }}
+              className="mt-3 rounded-full bg-emerald-500 px-4 py-2 font-bold text-slate-900"
+            >
+              {t('playCampaign')}
+            </button>
+          )}
+          {mode === 'level' && !nextLevelId(level.id) && !parseDailyLevelId(level.id) && (
             <button
               type="button"
               onClick={enterFree}
@@ -561,7 +755,7 @@ export default function MahjongSolitaire({
                 key={i}
                 type="button"
                 onClick={() => handleTile(i)}
-                disabled={!exposed || status !== 'playing'}
+                disabled={!exposed || status !== 'playing' || !dealReady}
                 aria-label={tileName(tile)}
                 className={[
                   'absolute rounded-lg transition',

@@ -78,6 +78,20 @@ export async function hydratePointsFromServer(): Promise<void> {
   }
 }
 
+export function applyLedgerTotal(
+  total: number,
+  award?: { amount: number; reason: string }
+) {
+  const nextAwards =
+    award && award.amount > 0
+      ? [{ amount: award.amount, reason: award.reason, at: Date.now() }, ...state.recentAwards].slice(
+          0,
+          50
+        )
+      : state.recentAwards;
+  setState({ points: total, recentAwards: nextAwards });
+}
+
 export function resetPointsForGuest() {
   setState({
     points: 0,

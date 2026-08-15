@@ -26,13 +26,21 @@ import {
   FREE_UNDO_PER_LEVEL,
   artKeyForTile,
   tileArtSrc,
+  uniqueMatchKeys,
   SEASON_TILES,
   FLOWER_TILES
 } from '@/lib/mahjong-solitaire/tiles';
 import {
   measureDifficulty,
   profileDifficulty,
-  simulateGreedyClear
+  simulateGreedyClear,
+  levelInfo,
+  buildSeedCatalog,
+  pickLevel,
+  campaignDealOpts,
+  ALPHA_EASY,
+  SEG_LENS,
+  SEG_PEAKS
 } from '@/lib/mahjong-solitaire/difficulty';
 import {
   applyMatchScore,
@@ -43,7 +51,9 @@ import {
 import {
   TEACHING_LEVELS,
   createLevelBoard,
-  nextLevelId
+  getLevel,
+  nextLevelId,
+  campaignLevelDef
 } from '@/lib/mahjong-solitaire/levels';
 
 function tileSig(board: Board): string {
@@ -291,10 +301,11 @@ describe('scoring (E9)', () => {
 });
 
 describe('teaching levels', () => {
-  it('defines three progressive lessons', () => {
+  it('defines three progressive lessons then campaign', () => {
     expect(TEACHING_LEVELS).toHaveLength(3);
     expect(nextLevelId('teach-1')).toBe('teach-2');
-    expect(nextLevelId('teach-3')).toBeNull();
+    expect(nextLevelId('teach-3')).toBe('lv-1');
+    expect(nextLevelId('lv-1')).toBe('lv-2');
   });
 
   it('createLevelBoard deals teach-1 without bonus', () => {
@@ -351,5 +362,123 @@ describe('exposure helpers', () => {
     expect(mid).toBeGreaterThanOrEqual(0);
     expect(isExposed(board, corner)).toBe(true);
     expect(isExposed(board, mid)).toBe(false);
+  });
+});
+
+describe('alphabet + difficulty curve', () => {
+  it('levelInfo uses 3–5 segment lengths, non-decreasing alphabet, reset at boundary', () => {
+    for (let lv = 1; lv <= 24; lv += 1) {
+      const info = levelInfo(lv);
+      expect(info.segmentLen).toBeGreaterThanOrEqual(3);
+      expect(info.segmentLen).toBeLessThanOrEqual(5);
+      expect(SEG_LENS).toContain(info.segmentLen);
+      expect(SEG_PEAKS).toContain(info.segmentPeak);
+      if (info.posInSegment === 0) {
+        expect(info.band).toBe('ease');
+        expect(info.alphabet).toBe(ALPHA_EASY);
+      } else if (info.posInSegment === info.segmentLen - 1) {
+        expect(info.band).toBe('peak');
+        expect(info.alphabet).toBe(info.segmentPeak);
+      } else {
+        expect(info.band).toBe('ramp');
+      }
+    }
+    expect(levelInfo(1).alphabet).toBe(12);
+    expect(levelInfo(5).alphabet).toBe(22);
+    expect(levelInfo(6).alphabet).toBe(12);
+    expect(levelInfo(9).alphabet).toBe(28);
+    expect(levelInfo(10).alphabet).toBe(12);
+    expect(levelInfo(12).alphabet).toBe(34);
+    expect(levelInfo(13).alphabet).toBe(12);
+
+    for (let lv = 2; lv <= 5; lv += 1) {
+      expect(levelInfo(lv).alphabet).toBeGreaterThanOrEqual(levelInfo(lv - 1).alphabet);
+    }
+  });
+
+  it('alphabet 12 vs 36 deals are replay-safe and 12 uses fewer kinds', () => {
+    const easy = generateSolvable({
+      layout: 'mini',
+      seed: 11,
+      alphabet: 12,
+      includeBonus: false
+    });
+    const hard = generateSolvable({
+      layout: 'mini',
+      seed: 11,
+      alphabet: 36,
+      includeBonus: true
+    });
+    expect(easy).not.toBeNull();
+    expect(hard).not.toBeNull();
+    if (!easy || !hard) return;
+    expect(verifyByReplay(easy.board, easy.solutionOrder)).toBe(true);
+    expect(verifyByReplay(hard.board, hard.solutionOrder)).toBe(true);
+    expect(uniqueMatchKeys(easy.board.tiles).size).toBe(12);
+    expect(uniqueMatchKeys(hard.board.tiles).size).toBeGreaterThan(
+      uniqueMatchKeys(easy.board.tiles).size
+    );
+  });
+
+  it('classic 144 with alphabet 12 and 36 both replay', () => {
+    const easy = generateSolvable({ layout: 'classic', seed: 7, alphabet: 12 });
+    const hard = generateSolvable({ layout: 'classic', seed: 7, alphabet: 36 });
+    expect(easy).not.toBeNull();
+    expect(hard).not.toBeNull();
+    if (!easy || !hard) return;
+    expect(easy.board.remaining).toBe(144);
+    expect(verifyByReplay(easy.board, easy.solutionOrder)).toBe(true);
+    expect(verifyByReplay(hard.board, hard.solutionOrder)).toBe(true);
+    expect(uniqueMatchKeys(easy.board.tiles).size).toBe(12);
+    expect(uniqueMatchKeys(hard.board.tiles).size).toBeGreaterThanOrEqual(24);
+  });
+
+  it('opening branchWidth is systematically higher at alphabet 12 than 36', () => {
+    const seeds = [2, 5, 8, 13, 21];
+    let easy = 0;
+    let hard = 0;
+    for (const seed of seeds) {
+      easy += measureDifficulty(
+        createBoard({ layout: 'mini', seed, alphabet: 12, includeBonus: false })
+      ).branchWidth;
+      hard += measureDifficulty(
+        createBoard({ layout: 'mini', seed, alphabet: 36, includeBonus: true })
+      ).branchWidth;
+    }
+    expect(easy).toBeGreaterThan(hard);
+  });
+
+  it('buildSeedCatalog(12) is solvable; segment boundary may drop branch', () => {
+    const catalog = buildSeedCatalog(12, 4242, 'mini', { candidatesPerLevel: 4 });
+    expect(catalog).toHaveLength(12);
+    for (const row of catalog) {
+      const gen = generateSolvable({
+        layout: row.layout,
+        seed: row.seed,
+        ...campaignDealOpts(row.alphabet)
+      });
+      expect(gen).not.toBeNull();
+      if (!gen) continue;
+      expect(verifyByReplay(gen.board, gen.solutionOrder)).toBe(true);
+      expect(uniqueMatchKeys(gen.board.tiles).size).toBeLessThanOrEqual(row.alphabet);
+    }
+    const lv5 = catalog.find((e) => e.level === 5)!;
+    const lv6 = catalog.find((e) => e.level === 6)!;
+    expect(lv5.segment).toBe(0);
+    expect(lv6.segment).toBe(1);
+    expect(lv6.alphabet).toBe(ALPHA_EASY);
+    const picked = pickLevel(catalog, 3);
+    expect(picked?.level).toBe(3);
+    expect(pickLevel(catalog, 99)).toBeNull();
+  });
+
+  it('teaching boards stay on fixed seeds and are not catalog rows', () => {
+    const teach1 = createLevelBoard(TEACHING_LEVELS[0]);
+    expect(teach1.layout).toBe('flat36');
+    expect(teach1.seed).toBeDefined();
+    const lv1 = getLevel('lv-1');
+    expect(lv1?.layout).toBe('classic');
+    expect(lv1?.deal.alphabet).toBe(12);
+    expect(campaignLevelDef(5).deal.alphabet).toBe(22);
   });
 });

@@ -3,7 +3,7 @@
  * Adapted from the design reverse-generator (geometric bottom-up + free-pair fallback).
  */
 
-import { createRng, type Tile } from '../mahjong/tiles';
+import { createRng, tileFromIndex, type Tile } from '../mahjong/tiles';
 import {
   getNeighbors,
   isExposedFor,
@@ -24,7 +24,12 @@ import {
 export interface BoardOptions {
   layout?: SolitaireLayout;
   seed?: number;
-  /** Include season/flower tiles (default: true when board needs ≥18 pairs). */
+  /**
+   * Distinct match-key count (difficulty main axis). When set, faces repeat
+   * to fill the layout — not limited to 4 copies per kind.
+   */
+  alphabet?: number;
+  /** Include season/flower tiles (default: true when board needs ≥18 pairs, or alphabet ≥ 18). */
   includeBonus?: boolean;
   /** Prefer excluding lookalike ranks 6 & 9 for early teaching. */
   avoidLookalikes?: boolean;
@@ -68,25 +73,113 @@ function isLookalike(tile: Tile): boolean {
   return LOOKALIKE_RANKS.has(Number(tile.slice(1)));
 }
 
-function resolveDealOpts(options: BoardOptions, pairCount: number) {
-  const includeBonus = options.includeBonus ?? pairCount >= 18;
+export interface PairPoolOpts {
+  includeBonus: boolean;
+  avoidLookalikes: boolean;
+  forceFlowerPairs: boolean;
+  alphabet?: number;
+}
+
+function resolveDealOpts(options: BoardOptions, pairCount: number): PairPoolOpts {
+  const alphabet =
+    options.alphabet != null && Number.isFinite(options.alphabet)
+      ? Math.max(1, Math.round(options.alphabet))
+      : undefined;
+  const includeBonus =
+    options.includeBonus ?? (alphabet != null ? alphabet >= 18 : pairCount >= 18);
   return {
     includeBonus,
     avoidLookalikes: options.avoidLookalikes ?? false,
-    forceFlowerPairs: options.forceFlowerPairs ?? false
+    forceFlowerPairs: options.forceFlowerPairs ?? false,
+    alphabet
   };
+}
+
+function exactFaceIds(): Tile[] {
+  const out: Tile[] = [];
+  for (let i = 0; i < 34; i += 1) out.push(tileFromIndex(i));
+  return out;
+}
+
+function candidateMatchKeys(opts: PairPoolOpts): string[] {
+  const exact = exactFaceIds().filter((t) => !opts.avoidLookalikes || !isLookalike(t));
+  const keys: string[] = exact.map((t) => t);
+  if (opts.includeBonus) {
+    keys.push('season', 'flower');
+  }
+  return keys;
+}
+
+function pickAlphabetKeys(
+  keys: string[],
+  want: number,
+  rng: () => number,
+  opts: PairPoolOpts
+): string[] {
+  const n = Math.max(1, Math.min(want, keys.length));
+  const locked: string[] = [];
+  if (opts.includeBonus || opts.forceFlowerPairs) {
+    if (keys.includes('season')) locked.push('season');
+    if (keys.includes('flower')) locked.push('flower');
+  }
+  const rest = keys.filter((k) => !locked.includes(k));
+  shuffleInPlace(rest, rng);
+  const picked = [...locked];
+  for (const k of rest) {
+    if (picked.length >= n) break;
+    picked.push(k);
+  }
+  return picked.slice(0, n);
+}
+
+function pairFromKey(key: string, rng: () => number): PairEntry {
+  if (key === 'season' || key === 'flower') {
+    const group = key === 'season' ? [...SEASON_TILES] : [...FLOWER_TILES];
+    shuffleInPlace(group, rng);
+    return { matchKey: key, a: group[0], b: group[1] ?? group[0] };
+  }
+  const t = key as Tile;
+  return { matchKey: key, a: t, b: t };
+}
+
+/** Repeat K match-keys to fill pairCount (alphabet difficulty axis). */
+function buildAlphabetPool(
+  pairCount: number,
+  rng: () => number,
+  opts: PairPoolOpts,
+  alphabet: number
+): PairEntry[] | null {
+  const keys = candidateMatchKeys(opts);
+  if (keys.length === 0) return null;
+  const k = Math.min(alphabet, pairCount, keys.length);
+  const picked = pickAlphabetKeys(keys, k, rng, opts);
+  if (picked.length === 0) return null;
+
+  const counts = new Array(picked.length).fill(Math.floor(pairCount / picked.length));
+  let rem = pairCount - counts.reduce((a, b) => a + b, 0);
+  const order = picked.map((_, i) => i);
+  shuffleInPlace(order, rng);
+  for (let i = 0; i < rem; i += 1) counts[order[i]] += 1;
+
+  const pairs: PairEntry[] = [];
+  for (let i = 0; i < picked.length; i += 1) {
+    for (let n = 0; n < counts[i]; n += 1) {
+      pairs.push(pairFromKey(picked[i], rng));
+    }
+  }
+  return pairs.length === pairCount ? pairs : null;
 }
 
 /** Build a multiset of matching pairs from the 144 wall under filters. */
 export function buildPairPool(
   pairCount: number,
   rng: () => number,
-  opts: {
-    includeBonus: boolean;
-    avoidLookalikes: boolean;
-    forceFlowerPairs: boolean;
-  }
+  opts: PairPoolOpts
 ): PairEntry[] | null {
+  if (opts.alphabet != null) {
+    return buildAlphabetPool(pairCount, rng, opts, opts.alphabet);
+  }
+
   const wall = buildWall144().filter((t) => {
     if (!opts.includeBonus && (SEASON_TILES.includes(t) || FLOWER_TILES.includes(t))) {
       return false;

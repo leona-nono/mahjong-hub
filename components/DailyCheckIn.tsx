@@ -21,6 +21,7 @@ export default function DailyCheckIn() {
   const todayReward = checkIn?.todayReward ?? CHECKIN_REWARDS[0];
   const nextReward = checkIn?.nextReward ?? CHECKIN_REWARDS[1];
   const cycleDay = ((streak - 1) % 7) + 1;
+  const filledInCycle = claimedToday ? cycleDay : Math.max(0, cycleDay - 1);
 
   const claim = async () => {
     if (pending || claimedToday) return;
@@ -42,80 +43,96 @@ export default function DailyCheckIn() {
   };
 
   return (
-    <section className="mt-10 overflow-hidden rounded-3xl rainbow-card">
-      <div className="p-6">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">📅</span>
-          <h2 className="text-xl font-black rainbow-text">{t('title')}</h2>
+    <section className="mt-4 overflow-hidden rounded-2xl border border-gray-100 bg-white/80 shadow-sm">
+      <div className="px-4 py-3.5 sm:px-5">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="min-w-0">
+            <div className="flex items-baseline gap-2">
+              <h2 className="text-base font-bold text-gray-800">{t('title')}</h2>
+              <span className="text-xs font-medium text-gray-500">
+                {t('cycleProgress', { filled: filledInCycle, total: 7 })}
+              </span>
+            </div>
+            <p className="mt-0.5 text-xs text-gray-500">
+              {claimedToday
+                ? t('claimedRewardShort', { n: todayReward })
+                : t('todayRewardShort', { n: todayReward })}
+              {claimedToday
+                ? ` · ${t('streakLineShort', { days: streak, n: nextReward })}`
+                : null}
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <p className="text-xs font-semibold text-gray-600">
+              {t('yourPoints', { n: points })}
+            </p>
+            <button
+              type="button"
+              onClick={claim}
+              disabled={claimedToday || pending || (loggedIn && !hydrated)}
+              className={`rounded-full px-4 py-1.5 text-xs font-bold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
+                claimedToday
+                  ? 'bg-gray-100 text-gray-500'
+                  : 'rainbow-bar text-white hover:opacity-90'
+              }`}
+            >
+              {claimedToday ? t('claimed') : t('claim')}
+            </button>
+          </div>
         </div>
 
-        <p className="mt-3 font-bold text-gray-800">
-          {claimedToday
-            ? t('claimedReward', { n: todayReward, day: cycleDay })
-            : t('todayReward', { n: todayReward, day: cycleDay })}
-        </p>
+        {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
 
-        <button
-          type="button"
-          onClick={claim}
-          disabled={claimedToday || pending || (loggedIn && !hydrated)}
-          className={`mt-4 w-full rounded-full px-6 py-3 text-sm font-bold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-10 ${
-            claimedToday
-              ? 'bg-gray-200 text-gray-500'
-              : 'rainbow-bar text-white hover:opacity-90'
-          }`}
-        >
-          {claimedToday ? t('claimed') : t('claim')}
-        </button>
-
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-
-        {claimedToday && (
-          <p className="mt-3 text-sm text-gray-600">
-            {t('streakLine', { days: streak, n: nextReward })}
-          </p>
-        )}
-
-        <div className="mt-6 grid grid-cols-7 gap-2">
+        <ol className="mt-3 grid grid-cols-7 gap-1.5" aria-label={t('weekAria')}>
           {CHECKIN_REWARDS.map((r, i) => {
             const day = i + 1;
             const isToday = day === cycleDay;
             const isDone = claimedToday ? day <= cycleDay : day < cycleDay;
+            const isMilestone = day === 7;
             return (
-              <div
+              <li
                 key={day}
-                className={`flex flex-col items-center rounded-xl border px-1 py-2 text-center ${
+                className={`relative flex flex-col items-center rounded-lg border px-0.5 py-1.5 text-center ${
                   isToday
-                    ? 'border-rainbow-pink bg-rainbow-pink/10 font-bold'
+                    ? 'border-rainbow-pink bg-rainbow-pink/10'
                     : isDone
-                      ? 'border-gray-100 bg-white/50'
-                      : 'border-gray-100 bg-white/30 opacity-60'
+                      ? 'border-emerald-200 bg-emerald-50/80'
+                      : 'border-gray-100 bg-gray-50/80'
                 }`}
               >
-                <span className="text-[11px] font-bold text-gray-800">
-                  {isDone ? '✅' : r}
+                <span
+                  className={`text-[10px] font-bold ${
+                    isToday
+                      ? 'text-rainbow-pink'
+                      : isDone
+                        ? 'text-emerald-700'
+                        : 'text-gray-400'
+                  }`}
+                >
+                  {t('dayShort', { day })}
                 </span>
-                <span className="mt-0.5 text-[10px] font-medium text-gray-400">
-                  D{day}
+                <span
+                  className={`mt-0.5 text-[11px] font-bold tabular-nums ${
+                    isDone
+                      ? 'text-emerald-700'
+                      : isMilestone
+                        ? 'text-amber-700'
+                        : 'text-gray-700'
+                  }`}
+                >
+                  {isDone ? t('doneMark') : r}
                 </span>
-              </div>
+                {isToday && (
+                  <span className="mt-0.5 h-1 w-1 rounded-full bg-rainbow-pink" aria-hidden />
+                )}
+              </li>
             );
           })}
-        </div>
+        </ol>
 
-        <div className="mt-4 flex items-center justify-between gap-3">
-          <details className="group text-sm text-gray-500">
-            <summary className="cursor-pointer font-medium text-rainbow-pink hover:underline">
-              {t('pointsTip')}
-            </summary>
-            <p className="mt-1 max-w-xs text-xs text-gray-500">{t('tipBody')}</p>
-          </details>
-          <p className="shrink-0 text-sm text-gray-600">
-            {t('yourPoints', { n: points })}
-          </p>
-        </div>
-
-        {!loggedIn && <p className="mt-3 text-xs text-gray-400">{t('guestNote')}</p>}
+        {!loggedIn && (
+          <p className="mt-2 text-[11px] text-gray-400">{t('guestNote')}</p>
+        )}
       </div>
     </section>
   );
