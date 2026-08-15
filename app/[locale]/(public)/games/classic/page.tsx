@@ -28,40 +28,39 @@ export default async function ClassicGamesPage({
   const tg = await getTranslations('game');
   const gamesByRegion = new Map(
     await Promise.all(
-      CLASSIC_REGIONS.map(async (r) => [
-        r.region,
-        getMergedLocalizedGames(await getMergedClassicByRegion(r.region), locale)
-      ] as const)
+      CLASSIC_REGIONS.map(
+        async (r) =>
+          [
+            r.region,
+            getMergedLocalizedGames(await getMergedClassicByRegion(r.region), locale)
+          ] as const
+      )
     )
   );
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
-      <section className="rounded-3xl rainbow-card px-6 py-10 text-center">
-        <h1 className="text-3xl font-black rainbow-text sm:text-4xl">
-          {t('classic')}
-        </h1>
-        <p className="mx-auto mt-3 max-w-2xl text-gray-600">
-          {t('classicSubtitle')}
-        </p>
-      </section>
+    <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8">
+      <h1 className="font-display text-2xl font-semibold text-portal-text sm:text-3xl">
+        {t('classic')}
+      </h1>
+      <p className="mt-1 max-w-2xl text-sm text-portal-muted">{t('classicSubtitle')}</p>
 
-      <div className="mt-10 space-y-12">
+      <div className="mt-8 space-y-10">
         {CLASSIC_REGIONS.map((region) => {
           const games = gamesByRegion.get(region.region) ?? [];
           return (
             <section key={region.region}>
-              <h2 className="mb-4 text-xl font-bold text-gray-800">
+              <h2 className="mb-3 font-display text-lg font-semibold text-portal-text">
                 {t(region.labelKey)}
               </h2>
               {games.length ? (
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                   {games.map((g) => (
-                    <GameCard key={g.slug} game={g} locale={locale} />
+                    <GameCard key={g.slug} game={g} />
                   ))}
                 </div>
               ) : (
-                <p className="rounded-2xl border border-dashed border-gray-200 p-4 text-sm text-gray-400">
+                <p className="rounded-xl border border-dashed border-portal-border p-4 text-sm text-portal-muted">
                   {tg('comingSoon')}
                 </p>
               )}

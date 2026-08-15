@@ -11,10 +11,9 @@ import {
 import IframeSection from '@/components/IframeSection';
 import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
+import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
 import { alternatesFor } from '@/lib/seo';
-import { utcDateString } from '@/lib/points-rules';
-import { dailyLevelId } from '@/lib/mahjong-solitaire/progress-rules';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -50,9 +49,6 @@ export async function generateMetadata({
       url,
       type: 'website'
     },
-    // Native games are our own content and carry full rules copy, so they are
-    // worth indexing. Iframe pages wrap someone else's game — thin content that
-    // we do not want competing with our own pages.
     robots: isNative
       ? { index: true, follow: true }
       : { index: false, follow: true }
@@ -60,14 +56,11 @@ export async function generateMetadata({
 }
 
 export default async function GamePage({
-  params,
-  searchParams
+  params
 }: {
   params: Promise<{ locale: string; slug: string }>;
-  searchParams: Promise<{ play?: string }>;
 }) {
   const { locale, slug } = await params;
-  const { play } = await searchParams;
   setRequestLocale(locale);
 
   const game = await getMergedLocalizedGame(slug, locale);
@@ -75,17 +68,13 @@ export default async function GamePage({
 
   const t = await getTranslations('game');
   const related = getMergedLocalizedGames(
-    await getMergedRelatedGames(slug, 4),
+    await getMergedRelatedGames(slug, 8),
     locale
   );
   const isNative = game.gameType === 'native';
   const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
   const isHongKong = game.ruleset === 'hongkong';
-  const solitaireLevelId =
-    game.native === 'mahjong-solitaire' && play === 'daily'
-      ? dailyLevelId(utcDateString())
-      : undefined;
 
   const jsonLd: Record<string, unknown>[] = [];
   if (isNative) {
@@ -125,8 +114,23 @@ export default async function GamePage({
     }
   }
 
+  const stage = isComingSoon ? (
+    <ComingSoonGame game={game} />
+  ) : isNative && game.native ? (
+    <NativeGameMount native={game.native} ruleset={game.ruleset} slug={game.slug} />
+  ) : (
+    <IframeSection
+      game={game}
+      fallbackGames={related.map((g) => ({ slug: g.slug, title: g.title }))}
+    />
+  );
+
   return (
-    <div className={`mx-auto px-4 py-8 ${isHongKong ? 'max-w-[1500px]' : 'max-w-5xl'}`}>
+    <div
+      className={`mx-auto px-4 py-5 sm:px-6 ${
+        isHongKong ? 'max-w-[1600px]' : 'max-w-[1400px]'
+      }`}
+    >
       {jsonLd.map((block, i) => (
         <script
           key={i}
@@ -135,76 +139,90 @@ export default async function GamePage({
         />
       ))}
 
-      <h1 className={isHongKong ? 'sr-only' : 'mb-2 text-3xl font-black rainbow-text'}>{game.title}</h1>
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <h1
+            className={
+              isHongKong
+                ? 'sr-only'
+                : 'font-display text-2xl font-semibold text-portal-text sm:text-3xl'
+            }
+          >
+            {game.title}
+          </h1>
+          {isNative && content && !isHongKong && (
+            <p className="mt-1 max-w-3xl text-sm text-portal-muted line-clamp-2">
+              {content.intro}
+            </p>
+          )}
+        </div>
+      </div>
 
-      {isNative && content && !isHongKong && (
-        <p className="mb-5 max-w-3xl text-gray-600">{content.intro}</p>
-      )}
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="min-w-0">
+          {stage}
+          <AdSlot />
+        </div>
 
-      {isComingSoon ? (
-        <ComingSoonGame game={game} />
-      ) : isNative && game.native ? (
-        <NativeGameMount
-          native={game.native}
-          ruleset={game.ruleset}
-          slug={game.slug}
-          defaultLevelId={solitaireLevelId}
-        />
-      ) : (
-        <IframeSection
-          game={game}
-          fallbackGames={related.map((g) => ({ slug: g.slug, title: g.title }))}
-        />
-      )}
+        <aside className="hidden lg:block">
+          <h2 className="mb-3 font-display text-sm font-semibold uppercase tracking-wide text-portal-muted">
+            {t('tryAnother')}
+          </h2>
+          <div className="grid grid-cols-2 gap-2">
+            {related.map((g) => (
+              <GameCard key={g.slug} game={g} size="sm" />
+            ))}
+          </div>
+        </aside>
+      </div>
 
       {isNative && content && (
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
-          <section>
-            <h2 className="mb-3 text-xl font-bold text-gray-800">
+        <div className="mt-8 space-y-3">
+          <details className="rounded-xl border border-portal-border bg-portal-panel p-4">
+            <summary className="cursor-pointer font-semibold text-portal-text">
               {t('howToPlay')}
-            </h2>
-            <ol className="list-decimal space-y-2 pl-5 text-sm text-gray-600">
+            </summary>
+            <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-portal-muted">
               {content.howToPlay.map((step, i) => (
                 <li key={i}>{step}</li>
               ))}
             </ol>
-          </section>
-
-          <section>
-            <h2 className="mb-3 text-xl font-bold text-gray-800">{t('tips')}</h2>
-            <ul className="list-disc space-y-2 pl-5 text-sm text-gray-600">
+          </details>
+          <details className="rounded-xl border border-portal-border bg-portal-panel p-4">
+            <summary className="cursor-pointer font-semibold text-portal-text">
+              {t('tips')}
+            </summary>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-portal-muted">
               {content.tips.map((tip, i) => (
                 <li key={i}>{tip}</li>
               ))}
             </ul>
-          </section>
+          </details>
+          {content.faq?.length ? (
+            <details className="rounded-xl border border-portal-border bg-portal-panel p-4">
+              <summary className="cursor-pointer font-semibold text-portal-text">
+                {t('faq')}
+              </summary>
+              <div className="mt-3 space-y-3">
+                {content.faq.map((item, i) => (
+                  <div key={i}>
+                    <p className="text-sm font-semibold text-portal-text">{item.question}</p>
+                    <p className="mt-1 text-sm text-portal-muted">{item.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </details>
+          ) : null}
         </div>
       )}
 
-      {isNative && content?.faq?.length ? (
-        <section className="mt-10">
-          <h2 className="mb-4 text-xl font-bold text-gray-800">{t('faq')}</h2>
-          <div className="space-y-3">
-            {content.faq.map((item, i) => (
-              <details
-                key={i}
-                className="rounded-2xl border border-gray-100 bg-white/70 p-4"
-              >
-                <summary className="cursor-pointer font-semibold text-gray-800">
-                  {item.question}
-                </summary>
-                <p className="mt-2 text-sm text-gray-600">{item.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      <section className="mt-10">
-        <h2 className="mb-4 text-xl font-bold text-gray-800">{t('tryAnother')}</h2>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <section className="mt-8 lg:hidden">
+        <h2 className="mb-3 font-display text-lg font-semibold text-portal-text">
+          {t('tryAnother')}
+        </h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {related.map((g) => (
-            <GameCard key={g.slug} game={g} locale={locale} />
+            <GameCard key={g.slug} game={g} />
           ))}
         </div>
       </section>

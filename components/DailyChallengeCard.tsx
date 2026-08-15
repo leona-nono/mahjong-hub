@@ -77,54 +77,45 @@ export default function DailyChallengeCard() {
   const bonus = hud?.streakBonus ?? 0;
 
   return (
-    <section className="mt-8 overflow-hidden rounded-3xl rainbow-card">
-      <div className="relative px-5 py-5 sm:px-6 sm:py-6">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-40"
-          style={{
-            background:
-              'radial-gradient(ellipse at 12% 20%, rgba(255,107,157,.22), transparent 45%), radial-gradient(ellipse at 90% 80%, rgba(56,189,248,.18), transparent 40%)'
-          }}
-        />
-        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wide text-rainbow-pink">
-              {t('eyebrow')}
-            </p>
-            <h2 className="mt-1 text-2xl font-black rainbow-text sm:text-3xl">
-              {t('title')}
-            </h2>
-            <p className="mt-1.5 max-w-xl text-sm text-gray-600">{t('subtitle')}</p>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-semibold">
-              <span className="rounded-full bg-white/70 px-2.5 py-1 text-gray-700 ring-1 ring-gray-100">
-                {t('reward', { n: reward })}
+    <section className="overflow-hidden rounded-2xl border border-portal-border bg-gradient-to-r from-teal-950/80 via-portal-panel to-amber-950/40">
+      <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <div className="min-w-0">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-portal-accent">
+            {t('eyebrow')}
+          </p>
+          <h2 className="font-display text-xl font-semibold text-portal-text sm:text-2xl">
+            {t('title')}
+          </h2>
+          <p className="mt-1 max-w-xl text-sm text-portal-muted">{t('subtitle')}</p>
+          <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold">
+            <span className="rounded-md bg-black/30 px-2 py-1 text-portal-text">
+              {t('reward', { n: reward })}
+            </span>
+            {bonus > 0 && !cleared && (
+              <span className="rounded-md bg-amber-400/15 px-2 py-1 text-portal-amber">
+                {t('streakBonus', { n: bonus })}
               </span>
-              {bonus > 0 && !cleared && (
-                <span className="rounded-full bg-amber-50 px-2.5 py-1 text-amber-800 ring-1 ring-amber-100">
-                  {t('streakBonus', { n: bonus })}
-                </span>
-              )}
-              <span className="rounded-full bg-white/70 px-2.5 py-1 text-gray-700 ring-1 ring-gray-100">
-                {t('streak', { n: streak })}
+            )}
+            <span className="rounded-md bg-black/30 px-2 py-1 text-portal-muted">
+              {t('streak', { n: streak })}
+            </span>
+            {cleared && (
+              <span className="rounded-md bg-emerald-400/15 px-2 py-1 text-emerald-300">
+                {t('cleared')}
               </span>
-              {cleared && (
-                <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-emerald-700 ring-1 ring-emerald-100">
-                  {t('cleared')}
-                </span>
-              )}
-            </div>
+            )}
           </div>
-          <Link
-            href={PLAY_HREF}
-            className={`shrink-0 rounded-full px-7 py-3 text-center text-sm font-bold shadow-md transition hover:opacity-90 ${
-              cleared
-                ? 'bg-white text-gray-700 ring-1 ring-gray-200'
-                : 'rainbow-bar text-white'
-            }`}
-          >
-            {cleared ? t('playAgain') : t('play')}
-          </Link>
         </div>
+        <Link
+          href={PLAY_HREF}
+          className={`shrink-0 rounded-full px-6 py-2.5 text-center text-sm font-bold transition hover:brightness-110 ${
+            cleared
+              ? 'border border-portal-border bg-white/5 text-portal-text'
+              : 'bg-portal-accent text-slate-900'
+          }`}
+        >
+          {cleared ? t('playAgain') : t('play')}
+        </Link>
       </div>
     </section>
   );

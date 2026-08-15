@@ -71,6 +71,8 @@ export interface GameConfig {
   navGroup?: NavGroup;
   /** Regional ruleset for mahjong classic games. */
   region?: MahjongRegion;
+  /** Optional cover art URL for portal cards. */
+  cover?: string;
 }
 
 /**
@@ -384,6 +386,7 @@ export const games: GameConfig[] = [
     native: 'mahjong-solitaire',
     players: 1,
     featured: true,
+    cover: '/assets/mahjong-solitaire/tiles/dragon-red.png',
     content: {
       intro:
         'Mahjong Solitaire is the classic single-player tile-matching puzzle built from mahjong tiles. Clear the whole layout by matching identical tiles that are free: nothing rests on top of them and at least one side is open. Every deal here is generated solvable, so a complete clearing always exists. Two classic shapes are included — the turtle and the pyramid — plus hints, undo, and a reshuffle for when you corner yourself.',

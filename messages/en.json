@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "Mahjong Hub",
-    "tagline": "Rainbow healing mahjong playground"
+    "tagline": "Free online mahjong games"
   },
   "nav": {
     "home": "Home",
@@ -24,13 +24,22 @@
     "regionSichuan": "Sichuan Mahjong"
   },
   "home": {
-    "heroTitle": "Play Mahjong & Relaxing Tile Games",
-    "heroSubtitle": "A rainbow-themed collection of mahjong solitaire, connect and tile-match games. No login, just play.",
+    "heroTitle": "Play free mahjong games",
+    "heroSubtitle": "Solitaire, connect, and classic tile games — instant play, no download.",
     "playButton": "Play Now",
-    "featuredTitle": "Featured Games",
-    "collectionTitle": "Elimination & Match Games",
-    "originalTitle": "Built by us",
-    "originalSubtitle": "Real four-player mahjong and connect, written in-house. Free, no download."
+    "featuredTitle": "Featured",
+    "collectionTitle": "All games",
+    "originalTitle": "Originals",
+    "originalSubtitle": "Built in-house. Free, no download."
+  },
+  "portal": {
+    "categories": "Categories",
+    "solitaire": "Solitaire",
+    "classic": "Classic",
+    "connect": "Connect",
+    "tileMatch": "Tile match",
+    "beginners": "Guides",
+    "viewAll": "View all"
   },
   "game": {
     "play": "Play",
@@ -70,9 +79,7 @@
     "emailSend": "Send login link",
     "emailSent": "Login link sent. Check your inbox (and spam) and click it within 24 hours. Please do not request multiple links.",
     "emailSendAgain": "Resend in {n}s",
-    "emailInvalid": "Please enter a valid email address.",
-    "emailSendFailed": "Could not send the login email. Check spam later, or try again. If it keeps failing, SMTP settings need fixing.",
-    "emailMisconfigured": "Email login is not configured correctly on the server. Please try another sign-in method."
+    "emailInvalid": "Please enter a valid email address."
   },
   "points": {
     "youHave": "You have {n} pts"
@@ -128,88 +135,18 @@
     "undo": "Undo",
     "shuffle": "Shuffle",
     "restart": "Restart",
-    "cleared": "Board cleared! {n} points.",
-    "lessons": "Lessons",
-    "freePlay": "Free play",
-    "nextLesson": "Next lesson",
-    "nextLevel": "Next level",
-    "campaign": "Campaign",
-    "levelN": "Level {n}",
-    "bandEase": "Ease",
-    "bandRamp": "Rising",
-    "bandPeak": "Peak",
-    "alphabetShort": "{n} kinds",
-    "dailyChallenge": "Daily challenge",
-    "dailyDone": "done",
-    "streakN": "Streak {n}",
-    "guestClear": "Sign in to save points and streak.",
-    "alreadyCleared": "Already cleared — no extra points.",
-    "awardedPoints": "+{n} points",
-    "playCampaign": "Play campaign",
-    "coachSkip": "Got it",
-    "coachFree": "Only free tiles can be matched — nothing on top, and at least one side open. Highlighted tiles are free right now.",
-    "coachFlower": "Seasons match any season; flowers match any flower. Try pairing two different season or flower tiles.",
-    "coachDead": "Sometimes no free pair remains — that is a dead end. Use Rescue to reshuffle the rest into a solvable board.",
-    "coachDeadPrompt": "This is a dead end. Tap Rescue to continue — that is the lesson.",
-    "deadPrompt": "No moves left — rescue reshuffles remaining tiles (solvable).",
-    "rescue": "Rescue",
-    "noFreeUndo": "No free undos left ({n}/level). Use an Undo item, points, or a short video.",
-    "itemLocked": "This tool unlocks as you progress.",
-    "needItem": "No {item} left — pick a way to continue.",
-    "itemPrice": "Costs {n} points",
-    "pointsBalance": "Your points: {n}",
-    "buyWithPoints": "Spend {n} points",
-    "watchAdOnce": "Watch a short video (demo) for 1 use",
-    "watchAdRescue": "Watch video to rescue (demo)",
-    "giveUp": "Restart",
-    "cancel": "Cancel",
-    "noMoves": "No matching free pair right now.",
-    "a11yOpen": "Accessibility"
-  },
-  "a11y": {
-    "title": "Accessibility",
-    "done": "Done",
-    "blurb": "Saved on this device. Applies to mahjong tables and solitaire.",
-    "highContrast": "High contrast",
-    "reducedMotion": "Reduce motion",
-    "tileSize": "Tile size",
-    "tileNormal": "Normal",
-    "tileLarge": "Large"
-  },
-  "pwa": {
-    "installHint": "Add to Home Screen for quicker play",
-    "installCta": "Install",
-    "dismiss": "Not now"
+    "cleared": "Board cleared! {n} points."
   },
   "daily": {
     "title": "Daily Check-in",
     "todayReward": "Today's reward: {n} points (Day {day})",
     "claimedReward": "Checked in! +{n} points (Day {day})",
-    "todayRewardShort": "Today +{n}",
-    "claimedRewardShort": "Claimed +{n}",
-    "claim": "Check in",
-    "claimed": "Done",
+    "claim": "Check in & earn",
+    "claimed": "Checked in today",
     "streakLine": "{days}-day streak — check in tomorrow for {n} points",
-    "streakLineShort": "{days}-day streak · tomorrow +{n}",
-    "cycleProgress": "{filled}/7 this week",
-    "dayShort": "D{day}",
-    "doneMark": "✓",
-    "weekAria": "Seven-day check-in progress",
     "pointsTip": "What can points be used for?",
     "tipBody": "Points unlock beautiful tile backs, table skins and effects — coming soon!",
-    "yourPoints": "{n} pts",
-    "guestNote": "Sign in to save points to your account.",
-    "claimFailed": "Check-in could not be saved. Refresh and try again."
-  },
-  "challenge": {
-    "eyebrow": "Today",
-    "title": "Daily Challenge",
-    "subtitle": "One shared board for everyone today. Clear it to keep your streak.",
-    "reward": "+{n} points",
-    "streakBonus": "+{n} streak bonus",
-    "streak": "{n}-day streak",
-    "cleared": "Cleared today",
-    "play": "Play today's board",
-    "playAgain": "Play again"
+    "yourPoints": "Your points: {n}",
+    "guestNote": "Points are saved on this device for now."
   }
 }

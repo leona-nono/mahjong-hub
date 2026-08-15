@@ -7,14 +7,18 @@ import {
   getMergedNativeGames
 } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
+import FeaturedGroup from '@/components/FeaturedGroup';
+import GameCategoryRow from '@/components/GameCategoryRow';
 import DailyChallengeCard from '@/components/DailyChallengeCard';
 import DailyCheckIn from '@/components/DailyCheckIn';
-import { Link } from '@/i18n/navigation';
+import type { GameCategory, GameConfig } from '@/data/games';
+
 export const revalidate = 86_400;
 
-// Canonical + hreflang alternates are provided by the (public) layout —
-// see app/[locale]/(public)/layout.tsx. A page-level `alternates` here would
-// not emit its `languages` (Next 15.5 quirk on the `[locale]` index route).
+function byCategory(games: GameConfig[], category: GameCategory) {
+  return games.filter((g) => g.category === category);
+}
+
 export default async function HomePage({
   params
 }: {
@@ -24,13 +28,12 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const t = await getTranslations('home');
+  const tp = await getTranslations('portal');
   const ts = await getTranslations('site');
   const featured = getMergedLocalizedGames(await getMergedFeaturedGames(), locale);
   const native = getMergedLocalizedGames(await getMergedNativeGames(), locale);
   const all = getMergedLocalizedGames(await getMergedGames(), locale);
 
-  // FAQPage structured data (English — our primary SEO target language) so
-  // Google can surface rich Q&A results on the homepage.
   const faqPage = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -41,7 +44,7 @@ export default async function HomePage({
         name: 'What is Mahjong Hub?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Mahjong Hub is a free online collection of rainbow-themed mahjong games, including mahjong solitaire, connect (match) puzzles and tile-matching modes. Play instantly in your browser with no download required.'
+          text: 'Mahjong Hub is a free online collection of mahjong games, including mahjong solitaire, connect puzzles and tile-matching modes. Play instantly in your browser with no download required.'
         }
       },
       {
@@ -65,7 +68,7 @@ export default async function HomePage({
         name: 'Can I play on my phone?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes. Mahjong Hub is fully responsive and works on phones, tablets and desktop browsers, so there is no app to install.'
+          text: 'Yes. Mahjong Hub works on phones, tablets and desktop browsers — no app to install.'
         }
       },
       {
@@ -73,7 +76,7 @@ export default async function HomePage({
         name: 'How do you play mahjong solitaire?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Match two free tiles that share the same symbol to remove them. A tile is "free" when nothing is on top of it and at least one side is open. Clear the entire board to win.'
+          text: 'Match two free tiles that share the same symbol to remove them. A tile is free when nothing is on top of it and at least one side is open. Clear the entire board to win.'
         }
       },
       {
@@ -81,7 +84,7 @@ export default async function HomePage({
         name: 'Which mahjong game types are available?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'We offer original rainbow mahjong solitaire layouts, connect/match puzzles and classic tile-matching modes, with new game types added over time.'
+          text: 'We offer mahjong solitaire layouts, connect/match puzzles and classic tile-matching modes, with new game types added over time.'
         }
       }
     ]
@@ -99,69 +102,71 @@ export default async function HomePage({
     faqPage
   ];
 
+  const featuredPack = [...native, ...featured]
+    .filter((g, i, arr) => arr.findIndex((x) => x.slug === g.slug) === i)
+    .slice(0, 5);
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+    <div className="mx-auto max-w-[1400px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Hero */}
-      <section className="rounded-3xl rainbow-card px-6 py-12 text-center">
-        <h1 className="text-4xl font-black rainbow-text sm:text-5xl">
-          {t('heroTitle')}
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-gray-600">
-          {t('heroSubtitle')}
-        </p>
-        <Link
-          href="/games"
-          className="mt-6 inline-block rounded-full rainbow-bar px-8 py-3 font-bold text-white shadow-md transition hover:opacity-90"
-        >
-          {t('playButton')}
-        </Link>
-      </section>
-
-      {/* Daily challenge first — retention hook above fold */}
-      <DailyChallengeCard />
-      <DailyCheckIn />
-
-      {/* Our own games — the differentiator, so they go above the fold. */}
-      <section className="mt-12">
-        <h2 className="mb-1 text-2xl font-bold text-gray-800">
-          {t('originalTitle')}
-        </h2>
-        <p className="mb-4 text-sm text-gray-500">{t('originalSubtitle')}</p>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {native.map((g) => (
-            <GameCard key={g.slug} game={g} locale={locale} />
-          ))}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="font-display text-2xl font-semibold text-portal-text sm:text-3xl">
+            {t('heroTitle')}
+          </h1>
+          <p className="mt-1 max-w-2xl text-sm text-portal-muted">{t('heroSubtitle')}</p>
         </div>
-      </section>
+      </div>
 
-      {/* Featured */}
-      <section className="mt-12">
-        <h2 className="mb-4 text-2xl font-bold text-gray-800">
-          {t('featuredTitle')}
-        </h2>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          {featured.map((g) => (
-            <GameCard key={g.slug} game={g} locale={locale} />
-          ))}
-        </div>
-      </section>
+      <div className="grid gap-4 lg:grid-cols-[1fr_240px]">
+        <DailyChallengeCard />
+        <DailyCheckIn compact />
+      </div>
 
-      {/* All games */}
-      <section className="mt-12">
-        <h2 className="mb-4 text-2xl font-bold text-gray-800">
+      <FeaturedGroup title={t('featuredTitle')} href="/games" games={featuredPack} />
+
+      <GameCategoryRow
+        title={tp('solitaire')}
+        href="/games/solitaire"
+        games={byCategory(all, 'solitaire').slice(0, 12)}
+      />
+      <GameCategoryRow
+        title={tp('classic')}
+        href="/games/classic"
+        games={byCategory(all, 'four-player').slice(0, 12)}
+      />
+      <GameCategoryRow
+        title={tp('connect')}
+        href="/games"
+        games={byCategory(all, 'connect').slice(0, 12)}
+      />
+      <GameCategoryRow
+        title={tp('tileMatch')}
+        href="/games"
+        games={byCategory(all, 'tile-match').slice(0, 12)}
+      />
+
+      <section>
+        <h2 className="mb-3 font-display text-lg font-semibold text-portal-text sm:text-xl">
           {t('collectionTitle')}
         </h2>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {all.map((g) => (
-            <GameCard key={g.slug} game={g} locale={locale} />
+            <GameCard key={g.slug} game={g} />
           ))}
         </div>
       </section>
+
+      <details className="rounded-xl border border-portal-border bg-portal-panel/60 p-4 text-sm text-portal-muted">
+        <summary className="cursor-pointer font-semibold text-portal-text">
+          FAQ
+        </summary>
+        <p className="mt-2">{t('heroSubtitle')}</p>
+      </details>
     </div>
   );
 }

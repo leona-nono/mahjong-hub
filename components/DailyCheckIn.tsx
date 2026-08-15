@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -7,7 +7,7 @@ import { useAuth } from '@/lib/auth';
 import { usePoints, claimDailyCheckIn } from '@/lib/points';
 import { CHECKIN_REWARDS } from '@/lib/points-rules';
 
-export default function DailyCheckIn() {
+export default function DailyCheckIn({ compact = false }: { compact?: boolean }) {
   const t = useTranslations('daily');
   const { status } = useSession();
   const { openLogin } = useAuth();
@@ -43,17 +43,23 @@ export default function DailyCheckIn() {
   };
 
   return (
-    <section className="mt-4 overflow-hidden rounded-2xl border border-gray-100 bg-white/80 shadow-sm">
-      <div className="px-4 py-3.5 sm:px-5">
+    <section
+      className={`overflow-hidden rounded-2xl border border-portal-border bg-portal-panel ${
+        compact ? '' : 'mt-0'
+      }`}
+    >
+      <div className={compact ? 'p-3' : 'px-4 py-3.5 sm:px-5'}>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="min-w-0">
             <div className="flex items-baseline gap-2">
-              <h2 className="text-base font-bold text-gray-800">{t('title')}</h2>
-              <span className="text-xs font-medium text-gray-500">
+              <h2 className="font-display text-base font-semibold text-portal-text">
+                {t('title')}
+              </h2>
+              <span className="text-xs font-medium text-portal-muted">
                 {t('cycleProgress', { filled: filledInCycle, total: 7 })}
               </span>
             </div>
-            <p className="mt-0.5 text-xs text-gray-500">
+            <p className="mt-0.5 text-xs text-portal-muted">
               {claimedToday
                 ? t('claimedRewardShort', { n: todayReward })
                 : t('todayRewardShort', { n: todayReward })}
@@ -63,17 +69,17 @@ export default function DailyCheckIn() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <p className="text-xs font-semibold text-gray-600">
+            <p className="text-xs font-semibold text-portal-muted">
               {t('yourPoints', { n: points })}
             </p>
             <button
               type="button"
-              onClick={claim}
+              onClick={() => void claim()}
               disabled={claimedToday || pending || (loggedIn && !hydrated)}
-              className={`rounded-full px-4 py-1.5 text-xs font-bold shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
+              className={`rounded-full px-4 py-1.5 text-xs font-bold transition disabled:cursor-not-allowed disabled:opacity-60 ${
                 claimedToday
-                  ? 'bg-gray-100 text-gray-500'
-                  : 'rainbow-bar text-white hover:opacity-90'
+                  ? 'bg-white/10 text-portal-muted'
+                  : 'bg-portal-accent text-slate-900 hover:brightness-110'
               }`}
             >
               {claimedToday ? t('claimed') : t('claim')}
@@ -81,7 +87,7 @@ export default function DailyCheckIn() {
           </div>
         </div>
 
-        {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+        {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
 
         <ol className="mt-3 grid grid-cols-7 gap-1.5" aria-label={t('weekAria')}>
           {CHECKIN_REWARDS.map((r, i) => {
@@ -94,19 +100,19 @@ export default function DailyCheckIn() {
                 key={day}
                 className={`relative flex flex-col items-center rounded-lg border px-0.5 py-1.5 text-center ${
                   isToday
-                    ? 'border-rainbow-pink bg-rainbow-pink/10'
+                    ? 'border-portal-accent/50 bg-portal-accent/10'
                     : isDone
-                      ? 'border-emerald-200 bg-emerald-50/80'
-                      : 'border-gray-100 bg-gray-50/80'
+                      ? 'border-emerald-500/30 bg-emerald-500/10'
+                      : 'border-portal-border bg-black/20'
                 }`}
               >
                 <span
                   className={`text-[10px] font-bold ${
                     isToday
-                      ? 'text-rainbow-pink'
+                      ? 'text-portal-accent'
                       : isDone
-                        ? 'text-emerald-700'
-                        : 'text-gray-400'
+                        ? 'text-emerald-300'
+                        : 'text-portal-muted'
                   }`}
                 >
                   {t('dayShort', { day })}
@@ -114,16 +120,19 @@ export default function DailyCheckIn() {
                 <span
                   className={`mt-0.5 text-[11px] font-bold tabular-nums ${
                     isDone
-                      ? 'text-emerald-700'
+                      ? 'text-emerald-300'
                       : isMilestone
-                        ? 'text-amber-700'
-                        : 'text-gray-700'
+                        ? 'text-portal-amber'
+                        : 'text-portal-text'
                   }`}
                 >
                   {isDone ? t('doneMark') : r}
                 </span>
                 {isToday && (
-                  <span className="mt-0.5 h-1 w-1 rounded-full bg-rainbow-pink" aria-hidden />
+                  <span
+                    className="mt-0.5 h-1 w-1 rounded-full bg-portal-accent"
+                    aria-hidden
+                  />
                 )}
               </li>
             );
@@ -131,7 +140,7 @@ export default function DailyCheckIn() {
         </ol>
 
         {!loggedIn && (
-          <p className="mt-2 text-[11px] text-gray-400">{t('guestNote')}</p>
+          <p className="mt-2 text-[11px] text-portal-muted">{t('guestNote')}</p>
         )}
       </div>
     </section>

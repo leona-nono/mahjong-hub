@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
+import { Fraunces, Manrope } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -9,7 +10,19 @@ import Providers from '@/components/providers';
 import Analytics from '@/components/Analytics';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import PwaInstallHint from '@/components/PwaInstallHint';
-import { SITE_BASE_URL, LANGUAGE_ALTERNATES } from '@/lib/seo';
+import { LANGUAGE_ALTERNATES } from '@/lib/seo';
+
+const display = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-portal-display',
+  display: 'swap'
+});
+
+const sans = Manrope({
+  subsets: ['latin'],
+  variable: '--font-portal-sans',
+  display: 'swap'
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -17,20 +30,14 @@ export function generateStaticParams() {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Mahjong Hub · Rainbow Mahjong Games',
+    default: 'Mahjong Hub · Free Mahjong Games',
     template: '%s · Mahjong Hub'
   },
   description:
-    'A rainbow-themed collection of relaxing mahjong solitaire, connect and tile-match games. Free to play, no login.',
-  // Absolute hreflang URLs (Google requires absolute, not relative) plus an
-  // x-default that falls back to the English homepage for language-agnostic
-  // crawlers and visitors. Individual pages set their own canonical.
+    'Play free mahjong solitaire, connect and classic tile games online. Instant play in your browser — no download.',
   alternates: {
     languages: LANGUAGE_ALTERNATES
   },
-  // GSC site verification (meta-tag method). Set the env var in Vercel; when
-  // absent, Next omits the tag. DNS TXT verification in Cloudflare is an
-  // equally valid alternative that needs no code.
   verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
     : undefined,
@@ -38,7 +45,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: 'Mahjong Hub',
-    statusBarStyle: 'default'
+    statusBarStyle: 'black-translucent'
   },
   icons: {
     icon: [{ url: '/icons/icon-192.svg', type: 'image/svg+xml' }],
@@ -46,18 +53,13 @@ export const metadata: Metadata = {
   }
 };
 
-// Some mobile in-app browsers otherwise select a desktop layout viewport
-// (roughly 980px), which makes the four-player table overflow off-screen.
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#13252d'
+  themeColor: '#0b1220'
 };
 
-// 根布局：只负责 <html>/<body> + i18n Provider + 全局 Providers。
-// 公共页面的 Header/Footer 已下放到 app/[locale]/(public)/layout.tsx，
-// 后台 app/[locale]/admin 不需要公共 chrome，因此这里不再渲染。
 export default async function LocaleLayout({
   children,
   params
@@ -66,14 +68,14 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (!routing.locales.includes(locale as any)) notFound();
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) notFound();
 
   setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body>
+    <html lang={locale} className={`${display.variable} ${sans.variable}`}>
+      <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
           <Providers
             enabledProviders={{

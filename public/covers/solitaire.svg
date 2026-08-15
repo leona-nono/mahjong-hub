@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 280" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0f766e"/><stop offset="1" stop-color="#134e4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="280" rx="24" fill="url(#g)"/>
+  <rect x="70" y="58" width="90" height="120" rx="12" fill="#f8fafc" opacity=".92"/>
+  <rect x="175" y="78" width="90" height="120" rx="12" fill="#ecfdf5" opacity=".95"/>
+  <rect x="280" y="48" width="90" height="120" rx="12" fill="#fef3c7" opacity=".95"/>
+  <text x="240" y="230" text-anchor="middle" fill="#99f6e4" font-family="Georgia,serif" font-size="28" font-weight="700">Solitaire</text>
+</svg>

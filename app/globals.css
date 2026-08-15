@@ -11,6 +11,18 @@
   --rb-indigo: #748ffc;
   --rb-violet: #b197fc;
   --rb-pink: #f783ac;
+
+  /* Dark game-portal tokens (CrazyGames-like) */
+  --portal-bg: #0b1220;
+  --portal-bg-elevated: #121a2b;
+  --portal-panel: #162033;
+  --portal-border: rgba(148, 163, 184, 0.14);
+  --portal-text: #e8eef7;
+  --portal-muted: #94a3b8;
+  --portal-accent: #2dd4bf;
+  --portal-accent-2: #fbbf24;
+  --portal-sidebar-w: 220px;
+  --portal-sidebar-w-collapsed: 72px;
 }
 
 html,
@@ -20,25 +32,37 @@ body {
 }
 
 body {
-  background: linear-gradient(135deg, #fff5f7 0%, #f0f8ff 50%, #f5fff7 100%);
+  background-color: var(--portal-bg);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(45, 212, 191, 0.12), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(251, 191, 36, 0.08), transparent 50%),
+    radial-gradient(ellipse 50% 30% at 50% 100%, rgba(56, 189, 248, 0.06), transparent 55%);
   background-attachment: fixed;
-  color: #2b2b3a;
+  color: var(--portal-text);
   font-family:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'PingFang SC', 'Hiragino Sans', 'Noto Sans CJK SC', 'Microsoft YaHei',
+    var(--font-portal-sans),
+    'Segoe UI',
+    'PingFang SC',
+    'Hiragino Sans',
+    'Noto Sans CJK SC',
+    'Microsoft YaHei',
     sans-serif;
+}
+
+.font-display {
+  font-family:
+    var(--font-portal-display),
+    Georgia,
+    'Times New Roman',
+    serif;
 }
 
 .rainbow-text {
   background: linear-gradient(
     90deg,
-    var(--rb-red),
-    var(--rb-orange),
-    var(--rb-yellow),
-    var(--rb-green),
-    var(--rb-blue),
-    var(--rb-violet),
-    var(--rb-pink)
+    var(--portal-accent),
+    #5eead4,
+    var(--portal-accent-2)
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -48,21 +72,31 @@ body {
 .rainbow-bar {
   background: linear-gradient(
     90deg,
-    var(--rb-red),
-    var(--rb-orange),
-    var(--rb-yellow),
-    var(--rb-green),
-    var(--rb-blue),
-    var(--rb-violet),
-    var(--rb-pink)
+    var(--portal-accent),
+    #38bdf8,
+    var(--portal-accent-2)
   );
 }
 
 .rainbow-card {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 30px -12px rgba(116, 143, 252, 0.35);
+  background: rgba(22, 32, 51, 0.88);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--portal-border);
+  box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.55);
+}
+
+.portal-panel {
+  background: var(--portal-panel);
+  border: 1px solid var(--portal-border);
+}
+
+.portal-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.portal-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
 }
 
 /*

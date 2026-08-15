@@ -28,19 +28,15 @@ export default async function GamesPage({
   const games = getMergedLocalizedGames(await getMergedGames(), locale);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
-      <section className="rounded-3xl rainbow-card px-6 py-10 text-center">
-        <h1 className="text-3xl font-black rainbow-text sm:text-4xl">
-          {t('title')}
-        </h1>
-        <p className="mx-auto mt-3 max-w-2xl text-gray-600">
-          {t('subtitle')}
-        </p>
-      </section>
+    <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8">
+      <h1 className="font-display text-2xl font-semibold text-portal-text sm:text-3xl">
+        {t('title')}
+      </h1>
+      <p className="mt-1 max-w-2xl text-sm text-portal-muted">{t('subtitle')}</p>
 
-      <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {games.map((g) => (
-          <GameCard key={g.slug} game={g} locale={locale} />
+          <GameCard key={g.slug} game={g} />
         ))}
       </div>
     </div>

@@ -22,7 +22,7 @@ export default function LocaleSwitcher() {
       aria-label="Language"
       value={locale}
       onChange={(e) => router.replace(pathname, { locale: e.target.value })}
-      className="rounded-full border border-gray-200 bg-white/80 px-2 py-1 text-xs font-semibold text-gray-700"
+      className="rounded-lg border border-portal-border bg-portal-panel px-2 py-1 text-xs font-semibold text-portal-text"
     >
       {routing.locales.map((l) => (
         <option key={l} value={l}>

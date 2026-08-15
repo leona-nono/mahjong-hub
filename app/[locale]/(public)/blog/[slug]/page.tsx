@@ -74,7 +74,7 @@ export default async function BlogPostPage({
   ];
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12">
+    <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       {jsonLd.map((block, i) => (
         <script
           key={i}
@@ -83,22 +83,20 @@ export default async function BlogPostPage({
         />
       ))}
 
-      <Link
-        href="/blog"
-        className="text-sm font-medium text-rainbow-pink hover:underline"
-      >
+      <Link href="/blog" className="text-sm font-medium text-portal-accent hover:underline">
         ← {t('tryAnother')}
       </Link>
 
-      <h1 className="mt-4 text-3xl font-black rainbow-text">{post.title}</h1>
-      <p className="mt-3 text-gray-600">{post.description}</p>
-      <p className="mt-2 text-xs font-medium uppercase tracking-wide text-gray-400">
+      <h1 className="mt-4 font-display text-3xl font-semibold text-portal-text">
+        {post.title}
+      </h1>
+      <p className="mt-3 text-portal-muted">{post.description}</p>
+      <p className="mt-2 text-xs font-medium uppercase tracking-wide text-portal-muted/70">
         {post.readMinutes} min read
       </p>
 
-      {/* 配图 — decorative tile row */}
       {post.heroTiles && post.heroTiles.length > 0 && (
-        <div className="mt-6 rounded-3xl rainbow-card px-6 py-6">
+        <div className="mt-6 rounded-2xl border border-portal-border bg-portal-panel px-6 py-6">
           <TileRow tiles={post.heroTiles} size={60} />
         </div>
       )}
@@ -106,16 +104,16 @@ export default async function BlogPostPage({
       <div className="mt-8 space-y-10">
         {post.sections.map((section, i) => (
           <section key={i}>
-            <h2 className="text-xl font-bold text-gray-800">
+            <h2 className="font-display text-xl font-semibold text-portal-text">
               {section.heading}
             </h2>
             {section.body.map((para, j) => (
-              <p key={j} className="mt-3 leading-relaxed text-gray-600">
+              <p key={j} className="mt-3 leading-relaxed text-portal-muted">
                 {para}
               </p>
             ))}
             {section.tiles && section.tiles.length > 0 && (
-              <div className="mt-4 rounded-2xl border border-gray-100 bg-white/60 px-4 py-4">
+              <div className="mt-4 rounded-2xl border border-portal-border bg-portal-panel px-4 py-4">
                 <TileRow tiles={section.tiles} size={48} />
               </div>
             )}
@@ -125,32 +123,31 @@ export default async function BlogPostPage({
 
       {post.faq.length ? (
         <section className="mt-12">
-          <h2 className="mb-4 text-xl font-bold text-gray-800">{t('faq')}</h2>
+          <h2 className="mb-4 font-display text-xl font-semibold text-portal-text">
+            {t('faq')}
+          </h2>
           <div className="space-y-3">
             {post.faq.map((item, i) => (
               <details
                 key={i}
-                className="rounded-2xl border border-gray-100 bg-white/70 p-4"
+                className="rounded-2xl border border-portal-border bg-portal-panel p-4"
               >
-                <summary className="cursor-pointer font-semibold text-gray-800">
+                <summary className="cursor-pointer font-semibold text-portal-text">
                   {item.question}
                 </summary>
-                <p className="mt-2 text-sm text-gray-600">{item.answer}</p>
+                <p className="mt-2 text-sm text-portal-muted">{item.answer}</p>
               </details>
             ))}
           </div>
         </section>
       ) : null}
 
-      {/* Play Now CTA — content drives SEO traffic, the game page keeps it. */}
       {post.cta && (
-        <div className="mt-12 rounded-3xl rainbow-card p-8 text-center">
-          <p className="text-lg font-bold text-gray-800">
-            {post.cta.label}
-          </p>
+        <div className="mt-12 rounded-2xl border border-portal-border bg-portal-panel p-8 text-center">
+          <p className="text-lg font-bold text-portal-text">{post.cta.label}</p>
           <Link
             href={post.cta.href}
-            className="mt-4 inline-block rounded-full rainbow-bar px-8 py-3 font-bold text-white shadow-md transition hover:opacity-90"
+            className="mt-4 inline-block rounded-full bg-portal-accent px-8 py-3 font-bold text-slate-900 transition hover:brightness-110"
           >
             Play Now
           </Link>

@@ -25,24 +25,26 @@ export default async function BlogPage({
   const posts = getLocalizedBlogPosts(getBlogPosts(), locale);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="text-3xl font-black rainbow-text">{t('beginners')}</h1>
-      <p className="mt-3 text-gray-600">{t('beginnersSubtitle')}</p>
+    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <h1 className="font-display text-3xl font-semibold text-portal-text">
+        {t('beginners')}
+      </h1>
+      <p className="mt-2 text-portal-muted">{t('beginnersSubtitle')}</p>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {posts.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="block rounded-2xl rainbow-card p-6 transition hover:-translate-y-0.5 hover:shadow-lg"
+            className="block rounded-2xl border border-portal-border bg-portal-panel p-5 transition hover:border-portal-accent/40 hover:shadow-portal"
           >
             <div className="flex items-center justify-between gap-3">
-              <h2 className="font-bold text-gray-800">{post.title}</h2>
-              <span className="shrink-0 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+              <h2 className="font-semibold text-portal-text">{post.title}</h2>
+              <span className="shrink-0 rounded-md bg-black/30 px-2 py-0.5 text-xs font-medium text-portal-muted">
                 {post.readMinutes} min
               </span>
             </div>
-            <p className="mt-2 line-clamp-3 text-sm text-gray-500">
+            <p className="mt-2 line-clamp-3 text-sm text-portal-muted">
               {post.description}
             </p>
           </Link>

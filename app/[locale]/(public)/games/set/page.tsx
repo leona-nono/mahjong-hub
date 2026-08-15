@@ -23,11 +23,10 @@ export default async function SetPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-3xl font-black rainbow-text">{t('set')}</h1>
-      <p className="mt-3 text-gray-600">{t('setSubtitle')}</p>
+      <h1 className="font-display text-3xl font-semibold text-portal-text">{t('set')}</h1>
+      <p className="mt-3 text-portal-muted">{t('setSubtitle')}</p>
 
-      {/* Amazon affiliate product embeds will render here. */}
-      <div className="mt-10 rounded-3xl border border-dashed border-gray-200 p-10 text-center text-sm text-gray-400">
+      <div className="mt-10 rounded-2xl border border-dashed border-portal-border p-10 text-center text-sm text-portal-muted">
         {t('setComingSoon')}
       </div>
     </div>
