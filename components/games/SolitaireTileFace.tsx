@@ -12,6 +12,12 @@ const SIZE_CLASS: Record<SolitaireTileSize, string> = {
   lg: 'h-[4.6rem] w-14'
 };
 
+const SIZE_PX: Record<SolitaireTileSize, { w: number; h: number }> = {
+  sm: { w: 36, h: 48 },
+  md: { w: 42, h: 56 },
+  lg: { w: 56, h: 74 }
+};
+
 /** Solitaire faces from /assets/mahjong-solitaire/tiles/ (not 4P traditional). */
 export default function SolitaireTileFace({
   tile,
@@ -27,12 +33,17 @@ export default function SolitaireTileFace({
   dimmed?: boolean;
 }) {
   const group = matchGroup(tile);
+  const px = SIZE_PX[size];
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={tileArtSrc(tile)}
-      alt={tile}
+      alt=""
+      width={px.w}
+      height={px.h}
       draggable={false}
+      decoding="async"
+      loading="eager"
       data-match-group={group}
       className={[
         'inline-block rounded-md object-cover shadow-sm select-none',

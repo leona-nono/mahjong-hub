@@ -201,9 +201,9 @@ export function nextLevelId(currentId: string): string | null {
   return campaignLevelId(n + 1);
 }
 
-export function campaignOptions(upto: number): LevelDef[] {
+export function campaignOptions(upto: number, catalog?: CatalogEntry[]): LevelDef[] {
   const n = Math.max(1, Math.floor(upto));
-  return Array.from({ length: n }, (_, i) => campaignLevelDef(i + 1));
+  return Array.from({ length: n }, (_, i) => campaignLevelDef(i + 1, catalog));
 }
 
 export function bandLabelKey(band: DifficultyBand): 'bandEase' | 'bandRamp' | 'bandPeak' {

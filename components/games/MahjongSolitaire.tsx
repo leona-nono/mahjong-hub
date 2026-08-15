@@ -22,7 +22,6 @@ import {
 } from '@/lib/mahjong-solitaire/scoring';
 import {
   TEACHING_LEVELS,
-  applyServerDeal,
   bandLabelKey,
   campaignOptions,
   createLevelBoard,
@@ -31,9 +30,19 @@ import {
   parseCampaignLevel,
   type LevelDef
 } from '@/lib/mahjong-solitaire/levels';
+import type { CatalogEntry } from '@/lib/mahjong-solitaire/difficulty';
 import { parseDailyLevelId, type SolitaireDeal } from '@/lib/mahjong-solitaire/progress-rules';
 import { recordGuestDailyClear } from '@/lib/mahjong-solitaire/daily-local';
+import { useSolitaireTilePreload, warmSolitaireTileArt } from '@/lib/mahjong-solitaire/tile-preload';
 import { utcDateString } from '@/lib/points-rules';
+import catalogFile from '@/lib/mahjong-solitaire/seed-catalog.json';
+
+/** Same catalog the API serves — deal locally so level switches skip the network wait. */
+const SEED_CATALOG = (catalogFile.entries ?? []) as CatalogEntry[];
+
+function playableLevel(id: string): LevelDef | undefined {
+  return getLevel(id, SEED_CATALOG);
+}
 import {
   applyHint,
   applyRescue,
@@ -77,7 +86,8 @@ export default function MahjongSolitaire({
   const t = useTranslations('solitaire');
   const { points } = usePoints();
   const items = useSolitaireItems();
-  const initialLevel = getLevel(defaultLevelId) ?? TEACHING_LEVELS[0];
+  const initialLevel = playableLevel(defaultLevelId) ?? TEACHING_LEVELS[0];
+  useSolitaireTilePreload(true);
 
   const [mode, setMode] = useState<PlayMode>('level');
   const [level, setLevel] = useState<LevelDef>(initialLevel);
@@ -105,6 +115,10 @@ export default function MahjongSolitaire({
   const [dealReady, setDealReady] = useState(true);
   const startedAt = useRef(Date.now());
   const submitting = useRef(false);
+
+  useEffect(() => {
+    warmSolitaireTileArt();
+  }, []);
 
   const unlockCtx = {
     lessonsCleared: items.progress.lessonsCleared,
@@ -177,37 +191,19 @@ export default function MahjongSolitaire({
   };
 
   const restartLevel = (next: LevelDef) => {
+    const def = playableLevel(next.id) ?? next;
     setMode('level');
-    setLevel(next);
+    setLevel(def);
     setCoachDismissed(false);
-    setDealReady(false);
+    setBoard(createLevelBoard(def));
     resetRoundMeta();
-    void (async () => {
-      let def = next;
-      try {
-        const res = await fetch(
-          `/api/solitaire/level?id=${encodeURIComponent(next.id)}`,
-          { credentials: 'same-origin' }
-        );
-        if (res.ok) {
-          const deal = (await res.json()) as SolitaireDeal;
-          if (deal?.seed) def = applyServerDeal(next, deal);
-        }
-      } catch {
-        /* local fallback */
-      }
-      setLevel(def);
-      setBoard(createLevelBoard(def));
-      startedAt.current = Date.now();
-      setDealReady(true);
-    })();
+    setDealReady(true);
   };
 
   useEffect(() => {
     if (!defaultLevelId || defaultLevelId.startsWith('teach-')) return;
-    const next = getLevel(defaultLevelId);
+    const next = playableLevel(defaultLevelId);
     if (next) restartLevel(next);
-    // Sync server deal once when opened from homepage daily link.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultLevelId]);
 
@@ -300,7 +296,7 @@ export default function MahjongSolitaire({
   const showCoach = mode === 'level' && Boolean(level.coachKey) && !coachDismissed;
   const campaignUpto = Math.max(12, parseCampaignLevel(level.id) ?? 0);
   const campaignLevels = useMemo(
-    () => campaignOptions(campaignUpto),
+    () => campaignOptions(campaignUpto, SEED_CATALOG),
     [campaignUpto]
   );
   const stars = starsForLevel({
@@ -488,7 +484,7 @@ export default function MahjongSolitaire({
               restartFree(next);
               return;
             }
-            const next = getLevel(v);
+            const next = playableLevel(v) ?? getLevel(v);
             if (!next) return;
             setMode('level');
             restartLevel(next);
@@ -656,7 +652,7 @@ export default function MahjongSolitaire({
               type="button"
               onClick={() => {
                 const nid = nextLevelId(level.id);
-                const next = nid ? getLevel(nid) : undefined;
+                const next = nid ? playableLevel(nid) ?? getLevel(nid) : undefined;
                 if (next) restartLevel(next);
               }}
               className="mt-3 rounded-full bg-emerald-500 px-4 py-2 font-bold text-slate-900"
@@ -670,7 +666,7 @@ export default function MahjongSolitaire({
             <button
               type="button"
               onClick={() => {
-                const next = getLevel('lv-1');
+                const next = playableLevel('lv-1');
                 if (next) restartLevel(next);
               }}
               className="mt-3 rounded-full bg-emerald-500 px-4 py-2 font-bold text-slate-900"
