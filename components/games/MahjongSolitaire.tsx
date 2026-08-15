@@ -15,6 +15,7 @@ import { createBoard } from '@/lib/mahjong-solitaire/generator';
 import { isDead } from '@/lib/mahjong-solitaire/solver';
 import { measureDifficulty } from '@/lib/mahjong-solitaire/difficulty';
 import type { SolitaireLayout } from '@/lib/mahjong-solitaire/layouts';
+import { layoutTileCount } from '@/lib/mahjong-solitaire/layouts';
 import { FREE_UNDO_PER_LEVEL } from '@/lib/mahjong-solitaire/tiles';
 import {
   applyMatchScore,
@@ -34,15 +35,9 @@ import type { CatalogEntry } from '@/lib/mahjong-solitaire/difficulty';
 import { parseDailyLevelId, type SolitaireDeal } from '@/lib/mahjong-solitaire/progress-rules';
 import { recordGuestDailyClear } from '@/lib/mahjong-solitaire/daily-local';
 import { useSolitaireTilePreload, warmSolitaireTileArt } from '@/lib/mahjong-solitaire/tile-preload';
+import { trackSolitaireEvent } from '@/lib/mahjong-solitaire/telemetry';
 import { utcDateString } from '@/lib/points-rules';
 import catalogFile from '@/lib/mahjong-solitaire/seed-catalog.json';
-
-/** Same catalog the API serves — deal locally so level switches skip the network wait. */
-const SEED_CATALOG = (catalogFile.entries ?? []) as CatalogEntry[];
-
-function playableLevel(id: string): LevelDef | undefined {
-  return getLevel(id, SEED_CATALOG);
-}
 import {
   applyHint,
   applyRescue,
@@ -58,7 +53,16 @@ import {
 } from '@/lib/solitaire-items';
 import { tileName } from '@/lib/mahjong/tiles';
 import { applyLedgerTotal, usePoints } from '@/lib/points';
+import MahjongAccessibilityPanel, {
+  useMahjongPreferences
+} from '@/components/games/MahjongAccessibilityPanel';
 
+/** Same catalog the API serves — deal locally so level switches skip the network wait. */
+const SEED_CATALOG = (catalogFile.entries ?? []) as CatalogEntry[];
+
+function playableLevel(id: string): LevelDef | undefined {
+  return getLevel(id, SEED_CATALOG);
+}
 export interface MahjongSolitaireProps {
   defaultLayout?: SolitaireLayout;
   defaultLevelId?: string;
@@ -86,6 +90,8 @@ export default function MahjongSolitaire({
   const t = useTranslations('solitaire');
   const { points } = usePoints();
   const items = useSolitaireItems();
+  const { preferences, setPreference } = useMahjongPreferences();
+  const [a11yOpen, setA11yOpen] = useState(false);
   const initialLevel = playableLevel(defaultLevelId) ?? TEACHING_LEVELS[0];
   useSolitaireTilePreload(true);
 
@@ -115,10 +121,39 @@ export default function MahjongSolitaire({
   const [dealReady, setDealReady] = useState(true);
   const startedAt = useRef(Date.now());
   const submitting = useRef(false);
+  const firstTileTracked = useRef(false);
 
   useEffect(() => {
     warmSolitaireTileArt();
   }, []);
+
+  useEffect(() => {
+    // Non-teach defaults go through restartLevel (which tracks). Teach starts here.
+    if (defaultLevelId && !defaultLevelId.startsWith('teach-')) return;
+    trackSolitaireEvent(
+      parseDailyLevelId(level.id) ? 'solitaire_daily_enter' : 'solitaire_level_enter',
+      {
+        levelId: level.id,
+        layout: level.layout,
+        alphabet: level.deal.alphabet ?? 0,
+        remaining: layoutTileCount(level.layout)
+      }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const a11yTracked = useRef(false);
+  useEffect(() => {
+    if (!a11yTracked.current) {
+      a11yTracked.current = true;
+      return;
+    }
+    trackSolitaireEvent('solitaire_a11y_changed', {
+      highContrast: preferences.highContrast,
+      reducedMotion: preferences.reducedMotion,
+      tileScale: preferences.tileScale
+    });
+  }, [preferences.highContrast, preferences.reducedMotion, preferences.tileScale]);
 
   const unlockCtx = {
     lessonsCleared: items.progress.lessonsCleared,
@@ -188,6 +223,7 @@ export default function MahjongSolitaire({
     items.resetLevelAds();
     startedAt.current = Date.now();
     submitting.current = false;
+    firstTileTracked.current = false;
   };
 
   const restartLevel = (next: LevelDef) => {
@@ -198,6 +234,13 @@ export default function MahjongSolitaire({
     setBoard(createLevelBoard(def));
     resetRoundMeta();
     setDealReady(true);
+    const daily = parseDailyLevelId(def.id);
+    trackSolitaireEvent(daily ? 'solitaire_daily_enter' : 'solitaire_level_enter', {
+      levelId: def.id,
+      layout: def.layout,
+      alphabet: def.deal.alphabet ?? 0,
+      remaining: layoutTileCount(def.layout)
+    });
   };
 
   useEffect(() => {
@@ -304,11 +347,22 @@ export default function MahjongSolitaire({
     itemUses
   });
 
-  const bumpItemUse = () => setItemUses((n) => n + 1);
+  const bumpItemUse = (type: ItemType) => {
+    setItemUses((n) => n + 1);
+    trackSolitaireEvent('solitaire_item_use', { levelId: level.id, item: type });
+  };
 
   const handleTile = (index: number) => {
     if (status !== 'playing' || paused || !dealReady) return;
     if (!isExposed(board, index)) return;
+
+    if (!firstTileTracked.current) {
+      firstTileTracked.current = true;
+      trackSolitaireEvent('solitaire_first_tile_ms', {
+        levelId: level.id,
+        ms: Date.now() - startedAt.current
+      });
+    }
 
     if (selected === null) {
       setSelected(index);
@@ -333,10 +387,21 @@ export default function MahjongSolitaire({
       combo: scored.combo,
       lastMatchAt: scored.lastMatchAt
     });
+    trackSolitaireEvent('solitaire_match', {
+      levelId: level.id,
+      remaining: next.remaining,
+      combo: scored.combo
+    });
 
     if (isCleared(next)) {
       setBoard(next);
       setStatus('won');
+      trackSolitaireEvent('solitaire_clear', {
+        levelId: level.id,
+        score: scored.score,
+        itemUses,
+        ms: Date.now() - startedAt.current
+      });
       if (mode === 'level') items.markLessonCleared(level.order);
       if (mode === 'level') {
         void submitClear(scored.score);
@@ -348,6 +413,10 @@ export default function MahjongSolitaire({
       setBoard(next);
       setStatus('dead');
       items.markDeadSeen();
+      trackSolitaireEvent('solitaire_dead', {
+        levelId: level.id,
+        remaining: next.remaining
+      });
     } else {
       setBoard(next);
     }
@@ -366,7 +435,7 @@ export default function MahjongSolitaire({
       return;
     }
     setHint(r.pair);
-    bumpItemUse();
+    bumpItemUse('hint');
     setOffer(null);
   };
 
@@ -402,7 +471,7 @@ export default function MahjongSolitaire({
     setBoard(r.board);
     setSelected(null);
     setHint(null);
-    bumpItemUse();
+    bumpItemUse('undo');
     setOffer(null);
     if (status === 'won' || status === 'dead') setStatus('playing');
   };
@@ -420,7 +489,7 @@ export default function MahjongSolitaire({
     setSelected(null);
     setHint(null);
     setStatus('playing');
-    bumpItemUse();
+    bumpItemUse('shuffle');
     setOffer(null);
   };
 
@@ -437,7 +506,7 @@ export default function MahjongSolitaire({
     setSelected(null);
     setHint(null);
     setStatus('playing');
-    bumpItemUse();
+    bumpItemUse('rescue');
     setOffer(null);
   };
 
@@ -471,7 +540,19 @@ export default function MahjongSolitaire({
   };
 
   return (
-    <div className="rounded-3xl border border-slate-950/20 bg-[#13252d] p-3 text-slate-100 shadow-[0_24px_70px_rgba(15,23,42,.28)] sm:p-5">
+    <div
+      className="solitaire-shell rounded-3xl border border-slate-950/20 bg-[#13252d] p-3 text-slate-100 shadow-[0_24px_70px_rgba(15,23,42,.28)] sm:p-5"
+      data-high-contrast={preferences.highContrast ? 'true' : 'false'}
+      data-reduced-motion={preferences.reducedMotion ? 'true' : 'false'}
+      data-tile-scale={preferences.tileScale}
+    >
+      {a11yOpen && (
+        <MahjongAccessibilityPanel
+          preferences={preferences}
+          onChange={setPreference}
+          onClose={() => setA11yOpen(false)}
+        />
+      )}
       <div className="sticky top-2 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-700 bg-[#172f39]/95 p-2 text-sm shadow-md backdrop-blur">
         <select
           value={mode === 'level' ? level.id : `free:${layout}`}
@@ -566,6 +647,14 @@ export default function MahjongSolitaire({
           className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium text-gray-700"
         >
           {paused ? 'Resume' : 'Pause'}
+        </button>
+        <button
+          type="button"
+          onClick={() => setA11yOpen(true)}
+          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100 hover:bg-[#2c4b57]"
+          aria-label={t('a11yOpen')}
+        >
+          {t('a11yOpen')}
         </button>
         <button
           type="button"
@@ -728,7 +817,7 @@ export default function MahjongSolitaire({
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-2xl border border-slate-700 bg-[#1e3843] px-3 py-5 shadow-inner">
+      <div className="solitaire-board-stage overflow-x-auto rounded-2xl border border-slate-700 bg-[#1e3843] px-3 py-5 shadow-inner">
         <div
           className="relative mx-auto"
           style={{ width: geometry.width, height: geometry.height }}

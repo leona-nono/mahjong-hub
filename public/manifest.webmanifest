@@ -1,0 +1,25 @@
+{
+  "name": "Mahjong Hub",
+  "short_name": "Mahjong Hub",
+  "description": "Relaxing mahjong solitaire and tile-match games.",
+  "start_url": "/en",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#13252d",
+  "theme_color": "#13252d",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

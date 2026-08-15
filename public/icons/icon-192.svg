@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="Mahjong Hub">
+  <rect width="192" height="192" rx="36" fill="#13252d"/>
+  <rect x="36" y="28" width="88" height="116" rx="12" fill="#f7f4e9" stroke="#0f172a" stroke-width="4"/>
+  <rect x="68" y="48" width="88" height="116" rx="12" fill="#e8f5e9" stroke="#0f172a" stroke-width="4"/>
+  <text x="112" y="118" text-anchor="middle" font-family="Georgia, serif" font-size="52" font-weight="700" fill="#0f766e">-</text>
+</svg>

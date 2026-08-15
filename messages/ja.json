@@ -163,7 +163,23 @@
     "watchAdRescue": "動画でレスキュー（デモ）",
     "giveUp": "やり直す",
     "cancel": "キャンセル",
-    "noMoves": "今はマッチできるフリー牌がありません。"
+    "noMoves": "今はマッチできるフリー牌がありません。",
+    "a11yOpen": "アクセシビリティ"
+  },
+  "a11y": {
+    "title": "アクセシビリティ",
+    "done": "完了",
+    "blurb": "この端末に保存され、卓とソリティアで共有されます。",
+    "highContrast": "ハイコントラスト",
+    "reducedMotion": "動きを減らす",
+    "tileSize": "牌のサイズ",
+    "tileNormal": "標準",
+    "tileLarge": "大きめ"
+  },
+  "pwa": {
+    "installHint": "ホーム画面に追加するとすぐ開けます",
+    "installCta": "インストール",
+    "dismiss": "あとで"
   },
   "daily": {
     "title": "デイリーチェックイン",

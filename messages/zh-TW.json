@@ -163,7 +163,23 @@
     "watchAdRescue": "看影片解圍（示範）",
     "giveUp": "認輸重開",
     "cancel": "取消",
-    "noMoves": "目前沒有可配的自由牌。"
+    "noMoves": "目前沒有可配的自由牌。",
+    "a11yOpen": "無障礙"
+  },
+  "a11y": {
+    "title": "無障礙設定",
+    "done": "完成",
+    "blurb": "保存在本裝置，四人桌與消除共用。",
+    "highContrast": "高對比度",
+    "reducedMotion": "減弱動效",
+    "tileSize": "牌面尺寸",
+    "tileNormal": "標準",
+    "tileLarge": "放大"
+  },
+  "pwa": {
+    "installHint": "加入主畫面，下次開啟更快",
+    "installCta": "安裝",
+    "dismiss": "以後再說"
   },
   "daily": {
     "title": "每日簽到",

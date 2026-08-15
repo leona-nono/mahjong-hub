@@ -163,7 +163,23 @@
     "watchAdRescue": "영상으로 구조(데모)",
     "giveUp": "다시 시작",
     "cancel": "취소",
-    "noMoves": "지금은 맞출 자유 패가 없습니다."
+    "noMoves": "지금은 맞출 자유 패가 없습니다.",
+    "a11yOpen": "접근성"
+  },
+  "a11y": {
+    "title": "접근성",
+    "done": "완료",
+    "blurb": "이 기기에 저장되며 테이블과 솔리테어에 함께 적용됩니다.",
+    "highContrast": "고대비",
+    "reducedMotion": "움직임 줄이기",
+    "tileSize": "패 크기",
+    "tileNormal": "보통",
+    "tileLarge": "크게"
+  },
+  "pwa": {
+    "installHint": "홈 화면에 추가하면 더 빠르게 열 수 있어요",
+    "installCta": "설치",
+    "dismiss": "나중에"
   },
   "daily": {
     "title": "일일 출석",

@@ -163,7 +163,23 @@
     "watchAdRescue": "看视频解围（演示）",
     "giveUp": "认输重开",
     "cancel": "取消",
-    "noMoves": "当前没有可配的自由牌。"
+    "noMoves": "当前没有可配的自由牌。",
+    "a11yOpen": "无障碍"
+  },
+  "a11y": {
+    "title": "无障碍设置",
+    "done": "完成",
+    "blurb": "保存在本设备，四人桌与消除共用。",
+    "highContrast": "高对比度",
+    "reducedMotion": "减弱动效",
+    "tileSize": "牌面尺寸",
+    "tileNormal": "标准",
+    "tileLarge": "放大"
+  },
+  "pwa": {
+    "installHint": "添加到主屏幕，下次打开更快",
+    "installCta": "安装",
+    "dismiss": "以后再说"
   },
   "daily": {
     "title": "每日签到",

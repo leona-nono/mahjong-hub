@@ -163,7 +163,23 @@
     "watchAdRescue": "Watch video to rescue (demo)",
     "giveUp": "Restart",
     "cancel": "Cancel",
-    "noMoves": "No matching free pair right now."
+    "noMoves": "No matching free pair right now.",
+    "a11yOpen": "Accessibility"
+  },
+  "a11y": {
+    "title": "Accessibility",
+    "done": "Done",
+    "blurb": "Saved on this device. Applies to mahjong tables and solitaire.",
+    "highContrast": "High contrast",
+    "reducedMotion": "Reduce motion",
+    "tileSize": "Tile size",
+    "tileNormal": "Normal",
+    "tileLarge": "Large"
+  },
+  "pwa": {
+    "installHint": "Add to Home Screen for quicker play",
+    "installCta": "Install",
+    "dismiss": "Not now"
   },
   "daily": {
     "title": "Daily Check-in",

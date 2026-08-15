@@ -18,6 +18,14 @@ const SIZE_PX: Record<SolitaireTileSize, { w: number; h: number }> = {
   lg: { w: 56, h: 74 }
 };
 
+function lookalikeRank(tile: Tile): 6 | 9 | null {
+  const suit = tile[0];
+  if (suit !== 'm' && suit !== 'p' && suit !== 's') return null;
+  const rank = Number(tile.slice(1));
+  if (rank === 6 || rank === 9) return rank;
+  return null;
+}
+
 /** Solitaire faces from /assets/mahjong-solitaire/tiles/ (not 4P traditional). */
 export default function SolitaireTileFace({
   tile,
@@ -34,26 +42,37 @@ export default function SolitaireTileFace({
 }) {
   const group = matchGroup(tile);
   const px = SIZE_PX[size];
+  const mark = lookalikeRank(tile);
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={tileArtSrc(tile)}
-      alt=""
-      width={px.w}
-      height={px.h}
-      draggable={false}
-      decoding="async"
-      loading="eager"
-      data-match-group={group}
+    <span
+      data-mahjong-tile
       className={[
-        'inline-block rounded-md object-cover shadow-sm select-none',
+        'relative inline-block',
         SIZE_CLASS[size],
-        selected ? 'ring-2 ring-amber-400' : '',
-        hinted ? 'ring-2 ring-sky-400' : '',
+        selected ? 'ring-2 ring-amber-400 rounded-md' : '',
+        hinted ? 'ring-2 ring-sky-400 rounded-md' : '',
         dimmed ? 'opacity-55 saturate-50' : ''
       ]
         .filter(Boolean)
         .join(' ')}
-    />
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={tileArtSrc(tile)}
+        alt=""
+        width={px.w}
+        height={px.h}
+        draggable={false}
+        decoding="async"
+        loading="eager"
+        data-match-group={group}
+        className="h-full w-full rounded-md object-cover shadow-sm select-none"
+      />
+      {mark !== null && (
+        <span className="solitaire-lookalike-mark" aria-hidden>
+          {mark}
+        </span>
+      )}
+    </span>
   );
 }

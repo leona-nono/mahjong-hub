@@ -7,6 +7,8 @@ import { routing } from '@/i18n/routing';
 import '@/app/globals.css';
 import Providers from '@/components/providers';
 import Analytics from '@/components/Analytics';
+import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
+import PwaInstallHint from '@/components/PwaInstallHint';
 import { SITE_BASE_URL, LANGUAGE_ALTERNATES } from '@/lib/seo';
 
 export function generateStaticParams() {
@@ -31,7 +33,17 @@ export const metadata: Metadata = {
   // equally valid alternative that needs no code.
   verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
-    : undefined
+    : undefined,
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    title: 'Mahjong Hub',
+    statusBarStyle: 'default'
+  },
+  icons: {
+    icon: [{ url: '/icons/icon-192.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/icons/icon-192.svg' }]
+  }
 };
 
 // Some mobile in-app browsers otherwise select a desktop layout viewport
@@ -39,7 +51,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  viewportFit: 'cover'
+  viewportFit: 'cover',
+  themeColor: '#13252d'
 };
 
 // 根布局：只负责 <html>/<body> + i18n Provider + 全局 Providers。
@@ -79,6 +92,8 @@ export default async function LocaleLayout({
             {children}
           </Providers>
           <Analytics />
+          <ServiceWorkerRegister />
+          <PwaInstallHint />
         </NextIntlClientProvider>
       </body>
     </html>
