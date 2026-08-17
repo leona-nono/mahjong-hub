@@ -84,7 +84,7 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   sanankou: { base: 0, riichi: 2 },
   sankantsu: { base: 0, riichi: 2 },
   smallFourWinds: { base: 10, 'chinese-official': 64, riichi: 13 },
-  bigFourWinds: { base: 10, riichi: 13 },
+  bigFourWinds: { base: 10, 'chinese-official': 88, riichi: 13 },
   allTerminals: { base: 10, 'chinese-official': 64, riichi: 13 },
   allGreen: { base: 0, riichi: 13 },
   fourKans: { base: 0, riichi: 13 },
@@ -292,21 +292,24 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     }
   }
 
-  if (ruleset === 'riichi' || ruleset === 'hongkong') {
-    const windCounts = (['z1', 'z2', 'z3', 'z4'] as Tile[]).map((tile) => allCounts[tileIndex(tile)]);
-    if (windCounts.filter((count) => count >= 3).length === 4) {
-      if (ruleset === 'riichi') pushYakuman('bigFourWinds', 'Big Four Winds');
-      else {
-        push('bigFourWinds', 'Big Four Winds');
-        return finalise(patterns, ruleset, true);
-      }
+  // Every ruleset scores the four-wind hands. MCR keeps accumulating fans
+  // afterwards (its Account-Once table resolves the overlap with the lesser
+  // wind fans), while Hong Kong settles immediately at its limit.
+  const windCounts = (['z1', 'z2', 'z3', 'z4'] as Tile[]).map((tile) => allCounts[tileIndex(tile)]);
+  if (windCounts.filter((count) => count >= 3).length === 4) {
+    if (ruleset === 'riichi') pushYakuman('bigFourWinds', 'Big Four Winds');
+    else if (ruleset === 'chinese-official') push('bigFourWinds', 'Big Four Winds');
+    else {
+      push('bigFourWinds', 'Big Four Winds');
+      return finalise(patterns, ruleset, true);
     }
-    if (windCounts.filter((count) => count >= 3).length === 3 && windCounts.some((count) => count === 2)) {
-      if (ruleset === 'riichi') pushYakuman('smallFourWinds', 'Little Four Winds');
-      else {
-        push('smallFourWinds', 'Little Four Winds');
-        return finalise(patterns, ruleset, true);
-      }
+  }
+  if (windCounts.filter((count) => count >= 3).length === 3 && windCounts.some((count) => count === 2)) {
+    if (ruleset === 'riichi') pushYakuman('smallFourWinds', 'Little Four Winds');
+    else if (ruleset === 'chinese-official') push('smallFourWinds', 'Little Four Winds');
+    else {
+      push('smallFourWinds', 'Little Four Winds');
+      return finalise(patterns, ruleset, true);
     }
   }
   if (dragonSets === 2 && dragonPairs === 1) {
@@ -893,6 +896,8 @@ const MCR_PATTERN_IDS: Readonly<Record<string, McrFanId>> = {
   pungTerminalsHonours: 'pung-terminals-honors',
   threeConcealedPungs: 'three-concealed-pungs',
   twoConcealedPungs: 'two-concealed-pungs',
+  bigFourWinds: 'big-four-winds',
+  smallFourWinds: 'little-four-winds',
   allTypes: 'all-types',
   oneVoidedSuit: 'one-voided-suit',
   noHonours: 'no-honors',
