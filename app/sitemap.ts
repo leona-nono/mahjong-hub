@@ -1,20 +1,19 @@
 import type { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
 import { games } from '@/data/games';
-import { getBlogPosts } from '@/data/blog';
+import { getPublicGuideSlugs } from '@/lib/guides';
 
 const BASE = 'https://mahjonggame.org';
 
 /**
- * Built from the static catalogue only — no Prisma.
- * Hitting the DB here previously made /sitemap.xml a serverless function
- * (and 500 when Neon was slow). Admin CMS overlay is not required for
- * crawlers; native slugs live in `data/games.ts`.
+ * Games stay static (`data/games.ts`) so crawlers do not depend on Neon.
+ * Beginner guides merge static blog slugs with published CMS rows; the CMS
+ * query times out after 1.5s and falls back to static slugs.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
   const nativeGames = games.filter((g) => g.gameType === 'native');
-  const blogPosts = getBlogPosts();
+  const blogSlugs = await getPublicGuideSlugs();
   const lastModified = new Date();
 
   const alternatesFor = (path: string) => {
@@ -54,8 +53,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: alternatesFor('/blog') }
     });
 
-    for (const post of blogPosts) {
-      const path = `/blog/${post.slug}`;
+    for (const slug of blogSlugs) {
+      const path = `/blog/${slug}`;
       entries.push({
         url: `${BASE}/${locale}${path}`,
         lastModified,

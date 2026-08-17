@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { getBlogPosts, getLocalizedBlogPosts } from '@/data/blog';
 import { alternatesFor } from '@/lib/seo';
+import { getPublicGuides } from '@/lib/guides';
+import { getSiteSettings } from '@/lib/site-settings';
+
+export const revalidate = 86_400;
 
 export async function generateMetadata({
   params
@@ -10,7 +13,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return { alternates: alternatesFor(locale, '/blog') };
+  const t = await getTranslations({ locale, namespace: 'nav' });
+  const site = await getSiteSettings();
+  return {
+    title: t('beginners'),
+    description: t('beginnersSubtitle'),
+    alternates: alternatesFor(locale, '/blog'),
+    openGraph: {
+      title: t('beginners'),
+      description: t('beginnersSubtitle'),
+      images: site.ogImage ? [site.ogImage] : undefined
+    }
+  };
 }
 
 export default async function BlogPage({
@@ -22,7 +36,7 @@ export default async function BlogPage({
   setRequestLocale(locale);
 
   const t = await getTranslations('nav');
-  const posts = getLocalizedBlogPosts(getBlogPosts(), locale);
+  const posts = await getPublicGuides();
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -38,6 +52,14 @@ export default async function BlogPage({
             href={`/blog/${post.slug}`}
             className="block rounded-2xl border border-portal-border bg-portal-panel p-5 transition hover:border-portal-accent/40 hover:shadow-portal"
           >
+            {post.cover ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={post.cover}
+                alt=""
+                className="mb-3 aspect-[16/9] w-full rounded-lg object-cover"
+              />
+            ) : null}
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-semibold text-portal-text">{post.title}</h2>
               <span className="shrink-0 rounded-md bg-black/30 px-2 py-0.5 text-xs font-medium text-portal-muted">

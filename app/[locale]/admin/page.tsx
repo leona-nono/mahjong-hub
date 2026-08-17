@@ -91,6 +91,11 @@ export default async function AdminDashboard() {
           desc="查看、新增、编辑游戏，管理 iframe 链接与分类"
         />
         <QuickLink
+          href="/admin/beginners"
+          title="📘 新手指南"
+          desc="Mahjong for Beginners：新增、编辑、删除、排序，插入图片/视频/站内链接"
+        />
+        <QuickLink
           href="/admin/settings"
           title="⚙️ 站点设置"
           desc="SEO 元数据、社交链接、分析追踪等全局配置"

@@ -40,7 +40,7 @@ function extFor(type: string): string {
 
 function blobPathname(slug: string, file: File): string {
   const filename = `${Date.now()}-${safeName(file.name || 'upload')}${extFor(file.type)}`;
-  return `games/${slug}/${filename}`;
+  return `uploads/${slug}/${filename}`;
 }
 
 async function storeOnBlob(slug: string, file: File): Promise<string> {
@@ -55,7 +55,7 @@ async function storeOnBlob(slug: string, file: File): Promise<string> {
 /** Store under public/uploads for local development without BLOB_READ_WRITE_TOKEN. */
 async function storeOnDisk(slug: string, file: File): Promise<string> {
   const filename = `${Date.now()}-${safeName(file.name || 'upload')}${extFor(file.type)}`;
-  const relDir = path.posix.join('uploads', 'games', slug);
+  const relDir = path.posix.join('uploads', slug);
   const absDir = path.join(process.cwd(), 'public', relDir);
   await mkdir(absDir, { recursive: true });
 
@@ -70,6 +70,13 @@ async function storeOnDisk(slug: string, file: File): Promise<string> {
  * Fall back to the local public folder in development.
  */
 export async function storeGameUpload(
+  slug: string,
+  file: File
+): Promise<string> {
+  return storePublicUpload(slug, file);
+}
+
+export async function storePublicUpload(
   slug: string,
   file: File
 ): Promise<string> {

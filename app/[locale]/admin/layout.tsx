@@ -18,6 +18,7 @@ export const dynamic = 'force-dynamic';
 const NAV_ITEMS = (locale: string) => [
   { label: '概览', href: `/${locale}/admin`, icon: '📊' },
   { label: '游戏管理', href: `/${locale}/admin/games`, icon: '🎮' },
+  { label: '新手指南', href: `/${locale}/admin/beginners`, icon: '📘' },
   { label: '站点设置', href: `/${locale}/admin/settings`, icon: '⚙️' },
   { label: 'i18n 文案', href: `/${locale}/admin/settings/i18n`, icon: '🌐' }
 ];

@@ -250,3 +250,20 @@ model MessageI18n {
   @@unique([key, locale])
   @@index([locale])
 }
+
+/// Beginner / Mahjong for Beginners guides. CMS overlay on top of static blog posts.
+model Guide {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  description  String?
+  content      String   @db.Text
+  cover        String?
+  ctaLabel     String?
+  ctaHref      String?
+  readMinutes  Int      @default(5)
+  isPublished  Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

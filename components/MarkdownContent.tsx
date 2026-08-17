@@ -40,13 +40,15 @@ function renderInline(text: string): ReactNode[] {
           </div>
         );
       }
+      const internal = href.startsWith('/');
       return (
         <a
           key={i}
           href={href}
           className="text-portal-accent underline-offset-2 hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
+          {...(internal
+            ? {}
+            : { target: '_blank', rel: 'noopener noreferrer' })}
         >
           {label}
         </a>
