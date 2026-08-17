@@ -13,7 +13,10 @@ import {
   availableConcealedKans,
   availableAddedKans,
   calculateRiichiMatchResult,
+  canDeclareNineTerminals,
   createGame,
+  declareNineTerminals,
+  isAbortiveDraw,
   declareAddedKan,
   declareConcealedKan,
   declareRiichi,
@@ -450,5 +453,115 @@ describe('Riichi yaku and fu', () => {
 
     expect(score.patterns.map((pattern) => pattern.id)).toContain('nineGates');
     expect(score.yakumanCount).toBe(1);
+  });
+});
+
+
+describe('WRC abortive draws', () => {
+  const nineTerminalHand = hand('m1 m9 p1 p9 s1 s9 z1 z2 z3 z4 z5 z6 z7 m5');
+
+  const openWithSameWind = (ruleset: 'riichi' | 'hongkong') => {
+    const state = createGame({ ruleset, seed: 5, riichiVariant: 'standard' });
+    // One East each so nobody can Pon it, and scattered tiles elsewhere so
+    // nobody is waiting on it either.
+    state.players[0].hand = hand('z1 m1 m2 m4 m7 p1 p2 p4 p7 s1 s2 s4 s7');
+    state.players[1].hand = hand('z1 m3 m5 m6 m9 p3 p5 p6 p9 s3 s5 s6 s9');
+    state.players[2].hand = hand('z1 m1 m4 m7 m8 p1 p4 p7 p8 s1 s4 s7 s8');
+    state.players[3].hand = hand('z1 m2 m3 m6 m9 p2 p3 p6 p9 s2 s3 s6 s9');
+    state.turn = 0;
+    state.phase = 'discard';
+    return state;
+  };
+
+  it('lets an untouched first turn abandon a nine-terminal hand', () => {
+    let state = createGame({ ruleset: 'riichi', seed: 9, riichiVariant: 'standard' });
+    state.players[0].hand = nineTerminalHand;
+    state.phase = 'discard';
+    state.turn = 0;
+    expect(canDeclareNineTerminals(state, 0)).toBe(true);
+
+    state = declareNineTerminals(state, 0);
+    expect(state.phase).toBe('over');
+    expect(state.result).toMatchObject({ kind: 'draw', reason: 'nine-terminals' });
+    expect(isAbortiveDraw(state.result)).toBe(true);
+    expect(state.honba).toBe(1);
+    // Nobody pays on an abortive draw.
+    expect(state.players.map((player) => player.score)).toEqual([30000, 30000, 30000, 30000]);
+    expect(startNextHand(state).dealer).toBe(state.dealer);
+  });
+
+  it('closes the nine-terminal window after a call or a second go-around', () => {
+    const called = createGame({ ruleset: 'riichi', seed: 9, riichiVariant: 'standard' });
+    called.players[0].hand = nineTerminalHand;
+    called.phase = 'discard';
+    called.callsMade = true;
+    expect(canDeclareNineTerminals(called, 0)).toBe(false);
+
+    const secondTurn = createGame({ ruleset: 'riichi', seed: 9, riichiVariant: 'standard' });
+    secondTurn.players[0].hand = nineTerminalHand;
+    secondTurn.phase = 'discard';
+    secondTurn.players[2].discards = hand('m4 p7');
+    expect(canDeclareNineTerminals(secondTurn, 0)).toBe(false);
+  });
+
+  it('is a Riichi rule only: Hong Kong plays a nine-terminal hand out', () => {
+    const hk = createGame({ ruleset: 'hongkong', seed: 9, riichiVariant: 'standard' });
+    hk.players[0].hand = nineTerminalHand;
+    hk.phase = 'discard';
+    expect(canDeclareNineTerminals(hk, 0)).toBe(false);
+  });
+
+  it('abandons the hand on four identical opening wind discards', () => {
+    let state = openWithSameWind('riichi');
+    for (let turn = 0; turn < 4 && !state.result; turn += 1) {
+      state = discard(state, 'z1');
+      if (state.result) break;
+      // Nobody may claim an East nobody holds a second copy of.
+      expect(state.claims).toEqual({});
+      state.phase = 'discard';
+    }
+    expect(state.result).toMatchObject({ kind: 'draw', reason: 'four-winds' });
+    expect(state.honba).toBe(1);
+  });
+
+  it('leaves Hong Kong to play the same four wind discards out', () => {
+    let state = openWithSameWind('hongkong');
+    for (let turn = 0; turn < 4 && !state.result; turn += 1) {
+      state = discard(state, 'z1');
+      if (state.result) break;
+      state.phase = 'discard';
+    }
+    expect(state.result).toBeNull();
+  });
+
+  it('abandons the hand once a fourth Kong is spread across seats', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 12, riichiVariant: 'standard' });
+    state.players[0].melds = [
+      { kind: 'kan', tiles: hand('m1 m1 m1 m1'), concealed: true },
+      { kind: 'kan', tiles: hand('m9 m9 m9 m9'), concealed: true }
+    ];
+    state.players[1].melds = [
+      { kind: 'kan', tiles: hand('p1 p1 p1 p1'), concealed: true },
+      { kind: 'kan', tiles: hand('p9 p9 p9 p9'), concealed: true }
+    ];
+    state.players[0].hand = hand('s1 s2 s3 s4 s5');
+    state.turn = 0;
+    state.phase = 'discard';
+    const next = discard(state, 's1');
+    expect(next.result).toMatchObject({ kind: 'draw', reason: 'four-kans' });
+  });
+
+  it('lets a single seat keep chasing all four Kongs', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 12, riichiVariant: 'standard' });
+    state.players[0].melds = [
+      { kind: 'kan', tiles: hand('m1 m1 m1 m1'), concealed: true },
+      { kind: 'kan', tiles: hand('m9 m9 m9 m9'), concealed: true },
+      { kind: 'kan', tiles: hand('p1 p1 p1 p1'), concealed: true },
+      { kind: 'kan', tiles: hand('p9 p9 p9 p9'), concealed: true }
+    ];
+    state.players[0].hand = hand('s1 s2');
+    state.turn = 0;
+    state.phase = 'discard';
+    expect(discard(state, 's1').result).toBeNull();
   });
 });

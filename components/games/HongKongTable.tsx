@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import TileFace, { TileBack, useTraditionalTilePreload } from './TileFace';
 import MobileMahjongTable from './MobileMahjongTable';
-import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
+import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type RiichiVariant, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { describeScore } from '@/lib/mahjong/scoring';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 import type { Difficulty } from '@/lib/mahjong/ai';
@@ -42,6 +42,11 @@ interface HongKongTableProps {
   onTsumo: () => void;
   onKan: (tile: Tile) => void;
   onRiichi?: () => void;
+  /** Standard-flavour Riichi only: abandon an opening nine-terminal hand. */
+  canAbortNineTerminals?: boolean;
+  onNineTerminals?: () => void;
+  riichiVariant?: RiichiVariant;
+  onRiichiVariant?: (variant: RiichiVariant) => void;
 }
 
 /**
@@ -73,7 +78,11 @@ export default function HongKongTable({
   onClaim,
   onTsumo,
   onKan,
-  onRiichi
+  onRiichi,
+  canAbortNineTerminals = false,
+  onNineTerminals,
+  riichiVariant = 'wrc',
+  onRiichiVariant
 }: HongKongTableProps) {
   useTraditionalTilePreload();
   const t = useTranslations('mahjong');
@@ -232,6 +241,20 @@ export default function HongKongTable({
             <TableToolButton onClick={toggleSound} active={soundEnabled}>
               {soundEnabled ? 'Sound On' : 'Sound Off'}
             </TableToolButton>
+            {isRiichi && onRiichiVariant && (
+              <label className="flex h-9 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
+                Rules
+                <select
+                  value={riichiVariant}
+                  onChange={(event) => onRiichiVariant(event.target.value as RiichiVariant)}
+                  className="ml-2 bg-transparent text-emerald-50 outline-none"
+                  aria-label="Japanese rule flavour"
+                >
+                  <option value="wrc">WRC (no abortive draws)</option>
+                  <option value="standard">Standard (Tenhou / Soul)</option>
+                </select>
+              </label>
+            )}
             {variant === 'hongkong' && (
               <label className="flex h-9 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
                 Mode
@@ -394,6 +417,11 @@ export default function HongKongTable({
               {isRiichi && riichiDiscards.length > 0 && !human.declaredReady && (
                 <button type="button" onClick={onRiichi} className="rounded-lg bg-red-600 px-6 py-3 text-base font-black text-white">
                   {human.riichiPending ? 'Choose highlighted discard' : 'Riichi'}
+                </button>
+              )}
+              {canAbortNineTerminals && (
+                <button type="button" onClick={onNineTerminals} className="rounded-lg bg-slate-700 px-5 py-2 text-sm font-black text-white">
+                  Nine terminals · abandon hand
                 </button>
               )}
               {kanTiles.map((tile) => (
@@ -712,5 +740,14 @@ function HongKongResultBanner({ state, onNewGame, onNextHand }: { state: GameSta
 }
 
 function drawReason(reason: NonNullable<GameState['result']>['reason']): string {
-  return 'Exhaustive draw · no tiles remain.';
+  switch (reason) {
+    case 'nine-terminals':
+      return 'Nine terminals and honours · the hand was abandoned on the first turn.';
+    case 'four-winds':
+      return 'Four identical opening wind discards · the hand was abandoned.';
+    case 'four-kans':
+      return 'A fourth Kong across several seats · the hand was abandoned.';
+    default:
+      return 'Exhaustive draw · no tiles remain.';
+  }
 }

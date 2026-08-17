@@ -18,6 +18,8 @@ import {
   tileSuit,
   tileRank,
   isBonusTile,
+  isTerminalOrHonour,
+  isWind,
   WINDS,
   type Tile
 } from './tiles';
@@ -32,6 +34,16 @@ export type Seat = 0 | 1 | 2 | 3;
 /** Ruleset presets. They share the engine and differ in scoring + legal calls. */
 export type Ruleset = 'hongkong' | 'riichi' | 'chinese-official';
 export type HongKongMode = 'casual' | 'standard';
+/**
+ * Japanese rule flavour.
+ *
+ * `wrc` is the World Riichi Championship ruleset this engine implements by
+ * default, which deliberately abolishes every abortive draw — a hand is always
+ * played to a win or an exhaustive draw. `standard` is the Tenhou / Mahjong
+ * Soul flavour most players arriving from those clients expect, where nine
+ * terminals, four winds and a spread fourth Kong abandon the hand.
+ */
+export type RiichiVariant = 'wrc' | 'standard';
 
 export interface RulesetConfig {
   id: Ruleset;
@@ -121,10 +133,23 @@ export interface ClaimOption {
   tiles: Tile[];
 }
 
+/**
+ * Why a hand ended without a winner. Everything except `exhaustive` is a WRC
+ * abortive draw: the hand stops mid-play, nobody pays noten, and the dealer
+ * keeps the seat.
+ */
+export type DrawReason = 'exhaustive' | 'nine-terminals' | 'four-winds' | 'four-kans';
+
+export const ABORTIVE_DRAW_REASONS: readonly DrawReason[] = ['nine-terminals', 'four-winds', 'four-kans'];
+
+export function isAbortiveDraw(result: GameResult | null): boolean {
+  return result?.kind === 'draw' && result.reason !== undefined && ABORTIVE_DRAW_REASONS.includes(result.reason);
+}
+
 export interface GameResult {
   kind: 'win' | 'draw';
   /** Product-visible explanation for an exhaustive or abortive draw. */
-  reason?: 'exhaustive';
+  reason?: DrawReason;
   tenpaiSeats?: Seat[];
   /** Single winner (tsumo, or ron under HK / CO). */
   winner?: Seat;
@@ -185,6 +210,8 @@ export interface GameState {
   honba: number;
   /** A called meld prevents later first-turn Riichi from being Double Riichi. */
   callsMade: boolean;
+  /** WRC has no abortive draws; the standard flavour does. */
+  riichiVariant: RiichiVariant;
   /** Riichi product matches finish after South 4 once the dealer changes. */
   matchEnded?: boolean;
   matchResult?: RiichiMatchResult;
@@ -216,6 +243,8 @@ export interface CreateGameOptions {
   ruleset?: Ruleset;
   seed?: number;
   hongKongMode?: HongKongMode;
+  /** Defaults to WRC, which has no abortive draws. */
+  riichiVariant?: RiichiVariant;
   /** Seat controlled by the person playing; the rest are bots. */
   humanSeat?: Seat;
 }
@@ -223,6 +252,7 @@ export interface CreateGameOptions {
 export function createGame(options: CreateGameOptions = {}): GameState {
   const ruleset = options.ruleset ?? 'hongkong';
   const hongKongMode = options.hongKongMode ?? 'standard';
+  const riichiVariant = options.riichiVariant ?? 'wrc';
   const seed = options.seed ?? Math.floor(Math.random() * 2 ** 31);
   const humanSeat = options.humanSeat ?? 0;
   const rng = createRng(seed);
@@ -286,6 +316,7 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     riichiSticks: 0,
     honba: 0,
     callsMade: false,
+    riichiVariant,
     riichiLiabilities: []
   };
 
@@ -304,7 +335,7 @@ export function startNextHand(state: GameState): GameState {
   const winnerSeats = state.result?.winners?.map((entry) => entry.seat)
     ?? (state.result?.winner === undefined ? [] : [state.result.winner]);
   const dealerKeepsSeat = state.result?.kind === 'draw'
-    ? Boolean(state.result.tenpaiSeats?.includes(state.dealer))
+    ? isAbortiveDraw(state.result) || Boolean(state.result.tenpaiSeats?.includes(state.dealer))
     : winnerSeats.includes(state.dealer);
   const dealer = dealerKeepsSeat ? state.dealer : nextSeat(state.dealer);
   const handNumber = state.handNumber + (dealerKeepsSeat ? 0 : 1);
@@ -321,6 +352,7 @@ export function startNextHand(state: GameState): GameState {
   const next = createGame({
     ruleset: state.ruleset,
     hongKongMode: state.hongKongMode,
+    riichiVariant: state.riichiVariant,
     humanSeat,
     seed: state.seed + 1
   });
@@ -661,6 +693,17 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
   player.discards.push(tile);
   next.lastDiscard = { tile, from: next.turn };
 
+  // Both automatic aborts are decided by the completed discard, before anyone
+  // is offered the tile.
+  if (isFourWindAbort(next)) {
+    next.log.push('Four identical wind discards open the hand: abortive draw.');
+    return endInAbortiveDraw(next, 'four-winds');
+  }
+  if (isFourKanAbort(next)) {
+    next.log.push('A fourth Kong is on the table across several seats: abortive draw.');
+    return endInAbortiveDraw(next, 'four-kans');
+  }
+
   next.claims = collectClaims(next, tile, next.turn);
   next.submitted = {};
 
@@ -671,6 +714,53 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
     next.phase = 'claim';
   }
   return next;
+}
+
+/**
+ * 九種九牌: on an untouched first turn a player holding nine or more distinct
+ * terminals and honours may abort the hand rather than play it out.
+ */
+export function canDeclareNineTerminals(state: GameState, seat: Seat): boolean {
+  if (state.ruleset !== 'riichi' || state.riichiVariant !== 'standard') return false;
+  if (state.phase !== 'discard' || state.turn !== seat) return false;
+  const player = state.players[seat];
+  if (player.discards.length > 0 || state.callsMade || player.melds.length > 0) return false;
+  // Only the very first go-around counts: nobody may have drawn twice yet.
+  if (state.players.some((other) => other.discards.length > 1)) return false;
+  const kinds = new Set(player.hand.filter(isTerminalOrHonour));
+  return kinds.size >= 9;
+}
+
+export function declareNineTerminals(state: GameState, seat: Seat): GameState {
+  if (!canDeclareNineTerminals(state, seat)) return state;
+  const next = clone(state);
+  next.log.push(`Seat ${seat} declares nine terminals and honours; the hand is abandoned.`);
+  return endInAbortiveDraw(next, 'nine-terminals');
+}
+
+/** Settle an abortive draw: no payments, the honba advances, the dealer stays. */
+function endInAbortiveDraw(state: GameState, reason: DrawReason): GameState {
+  state.phase = 'over';
+  state.claims = {};
+  state.submitted = {};
+  state.honba += 1;
+  state.result = { kind: 'draw', reason };
+  return state;
+}
+
+/** 四風連打: four identical wind discards open the hand with no call between. */
+function isFourWindAbort(state: GameState): boolean {
+  if (state.ruleset !== 'riichi' || state.riichiVariant !== 'standard' || state.callsMade) return false;
+  if (!state.players.every((player) => player.discards.length === 1)) return false;
+  const [first] = state.players[0].discards;
+  return isWind(first) && state.players.every((player) => player.discards[0] === first);
+}
+
+/** 四槓散了: a fourth Kong on the table while no single seat holds them all. */
+function isFourKanAbort(state: GameState): boolean {
+  if (state.ruleset !== 'riichi' || state.riichiVariant !== 'standard' || totalKans(state) < 4) return false;
+  const owners = state.players.filter((player) => player.melds.some((meld) => meld.kind === 'kan'));
+  return owners.length > 1;
 }
 
 /** WRC final scoring: no oka, +15/+5/-5/-15 uma, split on equal scores. */
