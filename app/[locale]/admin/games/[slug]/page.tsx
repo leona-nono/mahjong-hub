@@ -35,6 +35,7 @@ async function getEditorData(slug: string) {
         description: dbGame.description ?? '',
         iframeUrl: dbGame.iframeUrl ?? '',
         thumbnail: dbGame.thumbnail ?? '',
+        screenshots: dbGame.screenshots ?? [],
         downloadUrl: dbGame.downloadUrl ?? '',
         category: dbGame.category ?? 'mahjong',
         tags: dbGame.tags ?? [],
@@ -48,6 +49,7 @@ async function getEditorData(slug: string) {
         description: staticGame!.description,
         iframeUrl: staticGame!.gameIframeUrl ?? '',
         thumbnail: '',
+        screenshots: [],
         downloadUrl: '',
         category: staticGame!.category,
         tags: [],
@@ -121,9 +123,9 @@ export default async function GameEditorPage({
             href={`/admin/games/${slug}/features`}
             className="block rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
           >
-            <h3 className="font-bold text-gray-800">📝 Features 详情</h3>
+            <h3 className="font-bold text-gray-800">📝 游戏详情 / 富文本</h3>
             <p className="mt-1 text-sm text-gray-500">
-              按语言编辑游戏详情（Markdown 富文本，含直接问答段 + GEO 增强）
+              按语言编辑 Markdown 内容，支持上传图片、插入 YouTube/Vimeo 视频
             </p>
           </Link>
         </div>

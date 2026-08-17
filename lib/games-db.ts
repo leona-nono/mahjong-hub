@@ -26,6 +26,7 @@ import {
  */
 
 type DbGameWithFaqs = Game & { faqs: GameFaq[] };
+const staticGameBySlug = new Map(staticGames.map((game) => [game.slug, game]));
 
 const VALID_CATEGORIES: readonly GameCategory[] = [
   'mahjong',
@@ -49,6 +50,8 @@ function applyOverlay(base: GameConfig, row: DbGameWithFaqs): GameConfig {
   if (row.title) merged.title = row.title;
   if (row.description) merged.description = row.description;
   if (row.iframeUrl) merged.gameIframeUrl = row.iframeUrl;
+  if (row.thumbnail) merged.cover = row.thumbnail;
+  if (row.screenshots?.length) merged.screenshots = row.screenshots;
   if (
     row.category &&
     (VALID_CATEGORIES as readonly string[]).includes(row.category)
@@ -81,6 +84,8 @@ function fromDbOnly(row: DbGameWithFaqs): GameConfig | null {
         : 'mahjong',
     gameType: 'iframe',
     gameIframeUrl: row.iframeUrl,
+    cover: row.thumbnail ?? undefined,
+    screenshots: row.screenshots?.length ? row.screenshots : undefined,
     featured: row.isFeatured
   };
 }
@@ -169,8 +174,12 @@ export async function getMergedLocalizedGame(
 
   const result: GameConfig = {
     ...game,
-    title: localized.title,
-    description: localized.description,
+    title:
+      staticGameBySlug.get(slug)?.title === game.title ? localized.title : game.title,
+    description:
+      staticGameBySlug.get(slug)?.description === game.description
+        ? localized.description
+        : game.description,
     content: localized.content
   };
 
@@ -204,10 +213,14 @@ export function getMergedLocalizedGames(
   return list.map((g) => {
     const localized = getLocalizedGame(g.slug, locale);
     if (!localized) return g;
+    const staticBase = staticGameBySlug.get(g.slug);
     return {
       ...g,
-      title: localized.title,
-      description: localized.description,
+      title: staticBase?.title === g.title ? localized.title : g.title,
+      description:
+        staticBase?.description === g.description
+          ? localized.description
+          : g.description,
       content: localized.content
     };
   });

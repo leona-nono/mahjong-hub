@@ -186,7 +186,8 @@ model Game {
   description String?
   iframeUrl   String?  // iframe embed URL
   downloadUrl String?  // optional download link
-  thumbnail   String?  // image path/URL
+  thumbnail   String?  // primary cover / card image path or URL
+  screenshots String[] @default([]) // gallery images for game detail pages
   category    String?  // e.g. 'mahjong', 'tile', 'match'
   tags        String[] // e.g. ['classic','relax']
   isFeatured  Boolean  @default(false)

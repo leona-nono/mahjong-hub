@@ -36,11 +36,15 @@ const facebookConfigured =
 const xConfigured = !!process.env.AUTH_X_ID && !!process.env.AUTH_X_SECRET;
 const emailConfigured =
   !!process.env.AUTH_EMAIL_SERVER && !!process.env.AUTH_EMAIL_FROM;
+const databaseConfigured = !!process.env.DATABASE_URL;
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  secret: process.env.AUTH_SECRET,
-  adapter: PrismaAdapter(prisma),
-  session: { strategy: 'database' },
+  secret:
+    process.env.AUTH_SECRET ??
+    (process.env.NODE_ENV === 'production' ? undefined : 'mahjong-hub-dev-insecure-secret'),
+  ...(databaseConfigured
+    ? { adapter: PrismaAdapter(prisma), session: { strategy: 'database' as const } }
+    : { session: { strategy: 'jwt' as const } }),
   ...authConfig,
   providers: [
     ...(googleConfigured ? [Google] : []),

@@ -45,7 +45,7 @@ const nextConfig = {
   // Prisma discovers its native engine at runtime. Keep it external to the
   // webpack server bundle so the production compiler does not crawl protected
   // Windows profile junctions while resolving that binary.
-  serverExternalPackages: ['@prisma/client', '@prisma/engines'],
+  serverExternalPackages: ['@prisma/client', '@prisma/engines', '@vercel/blob'],
   // We do not use next/image yet. Leaving optimization on with a wildcard
   // remote host would both weaken security and bill Image Optimization.
   images: {

@@ -8,7 +8,7 @@ import LocaleSwitcher from './LocaleSwitcher';
 import { useAuth } from '@/lib/auth';
 import { usePoints } from '@/lib/points';
 
-export default function Header() {
+export default function Header({ siteTitle }: { siteTitle: string }) {
   const tn = useTranslations('nav');
   const ts = useTranslations('site');
   const ta = useTranslations('auth');
@@ -32,8 +32,19 @@ export default function Header() {
       <div className="rainbow-bar h-0.5" />
       <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-3 px-4">
         <Link href="/" className="font-display text-xl font-bold tracking-tight text-portal-text">
-          <span className="text-portal-accent">Mahjong</span> Hub
-          <span className="sr-only">{ts('name')}</span>
+          {siteTitle.includes('·') ? (
+            <>
+              <span className="text-portal-accent">
+                {siteTitle.split('·')[0].trim()}
+              </span>
+              <span className="sr-only">{ts('name')}</span>
+            </>
+          ) : (
+            <>
+              {siteTitle}
+              <span className="sr-only">{ts('name')}</span>
+            </>
+          )}
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">

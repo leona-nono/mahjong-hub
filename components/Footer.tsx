@@ -1,9 +1,8 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 
-export default function Footer() {
+export default function Footer({ siteTitle }: { siteTitle: string }) {
   const t = useTranslations('footer');
-  const ts = useTranslations('site');
   const tn = useTranslations('nav');
 
   return (
@@ -11,7 +10,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-4 py-8 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="font-display text-sm font-semibold text-portal-text">
-            {ts('name')} · {t('rights')}
+            {siteTitle} · {t('rights')}
           </p>
           <p className="mt-1 text-xs text-portal-muted">{t('noGambling')}</p>
         </div>

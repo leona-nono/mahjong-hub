@@ -11,7 +11,8 @@ import {
   validateEnum,
   validateInt,
   validateString,
-  validateTags
+  validateTags,
+  validateUrlList
 } from '@/lib/admin-validators';
 
 export const dynamic = 'force-dynamic';
@@ -65,6 +66,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
     ('tags' in body
       ? validateTags(body.tags)
       : null) ??
+    ('screenshots' in body ? validateUrlList('screenshots', body.screenshots) : null) ??
     ('sortOrder' in body ? validateInt('sortOrder', body.sortOrder) : null) ??
     ('featured' in body ? validateBool('featured', body.featured) : null) ??
     ('active' in body ? validateBool('active', body.active) : null);
@@ -79,7 +81,8 @@ export async function PUT(req: NextRequest, { params }: Params) {
     'thumbnail',
     'category',
     'tags',
-    'sortOrder'
+    'sortOrder',
+    'screenshots'
   ]) {
     if (k in body) data[k] = body[k];
   }

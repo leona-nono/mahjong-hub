@@ -20,7 +20,8 @@ import {
   validateRequiredEnum,
   validateSlug,
   validateString,
-  validateTags
+  validateTags,
+  validateUrlList
 } from '@/lib/admin-validators';
 
 // ── slug ──────────────────────────────────────────────────────────────
@@ -149,6 +150,26 @@ describe('validateTags', () => {
   });
   it('rejects non-string entries', () => {
     expect(validateTags(['ok', 5 as any])!.status).toBe(400);
+  });
+});
+
+describe('validateUrlList', () => {
+  it('accepts an empty array', () => {
+    expect(validateUrlList('screenshots', [])).toBeNull();
+  });
+  it('accepts relative and absolute URLs', () => {
+    expect(
+      validateUrlList('screenshots', [
+        '/uploads/games/foo/a.jpg',
+        'https://example.public.blob.vercel-storage.com/games/foo/a.jpg'
+      ])
+    ).toBeNull();
+  });
+  it('rejects non-arrays', () => {
+    expect(validateUrlList('screenshots', 'nope' as any)!.status).toBe(400);
+  });
+  it('rejects oversize lists', () => {
+    expect(validateUrlList('screenshots', new Array(25).fill('/a.jpg'))!.status).toBe(400);
   });
 });
 

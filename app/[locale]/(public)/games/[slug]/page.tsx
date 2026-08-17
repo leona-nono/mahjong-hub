@@ -13,7 +13,9 @@ import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
+import MarkdownContent from '@/components/MarkdownContent';
 import { alternatesFor } from '@/lib/seo';
+import { getGameFeatureMarkdown } from '@/lib/game-features';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -66,6 +68,7 @@ export default async function GamePage({
   const game = await getMergedLocalizedGame(slug, locale);
   if (!game) notFound();
 
+  const cmsMarkdown = await getGameFeatureMarkdown(slug, locale);
   const t = await getTranslations('game');
   const related = getMergedLocalizedGames(
     await getMergedRelatedGames(slug, 8),
@@ -176,8 +179,36 @@ export default async function GamePage({
         </aside>
       </div>
 
-      {isNative && content && (
+      {(game.screenshots?.length || cmsMarkdown || (isNative && content)) && (
         <div className="mt-8 space-y-3">
+          {game.screenshots?.length ? (
+            <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
+              <h2 className="font-semibold text-portal-text">{t('screenshots')}</h2>
+              <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-3">
+                {game.screenshots.map((src) => (
+                  <div key={src} className="overflow-hidden rounded-lg border border-portal-border">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt=""
+                      className="aspect-video w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          {cmsMarkdown ? (
+            <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
+              <h2 className="mb-3 font-semibold text-portal-text">{t('about')}</h2>
+              <MarkdownContent markdown={cmsMarkdown} />
+            </section>
+          ) : null}
+
+          {isNative && content ? (
+            <>
           <details className="rounded-xl border border-portal-border bg-portal-panel p-4">
             <summary className="cursor-pointer font-semibold text-portal-text">
               {t('howToPlay')}
@@ -212,6 +243,8 @@ export default async function GamePage({
                 ))}
               </div>
             </details>
+          ) : null}
+            </>
           ) : null}
         </div>
       )}

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
 import { prisma } from '@/lib/db';
 import { SETTINGS_KEYS, validateRequiredEnum } from '@/lib/admin-validators';
+import { revalidateSiteSettings } from '@/lib/revalidate-site';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,5 +42,6 @@ export async function PUT(req: NextRequest) {
     create: { key, value },
     update: { value }
   });
+  revalidateSiteSettings();
   return NextResponse.json({ setting: row });
 }

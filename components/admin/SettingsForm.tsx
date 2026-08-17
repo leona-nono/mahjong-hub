@@ -71,7 +71,7 @@ export default function SettingsForm({
       };
       // Save 3 keys in parallel
       const keys = ['site', 'social', 'analytics'] as const;
-      await Promise.all(
+      const results = await Promise.all(
         keys.map((k) =>
           fetch('/api/admin/settings', {
             method: 'PUT',
@@ -80,6 +80,11 @@ export default function SettingsForm({
           })
         )
       );
+      const failed = results.find((res) => !res.ok);
+      if (failed) {
+        const body = await failed.json().catch(() => ({}));
+        throw new Error(body.error || `HTTP ${failed.status}`);
+      }
       setStatus({ kind: 'saved', msg: '已保存' });
     } catch (err) {
       setStatus({ kind: 'error', msg: (err as Error).message });

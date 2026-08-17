@@ -11,6 +11,7 @@ import Analytics from '@/components/Analytics';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import PwaInstallHint from '@/components/PwaInstallHint';
 import { LANGUAGE_ALTERNATES } from '@/lib/seo';
+import { getSiteSettings } from '@/lib/site-settings';
 
 const display = Fraunces({
   subsets: ['latin'],
@@ -28,30 +29,37 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Mahjong Hub · Free Mahjong Games',
-    template: '%s · Mahjong Hub'
-  },
-  description:
-    'Play free mahjong solitaire, connect and classic tile games online. Instant play in your browser — no download.',
-  alternates: {
-    languages: LANGUAGE_ALTERNATES
-  },
-  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
-    ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
-    : undefined,
-  manifest: '/manifest.webmanifest',
-  appleWebApp: {
-    capable: true,
-    title: 'Mahjong Hub',
-    statusBarStyle: 'black-translucent'
-  },
-  icons: {
-    icon: [{ url: '/icons/icon-192.svg', type: 'image/svg+xml' }],
-    apple: [{ url: '/icons/icon-192.svg' }]
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteSettings();
+  return {
+    title: {
+      default: site.siteTitle,
+      template: `%s · ${site.siteTitle.split('·')[0].trim()}`
+    },
+    description: site.siteDescription,
+    alternates: {
+      languages: LANGUAGE_ALTERNATES
+    },
+    verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
+      : undefined,
+    manifest: '/manifest.webmanifest',
+    appleWebApp: {
+      capable: true,
+      title: site.siteTitle,
+      statusBarStyle: 'black-translucent'
+    },
+    icons: {
+      icon: [{ url: '/icons/icon-192.svg', type: 'image/svg+xml' }],
+      apple: [{ url: '/icons/icon-192.svg' }]
+    },
+    openGraph: {
+      title: site.siteTitle,
+      description: site.siteDescription,
+      images: site.ogImage ? [site.ogImage] : undefined
+    }
+  };
+}
 
 export const viewport: Viewport = {
   width: 'device-width',

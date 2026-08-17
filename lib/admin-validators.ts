@@ -34,7 +34,7 @@ export const ALL_LOCALES = [
   'pl', 'ru', 'ar', 'th', 'vi', 'id', 'ms'
 ] as const;
 
-export const FEATURE_LOCALES = ['en', 'zh-TW', 'zh-CN', 'ja', 'ko'] as const;
+export const FEATURE_LOCALES = ['en', 'zh-CN', 'zh-TW', 'ja', 'ko'] as const;
 
 export const GAME_CATEGORIES = [
   'mahjong', 'connect', 'solitaire', 'tile-match', 'four-player'
@@ -144,6 +144,26 @@ export function validateTags(value: unknown): NextResponse | null {
   for (const t of value) {
     if (typeof t !== 'string' || t.length > MAX_TAG_LEN) {
       return badRequest(`tags 每项必须是 ≤${MAX_TAG_LEN} 字符的字符串`);
+    }
+  }
+  return null;
+}
+
+/** Validate an array of image URLs / paths (screenshots gallery). */
+export function validateUrlList(
+  field: string,
+  value: unknown,
+  maxItems = 24
+): NextResponse | null {
+  if (!Array.isArray(value)) {
+    return badRequest(`${field} 必须是字符串数组`);
+  }
+  if (value.length > maxItems) {
+    return badRequest(`${field} 数量不能超过 ${maxItems}`);
+  }
+  for (const url of value) {
+    if (typeof url !== 'string' || url.length > MAX_URL) {
+      return badRequest(`${field} 每项必须是 ≤${MAX_URL} 字符的字符串`);
     }
   }
   return null;

@@ -73,6 +73,8 @@ export interface GameConfig {
   region?: MahjongRegion;
   /** Optional cover art URL for portal cards. */
   cover?: string;
+  /** CMS gallery images shown on the game detail page. */
+  screenshots?: string[];
 }
 
 /**

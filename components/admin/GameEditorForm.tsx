@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import MediaUploadField, { ScreenshotGallery } from '@/components/admin/MediaUploadField';
 
 export interface GameFormData {
   slug: string;
@@ -9,6 +10,7 @@ export interface GameFormData {
   description: string;
   iframeUrl: string;
   thumbnail: string;
+  screenshots: string[];
   downloadUrl: string;
   category: string;
   tags: string[];
@@ -79,6 +81,7 @@ export default function GameEditorForm({ slug, initial }: Props) {
           description: form.description,
           iframeUrl: form.iframeUrl,
           thumbnail: form.thumbnail,
+          screenshots: form.screenshots,
           downloadUrl: form.downloadUrl,
           category: form.category,
           tags,
@@ -241,17 +244,22 @@ export default function GameEditorForm({ slug, initial }: Props) {
         </div>
 
         {/* Thumbnail */}
-        <div>
-          <label className="mb-1 block text-xs font-semibold uppercase text-gray-500">
-            缩略图 URL
-          </label>
-          <input
-            type="url"
+        <div className="sm:col-span-2">
+          <MediaUploadField
+            slug={slug}
+            label="封面图（卡片 / 列表）"
             value={form.thumbnail}
-            onChange={onChange('thumbnail')}
-            maxLength={2048}
-            placeholder="/og/games/my-game.png 或 https://..."
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono text-sm"
+            onChange={(url) => setForm((f) => ({ ...f, thumbnail: url }))}
+            hint="上传后会显示在首页卡片和游戏页顶部。也可直接粘贴 CDN 链接。"
+          />
+        </div>
+
+        <div className="sm:col-span-2">
+          <ScreenshotGallery
+            slug={slug}
+            items={form.screenshots}
+            onChange={(screenshots) => setForm((f) => ({ ...f, screenshots }))}
+            onSetCover={(url) => setForm((f) => ({ ...f, thumbnail: url }))}
           />
         </div>
 
