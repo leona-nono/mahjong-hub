@@ -40,7 +40,7 @@ export const GAME_CATEGORIES = [
   'mahjong', 'connect', 'solitaire', 'tile-match', 'four-player'
 ] as const;
 
-export const SETTINGS_KEYS = ['site', 'social', 'analytics'] as const;
+export const SETTINGS_KEYS = ['site', 'social', 'analytics', 'seo'] as const;
 
 // ── Helpers ──────────────────────────────────────────────────────────────
 

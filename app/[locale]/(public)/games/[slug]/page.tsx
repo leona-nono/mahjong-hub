@@ -16,6 +16,7 @@ import ComingSoonGame from '@/components/ComingSoonGame';
 import MarkdownContent from '@/components/MarkdownContent';
 import { alternatesFor } from '@/lib/seo';
 import { getGameFeatureMarkdown } from '@/lib/game-features';
+import { formatGameMetadata, getSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -40,16 +41,19 @@ export async function generateMetadata({
 
   const isNative = game.gameType === 'native';
   const url = `${SITE}/${locale}/games/${slug}`;
+  const site = await getSiteSettings();
+  const seo = formatGameMetadata(site, game);
 
   return {
-    title: game.title,
-    description: game.description,
+    title: seo.title,
+    description: seo.description,
     alternates: alternatesFor(locale, `/games/${slug}`),
     openGraph: {
-      title: game.title,
-      description: game.description,
+      title: seo.title,
+      description: seo.description,
       url,
-      type: 'website'
+      type: 'website',
+      images: game.cover || site.ogImage ? [game.cover || site.ogImage] : undefined
     },
     robots: isNative
       ? { index: true, follow: true }

@@ -20,6 +20,7 @@ async function getInitialSettings(): Promise<{
     return {
       initial: {
         ...(byKey.site ?? {}),
+        ...(byKey.seo ?? {}),
         ...(byKey.social ?? {}),
         ...(byKey.analytics ?? {})
       },
@@ -40,7 +41,7 @@ export default async function AdminSettingsPage() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">站点设置</h1>
         <p className="mt-1 text-sm text-gray-500">
-          全局配置 — SEO 元数据、社交链接、分析追踪、站点外观
+          全局 SEO：站点 Title / Description、多语言 Title 模板、首页 H1、游戏页 Title 与 Description 格式
         </p>
       </div>
 

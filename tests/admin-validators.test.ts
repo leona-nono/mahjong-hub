@@ -179,8 +179,8 @@ describe('shared constants', () => {
   it('FEATURE_LOCALES is a strict subset of ALL_LOCALES', () => {
     for (const l of FEATURE_LOCALES) expect(ALL_LOCALES).toContain(l);
   });
-  it('SETTINGS_KEYS lists the three documented keys', () => {
-    expect(SETTINGS_KEYS).toEqual(['site', 'social', 'analytics']);
+  it('SETTINGS_KEYS lists the documented keys', () => {
+    expect(SETTINGS_KEYS).toEqual(['site', 'social', 'analytics', 'seo']);
   });
   it('all length caps are positive integers', () => {
     for (const cap of [

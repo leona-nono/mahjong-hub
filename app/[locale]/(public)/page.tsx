@@ -1,5 +1,4 @@
-import { getTranslations } from 'next-intl/server';
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
   getMergedFeaturedGames,
   getMergedGames,
@@ -12,8 +11,31 @@ import GameCategoryRow from '@/components/GameCategoryRow';
 import DailyChallengeCard from '@/components/DailyChallengeCard';
 import DailyCheckIn from '@/components/DailyCheckIn';
 import type { GameCategory, GameConfig } from '@/data/games';
+import { formatHomeMetadata, getSiteSettings } from '@/lib/site-settings';
+import { alternatesFor } from '@/lib/seo';
+import type { Metadata } from 'next';
 
 export const revalidate = 86_400;
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const site = await getSiteSettings();
+  const home = formatHomeMetadata(site);
+  return {
+    title: { absolute: home.title },
+    description: home.description,
+    alternates: alternatesFor(locale, ''),
+    openGraph: {
+      title: home.title,
+      description: home.description,
+      images: site.ogImage ? [site.ogImage] : undefined
+    }
+  };
+}
 
 function byCategory(games: GameConfig[], category: GameCategory) {
   return games.filter((g) => g.category === category);
@@ -29,7 +51,7 @@ export default async function HomePage({
 
   const t = await getTranslations('home');
   const tp = await getTranslations('portal');
-  const ts = await getTranslations('site');
+  const site = await getSiteSettings();
   const featured = getMergedLocalizedGames(await getMergedFeaturedGames(), locale);
   const native = getMergedLocalizedGames(await getMergedNativeGames(), locale);
   const all = getMergedLocalizedGames(await getMergedGames(), locale);
@@ -94,8 +116,8 @@ export default async function HomePage({
     {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: ts('name'),
-      description: ts('tagline'),
+      name: site.siteTitle,
+      description: site.siteDescription,
       url: 'https://mahjonggame.org',
       inLanguage: ['en', 'zh', 'zh-TW', 'ja', 'ko']
     },
@@ -116,9 +138,11 @@ export default async function HomePage({
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="font-display text-2xl font-semibold text-portal-text sm:text-3xl">
-            {t('heroTitle')}
+            {site.homeH1 || t('heroTitle')}
           </h1>
-          <p className="mt-1 max-w-2xl text-sm text-portal-muted">{t('heroSubtitle')}</p>
+          <p className="mt-1 max-w-2xl text-sm text-portal-muted">
+            {site.homeSubtitle || t('heroSubtitle')}
+          </p>
         </div>
       </div>
 

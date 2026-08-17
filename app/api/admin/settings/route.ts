@@ -24,7 +24,8 @@ export async function PUT(req: NextRequest) {
   const body = await req.json();
   const { key, value } = body;
 
-  // `key` is restricted to the SiteSetting allow-list (site / social / analytics).
+  // `key` is restricted to the SiteSetting allow-list
+  // (site / social / analytics / seo).
   // `value` is a Json object — Prisma accepts any serializable JSON and
   // rejects on type errors at the driver boundary.
   const err =

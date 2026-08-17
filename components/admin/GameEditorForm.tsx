@@ -226,6 +226,9 @@ export default function GameEditorForm({ slug, initial }: Props) {
             maxLength={1000}
             className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
           />
+          <p className="mt-1 text-xs text-gray-400">
+            会作为 {'{summary}'} 套进站点设置里的「游戏 Description 格式」。游戏 Title 会套进「游戏 Title 格式」。
+          </p>
         </div>
 
         {/* iframe URL */}

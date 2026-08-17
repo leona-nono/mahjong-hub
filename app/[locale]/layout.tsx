@@ -11,7 +11,7 @@ import Analytics from '@/components/Analytics';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import PwaInstallHint from '@/components/PwaInstallHint';
 import { LANGUAGE_ALTERNATES } from '@/lib/seo';
-import { getSiteSettings } from '@/lib/site-settings';
+import { brandName, formatHomeMetadata, getSiteSettings } from '@/lib/site-settings';
 
 const display = Fraunces({
   subsets: ['latin'],
@@ -31,12 +31,16 @@ export function generateStaticParams() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings();
+  const home = formatHomeMetadata(site);
+  const brand = brandName(site);
   return {
     title: {
-      default: site.siteTitle,
-      template: `%s · ${site.siteTitle.split('·')[0].trim()}`
+      default: home.title,
+      template: site.titleTemplate.includes('{page}')
+        ? site.titleTemplate.replaceAll('{brand}', brand).replaceAll('{siteTitle}', site.siteTitle).replace('{page}', '%s')
+        : `%s | ${brand}`
     },
-    description: site.siteDescription,
+    description: home.description,
     alternates: {
       languages: LANGUAGE_ALTERNATES
     },
@@ -61,8 +65,8 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: [{ url: '/icons/icon-192.svg' }]
     },
     openGraph: {
-      title: site.siteTitle,
-      description: site.siteDescription,
+      title: home.title,
+      description: home.description,
       images: site.ogImage ? [site.ogImage] : undefined
     }
   };

@@ -4,6 +4,7 @@ import { CLASSIC_REGIONS } from '@/data/games';
 import { getMergedClassicByRegion, getMergedLocalizedGames } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import { alternatesFor } from '@/lib/seo';
+import { getSiteSettings } from '@/lib/site-settings';
 
 export const revalidate = 86_400;
 
@@ -13,7 +14,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return { alternates: alternatesFor(locale, '/games/classic') };
+  const t = await getTranslations({ locale, namespace: 'nav' });
+  const site = await getSiteSettings();
+  return {
+    title: t('classic'),
+    description: t('classicSubtitle'),
+    alternates: alternatesFor(locale, '/games/classic'),
+    openGraph: {
+      title: t('classic'),
+      description: t('classicSubtitle'),
+      images: site.ogImage ? [site.ogImage] : undefined
+    }
+  };
 }
 
 export default async function ClassicGamesPage({

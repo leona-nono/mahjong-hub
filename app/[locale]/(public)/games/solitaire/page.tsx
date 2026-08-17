@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getMergedGamesByNavGroup, getMergedLocalizedGames } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import { alternatesFor } from '@/lib/seo';
+import { getSiteSettings } from '@/lib/site-settings';
 
 export const revalidate = 86_400;
 
@@ -12,7 +13,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return { alternates: alternatesFor(locale, '/games/solitaire') };
+  const t = await getTranslations({ locale, namespace: 'nav' });
+  const site = await getSiteSettings();
+  return {
+    title: t('solitaire'),
+    description: t('solitaireSubtitle'),
+    alternates: alternatesFor(locale, '/games/solitaire'),
+    openGraph: {
+      title: t('solitaire'),
+      description: t('solitaireSubtitle'),
+      images: site.ogImage ? [site.ogImage] : undefined
+    }
+  };
 }
 
 export default async function SolitaireGamesPage({
