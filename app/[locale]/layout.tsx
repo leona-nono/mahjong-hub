@@ -40,9 +40,16 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       languages: LANGUAGE_ALTERNATES
     },
-    verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
-      ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
-      : undefined,
+    verification: {
+      ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION
+        ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
+        : {}),
+      other: {
+        'msvalidate.01':
+          process.env.NEXT_PUBLIC_BING_VERIFICATION ??
+          '51451E3156FA88DDC9C608C49C6FD0AC'
+      }
+    },
     manifest: '/manifest.webmanifest',
     appleWebApp: {
       capable: true,
