@@ -24,7 +24,7 @@ const DEFAULTS: SettingsForm = {
   x: '',
   instagram: '',
   tiktok: '',
-  ga: '',
+  ga: 'G-61V8MK15S6',
   gtm: ''
 };
 

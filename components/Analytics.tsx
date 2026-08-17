@@ -10,7 +10,7 @@ const CACHE_MS = 24 * 60 * 60 * 1000;
 
 function fromEnv(): AnalyticsIds {
   return {
-    ga: process.env.NEXT_PUBLIC_GA_ID ?? '',
+    ga: process.env.NEXT_PUBLIC_GA_ID || 'G-61V8MK15S6',
     gtm: process.env.NEXT_PUBLIC_GTM_ID ?? ''
   };
 }

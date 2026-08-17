@@ -25,7 +25,7 @@ export const DEFAULT_PUBLIC_SITE_SETTINGS: PublicSiteSettings = {
   x: '',
   instagram: '',
   tiktok: '',
-  ga: '',
+  ga: 'G-61V8MK15S6',
   gtm: ''
 };
 
@@ -65,7 +65,10 @@ const loadSiteSettings = unstable_cache(
         instagram:
           typeof social.instagram === 'string' ? social.instagram : '',
         tiktok: typeof social.tiktok === 'string' ? social.tiktok : '',
-        ga: typeof analytics.ga === 'string' ? analytics.ga : '',
+        ga:
+          typeof analytics.ga === 'string' && analytics.ga
+            ? analytics.ga
+            : DEFAULT_PUBLIC_SITE_SETTINGS.ga,
         gtm: typeof analytics.gtm === 'string' ? analytics.gtm : ''
       };
     } catch {

@@ -20,8 +20,8 @@ export async function GET() {
     const value = (row?.value ?? {}) as { ga?: string; gtm?: string };
     return NextResponse.json(
       {
-        ga: value.ga ?? '',
-        gtm: value.gtm ?? ''
+        ga: value.ga || process.env.NEXT_PUBLIC_GA_ID || 'G-61V8MK15S6',
+        gtm: value.gtm || process.env.NEXT_PUBLIC_GTM_ID || ''
       },
       {
         headers: {
@@ -31,6 +31,9 @@ export async function GET() {
     );
   } catch {
     // DB unreachable — fail silent, just don't load analytics.
-    return NextResponse.json({ ga: '', gtm: '' });
+    return NextResponse.json({
+      ga: process.env.NEXT_PUBLIC_GA_ID || 'G-61V8MK15S6',
+      gtm: process.env.NEXT_PUBLIC_GTM_ID || ''
+    });
   }
 }
