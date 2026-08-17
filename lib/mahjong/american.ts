@@ -25,10 +25,13 @@ export type AmericanMeld = { kind: 'pung' | 'kong'; tile: string; tiles: string[
 export type AmericanPlayer = { seat: AmericanSeat; hand: AmericanTile[]; discards: AmericanTile[]; melds: AmericanMeld[]; score: number };
 export type AmericanClaim = 'mah-jongg' | 'kong' | 'pung';
 export type AmericanSettlement = { winner: AmericanSeat; points: number; transfers: number[]; reason: string };
+export type AmericanEndReason = 'mah-jongg' | 'wall-exhausted';
 export type AmericanGameState = {
   cardId: string; options: AmericanOptions; players: AmericanPlayer[]; wall: AmericanTile[];
   phase: AmericanPhase; passIndex: number; charlestonRound: 1 | 2; currentSeat: AmericanSeat; seed: number;
   lastDiscard?: { tile: AmericanTile; seat: AmericanSeat }; settlement?: AmericanSettlement; history: string[];
+  /** Why the hand ended; a wall game has no settlement. */
+  endReason?: AmericanEndReason;
 };
 function clone<T>(value: T): T { return JSON.parse(JSON.stringify(value)) as T; }
 function target(seat: AmericanSeat, direction: AmericanPassDirection) { return ((seat + (direction === 'right' ? 1 : direction === 'left' ? 3 : 2)) % 4) as AmericanSeat; }
@@ -160,43 +163,172 @@ function botDiscard(hand: AmericanTile[], card: OriginalPracticeCard) {
   return [...hand].sort((a, b) => americanTileKeepValue(a, hand, card) - americanTileKeepValue(b, hand, card) || a.localeCompare(b))[0];
 }
 
-/** Completes a human discard plus deterministic bot draws/discards until East draws again. */
-export function playAmericanDiscard(state: AmericanGameState, tile: AmericanTile): AmericanGameState {
-  if (state.phase !== 'turn' || state.currentSeat !== 0) throw new Error('It is not the human discard turn.');
-  const next = clone(state); const card = getPracticeCard(next.cardId);
-  const remove = (seat: AmericanSeat, discarded: AmericanTile) => {
-    const hand = next.players[seat].hand; const index = hand.indexOf(discarded);
-    if (index < 0) throw new Error('That tile is not in the current hand.');
-    hand.splice(index, 1); next.players[seat].discards.push(discarded);
-  };
-  remove(0, tile); next.history.push('You discarded ' + tile + '.');
-  const botSeat: AmericanSeat = 1;
-  const draw = next.wall.shift(); if (!draw) { next.phase = 'ended'; return next; }
-  next.players[botSeat].hand.push(draw);
-  const botTile = botDiscard(next.players[botSeat].hand, card); remove(botSeat, botTile);
-  next.lastDiscard = { seat: botSeat, tile: botTile }; next.phase = 'claim';
-  next.history.push('Seat 1 discarded ' + botTile + '. Claim window opened.');
-  return next;
+export const AMERICAN_HUMAN_SEAT: AmericanSeat = 0;
+
+function nextAmericanSeat(seat: AmericanSeat): AmericanSeat {
+  return ((seat + 1) % 4) as AmericanSeat;
 }
 
-/** Pass the human claim window, then finish the other bots and draw for the human. */
+/**
+ * Whether a bot should expose a group for this discard.
+ *
+ * Calls are only worth making when the tile belongs to a group the card
+ * actually uses, the exposure is not larger than that group, and the bot can
+ * complete it from natural tiles. A bot never burns a Joker on a call: Jokers
+ * are far more valuable held, and an exposed Joker can be taken by an opponent.
+ */
+function botWantsClaim(state: AmericanGameState, seat: AmericanSeat, tile: AmericanTile, claim: 'pung' | 'kong'): boolean {
+  if (joker(tile) || flower(tile)) return false;
+  const group = getPracticeCard(state.cardId).groups.find((item) => item.face === tile);
+  if (!group) return false;
+  const exposure = claim === 'kong' ? 4 : 3;
+  if (group.count < exposure) return false;
+  const natural = state.players[seat].hand.filter((item) => item === tile).length;
+  return natural + 1 >= exposure;
+}
+
+type ClaimOutcome = 'human-decides' | 'ended' | 'claimed' | 'none';
+
+/**
+ * Offer the open discard to every other seat. The human always gets the window
+ * when they have a legal call; bots answer immediately using the same priority
+ * order as a physical table.
+ */
+function resolveClaimWindow(
+  state: AmericanGameState,
+  humanMayClaim: boolean
+): { state: AmericanGameState; outcome: ClaimOutcome } {
+  const discard = state.lastDiscard;
+  if (!discard) return { state, outcome: 'none' };
+  if (humanMayClaim && legalAmericanClaims(state, AMERICAN_HUMAN_SEAT).length > 0) {
+    return { state, outcome: 'human-decides' };
+  }
+
+  const claims: { seat: AmericanSeat; claim: AmericanClaim }[] = [];
+  for (const seat of [1, 2, 3] as AmericanSeat[]) {
+    if (seat === discard.seat) continue;
+    const legal = legalAmericanClaims(state, seat);
+    if (legal.includes('mah-jongg')) claims.push({ seat, claim: 'mah-jongg' });
+    else if (legal.includes('kong') && botWantsClaim(state, seat, discard.tile, 'kong')) claims.push({ seat, claim: 'kong' });
+    else if (legal.includes('pung') && botWantsClaim(state, seat, discard.tile, 'pung')) claims.push({ seat, claim: 'pung' });
+  }
+  if (claims.length === 0) return { state, outcome: 'none' };
+
+  const winner = resolveAmericanClaimPriority(discard.seat, claims);
+  if (winner.claim === 'mah-jongg') {
+    const claimed = claimAmericanMahJong(state, winner.seat);
+    return { state: claimed.state, outcome: claimed.declared ? 'ended' : 'none' };
+  }
+  return { state: claimAmericanDiscard(state, winner.seat, winner.claim), outcome: 'claimed' };
+}
+
+/** Draw one tile for a seat, ending the hand when the wall runs out. */
+function drawForSeat(state: AmericanGameState, seat: AmericanSeat): boolean {
+  const tile = state.wall.shift();
+  if (!tile) {
+    state.phase = 'ended';
+    state.endReason = 'wall-exhausted';
+    state.history.push('The wall is exhausted. The hand ends with no winner.');
+    return false;
+  }
+  state.players[seat].hand.push(tile);
+  return true;
+}
+
+/**
+ * Run the table forward until the human has something to decide.
+ *
+ * `phase: 'turn'` always means the seat in `currentSeat` is holding a tile and
+ * owes a discard, whether it drew it or claimed it. Bots take their whole turn
+ * here — declaring, discarding, and answering each other's claim windows — so
+ * the caller only ever regains control on the human's own turn, on a claim
+ * window the human can answer, or at the end of the hand.
+ */
+function advanceAmerican(state: AmericanGameState): AmericanGameState {
+  let current = state;
+  const card = getPracticeCard(current.cardId);
+  // Bounded so a policy bug can never spin the browser: a hand cannot outlast
+  // the wall by more than a few claims per tile.
+  for (let guard = 0; guard < 500; guard += 1) {
+    if (current.phase !== 'turn') return current;
+    if (current.currentSeat === AMERICAN_HUMAN_SEAT) return current;
+
+    const seat = current.currentSeat;
+    const declared = declareAmericanMahJong(current, seat);
+    if (declared.declared) return declared.state;
+
+    const tile = botDiscard(current.players[seat].hand, card);
+    current = clone(current);
+    current.players[seat].hand = removeFaces(current.players[seat].hand, [tile]);
+    current.players[seat].discards.push(tile);
+    current.lastDiscard = { seat, tile };
+    current.history.push('Seat ' + seat + ' discarded ' + tile + '.');
+
+    // The window has to be open before anyone can be asked to answer it.
+    current.phase = 'claim';
+    const resolved = resolveClaimWindow(current, true);
+    current = resolved.state;
+    if (resolved.outcome === 'ended') return current;
+    if (resolved.outcome === 'human-decides') {
+      current.phase = 'claim';
+      return current;
+    }
+    if (resolved.outcome === 'claimed') continue;
+
+    const upcoming = nextAmericanSeat(seat);
+    if (!drawForSeat(current, upcoming)) return current;
+    current.currentSeat = upcoming;
+    current.phase = 'turn';
+    current.lastDiscard = undefined;
+    if (upcoming === AMERICAN_HUMAN_SEAT) current.history.push('You drew a tile.');
+  }
+  return current;
+}
+
+/** Discard for the human, then run the table until they are needed again. */
+export function playAmericanDiscard(state: AmericanGameState, tile: AmericanTile): AmericanGameState {
+  if (state.phase !== 'turn' || state.currentSeat !== AMERICAN_HUMAN_SEAT) throw new Error('It is not the human discard turn.');
+  const next = clone(state);
+  const hand = next.players[AMERICAN_HUMAN_SEAT].hand;
+  const index = hand.indexOf(tile);
+  if (index < 0) throw new Error('That tile is not in the current hand.');
+  hand.splice(index, 1);
+  next.players[AMERICAN_HUMAN_SEAT].discards.push(tile);
+  next.lastDiscard = { seat: AMERICAN_HUMAN_SEAT, tile };
+  next.history.push('You discarded ' + tile + '.');
+  next.phase = 'claim';
+  return continueAfterDiscard(next);
+}
+
+/** The human declined the open discard; the bots still get their say on it. */
 export function passAmericanClaims(state: AmericanGameState): AmericanGameState {
   if (state.phase !== 'claim') throw new Error('No claim decision is pending.');
-  const next = clone(state); const card = getPracticeCard(next.cardId);
-  for (const seat of [2, 3] as AmericanSeat[]) {
-    const draw = next.wall.shift(); if (!draw) { next.phase = 'ended'; return next; }
-    next.players[seat].hand.push(draw);
-    const discarded = botDiscard(next.players[seat].hand, card); next.players[seat].hand = removeFaces(next.players[seat].hand, [discarded]); next.players[seat].discards.push(discarded); next.history.push('Seat ' + seat + ' discarded ' + discarded + '.');
-  }
-  const humanDraw = next.wall.shift(); if (!humanDraw) { next.phase = 'ended'; return next; }
-  next.players[0].hand.push(humanDraw); next.phase = 'turn'; next.currentSeat = 0; next.lastDiscard = undefined; next.history.push('You drew a tile.');
-  return next;
+  const next = clone(state);
+  next.history.push('You passed on ' + next.lastDiscard?.tile + '.');
+  return continueAfterDiscard(next);
+}
+
+/** Settle an open discard nobody has claimed yet, then run the table on. */
+function continueAfterDiscard(state: AmericanGameState): AmericanGameState {
+  const discarder = state.lastDiscard?.seat ?? AMERICAN_HUMAN_SEAT;
+  const resolved = resolveClaimWindow(state, false);
+  let current = resolved.state;
+  if (resolved.outcome === 'ended') return current;
+  if (resolved.outcome === 'claimed') return advanceAmerican(current);
+
+  current.phase = 'turn';
+  const upcoming = nextAmericanSeat(discarder);
+  if (!drawForSeat(current, upcoming)) return current;
+  current.currentSeat = upcoming;
+  current.lastDiscard = undefined;
+  if (upcoming === AMERICAN_HUMAN_SEAT) current.history.push('You drew a tile.');
+  return advanceAmerican(current);
 }
 
 export function declareAmericanMahJong(state: AmericanGameState, seat: AmericanSeat = 0) {
   const player = state.players[seat]; const card = getPracticeCard(state.cardId); const evaluation = evaluateOriginalPracticeHand(card, fullTiles(player));
   if (!evaluation.valid) return { state, evaluation, declared: false };
-  const next = clone(state); next.phase = 'ended'; next.players[seat].score += card.points;
+  const next = clone(state); next.phase = 'ended'; next.endReason = 'mah-jongg'; next.players[seat].score += card.points;
   const transfers = [0, 0, 0, 0]; let owed = card.points;
   for (const payer of ([0, 1, 2, 3] as AmericanSeat[]).filter((item) => item !== seat)) { const payment = Math.ceil(owed / ([0, 1, 2, 3].filter((item) => item !== seat && item >= payer).length)); transfers[payer] -= payment; next.players[payer].score -= payment; owed -= payment; }
   transfers[seat] = card.points; next.settlement = { winner: seat, points: card.points, transfers, reason: 'Exact match: ' + card.title + ' ' + card.version }; next.history.push('Seat ' + seat + ' declared Mah Jongg for ' + card.points + ' points.');

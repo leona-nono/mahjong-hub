@@ -177,7 +177,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   const passClaims = () => {
     try {
       const next = passAmericanClaims(game);
-      setGame(next); setNotice('All calls passed. The other players completed their turns; you drew a tile.');
+      setGame(next); setNotice(describeTableTurn(next));
     } catch (error) { setNotice(error instanceof Error ? error.message : 'Pass failed.'); }
   };
   const swapJoker = (meldIndex: number) => {
@@ -220,7 +220,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
     const tile = hand[index];
     try {
       const next = playAmericanDiscard(game, tile);
-      primeMahjongAudio(); if (soundEnabled) playMahjongSound('discard', tile as Tile, 'english'); setGame(next); setLastDiscard(tile);
+      primeMahjongAudio(); if (soundEnabled) playMahjongSound('discard', tile as Tile, 'english'); setGame(next); setLastDiscard(tile); setNotice(describeTableTurn(next));
       setNotice(`You discarded ${tile.startsWith('j') ? 'a Joker' : tileFace(tile as Tile)}. The three bots used their actual concealed hands and the same wall.`);
       if (targetProgress.groups.every((group) => group.current === group.required)) onWin?.(card.points);
     } catch (error) { setNotice(error instanceof Error ? error.message : 'Discard failed.'); }
@@ -340,7 +340,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           <div className="mt-4 flex gap-2"><button type="button" onClick={() => setJokerExchangeMeld(null)} className="flex-1 rounded-xl border border-emerald-900/30 py-3 font-black">Cancel</button><button type="button" disabled={!canConfirmJokerExchange} onClick={() => swapJoker(jokerExchangeMeld)} className="flex-1 rounded-xl bg-amber-300 py-3 font-black disabled:cursor-not-allowed disabled:opacity-45">Exchange</button></div>
         </div>
       </div>}
-      {game.phase === 'ended' && game.settlement && <ResultReview game={game} onNew={reset} />}
+      {game.phase === 'ended' && <ResultReview game={game} onNew={reset} />}
       {showAccessibility && <MahjongAccessibilityPanel preferences={preferences} onChange={(key, value) => { setPreference(key, value); trackMahjongEvent('mahjong_accessibility_changed', { setting: key, value: String(value) }); }} onClose={() => setShowAccessibility(false)} />}
     </section>
   );
@@ -357,14 +357,28 @@ function CharlestonReserve({ className, vertical = false }: { className: string;
 function Avatar({ seat, score, className, human = false }: { seat: string; score: string; className: string; human?: boolean }) { return <div className={`absolute z-20 flex w-24 flex-col items-center ${className}`}><div className={`flex h-14 w-14 items-center justify-center rounded-lg border-4 ${human ? 'border-amber-300 bg-sky-500' : 'border-white bg-violet-500'} text-xs font-black`}>{seat}</div><div className="mt-1 rounded-full bg-black/40 px-2 py-0.5 text-xs font-black text-amber-100">G {score}</div></div>; }
 function Opponent({ label }: { label: string }) { return <div className="rounded-full bg-black/35 p-2"><span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-violet-500 font-black">{label}</span><span className="ml-1 font-black text-amber-100">8900</span></div>; }
 function TableButton({ children, onClick, active = false }: { children: ReactNode; onClick: () => void; active?: boolean }) { return <button type="button" onClick={onClick} className={`h-9 rounded-lg border px-4 text-xs font-black ${active ? 'border-amber-300 bg-amber-300 text-emerald-950' : 'border-white/10 bg-[#07553b] text-white'}`}>{children}</button>; }
+/** One line describing what the table did while the human was not acting. */
+function describeTableTurn(game: AmericanGameState): string {
+  if (game.phase === 'ended') {
+    if (game.endReason === 'wall-exhausted') return 'The wall ran out. The hand is a draw.';
+    const winner = game.settlement?.winner;
+    return winner === 0 ? 'MAH JONGG!' : `Seat ${(winner ?? 0) + 1} declared Mah Jongg.`;
+  }
+  if (game.phase === 'claim') return 'A tile you can call is on the table.';
+  const called = game.players.find((player) => player.melds.length > 0 && player.seat !== 0);
+  if (called) return `Seat ${called.seat + 1} has an exposure. Your turn — choose a tile to discard.`;
+  return 'The other players took their turns. Your turn — choose a tile to discard.';
+}
+
 function ResultReview({ game, onNew }: { game: AmericanGameState; onNew: () => void }) {
-  const winner = game.settlement!.winner;
+  const settlement = game.settlement;
+  const winner = settlement?.winner;
   return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/65 p-4">
     <div className="max-h-[88vh] w-full max-w-3xl overflow-auto rounded-2xl border-4 border-amber-200 bg-[#f5f0df] p-5 text-emerald-950 shadow-2xl">
-      <h2 className="text-center text-3xl font-black">MAH JONGG!</h2>
-      <p className="mt-1 text-center font-bold">{game.settlement!.reason} · {game.settlement!.points} points</p>
-      <p className="mt-3 text-sm font-bold">Winner: Seat {winner + 1}. All four hands are revealed for a fair review.</p>
-      <div className="mt-3 rounded-xl bg-emerald-950/10 p-3 text-sm"><strong>Settlement ledger</strong><div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">{game.settlement!.transfers.map((transfer, seat) => <span key={seat} className={`rounded-lg px-2 py-1 font-black ${transfer >= 0 ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-800'}`}>Seat {seat + 1}: {transfer >= 0 ? '+' : ''}{transfer}</span>)}</div></div>
+      <h2 className="text-center text-3xl font-black">{settlement ? 'MAH JONGG!' : 'WALL GAME'}</h2>
+      <p className="mt-1 text-center font-bold">{settlement ? `${settlement.reason} · ${settlement.points} points` : 'The wall ran out before anyone declared. Nobody scores this hand.'}</p>
+      <p className="mt-3 text-sm font-bold">{settlement ? `Winner: Seat ${(winner ?? 0) + 1}. ` : ''}All four hands are revealed for a fair review.</p>
+      {settlement && <div className="mt-3 rounded-xl bg-emerald-950/10 p-3 text-sm"><strong>Settlement ledger</strong><div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">{settlement.transfers.map((transfer, seat) => <span key={seat} className={`rounded-lg px-2 py-1 font-black ${transfer >= 0 ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-800'}`}>Seat {seat + 1}: {transfer >= 0 ? '+' : ''}{transfer}</span>)}</div></div>}
       <div className="mt-3 grid gap-3 md:grid-cols-2">{game.players.map((player) => <div key={player.seat} className={`rounded-xl border p-3 ${player.seat === winner ? 'border-amber-400 bg-amber-50' : 'border-emerald-900/20 bg-white'}`}><p className="font-black">Seat {player.seat + 1} · {player.score >= 0 ? '+' : ''}{player.score}</p><div className="mt-2 flex flex-wrap gap-1">{[...player.hand, ...player.melds.flatMap((meld) => meld.tiles)].map((tile, index) => <AmericanTile key={index} tile={tile} compact />)}</div><p className="mt-2 text-xs">Discards: {player.discards.join(', ') || 'none'}</p></div>)}</div>
       <div className="mt-4 rounded-xl bg-emerald-950/10 p-3 text-xs"><strong>Replay log</strong>{game.history.map((entry, index) => <p key={index}>{index + 1}. {entry}</p>)}</div>
       <button type="button" onClick={onNew} className="mt-4 w-full rounded-xl bg-[#087052] py-3 font-black text-white">New hand</button>
