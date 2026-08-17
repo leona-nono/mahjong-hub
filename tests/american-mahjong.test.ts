@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { AMERICAN_WALL, ORIGINAL_PRACTICE_CARDS, americanTileKeepValue, applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, evaluateOriginalPracticeHand, getPracticeCard, legalAmericanClaims, passAmericanClaims, playAmericanDiscard, resolveAmericanClaimPriority } from '@/lib/mahjong/american';
+import { AMERICAN_WALL, ORIGINAL_PRACTICE_CARDS, americanClosestLine, americanLineDistance, rankAmericanLines, americanTileKeepValue, applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, evaluateOriginalPracticeHand, getPracticeCard, legalAmericanClaims, passAmericanClaims, playAmericanDiscard, resolveAmericanClaimPriority } from '@/lib/mahjong/american';
 
 describe('original American Mahjong practice engine', () => {
   it('uses a physical 152-tile wall with no fifth standard tile', () => { expect(AMERICAN_WALL).toHaveLength(152); expect(AMERICAN_WALL.filter((tile) => tile === 'm1')).toHaveLength(4); });
@@ -126,6 +126,42 @@ describe('original American Mahjong practice engine', () => {
     expect(ended).toBe(40);
     // Bots call on discards rather than only drawing and throwing.
     expect(exposures).toBeGreaterThan(0);
+  });
+
+  it('measures how far a hand is from each line and ranks them', () => {
+    const game = createAmericanGame(41);
+    const nearlyGardenLadder = ['f1', 'f2', 'p2', 'p2', 'p2', 'p3', 'p3', 'p3', 'p4', 'p4', 'p4', 's5', 's5'];
+    expect(americanLineDistance(getPracticeCard('garden-ladder-v1'), nearlyGardenLadder)).toBe(1);
+    expect(americanClosestLine(game, nearlyGardenLadder).id).toBe('garden-ladder-v1');
+    const ranked = rankAmericanLines(game, nearlyGardenLadder);
+    expect(ranked).toHaveLength(ORIGINAL_PRACTICE_CARDS.length);
+    expect(ranked[0].distance).toBeLessThanOrEqual(ranked[1].distance);
+  });
+
+  it('counts a Joker towards a group that accepts one, but never towards a pair', () => {
+    const withJoker = ['f1', 'f2', 'p2', 'p2', 'j1', 'p3', 'p3', 'p3', 'p4', 'p4', 'p4', 's5', 's5', 's5'];
+    expect(americanLineDistance(getPracticeCard('garden-ladder-v1'), withJoker)).toBe(0);
+    // Pair Parade is seven exact pairs, so a Joker fills nothing there.
+    const pairsWithJoker = ['m1', 'm1', 'm3', 'm3', 'p2', 'p2', 'p4', 'p4', 's5', 's5', 'z1', 'z1', 'z5', 'j1'];
+    expect(americanLineDistance(getPracticeCard('pair-parade-v1'), pairsWithJoker)).toBe(1);
+  });
+
+  it('declares a line other than the pinned one when the hand completes it', () => {
+    const game = createAmericanGame(42, 'garden-ladder-v1');
+    // Bamboo Bridge, while the pinned display card is still Garden Ladder.
+    game.players[0].hand = ['f1', 'f2', 's1', 's1', 's1', 's3', 's3', 's3', 's5', 's5', 's5', 'p7', 'p7', 'p7'];
+    const result = declareAmericanMahJong(game);
+    expect(result.declared).toBe(true);
+    expect(result.state.settlement?.points).toBe(getPracticeCard('bamboo-bridge-v1').points);
+    expect(result.state.settlement?.reason).toContain('Bamboo Bridge');
+  });
+
+  it('lets a bot retarget as its hand changes', () => {
+    const game = createAmericanGame(43);
+    const towardsWinds = ['f1', 'f2', 'z1', 'z1', 'z1', 'z2', 'z2', 'z2', 'z3', 'z3', 'z4', 'z4', 'm9'];
+    expect(americanClosestLine(game, towardsWinds).id).toBe('four-winds-v1');
+    const towardsDragons = ['f1', 'f2', 'z5', 'z5', 'z5', 'z6', 'z6', 'z6', 'z7', 'z7', 'p5', 'p5', 'm9'];
+    expect(americanClosestLine(game, towardsDragons).id).toBe('dragon-garden-v1');
   });
 
   it('uses declaration > kong > pung, then turn order, for claims', () => {

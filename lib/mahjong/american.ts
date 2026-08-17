@@ -27,7 +27,11 @@ export type AmericanClaim = 'mah-jongg' | 'kong' | 'pung';
 export type AmericanSettlement = { winner: AmericanSeat; points: number; transfers: number[]; reason: string };
 export type AmericanEndReason = 'mah-jongg' | 'wall-exhausted';
 export type AmericanGameState = {
-  cardId: string; options: AmericanOptions; players: AmericanPlayer[]; wall: AmericanTile[];
+  /** The line the player has pinned for display; play is not limited to it. */
+  cardId: string;
+  /** Every practice line in play this hand. Any of them can be declared. */
+  activeCardIds: string[];
+  options: AmericanOptions; players: AmericanPlayer[]; wall: AmericanTile[];
   phase: AmericanPhase; passIndex: number; charlestonRound: 1 | 2; currentSeat: AmericanSeat; seed: number;
   lastDiscard?: { tile: AmericanTile; seat: AmericanSeat }; settlement?: AmericanSettlement; history: string[];
   /** Why the hand ended; a wall game has no settlement. */
@@ -46,7 +50,7 @@ export function shuffleAmericanWall(seed: number) {
 export function getPracticeCard(cardId: string) { const card = ORIGINAL_PRACTICE_CARDS.find((item) => item.id === cardId); if (!card) throw new Error('Unknown original practice card: ' + cardId); return card; }
 export function createAmericanGame(seed = 20260813, cardId = 'garden-ladder-v1', options: Partial<AmericanOptions> = {}): AmericanGameState {
   getPracticeCard(cardId); const shuffled = shuffleAmericanWall(seed);
-  return { cardId, options: { secondCharleston: options.secondCharleston ?? true, courtesyPass: options.courtesyPass ?? true }, players: ([0, 1, 2, 3] as AmericanSeat[]).map((seat) => ({ seat, hand: shuffled.slice(seat * 13, seat * 13 + 13), discards: [], melds: [], score: 0 })), wall: shuffled.slice(52), phase: 'charleston', passIndex: 0, charlestonRound: 1, currentSeat: 0, seed, history: ['Hand started.'] };
+  return { cardId, activeCardIds: ORIGINAL_PRACTICE_CARDS.map((card) => card.id), options: { secondCharleston: options.secondCharleston ?? true, courtesyPass: options.courtesyPass ?? true }, players: ([0, 1, 2, 3] as AmericanSeat[]).map((seat) => ({ seat, hand: shuffled.slice(seat * 13, seat * 13 + 13), discards: [], melds: [], score: 0 })), wall: shuffled.slice(52), phase: 'charleston', passIndex: 0, charlestonRound: 1, currentSeat: 0, seed, history: ['Hand started.'] };
 }
 export type CardEvaluation = { valid: boolean; missing: string[]; illegalJokers: number; matchedGroups: number; message: string };
 export function evaluateOriginalPracticeHand(card: OriginalPracticeCard, tiles: AmericanTile[]): CardEvaluation {
@@ -66,6 +70,53 @@ export function evaluateOriginalPracticeHand(card: OriginalPracticeCard, tiles: 
   const valid = missing.length === 0 && illegalJokers === 0;
   return { valid, missing, illegalJokers, matchedGroups, message: valid ? card.title + ' complete for ' + card.points + ' points.' : missing[0] ?? 'Hand does not match this card.' };
 }
+/** Lines in play, falling back to the pinned one for hand-built fixtures. */
+export function americanActiveLines(state: AmericanGameState): OriginalPracticeCard[] {
+  const ids = state.activeCardIds?.length ? state.activeCardIds : [state.cardId];
+  return ids.map(getPracticeCard);
+}
+
+/**
+ * How many tiles a hand still needs to complete a line, counting Jokers
+ * against the groups that accept them. Zero means the line is complete.
+ */
+export function americanLineDistance(card: OriginalPracticeCard, tiles: AmericanTile[]): number {
+  let jokers = tiles.filter(joker).length;
+  let missing = 0;
+  for (const group of card.groups) {
+    const natural = group.face === 'flower'
+      ? tiles.filter(flower).length
+      : tiles.filter((tile) => tile === group.face).length;
+    let deficit = Math.max(0, group.count - Math.min(natural, group.count));
+    if (deficit > 0 && group.jokerAllowed) {
+      const used = Math.min(deficit, jokers);
+      jokers -= used;
+      deficit -= used;
+    }
+    missing += deficit;
+  }
+  return missing;
+}
+
+/**
+ * The line a hand is closest to, which is the one worth playing towards.
+ * Recomputed whenever it is needed, so a seat naturally switches target as
+ * its hand changes — the search a real player does across the whole card.
+ */
+export function americanClosestLine(state: AmericanGameState, tiles: AmericanTile[]): OriginalPracticeCard {
+  return americanActiveLines(state)
+    .map((card) => ({ card, distance: americanLineDistance(card, tiles) }))
+    .sort((a, b) => a.distance - b.distance || b.card.points - a.card.points || a.card.id.localeCompare(b.card.id))[0]
+    .card;
+}
+
+/** Every line ranked by how close the hand is, closest first. */
+export function rankAmericanLines(state: AmericanGameState, tiles: AmericanTile[]) {
+  return americanActiveLines(state)
+    .map((card) => ({ card, distance: americanLineDistance(card, tiles) }))
+    .sort((a, b) => a.distance - b.distance || b.card.points - a.card.points || a.card.id.localeCompare(b.card.id));
+}
+
 /** Deterministic practice AI: preserve card targets, duplicates and Jokers. */
 export function americanTileKeepValue(tile: AmericanTile, hand: AmericanTile[], card: OriginalPracticeCard): number {
   if (joker(tile)) return 100;
@@ -87,7 +138,7 @@ export function applyAmericanPass(state: AmericanGameState, humanTiles: American
   const count = state.phase === 'courtesy' ? humanTiles.length : 3;
   if (state.phase === 'charleston' && humanTiles.length !== 3) throw new Error('Charleston requires exactly three tiles.');
   if (count > 3) throw new Error('A Courtesy Pass may contain at most three tiles.');
-  const next = clone(state); const card = getPracticeCard(state.cardId); const outgoing = state.players.map((player) => player.seat === 0 ? [...humanTiles] : botPass(player.hand, card, count));
+  const next = clone(state); const outgoing = state.players.map((player) => player.seat === 0 ? [...humanTiles] : botPass(player.hand, americanClosestLine(state, player.hand), count));
   outgoing.forEach((tiles, seat) => { const removal = [...tiles]; next.players[seat].hand = next.players[seat].hand.filter((tile) => { const at = removal.indexOf(tile); if (at < 0) return true; removal.splice(at, 1); return false; }); if (removal.length) throw new Error('Seat ' + seat + ' lacks a selected passing tile.'); });
   outgoing.forEach((tiles, seat) => next.players[target(seat as AmericanSeat, direction)].hand.push(...tiles));
   if (state.phase === 'courtesy') { next.phase = 'turn'; next.players[0].hand.push(next.wall.shift()!); return next; }
@@ -119,7 +170,8 @@ export function legalAmericanClaims(state: AmericanGameState, seat: AmericanSeat
   if (state.phase !== 'claim' || !state.lastDiscard || seat === state.lastDiscard.seat) return [];
   const player = state.players[seat]; const tile = state.lastDiscard.tile;
   const result: AmericanClaim[] = [];
-  if (evaluateOriginalPracticeHand(getPracticeCard(state.cardId), [...fullTiles(player), tile]).valid) result.push('mah-jongg');
+  const complete = [...fullTiles(player), tile];
+  if (americanActiveLines(state).some((card) => evaluateOriginalPracticeHand(card, complete).valid)) result.push('mah-jongg');
   if (claimTiles(player.hand, tile, 3)) result.push('kong');
   if (claimTiles(player.hand, tile, 2)) result.push('pung');
   return result;
@@ -179,7 +231,8 @@ function nextAmericanSeat(seat: AmericanSeat): AmericanSeat {
  */
 function botWantsClaim(state: AmericanGameState, seat: AmericanSeat, tile: AmericanTile, claim: 'pung' | 'kong'): boolean {
   if (joker(tile) || flower(tile)) return false;
-  const group = getPracticeCard(state.cardId).groups.find((item) => item.face === tile);
+  const target = americanClosestLine(state, fullTiles(state.players[seat]));
+  const group = target.groups.find((item) => item.face === tile);
   if (!group) return false;
   const exposure = claim === 'kong' ? 4 : 3;
   if (group.count < exposure) return false;
@@ -246,7 +299,6 @@ function drawForSeat(state: AmericanGameState, seat: AmericanSeat): boolean {
  */
 function advanceAmerican(state: AmericanGameState): AmericanGameState {
   let current = state;
-  const card = getPracticeCard(current.cardId);
   // Bounded so a policy bug can never spin the browser: a hand cannot outlast
   // the wall by more than a few claims per tile.
   for (let guard = 0; guard < 500; guard += 1) {
@@ -257,7 +309,7 @@ function advanceAmerican(state: AmericanGameState): AmericanGameState {
     const declared = declareAmericanMahJong(current, seat);
     if (declared.declared) return declared.state;
 
-    const tile = botDiscard(current.players[seat].hand, card);
+    const tile = botDiscard(current.players[seat].hand, americanClosestLine(current, fullTiles(current.players[seat])));
     current = clone(current);
     current.players[seat].hand = removeFaces(current.players[seat].hand, [tile]);
     current.players[seat].discards.push(tile);
@@ -326,8 +378,20 @@ function continueAfterDiscard(state: AmericanGameState): AmericanGameState {
 }
 
 export function declareAmericanMahJong(state: AmericanGameState, seat: AmericanSeat = 0) {
-  const player = state.players[seat]; const card = getPracticeCard(state.cardId); const evaluation = evaluateOriginalPracticeHand(card, fullTiles(player));
-  if (!evaluation.valid) return { state, evaluation, declared: false };
+  const player = state.players[seat];
+  const tiles = fullTiles(player);
+  // A hand can complete more than one line; take the most valuable of them.
+  const completed = americanActiveLines(state)
+    .map((line) => ({ card: line, evaluation: evaluateOriginalPracticeHand(line, tiles) }))
+    .filter((entry) => entry.evaluation.valid)
+    .sort((a, b) => b.card.points - a.card.points)[0];
+  if (!completed) {
+    // Report against the closest line so the message names a reachable target.
+    const closest = americanClosestLine(state, tiles);
+    return { state, evaluation: evaluateOriginalPracticeHand(closest, tiles), declared: false };
+  }
+  const card = completed.card;
+  const evaluation = completed.evaluation;
   const next = clone(state); next.phase = 'ended'; next.endReason = 'mah-jongg'; next.players[seat].score += card.points;
   const transfers = [0, 0, 0, 0]; let owed = card.points;
   for (const payer of ([0, 1, 2, 3] as AmericanSeat[]).filter((item) => item !== seat)) { const payment = Math.ceil(owed / ([0, 1, 2, 3].filter((item) => item !== seat && item >= payer).length)); transfers[payer] -= payment; next.players[payer].score -= payment; owed -= payment; }

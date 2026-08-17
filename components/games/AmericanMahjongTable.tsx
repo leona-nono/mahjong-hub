@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import TileFace, { TileBack, useTraditionalTilePreload } from './TileFace';
 import { sortTiles, tileFace, type Tile } from '@/lib/mahjong/tiles';
-import { applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, exchangeAmericanJoker, getPracticeCard, legalAmericanClaims, ORIGINAL_PRACTICE_CARDS, passAmericanClaims, playAmericanDiscard, type AmericanGameState } from '@/lib/mahjong/american';
+import { americanClosestLine, applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, exchangeAmericanJoker, getPracticeCard, legalAmericanClaims, passAmericanClaims, playAmericanDiscard, rankAmericanLines, type AmericanGameState } from '@/lib/mahjong/american';
 import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/lib/mahjong/sound';
 import MahjongAccessibilityPanel, { useMahjongPreferences } from './MahjongAccessibilityPanel';
 import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
@@ -54,6 +54,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   const [selected, setSelected] = useState<number[]>([]);
   const [step, setStep] = useState<CharlestonStep>(0);
   const [lastDiscard, setLastDiscard] = useState<string | null>(null);
+  const [pinnedCardId, setPinnedCardId] = useState<string | null>(null);
   const [autoSort, setAutoSort] = useState(true);
   const [notice, setNotice] = useState('Choose exactly three tiles to begin the Charleston.');
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -89,7 +90,11 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   const hand = autoSort ? sortAmerican(game.players[0].hand) : game.players[0].hand;
   const deal = { hand: [], wall: game.wall };
   const inCharleston = game.phase === 'charleston';
-  const card = getPracticeCard(game.cardId);
+  const fullHand = [...game.players[0].hand, ...game.players[0].melds.flatMap((meld) => meld.tiles)];
+  const rankedLines = rankAmericanLines(game, fullHand);
+  // Every line is live; the panel follows whichever one the hand is closest to
+  // until the player pins one to work towards.
+  const card = pinnedCardId ? getPracticeCard(pinnedCardId) : americanClosestLine(game, fullHand);
   const claims = legalAmericanClaims(game);
   const selectedTiles = selected.map((index) => hand[index]).filter(Boolean);
   const openingStep = game.phase === 'charleston'
@@ -133,15 +138,11 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   };
 
   const chooseCard = (cardId: string) => {
-    primeMahjongAudio();
-    stopMahjongSpeech();
-    if (soundEnabled) playMahjongOpeningSequence('english');
-    const next = createAmericanGame(Date.now(), cardId);
-    setGame(next);
-    setSelected([]); setStep(0); setLastDiscard(null);
-    setJokerExchangeMeld(null);
-    setNotice('New ' + getPracticeCard(cardId).title + ' hand. Choose 3 tiles to begin the Charleston.');
-    trackMahjongEvent('mahjong_game_started', { variant: 'american', card: cardId, source: 'card_selected' });
+    setPinnedCardId(cardId || null);
+    setNotice(cardId
+      ? 'Tracking ' + getPracticeCard(cardId).title + '. You may still declare any line you complete.'
+      : 'Tracking whichever line your hand is closest to.');
+    trackMahjongEvent('mahjong_card_focused', { variant: 'american', card: cardId || 'auto' });
   };
 
   useEffect(() => {
@@ -158,7 +159,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   };
   const declare = () => {
     const result = declareAmericanMahJong(game);
-    if (result.declared) { if (soundEnabled) playMahjongSound('win', undefined, 'english'); setGame(result.state); setNotice('MAH JONGG! ' + result.evaluation.message); onWin?.(card.points); }
+    if (result.declared) { if (soundEnabled) playMahjongSound('win', undefined, 'english'); setGame(result.state); setNotice('MAH JONGG! ' + result.evaluation.message); onWin?.(result.state.settlement?.points ?? 0); }
     else setNotice('Cannot declare Mah Jongg: ' + result.evaluation.message);
   };
   const claim = (kind: 'pung' | 'kong') => {
@@ -171,7 +172,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
     try {
       const result = claimAmericanMahJong(game);
       if (!result.declared) { setNotice(result.evaluation.message); return; }
-      if (soundEnabled) playMahjongSound('win', undefined, 'english'); setGame(result.state); setNotice('MAH JONGG! ' + result.evaluation.message); onWin?.(card.points);
+      if (soundEnabled) playMahjongSound('win', undefined, 'english'); setGame(result.state); setNotice('MAH JONGG! ' + result.evaluation.message); onWin?.(result.state.settlement?.points ?? 0);
     } catch (error) { setNotice(error instanceof Error ? error.message : 'Mah Jongg claim failed.'); }
   };
   const passClaims = () => {
@@ -222,7 +223,6 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
       const next = playAmericanDiscard(game, tile);
       primeMahjongAudio(); if (soundEnabled) playMahjongSound('discard', tile as Tile, 'english'); setGame(next); setLastDiscard(tile); setNotice(describeTableTurn(next));
       setNotice(`You discarded ${tile.startsWith('j') ? 'a Joker' : tileFace(tile as Tile)}. The three bots used their actual concealed hands and the same wall.`);
-      if (targetProgress.groups.every((group) => group.current === group.required)) onWin?.(card.points);
     } catch (error) { setNotice(error instanceof Error ? error.message : 'Discard failed.'); }
   };
 
@@ -238,8 +238,9 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
             <TableButton onClick={() => setAutoSort((value) => !value)} active={autoSort}>Sort By Suit</TableButton>
             <TableButton onClick={toggleSound} active={soundEnabled}>{soundEnabled ? 'Sound On' : 'Sound Off'}</TableButton>
             <TableButton onClick={() => setShowAccessibility(true)}>Aa</TableButton>
-            <select aria-label="Original practice card" value={game.cardId} onChange={(event) => chooseCard(event.target.value)} className="h-9 rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-black text-white">
-              {ORIGINAL_PRACTICE_CARDS.map((item) => <option key={item.id} value={item.id}>{item.title} · {item.points}</option>)}
+            <select aria-label="Practice line to track" value={pinnedCardId ?? ''} onChange={(event) => chooseCard(event.target.value)} className="h-9 rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-black text-white">
+              <option value="">Closest line (auto)</option>
+              {rankedLines.map(({ card: item, distance }) => <option key={item.id} value={item.id}>{item.title} · {item.points} · {distance} away</option>)}
             </select>
             <TableButton onClick={() => setNotice(card.description + ' Jokers never fill flowers or pairs.')}>◇ Practice Card</TableButton>
           </div>
