@@ -561,7 +561,22 @@ export default function MahjongSolitaire({
     if (id === 'classic') return 'Classic 144';
     if (id === 'mini') return 'Mini';
     if (id === 'flat36') return 'Flat 36';
-    return t(id as 'turtle' | 'pyramid' | 'fish' | 'butterfly' | 'gate');
+    return t(
+      id as
+        | 'turtle'
+        | 'pyramid'
+        | 'fish'
+        | 'butterfly'
+        | 'gate'
+        | 'snail'
+        | 'arrow'
+        | 'bridge'
+        | 'castle'
+        | 'dna'
+        | 'peacock'
+        | 'tower'
+        | 'diamond'
+    );
   };
 
   const itemBtn = (

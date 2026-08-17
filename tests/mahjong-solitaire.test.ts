@@ -112,7 +112,23 @@ describe('layouts', () => {
     expect(layoutTileCount('fish')).toBe(60);
     expect(layoutTileCount('butterfly')).toBe(60);
     expect(layoutTileCount('gate')).toBe(72);
+    expect(layoutTileCount('snail') % 2).toBe(0);
+    expect(layoutTileCount('arrow') % 2).toBe(0);
+    expect(layoutTileCount('bridge') % 2).toBe(0);
+    expect(layoutTileCount('castle') % 2).toBe(0);
+    expect(layoutTileCount('dna') % 2).toBe(0);
+    expect(layoutTileCount('peacock') % 2).toBe(0);
+    expect(layoutTileCount('tower') % 2).toBe(0);
+    expect(layoutTileCount('diamond') % 2).toBe(0);
     expect(layoutTileCount('mini') % 2).toBe(0);
+  });
+
+  it('lists 15 free-play layouts', async () => {
+    const { FREE_PLAY_LAYOUTS } = await import('@/lib/mahjong-solitaire/layouts');
+    expect(FREE_PLAY_LAYOUTS).toHaveLength(15);
+    for (const id of FREE_PLAY_LAYOUTS) {
+      expect(layoutTileCount(id) % 2).toBe(0);
+    }
   });
 });
 

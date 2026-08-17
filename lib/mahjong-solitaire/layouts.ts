@@ -1,12 +1,7 @@
 /**
  * Mahjong Solitaire layout geometry.
  *
- * Layouts:
- * - `flat36` (36) — single-layer teaching boards (levels 1–2)
- * - `mini` (72) — early / mid teaching
- * - `turtle` (74) — legacy compact turtle (kept for continuity)
- * - `classic` (144) — full Shanghai stack (P0 target)
- * - `pyramid` (90) — alternate shape
+ * Teaching: `flat36`. Free-play catalogue: see `FREE_PLAY_LAYOUTS` (15 shapes).
  */
 
 export type SolitaireLayout =
@@ -17,7 +12,15 @@ export type SolitaireLayout =
   | 'pyramid'
   | 'fish'
   | 'butterfly'
-  | 'gate';
+  | 'gate'
+  | 'snail'
+  | 'arrow'
+  | 'bridge'
+  | 'castle'
+  | 'dna'
+  | 'peacock'
+  | 'tower'
+  | 'diamond';
 
 export interface Pos {
   row: number;
@@ -55,7 +58,7 @@ const FLAT36_LAYERS: LayerSpec[] = [
   }
 ];
 
-/** Teaching board: 72 tiles, 2 layers. */
+/** Teaching / compact board. */
 const MINI_LAYERS: LayerSpec[] = [
   {
     rowOffset: 0,
@@ -71,16 +74,11 @@ const MINI_LAYERS: LayerSpec[] = [
   {
     rowOffset: 1,
     colOffset: 1,
-    rows: [
-      '..XXXX..',
-      '.XXXXXX.',
-      '.XXXXXX.',
-      '..XXXX..'
-    ]
+    rows: ['..XXXX..', '.XXXXXX.', '.XXXXXX.', '..XXXX..']
   }
 ];
 
-/** Compact turtle (74) — existing product layout. */
+/** Compact turtle (74). */
 const TURTLE_LAYERS: LayerSpec[] = [
   {
     rowOffset: 0,
@@ -98,12 +96,7 @@ const TURTLE_LAYERS: LayerSpec[] = [
   },
   {
     rowOffset: 2,
-    rows: [
-      '..XXXX..',
-      '.XXXXXX.',
-      '.XXXXXX.',
-      '..XXXX..'
-    ]
+    rows: ['..XXXX..', '.XXXXXX.', '.XXXXXX.', '..XXXX..']
   },
   {
     rowOffset: 3,
@@ -111,10 +104,7 @@ const TURTLE_LAYERS: LayerSpec[] = [
   }
 ];
 
-/**
- * Classic 144 stack: 80 + 48 + 16.
- * Each upper layer sits inside the one below (no floating tiles).
- */
+/** Classic 144 stack: 80 + 48 + 16. */
 const CLASSIC_LAYERS: LayerSpec[] = [
   {
     rowOffset: 0,
@@ -166,7 +156,6 @@ function positionsForPyramid(): Pos[] {
   return positions;
 }
 
-/** Fish silhouette — 60 tiles (even). */
 const FISH_LAYERS: LayerSpec[] = [
   {
     rowOffset: 0,
@@ -187,7 +176,6 @@ const FISH_LAYERS: LayerSpec[] = [
   }
 ];
 
-/** Butterfly wings — 60 tiles. */
 const BUTTERFLY_LAYERS: LayerSpec[] = [
   {
     rowOffset: 0,
@@ -208,7 +196,6 @@ const BUTTERFLY_LAYERS: LayerSpec[] = [
   }
 ];
 
-/** Gate / wall strip — 72 tiles. */
 const GATE_LAYERS: LayerSpec[] = [
   {
     rowOffset: 0,
@@ -225,6 +212,181 @@ const GATE_LAYERS: LayerSpec[] = [
   }
 ];
 
+/** Spiral / snail. */
+const SNAIL_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      'XXXXXXXX',
+      'X......X',
+      'X.XXXX.X',
+      'X.X..X.X',
+      'X.XXXX.X',
+      'X......X',
+      'XXXXXXXX'
+    ]
+  },
+  {
+    rowOffset: 2,
+    colOffset: 2,
+    rows: ['XXXX', 'X..X', 'XXXX']
+  }
+];
+
+/** Victory arrow. */
+const ARROW_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      '......XX......',
+      '.....XXXX.....',
+      '....XXXXXX....',
+      '...XXXXXXXX...',
+      '..XXXXXXXXXX..',
+      '......XX......',
+      '......XX......',
+      '......XX......',
+      '......XX......'
+    ]
+  },
+  {
+    rowOffset: 2,
+    colOffset: 4,
+    rows: ['XXXX', 'XXXX', '..XX..', '..XX..']
+  }
+];
+
+/** Bridge span. */
+const BRIDGE_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      'XXXXXXXXXXXXXXXXXX',
+      'XXXXXXXXXXXXXXXXXX',
+      '..XXXXXXXXXXXXXX..',
+      '....XXXXXXXXXX....',
+      '......XXXXXX......'
+    ]
+  },
+  {
+    rowOffset: 0,
+    colOffset: 3,
+    rows: ['XXXXXXXXXXXX', 'XXXXXXXXXXXX']
+  }
+];
+
+/** Castle keep. */
+const CASTLE_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      'XX..XX..XX..XX',
+      'XXXXXXXXXXXXXX',
+      'XXXXXXXXXXXXXX',
+      'XXXXXXXXXXXXXX',
+      'XXXXXXXXXXXXXX',
+      'XX..........XX'
+    ]
+  },
+  {
+    rowOffset: 1,
+    colOffset: 2,
+    rows: ['XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX']
+  }
+];
+
+/** DNA helix suggestion. */
+const DNA_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      'XX........XX',
+      '.XX......XX.',
+      '..XX....XX..',
+      '...XX..XX...',
+      '....XXXX....',
+      '...XX..XX...',
+      '..XX....XX..',
+      '.XX......XX.',
+      'XX........XX'
+    ]
+  },
+  {
+    rowOffset: 2,
+    colOffset: 2,
+    rows: ['XX....XX', '.XX..XX.', '..XXXX..', '.XX..XX.', 'XX....XX']
+  }
+];
+
+/** Peacock fan. */
+const PEACOCK_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      'XX..XX..XX..XX..XX',
+      '.XXXXXXXXXXXXXXXX.',
+      '..XXXXXXXXXXXXXX..',
+      '...XXXXXXXXXXXX...',
+      '....XXXXXXXXXX....',
+      '.....XXXXXXXX.....'
+    ]
+  },
+  {
+    rowOffset: 1,
+    colOffset: 3,
+    rows: ['XXXXXXXXXXXX', '.XXXXXXXXXX.']
+  }
+];
+
+/** Tower stack. */
+const TOWER_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      '..XXXXXXXX..',
+      '.XXXXXXXXXX.',
+      'XXXXXXXXXXXX',
+      'XXXXXXXXXXXX',
+      'XXXXXXXXXXXX',
+      '.XXXXXXXXXX.',
+      '..XXXXXXXX..'
+    ]
+  },
+  {
+    rowOffset: 1,
+    colOffset: 2,
+    rows: ['XXXXXXXX', 'XXXXXXXX', 'XXXXXXXX']
+  },
+  {
+    rowOffset: 2,
+    colOffset: 4,
+    rows: ['XXXX', 'XXXX']
+  }
+];
+
+/** Diamond. */
+const DIAMOND_LAYERS: LayerSpec[] = [
+  {
+    rowOffset: 0,
+    rows: [
+      '......XX......',
+      '.....XXXX.....',
+      '....XXXXXX....',
+      '...XXXXXXXX...',
+      '..XXXXXXXXXX..',
+      '...XXXXXXXX...',
+      '....XXXXXX....',
+      '.....XXXX.....',
+      '......XX......'
+    ]
+  },
+  {
+    rowOffset: 2,
+    colOffset: 3,
+    rows: ['......', '.XXXX.', 'XXXXXX', '.XXXX.']
+  }
+];
+
 const LAYOUTS: Record<SolitaireLayout, Pos[]> = {
   flat36: positionsFromLayers(FLAT36_LAYERS),
   mini: positionsFromLayers(MINI_LAYERS),
@@ -233,10 +395,18 @@ const LAYOUTS: Record<SolitaireLayout, Pos[]> = {
   pyramid: positionsForPyramid(),
   fish: positionsFromLayers(FISH_LAYERS),
   butterfly: positionsFromLayers(BUTTERFLY_LAYERS),
-  gate: positionsFromLayers(GATE_LAYERS)
+  gate: positionsFromLayers(GATE_LAYERS),
+  snail: positionsFromLayers(SNAIL_LAYERS),
+  arrow: positionsFromLayers(ARROW_LAYERS),
+  bridge: positionsFromLayers(BRIDGE_LAYERS),
+  castle: positionsFromLayers(CASTLE_LAYERS),
+  dna: positionsFromLayers(DNA_LAYERS),
+  peacock: positionsFromLayers(PEACOCK_LAYERS),
+  tower: positionsFromLayers(TOWER_LAYERS),
+  diamond: positionsFromLayers(DIAMOND_LAYERS)
 };
 
-/** Named free-play layouts shown in the picker (excludes tiny teaching boards). */
+/** Free-play catalogue — 15 named shapes (teaching `flat36` excluded). */
 export const FREE_PLAY_LAYOUTS: SolitaireLayout[] = [
   'classic',
   'turtle',
@@ -244,6 +414,14 @@ export const FREE_PLAY_LAYOUTS: SolitaireLayout[] = [
   'fish',
   'butterfly',
   'gate',
+  'snail',
+  'arrow',
+  'bridge',
+  'castle',
+  'dna',
+  'peacock',
+  'tower',
+  'diamond',
   'mini'
 ];
 
