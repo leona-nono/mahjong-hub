@@ -1,11 +1,14 @@
+import { connection } from 'next/server';
 import { Link } from '@/i18n/navigation';
 import GuideEditorForm from '@/components/admin/GuideEditorForm';
 import { prisma } from '@/lib/db';
 import { getBlogPosts } from '@/data/blog';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function NewGuidePage() {
+  await connection();
   let sortOrder = getBlogPosts().length;
   try {
     const last = await prisma.guide.findFirst({ orderBy: { sortOrder: 'desc' } });

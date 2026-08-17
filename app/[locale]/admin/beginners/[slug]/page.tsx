@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { Link } from '@/i18n/navigation';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
@@ -6,12 +7,14 @@ import GuideEditorForm from '@/components/admin/GuideEditorForm';
 import { getPublicGuide } from '@/lib/guides';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function EditGuidePage({
   params
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  await connection();
   const { slug } = await params;
   const staticPosts = getBlogPosts();
   const staticPost = getBlogPost(slug);

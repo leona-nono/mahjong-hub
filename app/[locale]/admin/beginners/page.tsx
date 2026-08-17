@@ -1,11 +1,14 @@
+import { connection } from 'next/server';
 import { Link } from '@/i18n/navigation';
 import { isDbConnected } from '@/lib/db-health';
 import { getAdminGuides } from '@/lib/guides';
 import GuideListActions from '@/components/admin/GuideListActions';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function AdminBeginnersPage() {
+  await connection();
   const dbConnected = await isDbConnected();
   const guides = await getAdminGuides();
   const orderedSlugs = guides.map((g) => g.slug);

@@ -4,7 +4,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import MarkdownContent from '@/components/MarkdownContent';
 import { alternatesFor } from '@/lib/seo';
-import { getPublicGuide, getPublicGuides, localizeStaticGuide } from '@/lib/guides';
+import { getBlogPosts } from '@/data/blog';
+import { getPublicGuide, localizeStaticGuide } from '@/lib/guides';
 import { getSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
@@ -12,8 +13,8 @@ const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
 
 export const revalidate = 86_400;
 
-export async function generateStaticParams() {
-  const posts = await getPublicGuides();
+export function generateStaticParams() {
+  const posts = getBlogPosts();
   return posts.flatMap((post) =>
     LOCALES.map((locale) => ({ locale, slug: post.slug }))
   );
