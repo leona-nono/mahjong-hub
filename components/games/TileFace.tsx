@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { isBonusTile, tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
+import { isBonusTile, isRedFive, normalTile, tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
 
 export type TileSize = 'xs' | 'sm' | 'md' | 'lg' | 'table' | 'xl';
 
@@ -96,11 +96,13 @@ export default function TileFace({
 }: TileFaceProps) {
   const suit = tileSuit(tile);
   const interactive = Boolean(onClick) && !disabled;
+  // A red five shares the five's artwork; the red is carried by the frame.
+  const art = normalTile(tile);
   const face = traditional ? (
     <picture>
-      {!isBonusTile(tile) && <source srcSet={traditionalTileWebpSrc(tile)} type="image/webp" />}
+      {!isBonusTile(art) && <source srcSet={traditionalTileWebpSrc(art)} type="image/webp" />}
       <img
-        src={traditionalTilePngSrc(tile)}
+        src={traditionalTilePngSrc(art)}
         alt=""
         width={150}
         height={210}
@@ -117,6 +119,7 @@ export default function TileFace({
     SIZE_CLASS[size],
     SUIT_CLASS[suit] ?? 'text-gray-700',
     muted ? 'border-slate-200 bg-slate-100 opacity-45 saturate-50' : 'border-slate-200 bg-gradient-to-b from-white to-slate-50',
+    isRedFive(tile) && !muted ? 'border-rose-400 shadow-[inset_0_0_0_2px_rgba(244,63,94,.35)]' : '',
     highlight ? 'ring-2 ring-amber-400 -translate-y-2 shadow-[0_0_0_4px_rgba(251,191,36,.18)]' : '',
     interactive
       ? 'cursor-pointer hover:-translate-y-2 hover:border-sky-300 hover:shadow-[0_10px_18px_rgba(14,165,233,.2)] active:translate-y-0'

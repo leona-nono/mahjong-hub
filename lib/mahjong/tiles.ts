@@ -43,6 +43,27 @@ export function isBonusTile(tile: Tile): boolean {
   return BONUS_TILES.includes(tile);
 }
 
+/**
+ * Red fives (赤ドラ), written with rank 0 so they are distinct tiles that still
+ * index as fives. They play exactly as a five and additionally count as one
+ * dora each, which is why they need their own identity rather than a flag.
+ */
+export const RED_FIVES: Tile[] = ['m0', 'p0', 's0'];
+
+export function isRedFive(tile: Tile): boolean {
+  return RED_FIVES.includes(tile);
+}
+
+/** The kind a tile belongs to. A red five is, for every rule, just a five. */
+export function normalTile(tile: Tile): Tile {
+  return isRedFive(tile) ? `${tileSuit(tile)}5` : tile;
+}
+
+/** Whether two tiles are the same kind, ignoring which copy is red. */
+export function isSameKind(a: Tile, b: Tile): boolean {
+  return normalTile(a) === normalTile(b);
+}
+
 export function makeTile(suit: Suit, rank: number): Tile {
   return `${suit}${rank}`;
 }
@@ -58,7 +79,8 @@ export function tileRank(tile: Tile): number {
 /** Map a tile id to its 0..33 index. */
 export function tileIndex(tile: Tile): number {
   if (isBonusTile(tile)) throw new Error(`Bonus tile ${tile} has no 34-kind hand index.`);
-  return SUIT_OFFSET[tileSuit(tile)] + tileRank(tile) - 1;
+  const kind = normalTile(tile);
+  return SUIT_OFFSET[tileSuit(kind)] + tileRank(kind) - 1;
 }
 
 /** Inverse of {@link tileIndex}. */
@@ -119,13 +141,21 @@ export const ORPHAN_TILES: Tile[] = [
  * Build a fresh 136-tile wall (no flowers/seasons — those are cosmetic in the
  * rulesets we ship and only add bookkeeping).
  */
-export function buildWall(excludedTiles: readonly Tile[] = [], includeBonusTiles = false): Tile[] {
+export function buildWall(
+  excludedTiles: readonly Tile[] = [],
+  includeBonusTiles = false,
+  includeRedFives = false
+): Tile[] {
   const wall: Tile[] = [];
   const excluded = new Set(excludedTiles);
   for (let i = 0; i < TILE_KINDS; i += 1) {
     const tile = tileFromIndex(i);
     if (excluded.has(tile)) continue;
-    for (let c = 0; c < COPIES_PER_TILE; c += 1) wall.push(tile);
+    // One copy of each five is red; the wall size is unchanged.
+    const red = includeRedFives && tileSuit(tile) !== 'z' && tileRank(tile) === 5;
+    for (let c = 0; c < COPIES_PER_TILE; c += 1) {
+      wall.push(red && c === 0 ? `${tileSuit(tile)}0` : tile);
+    }
   }
   if (includeBonusTiles) wall.push(...BONUS_TILES);
   return wall;
@@ -201,8 +231,9 @@ export function tileFace(tile: Tile): string {
   if (isBonusTile(tile)) {
     return ['春', '夏', '秋', '冬', '梅', '兰', '竹', '菊'][tileRank(tile) - 1] ?? '花';
   }
-  const suit = tileSuit(tile);
-  const rank = tileRank(tile);
+  const kind = normalTile(tile);
+  const suit = tileSuit(kind);
+  const rank = tileRank(kind);
   if (suit === 'z') return HONOUR_LABEL[rank];
   return `${rank}${SUIT_LABEL[suit]}`;
 }
@@ -229,8 +260,9 @@ export function tileName(tile: Tile): string {
   if (isBonusTile(tile)) {
     return ['Spring', 'Summer', 'Autumn', 'Winter', 'Plum', 'Orchid', 'Bamboo', 'Chrysanthemum'][tileRank(tile) - 1] ?? 'Flower';
   }
-  const suit = tileSuit(tile);
-  const rank = tileRank(tile);
+  const kind = normalTile(tile);
+  const suit = tileSuit(kind);
+  const rank = tileRank(kind);
   if (suit === 'z') return HONOUR_NAME[rank];
-  return `${rank} of ${SUIT_NAME[suit]}`;
+  return `${isRedFive(tile) ? 'Red ' : ''}${rank} of ${SUIT_NAME[suit]}`;
 }

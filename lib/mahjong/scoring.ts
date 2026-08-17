@@ -16,6 +16,7 @@ import {
   isDragon,
   isHonour,
   isSimple,
+  isRedFive,
   isTerminalOrHonour,
   tileFromIndex,
   tileIndex,
@@ -532,6 +533,12 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     }
     const visible = countDora(allTiles, visibleDoraIndicators(state));
     if (!patterns.some((pattern) => pattern.id === 'renhou') && visible > 0) patterns.push({ id: 'dora', label: 'Dora', value: visible });
+    // Red fives are counted from the tiles themselves, not from an indicator,
+    // so they are added once rather than again under the ura indicators.
+    const red = allTiles.filter(isRedFive).length;
+    if (!patterns.some((pattern) => pattern.id === 'renhou') && red > 0) {
+      patterns.push({ id: 'akaDora', label: 'Red Five', value: red });
+    }
     if (!patterns.some((pattern) => pattern.id === 'renhou') && player.declaredReady) {
       const ura = countDora(allTiles, uraDoraIndicators(state));
       if (ura > 0) patterns.push({ id: 'uraDora', label: 'Ura Dora', value: ura });
@@ -843,7 +850,7 @@ function finalise(
     patterns: effectivePatterns,
     limit: forcedLimit || raw >= cap || yakumanCount > 0,
     legalYaku: ruleset !== 'riichi' || forcedLimit || yakumanCount > 0 || patterns.some(
-      (pattern) => pattern.id !== 'dora' && pattern.id !== 'uraDora'
+      (pattern) => pattern.id !== 'dora' && pattern.id !== 'uraDora' && pattern.id !== 'akaDora'
     ),
     han: ruleset === 'riichi' ? (yakumanCount > 0 ? 13 : raw) : undefined,
     fu,

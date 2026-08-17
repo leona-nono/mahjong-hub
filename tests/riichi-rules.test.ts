@@ -19,6 +19,7 @@ import {
   isAbortiveDraw,
   declareAddedKan,
   declareConcealedKan,
+  declareKan,
   declareRiichi,
   discard,
   drawTile,
@@ -28,7 +29,7 @@ import {
   type Seat
 } from '@/lib/mahjong/engine';
 import { chooseMove } from '@/lib/mahjong/ai';
-import type { Tile } from '@/lib/mahjong/tiles';
+import { buildWall, isRedFive, normalTile, tileIndex, toCounts, type Tile } from '@/lib/mahjong/tiles';
 
 const hand = (value: string): Tile[] => value.split(' ') as Tile[];
 
@@ -563,5 +564,79 @@ describe('WRC abortive draws', () => {
     state.turn = 0;
     state.phase = 'discard';
     expect(discard(state, 's1').result).toBeNull();
+  });
+});
+
+
+describe('red fives', () => {
+  it('indexes and names a red five as an ordinary five', () => {
+    expect(tileIndex('m0')).toBe(tileIndex('m5'));
+    expect(normalTile('p0')).toBe('p5');
+    expect(isRedFive('s0')).toBe(true);
+    expect(isRedFive('s5')).toBe(false);
+    expect(toCounts(hand('m0 m5 m5'))[tileIndex('m5')]).toBe(3);
+  });
+
+  it('swaps one copy of each five without changing the wall size', () => {
+    const plain = buildWall();
+    const red = buildWall([], false, true);
+    expect(red).toHaveLength(plain.length);
+    expect(red.filter(isRedFive)).toEqual(['m0', 'p0', 's0']);
+    for (const suit of ['m', 'p', 's']) {
+      expect(red.filter((tile) => tile === `${suit}5`)).toHaveLength(3);
+    }
+  });
+
+  it('deals red fives in the standard flavour only', () => {
+    expect(createGame({ ruleset: 'riichi', seed: 3, riichiVariant: 'standard' }).wall.some(isRedFive)).toBe(true);
+    expect(createGame({ ruleset: 'riichi', seed: 3 }).wall.some(isRedFive)).toBe(false);
+    expect(createGame({ ruleset: 'hongkong', seed: 3, riichiVariant: 'standard' }).wall.some(isRedFive)).toBe(false);
+  });
+
+  it('adds one han per red five without ever becoming the hand\'s yaku', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 3, riichiVariant: 'standard' });
+    state.players[0].hand = hand('m2 m3 m4 p0 p6 p7 s2 s3 s4 s6 s7 s8 z2 z2');
+    const score = scoreHand({ state, seat: 0, winningTile: 'z2', selfDrawn: true });
+    const red = score.patterns.find((pattern) => pattern.id === 'akaDora');
+    expect(red?.value).toBe(1);
+
+    // Menzen tsumo is the yaku here; strip it and the red five cannot stand in.
+    const openState = createGame({ ruleset: 'riichi', seed: 3, riichiVariant: 'standard' });
+    openState.players[0].melds = [{ kind: 'chi', tiles: hand('s6 s7 s8'), from: 3 }];
+    openState.players[0].hand = hand('m2 m3 m4 p0 p6 p7 s2 s3 s4 z2 z2');
+    const openScore = scoreHand({ state: openState, seat: 0, winningTile: 'z2', selfDrawn: false });
+    expect(openScore.patterns.some((pattern) => pattern.id === 'akaDora')).toBe(true);
+    expect(openScore.legalYaku).toBe(false);
+  });
+
+  it('keeps a red five visible when it is buried in a Kong', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 4, riichiVariant: 'standard' });
+    state.players[0].hand = hand('m0 m5 m5 m5 p1 p2 p3 s7 s8 s9 z3 z3 z4 z4');
+    state.turn = 0;
+    state.phase = 'discard';
+    const kanned = declareKan(state, 0, 'm5');
+    const meld = kanned.players[0].melds[0];
+    expect(meld.kind).toBe('kan');
+    expect(meld.tiles.filter(isRedFive)).toHaveLength(1);
+    expect(meld.tiles).toHaveLength(4);
+  });
+
+  it('spends an ordinary copy before a red one when calling a meld', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 6, riichiVariant: 'standard' });
+    // Two plain fives and one red: the Pon must consume the plain pair.
+    state.players[1].hand = hand('m0 m5 m5 p1 p2 p3 s7 s8 s9 z3 z4 z4 m9');
+    state.players[0].hand = hand('m5 p4 p5 p6 s1 s2 s3 m1 m2 m3 z1 z1 z2');
+    state.turn = 0;
+    state.phase = 'discard';
+    let next = discard(state, 'm5');
+    const pon = next.claims[1]?.find((option) => option.kind === 'pon');
+    expect(pon).toBeDefined();
+    next = submitClaim(next, 1, pon!);
+    for (const seat of [2, 3] as Seat[]) {
+      if (next.claims[seat]) next = submitClaim(next, seat, { kind: 'pass', tiles: [] });
+    }
+    // The plain five went into the meld; the red one stayed in hand.
+    expect(next.players[1].melds[0]?.tiles.some(isRedFive)).toBe(false);
+    expect(next.players[1].hand).toContain('m0');
   });
 });

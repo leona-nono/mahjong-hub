@@ -18,6 +18,8 @@ import {
   tileSuit,
   tileRank,
   isBonusTile,
+  isRedFive,
+  isSameKind,
   isTerminalOrHonour,
   isWind,
   WINDS,
@@ -257,7 +259,12 @@ export function createGame(options: CreateGameOptions = {}): GameState {
   const humanSeat = options.humanSeat ?? 0;
   const rng = createRng(seed);
   const wall = shuffle(
-    buildWall(RULESETS[ruleset].excludedTiles, ruleset === 'chinese-official'),
+    buildWall(
+      RULESETS[ruleset].excludedTiles,
+      ruleset === 'chinese-official',
+      // Red fives are a Tenhou / Mahjong Soul table rule; WRC plays without.
+      ruleset === 'riichi' && riichiVariant === 'standard'
+    ),
     rng
   );
 
@@ -395,6 +402,21 @@ function removeTile(hand: Tile[], tile: Tile): boolean {
   if (at === -1) return false;
   hand.splice(at, 1);
   return true;
+}
+
+/**
+ * Take one tile of a kind out of a hand and return the copy actually removed.
+ *
+ * Melds and Kongs are requested by kind, but which physical copy leaves the
+ * hand matters: a red five carries a dora with it. Ordinary copies go first so
+ * a player never loses a red five they could have kept.
+ */
+function takeTileOfKind(hand: Tile[], kind: Tile): Tile | null {
+  const plain = hand.findIndex((tile) => tile === kind);
+  const at = plain >= 0 ? plain : hand.findIndex((tile) => isSameKind(tile, kind));
+  if (at === -1) return null;
+  const [removed] = hand.splice(at, 1);
+  return removed;
 }
 
 function handCounts(player: PlayerState): number[] {
@@ -577,7 +599,7 @@ export function availableAddedKans(state: GameState, seat: Seat): Tile[] {
   if (state.ruleset === 'riichi' && totalKans(state) >= 4) return [];
   const player = state.players[seat];
   return player.melds
-    .filter((meld) => meld.kind === 'pon' && !meld.concealed && player.hand.includes(meld.tiles[0]))
+    .filter((meld) => meld.kind === 'pon' && !meld.concealed && player.hand.some((tile) => isSameKind(tile, meld.tiles[0])))
     .map((meld) => meld.tiles[0]);
 }
 
@@ -589,8 +611,12 @@ export function declareConcealedKan(state: GameState, seat: Seat, tile: Tile): G
   if (!availableConcealedKans(state, seat).includes(tile)) return state;
   const next = clone(state);
   const player = next.players[seat];
-  for (let i = 0; i < 4; i += 1) removeTile(player.hand, tile);
-  player.melds.push({ kind: 'kan', tiles: [tile, tile, tile, tile], concealed: true });
+  const taken: Tile[] = [];
+  for (let i = 0; i < 4; i += 1) {
+    const removed = takeTileOfKind(player.hand, tile);
+    if (removed) taken.push(removed);
+  }
+  player.melds.push({ kind: 'kan', tiles: sortTiles(taken), concealed: true });
   next.callsMade = true;
   drawReplacement(next, seat);
   // Any call, including a concealed kan, breaks ippatsu for every declared
@@ -638,8 +664,10 @@ export function declareAddedKan(state: GameState, seat: Seat, tile: Tile, now = 
 
 function completeAddedKan(state: GameState, seat: Seat, tile: Tile, meldIndex: number): GameState {
   const player = state.players[seat];
-  if (!removeTile(player.hand, tile)) return state;
-  player.melds[meldIndex] = { ...player.melds[meldIndex], kind: 'kan', tiles: [tile, tile, tile, tile] };
+  const promoted = takeTileOfKind(player.hand, tile);
+  if (!promoted) return state;
+  const existing = player.melds[meldIndex];
+  player.melds[meldIndex] = { ...existing, kind: 'kan', tiles: sortTiles([...existing.tiles, promoted]) };
   state.callsMade = true;
   drawReplacement(state, seat);
   state.turn = seat;
@@ -963,11 +991,15 @@ export function maybeResolveClaims(state: GameState): GameState {
   discarder.discards.pop();
 
   const caller = next.players[best.seat];
-  for (const tile of best.option.tiles) removeTile(caller.hand, tile);
+  const contributed: Tile[] = [];
+  for (const tile of best.option.tiles) {
+    const removed = takeTileOfKind(caller.hand, tile);
+    if (removed) contributed.push(removed);
+  }
   caller.hand = sortTiles(caller.hand);
   caller.lastDrawn = undefined;
 
-  const meldTiles = sortTiles([...best.option.tiles, discardInfo.tile]);
+  const meldTiles = sortTiles([...contributed, discardInfo.tile]);
   const kind: MeldKind =
     best.option.kind === 'chi' ? 'chi' : best.option.kind === 'kan' ? 'kan' : 'pon';
   caller.melds.push({ kind, tiles: meldTiles, from: discardInfo.from });
