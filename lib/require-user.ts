@@ -7,10 +7,16 @@ export async function requireUserId(): Promise<string | null> {
   const user = session?.user as { id?: string; email?: string | null } | undefined;
   if (!user) return null;
   if (user.id) return user.id;
-  if (!user.email) return null;
+  if (!user.email) {
+    console.warn('[points] session user has no id or email; cannot record points');
+    return null;
+  }
   const row = await prisma.user.findUnique({
     where: { email: user.email },
     select: { id: true }
   });
+  if (!row?.id) {
+    console.warn('[points] session email has no User row', user.email);
+  }
   return row?.id ?? null;
 }

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { claimDailyCheckInForUser } from '@/lib/points-server';
 import { requireUserId } from '@/lib/require-user';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST() {
   const userId = await requireUserId();
   if (!userId) {
@@ -11,7 +13,8 @@ export async function POST() {
   try {
     const result = await claimDailyCheckInForUser(userId);
     return NextResponse.json(result);
-  } catch {
+  } catch (err) {
+    console.error('[points] check-in failed', err);
     return NextResponse.json({ error: 'unavailable' }, { status: 503 });
   }
 }

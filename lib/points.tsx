@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import { getAuthState, openLogin } from './auth';
+import { FIRST_LOGIN_BONUS } from './points-rules';
 
 interface AwardResult {
   granted: boolean;
@@ -21,10 +22,17 @@ export interface CheckInState {
   nextReward: number;
 }
 
+export interface LedgerEntry {
+  amount: number;
+  reason: string;
+  createdAt: string;
+}
+
 interface PointsState {
   points: number;
   recentAwards: AwardEvent[];
   checkIn: CheckInState | null;
+  ledger: LedgerEntry[];
   hydrated: boolean;
 }
 
@@ -39,6 +47,7 @@ let state: PointsState = {
   points: 0,
   recentAwards: [],
   checkIn: null,
+  ledger: [],
   hydrated: false
 };
 const listeners = new Set<() => void>();
@@ -60,21 +69,36 @@ export async function hydratePointsFromServer(): Promise<void> {
   try {
     const res = await fetch('/api/points', { credentials: 'same-origin' });
     if (res.status === 401) {
-      setState({ points: 0, checkIn: null, hydrated: true });
+      setState({ points: 0, checkIn: null, ledger: [], hydrated: true });
       return;
     }
-    if (!res.ok) return;
+    if (!res.ok) {
+      setState({ hydrated: true });
+      return;
+    }
     const data = (await res.json()) as {
       total?: number;
       checkIn?: CheckInState;
+      firstLoginGranted?: boolean;
+      ledger?: LedgerEntry[];
     };
+    const ledger = Array.isArray(data.ledger) ? data.ledger : state.ledger;
+    const nextAwards =
+      data.firstLoginGranted
+        ? [
+            { amount: FIRST_LOGIN_BONUS, reason: 'first_login', at: Date.now() },
+            ...state.recentAwards
+          ].slice(0, 50)
+        : state.recentAwards;
     setState({
       points: Number(data.total) || 0,
       checkIn: data.checkIn ?? DEFAULT_CHECKIN,
+      ledger,
+      recentAwards: nextAwards,
       hydrated: true
     });
   } catch {
-    /* keep last known */
+    setState({ hydrated: true });
   }
 }
 
@@ -97,6 +121,7 @@ export function resetPointsForGuest() {
     points: 0,
     recentAwards: [],
     checkIn: null,
+    ledger: [],
     hydrated: true
   });
 }
@@ -173,7 +198,18 @@ export async function claimDailyCheckIn(): Promise<
       setState({
         points: data.total,
         checkIn: data.checkIn ?? state.checkIn,
-        recentAwards: nextAwards
+        recentAwards: nextAwards,
+        ledger:
+          data.granted && data.amount
+            ? [
+                {
+                  amount: data.amount,
+                  reason: 'daily_checkin',
+                  createdAt: new Date().toISOString()
+                },
+                ...state.ledger
+              ].slice(0, 20)
+            : state.ledger
       });
     }
     return {
@@ -201,6 +237,7 @@ const SERVER_POINTS_STATE: PointsState = {
   points: 0,
   recentAwards: [],
   checkIn: null,
+  ledger: [],
   hydrated: false
 };
 

@@ -7,6 +7,7 @@ import nodemailer from 'nodemailer';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/lib/db';
 import { authConfig } from './auth.config';
+import { grantFirstLoginIfNeeded } from '@/lib/points-server';
 
 /**
  * Auth.js (NextAuth v5) wiring.
@@ -39,6 +40,7 @@ const emailConfigured =
 const databaseConfigured = !!process.env.DATABASE_URL;
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
   secret:
     process.env.AUTH_SECRET ??
     (process.env.NODE_ENV === 'production' ? undefined : 'mahjong-hub-dev-insecure-secret'),
@@ -46,6 +48,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ? { adapter: PrismaAdapter(prisma), session: { strategy: 'database' as const } }
     : { session: { strategy: 'jwt' as const } }),
   ...authConfig,
+  events: {
+    async signIn({ user }) {
+      if (!user?.id) return;
+      try {
+        await grantFirstLoginIfNeeded(user.id);
+      } catch (err) {
+        console.error('[points] first_login grant on signIn failed', err);
+      }
+    }
+  },
   providers: [
     ...(googleConfigured ? [Google] : []),
     ...(facebookConfigured ? [Facebook] : []),

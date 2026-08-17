@@ -101,28 +101,77 @@ export async function claimDailyCheckInForUser(userId: string): Promise<{
   };
 }
 
-export async function grantFirstLoginIfNeeded(userId: string) {
+export async function grantFirstLoginIfNeeded(userId: string): Promise<boolean> {
   const existing = await prisma.pointTransaction.findFirst({
     where: { userId, reason: 'first_login' },
     select: { id: true }
   });
-  if (existing) return;
+  if (existing) return false;
 
-  await prisma.$transaction(async (tx) => {
-    const again = await tx.pointTransaction.findFirst({
+  try {
+    await prisma.$transaction(async (tx) => {
+      const again = await tx.pointTransaction.findFirst({
+        where: { userId, reason: 'first_login' },
+        select: { id: true }
+      });
+      if (again) return;
+      await tx.userPoint.upsert({
+        where: { userId },
+        create: { userId, total: FIRST_LOGIN_BONUS },
+        update: { total: { increment: FIRST_LOGIN_BONUS } }
+      });
+      await tx.pointTransaction.create({
+        data: { userId, amount: FIRST_LOGIN_BONUS, reason: 'first_login' }
+      });
+    });
+    return true;
+  } catch (err) {
+    const raced = await prisma.pointTransaction.findFirst({
       where: { userId, reason: 'first_login' },
       select: { id: true }
     });
-    if (again) return;
-    await tx.userPoint.upsert({
-      where: { userId },
-      create: { userId, total: FIRST_LOGIN_BONUS },
-      update: { total: { increment: FIRST_LOGIN_BONUS } }
-    });
-    await tx.pointTransaction.create({
-      data: { userId, amount: FIRST_LOGIN_BONUS, reason: 'first_login' }
-    });
-  });
+    if (raced) return false;
+    throw err;
+  }
 }
 
-export { CHECKIN_REWARDS };
+export async function pointsSnapshotForUser(userId: string): Promise<{
+  total: number;
+  firstLoginGranted: boolean;
+  checkIn: CheckInState;
+  ledger: Array<{ amount: number; reason: string; createdAt: string }>;
+}> {
+  let firstLoginGranted = false;
+  try {
+    firstLoginGranted = await grantFirstLoginIfNeeded(userId);
+  } catch (err) {
+    console.error('[points] first_login grant failed', err);
+  }
+
+  const [row, checkIn, txs] = await Promise.all([
+    prisma.userPoint.findUnique({ where: { userId } }),
+    checkinStateForUser(userId).catch(() => ({
+      claimedToday: false,
+      streak: 1,
+      todayReward: CHECKIN_REWARDS[0],
+      nextReward: CHECKIN_REWARDS[1]
+    })),
+    prisma.pointTransaction.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+      select: { amount: true, reason: true, createdAt: true }
+    })
+  ]);
+
+  return {
+    total: row?.total ?? 0,
+    firstLoginGranted,
+    checkIn,
+    ledger: txs.map((tx) => ({
+      amount: tx.amount,
+      reason: tx.reason,
+      createdAt: tx.createdAt.toISOString()
+    }))
+  };
+}

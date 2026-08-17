@@ -76,7 +76,16 @@
     "emailMisconfigured": "メールログインの設定に問題があります。別の方法でサインインしてください。"
   },
   "points": {
-    "youHave": "ポイント {n} 件"
+    "youHave": "ポイント {n} 件",
+    "ledger": {
+      "first_login": "初回ログインボーナス",
+      "daily_checkin": "デイリーチェックイン",
+      "start_game": "ゲーム開始",
+      "solitaire_daily": "デイリーチャレンジ",
+      "solitaire_daily_streak": "連続クリアボーナス",
+      "solitaire_teach": "レッスン",
+      "solitaire_clear": "ソリティアクリア"
+    }
   },
   "mahjong": {
     "rulesetLabel": "ルール",

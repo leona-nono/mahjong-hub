@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   CHECKIN_REWARDS,
+  FIRST_LOGIN_BONUS,
   addUtcDays,
   checkinPlan,
   checkinRewardForStreak,
@@ -41,5 +42,9 @@ describe('points-rules', () => {
   it('adds utc days across month bounds', () => {
     expect(addUtcDays('2026-08-31', 1)).toBe('2026-09-01');
     expect(utcDateString(new Date('2026-08-14T22:00:00.000Z'))).toBe('2026-08-14');
+  });
+
+  it('defines a first-login bonus recorded as first_login', () => {
+    expect(FIRST_LOGIN_BONUS).toBe(500);
   });
 });

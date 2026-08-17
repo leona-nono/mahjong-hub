@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { START_GAME_POINTS } from '@/lib/points-rules';
-import { checkinStateForUser, grantFirstLoginIfNeeded } from '@/lib/points-server';
+import { pointsSnapshotForUser } from '@/lib/points-server';
 import { requireUserId } from '@/lib/require-user';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const userId = await requireUserId();
@@ -11,14 +13,10 @@ export async function GET() {
   }
 
   try {
-    await grantFirstLoginIfNeeded(userId);
-    const row = await prisma.userPoint.findUnique({ where: { userId } });
-    const checkIn = await checkinStateForUser(userId);
-    return NextResponse.json({
-      total: row?.total ?? 0,
-      checkIn
-    });
-  } catch {
+    const snapshot = await pointsSnapshotForUser(userId);
+    return NextResponse.json(snapshot);
+  } catch (err) {
+    console.error('[points] GET failed', err);
     return NextResponse.json({ error: 'unavailable' }, { status: 503 });
   }
 }

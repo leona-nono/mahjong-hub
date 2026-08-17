@@ -76,7 +76,16 @@
     "emailMisconfigured": "邮件登录未正确配置，请换其他登录方式。"
   },
   "points": {
-    "youHave": "你有 {n} 积分"
+    "youHave": "你有 {n} 积分",
+    "ledger": {
+      "first_login": "首次登录奖励",
+      "daily_checkin": "每日签到",
+      "start_game": "开始游戏",
+      "solitaire_daily": "每日挑战",
+      "solitaire_daily_streak": "连胜奖励",
+      "solitaire_teach": "教学关",
+      "solitaire_clear": "消除通关"
+    }
   },
   "mahjong": {
     "rulesetLabel": "规则",

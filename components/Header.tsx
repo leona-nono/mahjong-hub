@@ -15,7 +15,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
   const tp = useTranslations('points');
   const { openLogin } = useAuth();
   const { data: session, status } = useSession();
-  const { points } = usePoints();
+  const { points, ledger } = usePoints();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const user = session?.user;
@@ -79,6 +79,29 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
                   <p className="truncate text-sm font-semibold">{user.name ?? 'Mahjong Hub User'}</p>
                   {user.email && (
                     <p className="mt-0.5 truncate text-xs text-portal-muted">{user.email}</p>
+                  )}
+                  {ledger.length > 0 && (
+                    <ul className="mt-2 max-h-32 space-y-1 overflow-auto border-t border-portal-border pt-2">
+                      {ledger.slice(0, 6).map((row, i) => (
+                        <li
+                          key={`${row.createdAt}-${i}`}
+                          className="flex items-center justify-between gap-2 text-[11px] text-portal-muted"
+                        >
+                          <span className="truncate">
+                            {tp.has(`ledger.${row.reason}`)
+                              ? tp(`ledger.${row.reason}`)
+                              : row.reason}
+                          </span>
+                          <span
+                            className={`shrink-0 font-semibold ${
+                              row.amount < 0 ? 'text-rose-300' : 'text-portal-accent'
+                            }`}
+                          >
+                            {row.amount > 0 ? `+${row.amount}` : row.amount}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   )}
                   <button
                     type="button"

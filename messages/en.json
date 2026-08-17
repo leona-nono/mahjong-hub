@@ -76,7 +76,16 @@
     "emailMisconfigured": "Email login is not configured correctly on the server. Please try another sign-in method."
   },
   "points": {
-    "youHave": "You have {n} pts"
+    "youHave": "You have {n} pts",
+    "ledger": {
+      "first_login": "First login bonus",
+      "daily_checkin": "Daily check-in",
+      "start_game": "Start a game",
+      "solitaire_daily": "Daily solitaire",
+      "solitaire_daily_streak": "Solitaire streak bonus",
+      "solitaire_teach": "Solitaire lesson",
+      "solitaire_clear": "Solitaire clear"
+    }
   },
   "mahjong": {
     "rulesetLabel": "Ruleset",

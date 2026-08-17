@@ -26,11 +26,18 @@ export const authConfig = {
     authorized() {
       return true;
     },
-    async session({ session, user }) {
-      // With database session strategy, `user` is the DB row. Attach the id
-      // so client components can use session.user.id when calling our APIs.
-      if (user?.id) {
-        (session.user as { id?: string }).id = user.id;
+    async jwt({ token, user }) {
+      if (user && 'id' in user && typeof user.id === 'string' && user.id) {
+        token.sub = user.id;
+      }
+      return token;
+    },
+    async session({ session, user, token }) {
+      const id =
+        user?.id ??
+        (typeof token?.sub === 'string' && token.sub ? token.sub : undefined);
+      if (id && session.user) {
+        (session.user as { id?: string }).id = id;
       }
       return session;
     }
