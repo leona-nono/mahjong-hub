@@ -13,7 +13,11 @@ const BASE = 'https://mahjonggame.org';
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
-  const nativeGames = games.filter((g) => g.gameType === 'native');
+  // Coming-soon rulesets render an indexable rules guide, so they belong in the
+  // sitemap alongside the playable games. Only iframe pages stay out.
+  const indexableGames = games.filter(
+    (g) => g.gameType === 'native' || g.gameType === 'coming-soon'
+  );
   const blogPosts = getBlogPosts();
   const lastModified = new Date();
 
@@ -65,13 +69,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
-    for (const game of nativeGames) {
+    for (const game of indexableGames) {
       const path = `/games/${game.slug}`;
       entries.push({
         url: `${BASE}/${locale}${path}`,
         lastModified,
         changeFrequency: 'weekly',
-        priority: 0.9,
+        priority: game.gameType === 'native' ? 0.9 : 0.6,
         alternates: { languages: alternatesFor(path) }
       });
     }

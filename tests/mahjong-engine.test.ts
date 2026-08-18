@@ -42,6 +42,7 @@ import {
 import { chooseClaim, chooseMove } from '@/lib/mahjong/ai';
 import { scoreHand } from '@/lib/mahjong/scoring';
 import { MCR_FANS, applyDirectMcrExclusions, hasCompleteMcrCatalogue } from '@/lib/mahjong/mcr-catalog';
+import { calculateMcrPayment } from '@/lib/mahjong/chinese-official';
 
 const hand = (spec: string): Tile[] => spec.split(' ') as Tile[];
 
@@ -69,13 +70,22 @@ describe('tiles', () => {
 
 
 describe('Hong Kong product tile set', () => {
-  it('omits Flowers, Seasons and the White Dragon from every new wall', () => {
+  it('omits Flowers and Seasons but keeps all three Dragons', () => {
     const state = createGame({ ruleset: 'hongkong', seed: 20260809 });
-    expect(state.wall).toHaveLength(132);
-    expect(state.wall).not.toContain('z5');
-    expect(state.wall.filter((tile) => tile === 'z6')).toHaveLength(4);
-    expect(state.wall.filter((tile) => tile === 'z7')).toHaveLength(4);
-    expect(RULESETS.hongkong.excludedTiles).toEqual(['z5']);
+    expect(state.wall).toHaveLength(136);
+    expect(state.wall.some((tile) => BONUS_TILES.includes(tile))).toBe(false);
+    for (const dragon of ['z5', 'z6', 'z7']) {
+      expect(state.wall.filter((tile) => tile === dragon)).toHaveLength(4);
+    }
+    expect(RULESETS.hongkong.excludedTiles).toEqual([]);
+  });
+
+  it('can actually reach the Dragon fans now that the White Dragon is dealt', () => {
+    const state = createGame({ ruleset: 'hongkong', seed: 20260809 });
+    state.players[0].hand = hand('z5 z5 z5 z6 z6 z6 z7 z7 z7 m2 m3 m4 p9');
+    const score = scoreHand({ state, seat: 0, winningTile: 'p9', selfDrawn: false });
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('bigThreeDragons');
+    expect(score.limit).toBe(true);
   });
 });
 
@@ -100,6 +110,265 @@ describe('Chinese Official MCR tile flow', () => {
     expect(next.players[0].hand).toContain('m1');
     expect(next.players[0].hand).toHaveLength(14);
     expect(next.deadWallIndex).toBe(131);
+  });
+});
+
+describe('Chinese Official MCR settlement', () => {
+  it('charges every opponent the 8-point base plus the hand on a self draw', () => {
+    const payment = calculateMcrPayment({ points: 24, selfDrawn: true, winner: 0 });
+    expect(payment.payments).toEqual({ 1: 32, 2: 32, 3: 32 });
+    expect(payment.winnerGain).toBe(96);
+  });
+
+  it('charges the discarder 8 + F and still charges the other two the base', () => {
+    const payment = calculateMcrPayment({ points: 24, selfDrawn: false, winner: 0, loser: 2 });
+    expect(payment.payments).toEqual({ 1: 8, 2: 32, 3: 8 });
+    expect(payment.winnerGain).toBe(48);
+  });
+
+  it('settles a discard win through the engine using the MCR base', () => {
+    let state = createGame({ ruleset: 'chinese-official', seed: 20260816 });
+    // Pure Straight + All Chows + Concealed Hand clears the eight-point gate.
+    state.players[0].hand = hand('m1 m2 m3 m4 m5 m6 m7 m8 m9 p1 p2 z1 z1');
+    state.players[1].hand = hand('p3 s1 s2 s3 s4 s5 s6 s7 s8 s9 z3 z3 z3');
+    // Seats 2 and 3 hold no Dots, so nobody else answers the claim window.
+    state.players[2].hand = hand('z2 z2 z2 z4 z4 s1 s1 s2 s3 s4 s5 s6 s7');
+    state.players[3].hand = hand('z6 z6 z6 z7 z7 m8 m8 m9 m9 s8 s8 s9 s9');
+    for (const player of state.players) player.flowers = [];
+    state.turn = 1;
+    state.phase = 'discard';
+    state.lastDiscard = null;
+    state.claims = {};
+    state.submitted = {};
+    const before = state.players.map((player) => player.score);
+    state = discard(state, 'p3');
+    const ron = state.claims[0]?.find((option) => option.kind === 'ron');
+    expect(ron).toBeDefined();
+    state = submitClaim(state, 0, ron!);
+    expect(state.result?.kind).toBe('win');
+
+    const fan = state.result!.score!.total;
+    // Discarder pays 8 + F; the two uninvolved seats each still owe the base.
+    expect(before[1] - state.players[1].score).toBe(8 + fan);
+    expect(before[2] - state.players[2].score).toBe(8);
+    expect(before[3] - state.players[3].score).toBe(8);
+    expect(state.players[0].score - before[0]).toBe(24 + fan);
+  });
+});
+
+describe('four-wind fans across rulesets', () => {
+  const bigFourWinds = hand('z1 z1 z1 z2 z2 z2 z3 z3 z3 z4 z4 z4 m5');
+  const littleFourWinds = hand('z1 z1 z1 z2 z2 z2 z3 z3 z3 z4 z4 m2 m3');
+
+  it('scores Big Four Winds as an 88-point fan under MCR', () => {
+    const state = createGame({ ruleset: 'chinese-official', seed: 51 });
+    state.players[0].hand = bigFourWinds;
+    state.players[0].flowers = [];
+    const score = scoreHand({ state, seat: 0, winningTile: 'm5', selfDrawn: false });
+    const big = score.patterns.find((pattern) => pattern.id === 'bigFourWinds');
+    expect(big?.value).toBe(88);
+    // The catalogue's Account-Once table drops the wind pungs it implies.
+    expect(score.patterns.map((pattern) => pattern.id)).not.toContain('seatWind');
+    expect(score.patterns.map((pattern) => pattern.id)).not.toContain('roundWind');
+  });
+
+  it('scores Little Four Winds as a 64-point fan under MCR', () => {
+    const state = createGame({ ruleset: 'chinese-official', seed: 52 });
+    state.players[0].hand = littleFourWinds;
+    state.players[0].flowers = [];
+    const score = scoreHand({ state, seat: 0, winningTile: 'm4', selfDrawn: false });
+    const little = score.patterns.find((pattern) => pattern.id === 'smallFourWinds');
+    expect(little?.value).toBe(64);
+  });
+
+  it('keeps Hong Kong settling the same shapes at its own limit', () => {
+    const state = createGame({ ruleset: 'hongkong', seed: 53 });
+    state.players[0].hand = bigFourWinds;
+    const score = scoreHand({ state, seat: 0, winningTile: 'm5', selfDrawn: false });
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('bigFourWinds');
+    expect(score.limit).toBe(true);
+    expect(score.total).toBe(10);
+  });
+});
+
+describe('Chinese Official MCR win-condition fans', () => {
+  const mcr = (seed: number) => {
+    const state = createGame({ ruleset: 'chinese-official', seed });
+    for (const player of state.players) player.flowers = [];
+    return state;
+  };
+  // A ron fixture holds thirteen tiles; the scorer adds the claimed tile.
+  const waitingOnZ1 = hand('m1 m2 m3 m4 m5 m6 p4 p5 p6 s6 s7 s8 z1');
+  const completeHand = [...waitingOnZ1, 'z1'] as Tile[];
+  const ids = (state: GameState, winningTile: Tile, selfDrawn: boolean) =>
+    scoreHand({ state, seat: 0, winningTile, selfDrawn }).patterns.map((pattern) => pattern.id);
+
+  it('scores Last Tile Draw and Last Tile Claim off the exhausted wall', () => {
+    const tsumo = mcr(61);
+    tsumo.players[0].hand = completeHand;
+    tsumo.wallIndex = tsumo.deadWallIndex;
+    expect(ids(tsumo, 'z1', true)).toContain('lastTileDraw');
+
+    const ron = mcr(61);
+    ron.players[0].hand = waitingOnZ1;
+    ron.wallIndex = ron.deadWallIndex;
+    expect(ids(ron, 'z1', false)).toContain('lastTileClaim');
+  });
+
+  it('scores Out With Replacement Tile after a Kong draw', () => {
+    const state = mcr(62);
+    state.players[0].hand = completeHand;
+    state.players[0].lastDrawWasReplacement = true;
+    expect(ids(state, 'z1', true)).toContain('outWithReplacement');
+  });
+
+  it('scores Robbing the Kong at the MCR value, leaving Hong Kong at one', () => {
+    const state = mcr(63);
+    state.players[0].hand = waitingOnZ1;
+    state.winContext = 'rob-kong';
+    const mcrScore = scoreHand({ state, seat: 0, winningTile: 'z1', selfDrawn: false });
+    expect(mcrScore.patterns.find((pattern) => pattern.id === 'robbingKong')?.value).toBe(8);
+
+    const hk = createGame({ ruleset: 'hongkong', seed: 63 });
+    hk.players[0].hand = waitingOnZ1;
+    hk.winContext = 'rob-kong';
+    const hkScore = scoreHand({ state: hk, seat: 0, winningTile: 'z1', selfDrawn: false });
+    expect(hkScore.patterns.find((pattern) => pattern.id === 'robbingKong')?.value).toBe(1);
+  });
+
+  it('scores Last Tile only when the other three copies are already visible', () => {
+    const state = mcr(64);
+    state.players[0].hand = waitingOnZ1;
+    expect(ids(state, 'z1', false)).not.toContain('lastTile');
+
+    // One z1 sits in the winner's concealed hand and two more are already on
+    // the table. Seat 3's pile holds the tile currently being claimed, exactly
+    // as it does mid-claim in play, which makes it the fourth and final copy.
+    state.players[1].discards = ['z1'];
+    state.players[2].discards = ['z1'];
+    state.players[3].discards = ['z1'];
+    expect(ids(state, 'z1', false)).toContain('lastTile');
+  });
+
+  it('separates the three wait fans', () => {
+    // 789 completed on the 7 is an edge wait.
+    const edge = mcr(65);
+    edge.players[0].hand = hand('m1 m2 m3 p4 p5 p6 s1 s2 s3 s8 s9 z1 z1');
+    expect(ids(edge, 's7', false)).toContain('edgeWait');
+
+    // The middle tile of a chow is a closed wait.
+    const closed = mcr(66);
+    closed.players[0].hand = hand('m1 m2 m3 p4 p6 s1 s2 s3 s7 s8 s9 z1 z1');
+    expect(ids(closed, 'p5', false)).toContain('closedWait');
+
+    // Completing the pair is a single wait.
+    const single = mcr(67);
+    single.players[0].hand = waitingOnZ1;
+    expect(ids(single, 'z1', false)).toContain('singleWait');
+  });
+
+  it('counts Kongs by concealment on the MCR ladder', () => {
+    const melds = [
+      { kind: 'kan' as const, tiles: hand('s1 s1 s1 s1'), concealed: true },
+      { kind: 'kan' as const, tiles: hand('s9 s9 s9 s9'), from: 1 as Seat }
+    ];
+    const state = mcr(68);
+    state.players[0].hand = hand('m1 m2 m3 p4 p5 p6 z1');
+    state.players[0].melds = melds;
+    const scored = ids(state, 'z1', false);
+    expect(scored).toContain('concealedKong');
+    expect(scored).toContain('meldedKong');
+    expect(scored).not.toContain('twoConcealedKongs');
+
+    // Riichi keeps its own Kong ladder and never sees these entries.
+    const riichi = createGame({ ruleset: 'riichi', seed: 68 });
+    riichi.players[0].hand = hand('m1 m2 m3 p4 p5 p6 z1');
+    riichi.players[0].melds = melds;
+    const riichiIds = scoreHand({ state: riichi, seat: 0, winningTile: 'z1', selfDrawn: false })
+      .patterns.map((pattern) => pattern.id);
+    expect(riichiIds).not.toContain('concealedKong');
+    expect(riichiIds).not.toContain('meldedKong');
+  });
+
+  it('scores a no-fan hand as an eight-point Chicken Hand', () => {
+    const state = mcr(69);
+    // Three chows in three suits, a simples pung and an honour pair: nothing
+    // in the catalogue applies, and the open meld rules out Concealed Hand.
+    state.players[0].melds = [{ kind: 'chi', tiles: hand('m2 m3 m4'), from: 3 }];
+    state.players[0].hand = hand('p3 p4 p5 s6 s7 s8 m5 m5 z1 z1');
+    const score = scoreHand({ state, seat: 0, winningTile: 'm5', selfDrawn: false });
+    expect(score.patterns.map((pattern) => pattern.id)).toEqual(['mcrChickenHand']);
+    expect(score.qualifyingTotal).toBe(8);
+  });
+});
+
+describe('Chinese Official MCR structural fans', () => {
+  const mcr = (seed: number, tiles: Tile[]) => {
+    const state = createGame({ ruleset: 'chinese-official', seed });
+    for (const player of state.players) player.flowers = [];
+    state.players[0].hand = tiles;
+    return state;
+  };
+
+  const mixedStraightWait = hand('m1 m2 m3 p4 p5 p6 s7 s8 s9 m5 m6 m7 z1');
+
+  it('scores Mixed Straight across three suits', () => {
+    const state = mcr(71, mixedStraightWait);
+    const score = scoreHand({ state, seat: 0, winningTile: 'z1', selfDrawn: false });
+    expect(score.patterns.find((pattern) => pattern.id === 'mixedStraight')?.value).toBe(8);
+  });
+
+  it('scores Two Terminal Chows for 123 and 789 of one suit', () => {
+    const state = mcr(72, hand('s1 s2 s3 s7 s8 s9 p4 p5 p6 m2 m3 m4 z1'));
+    const score = scoreHand({ state, seat: 0, winningTile: 'z1', selfDrawn: false });
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('twoTerminalChows');
+  });
+
+  it('scores All Fives when every set and the pair contains a five', () => {
+    const state = mcr(73, hand('m3 m4 m5 p4 p5 p6 s5 s5 s5 m5 m6 m7 p5'));
+    const score = scoreHand({ state, seat: 0, winningTile: 'p5', selfDrawn: false });
+    expect(score.patterns.find((pattern) => pattern.id === 'allFives')?.value).toBe(16);
+  });
+
+  it('scores Tile Hog when all four copies are used outside a Kong', () => {
+    const state = mcr(74, hand('m2 m3 m4 m2 m3 m4 m2 m3 m4 m2 m3 m4 z1'));
+    const score = scoreHand({ state, seat: 0, winningTile: 'z1', selfDrawn: false });
+    expect(score.patterns.map((pattern) => pattern.id)).toContain('tileHog');
+  });
+
+  it('scores Two Dragon Pungs and drops the individual Dragon Pungs', () => {
+    const state = mcr(75, hand('z5 z5 z5 z6 z6 z6 m2 m3 m4 p4 p5 p6 s9'));
+    const score = scoreHand({ state, seat: 0, winningTile: 's9', selfDrawn: false });
+    expect(score.patterns.find((pattern) => pattern.id === 'twoDragonPungs')?.value).toBe(6);
+    expect(score.patterns.map((pattern) => pattern.id)).not.toContain('dragonTriplet');
+  });
+
+  it('scores Big Three Winds, and drops it again under Little Four Winds', () => {
+    const three = mcr(76, hand('z1 z1 z1 z2 z2 z2 z3 z3 z3 m2 m3 m4 p5'));
+    const threeScore = scoreHand({ state: three, seat: 0, winningTile: 'p5', selfDrawn: false });
+    expect(threeScore.patterns.find((pattern) => pattern.id === 'bigThreeWinds')?.value).toBe(12);
+
+    const little = mcr(77, hand('z1 z1 z1 z2 z2 z2 z3 z3 z3 z4 z4 m2 m3'));
+    const littleScore = scoreHand({ state: little, seat: 0, winningTile: 'm4', selfDrawn: false });
+    expect(littleScore.patterns.map((pattern) => pattern.id)).toContain('smallFourWinds');
+    expect(littleScore.patterns.map((pattern) => pattern.id)).not.toContain('bigThreeWinds');
+  });
+
+  it('scores Seven Shifted Pairs on seven consecutive pairs of one suit', () => {
+    const state = mcr(78, hand('p2 p2 p3 p3 p4 p4 p5 p5 p6 p6 p7 p7 p8'));
+    const score = scoreHand({ state, seat: 0, winningTile: 'p8', selfDrawn: false });
+    expect(score.patterns.find((pattern) => pattern.id === 'sevenShiftedPairs')?.value).toBe(88);
+  });
+
+  it('keeps the MCR-only fans out of Hong Kong scoring', () => {
+    const hk = createGame({ ruleset: 'hongkong', seed: 79 });
+    hk.players[0].hand = mixedStraightWait;
+    const scored = scoreHand({ state: hk, seat: 0, winningTile: 'z1', selfDrawn: false })
+      .patterns.map((pattern) => pattern.id);
+    // The same tiles score Mixed Straight and Single Wait under MCR.
+    for (const id of ['mixedStraight', 'singleWait', 'tileHog', 'outsideHand', 'mcrChickenHand']) {
+      expect(scored).not.toContain(id);
+    }
   });
 });
 
@@ -139,7 +408,9 @@ describe('Chinese Official MCR scoring catalogue', () => {
     const score = scoreHand({ state, seat: 0, winningTile: 'z1', selfDrawn: true });
     expect(score.patterns.map((pattern) => pattern.id)).toContain('fullyConcealed');
     expect(score.patterns.map((pattern) => pattern.id)).not.toEqual(expect.arrayContaining(['selfDraw', 'concealed']));
-    expect(score.total).toBe(6); // All Chows (2) + Fully Concealed Hand (4)
+    // All Chows (2) + Fully Concealed Hand (4) + Single Wait (1): the hand is
+    // waiting on z1 to complete its pair.
+    expect(score.total).toBe(7);
   });
 
   it('detects implemented chow fans from the selected MCR decomposition', () => {
@@ -409,6 +680,7 @@ describe('engine', () => {
     const riichi = discard(setup('riichi'), 'z1');
     expect(riichi.claims[0]?.some((o) => o.kind === 'ron')).toBe(true);
     expect(riichi.claims[2]?.some((o) => o.kind === 'ron')).toBe(true);
+    const before = riichi.players.map((player) => player.score);
     let riichiResolved = submitClaim(
       riichi,
       0,
@@ -420,9 +692,37 @@ describe('engine', () => {
       riichiResolved.claims[2]!.find((o) => o.kind === 'ron')!
     );
     expect(riichiResolved.result?.kind).toBe('win');
-    expect(riichiResolved.result?.winner).toBe(2);
-    expect(riichiResolved.result?.loser).toBe(1);
-    expect(riichiResolved.result?.winners).toBeUndefined();
+    expect(riichiResolved.result?.winner).toBeUndefined();
+    // Both seats win the same discard and seat 1 pays each of them.
+    expect(riichiResolved.result?.winners?.map((entry) => entry.seat)).toEqual([2, 0]);
+    for (const entry of riichiResolved.result!.winners!) {
+      expect(entry.loser).toBe(1);
+      expect(riichiResolved.players[entry.seat].score).toBeGreaterThan(before[entry.seat]);
+    }
+    const paidOut = riichiResolved.result!.winners!.reduce(
+      (total, entry) => total + (entry.score.points ?? 0),
+      0
+    );
+    expect(before[1] - riichiResolved.players[1].score).toBe(paidOut);
+    // Seat 3 declared nothing and is untouched by a double ron.
+    expect(riichiResolved.players[3].score).toBe(before[3]);
+  });
+
+  it('keeps the dealer for the next hand when a double ron includes the dealer', () => {
+    const state = createGame({ ruleset: 'riichi', seed: 3 });
+    state.phase = 'over';
+    state.dealer = 0;
+    state.handNumber = 1;
+    state.result = {
+      kind: 'win',
+      winners: [
+        { seat: 2, loser: 1, score: { total: 1, patterns: [], limit: false } },
+        { seat: 0, loser: 1, score: { total: 1, patterns: [], limit: false } }
+      ]
+    };
+    const next = startNextHand(state);
+    expect(next.dealer).toBe(0);
+    expect(next.handNumber).toBe(1);
   });
 
 

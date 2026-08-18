@@ -39,7 +39,9 @@ export async function generateMetadata({
   const game = await getMergedLocalizedGame(slug, locale);
   if (!game) return {};
 
-  const isNative = game.gameType === 'native';
+  // Coming-soon rulesets ship a full rules guide, so they are indexable
+  // introduction pages. Only embedded third-party iframes stay out of the index.
+  const isIndexable = game.gameType === 'native' || game.gameType === 'coming-soon';
   const url = `${SITE}/${locale}/games/${slug}`;
   const site = await getSiteSettings();
   const seo = formatGameMetadata(site, game);
@@ -55,7 +57,7 @@ export async function generateMetadata({
       type: 'website',
       images: game.cover || site.ogImage ? [game.cover || site.ogImage] : undefined
     },
-    robots: isNative
+    robots: isIndexable
       ? { index: true, follow: true }
       : { index: false, follow: true }
   };
@@ -107,18 +109,20 @@ export default async function GamePage({
         availability: 'https://schema.org/InStock'
       }
     });
+  }
 
-    if (content?.faq?.length) {
-      jsonLd.push({
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: content.faq.map((item) => ({
-          '@type': 'Question',
-          name: item.question,
-          acceptedAnswer: { '@type': 'Answer', text: item.answer }
-        }))
-      });
-    }
+  // A coming-soon ruleset is not playable yet, so it gets no VideoGame entity,
+  // but its rules FAQ is real content on an indexable page.
+  if ((isNative || isComingSoon) && content?.faq?.length) {
+    jsonLd.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: content.faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer }
+      }))
+    });
   }
 
   const stage = isComingSoon ? (

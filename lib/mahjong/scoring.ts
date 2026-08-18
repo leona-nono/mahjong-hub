@@ -16,7 +16,9 @@ import {
   isDragon,
   isHonour,
   isSimple,
+  isRedFive,
   isTerminalOrHonour,
+  tileFromIndex,
   tileIndex,
   tileRank,
   tileSuit,
@@ -66,7 +68,24 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   replacementWin: { base: 1 },
   lastTileWin: { base: 1 },
   rinshanKaihou: { base: 0, riichi: 1 },
-  robbingKong: { base: 1, riichi: 1 },
+  robbingKong: { base: 1, 'chinese-official': 8, riichi: 1 },
+  // MCR win-condition fans. Riichi keeps its own haitei / houtei / rinshan
+  // entries above, so these stay MCR-only rather than being shared.
+  lastTileDraw: { base: 0, 'chinese-official': 8 },
+  lastTileClaim: { base: 0, 'chinese-official': 8 },
+  outWithReplacement: { base: 0, 'chinese-official': 8 },
+  lastTile: { base: 0, 'chinese-official': 4 },
+  edgeWait: { base: 0, 'chinese-official': 1 },
+  closedWait: { base: 0, 'chinese-official': 1 },
+  singleWait: { base: 0, 'chinese-official': 1 },
+  // MCR counts Kongs by concealment; Riichi's sankantsu / suukantsu are
+  // separate entries so the two ladders never mix.
+  meldedKong: { base: 0, 'chinese-official': 1 },
+  concealedKong: { base: 0, 'chinese-official': 2 },
+  twoMeldedKongs: { base: 0, 'chinese-official': 4 },
+  twoConcealedKongs: { base: 0, 'chinese-official': 8 },
+  threeKongs: { base: 0, 'chinese-official': 32 },
+  fourKongs: { base: 0, 'chinese-official': 88 },
   riichi: { base: 0, riichi: 1 },
   doubleRiichi: { base: 0, riichi: 2 },
   ippatsu: { base: 0, riichi: 1 },
@@ -84,9 +103,9 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   sanankou: { base: 0, riichi: 2 },
   sankantsu: { base: 0, riichi: 2 },
   smallFourWinds: { base: 10, 'chinese-official': 64, riichi: 13 },
-  bigFourWinds: { base: 10, riichi: 13 },
+  bigFourWinds: { base: 10, 'chinese-official': 88, riichi: 13 },
   allTerminals: { base: 10, 'chinese-official': 64, riichi: 13 },
-  allGreen: { base: 0, riichi: 13 },
+  allGreen: { base: 0, 'chinese-official': 88, riichi: 13 },
   fourKans: { base: 0, riichi: 13 },
   concealed: { base: 1, 'chinese-official': 2, riichi: 1 },
   allSimples: { base: 1, 'chinese-official': 2, riichi: 1 },
@@ -110,6 +129,23 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   allTypes: { base: 0, 'chinese-official': 6 },
   oneVoidedSuit: { base: 0, 'chinese-official': 1 },
   noHonours: { base: 0, 'chinese-official': 1 },
+  outsideHand: { base: 0, 'chinese-official': 4 },
+  bigThreeWinds: { base: 0, 'chinese-official': 12 },
+  twoDragonPungs: { base: 0, 'chinese-official': 6 },
+  allFives: { base: 0, 'chinese-official': 16 },
+  upperFour: { base: 0, 'chinese-official': 12 },
+  lowerFour: { base: 0, 'chinese-official': 12 },
+  mixedStraight: { base: 0, 'chinese-official': 8 },
+  reversibleTiles: { base: 0, 'chinese-official': 8 },
+  mixedShiftedPungs: { base: 0, 'chinese-official': 8 },
+  tileHog: { base: 0, 'chinese-official': 2 },
+  meldedHand: { base: 0, 'chinese-official': 6 },
+  twoTerminalChows: { base: 0, 'chinese-official': 1 },
+  threeSuitedTerminalChows: { base: 0, 'chinese-official': 16 },
+  pureTerminalChows: { base: 0, 'chinese-official': 64 },
+  sevenShiftedPairs: { base: 0, 'chinese-official': 88 },
+  /** MCR scores a legal hand that reaches eight points with no other fan. */
+  mcrChickenHand: { base: 0, 'chinese-official': 8 },
   quadrupleChow: { base: 0, 'chinese-official': 48 },
   fourShiftedPungs: { base: 0, 'chinese-official': 48 },
   fourShiftedChows: { base: 0, 'chinese-official': 32 },
@@ -129,7 +165,7 @@ const VALUES: Record<string, Partial<Record<Ruleset, number>> & { base: number }
   bigThreeDragons: { base: 8, 'chinese-official': 88, riichi: 13 },
   fourConcealedTriplets: { base: 10, 'chinese-official': 64, riichi: 13 },
   thirteenOrphans: { base: 10, 'chinese-official': 88, riichi: 13 },
-  nineGates: { base: 0, riichi: 13 },
+  nineGates: { base: 0, 'chinese-official': 88, riichi: 13 },
   heavenlyHand: { base: 0, riichi: 13 },
   earthlyHand: { base: 0, riichi: 13 },
   renhou: { base: 0, riichi: 5 }
@@ -271,8 +307,19 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     const hasDragon = allTiles.some((tile) => ['z5', 'z6', 'z7'].includes(tile));
     if (suitsUsed.size === 3 && hasWind && hasDragon) push('allTypes', 'All Types');
     if (allTiles.every((tile) => tileSuit(tile) !== 'z' && tileRank(tile) >= 7)) push('upperTiles', 'Upper Tiles');
+    else if (allTiles.every((tile) => tileSuit(tile) !== 'z' && tileRank(tile) >= 6)) push('upperFour', 'Upper Four');
     if (allTiles.every((tile) => tileSuit(tile) !== 'z' && tileRank(tile) >= 4 && tileRank(tile) <= 6)) push('middleTiles', 'Middle Tiles');
     if (allTiles.every((tile) => tileSuit(tile) !== 'z' && tileRank(tile) <= 3)) push('lowerTiles', 'Lower Tiles');
+    else if (allTiles.every((tile) => tileSuit(tile) !== 'z' && tileRank(tile) <= 4)) push('lowerFour', 'Lower Four');
+    if (allTiles.every(isReversibleTile)) push('reversibleTiles', 'Reversible Tiles');
+    if (allTiles.every(isGreenTile)) push('allGreen', 'All Green');
+    if (isConcealed && isNineGates(counts)) push('nineGates', 'Nine Gates');
+    if (isConcealed && isSevenShiftedPairs(counts)) push('sevenShiftedPairs', 'Seven Shifted Pairs');
+    // 四归一: all four copies of a kind used without ever forming a Kong.
+    const kongTiles = new Set(player.melds.filter((meld) => meld.kind === 'kan').map((meld) => meld.tiles[0]));
+    if (toCounts(allTiles).some((count, index) => count === 4 && !kongTiles.has(tileFromIndex(index)))) {
+      push('tileHog', 'Tile Hog');
+    }
   }
 
   // --- Dragons -------------------------------------------------------------
@@ -292,26 +339,39 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     }
   }
 
-  if (ruleset === 'riichi' || ruleset === 'hongkong') {
-    const windCounts = (['z1', 'z2', 'z3', 'z4'] as Tile[]).map((tile) => allCounts[tileIndex(tile)]);
-    if (windCounts.filter((count) => count >= 3).length === 4) {
-      if (ruleset === 'riichi') pushYakuman('bigFourWinds', 'Big Four Winds');
-      else {
-        push('bigFourWinds', 'Big Four Winds');
-        return finalise(patterns, ruleset, true);
-      }
+  // Every ruleset scores the four-wind hands. MCR keeps accumulating fans
+  // afterwards (its Account-Once table resolves the overlap with the lesser
+  // wind fans), while Hong Kong settles immediately at its limit.
+  const windCounts = (['z1', 'z2', 'z3', 'z4'] as Tile[]).map((tile) => allCounts[tileIndex(tile)]);
+  if (windCounts.filter((count) => count >= 3).length === 4) {
+    if (ruleset === 'riichi') pushYakuman('bigFourWinds', 'Big Four Winds');
+    else if (ruleset === 'chinese-official') push('bigFourWinds', 'Big Four Winds');
+    else {
+      push('bigFourWinds', 'Big Four Winds');
+      return finalise(patterns, ruleset, true);
     }
-    if (windCounts.filter((count) => count >= 3).length === 3 && windCounts.some((count) => count === 2)) {
-      if (ruleset === 'riichi') pushYakuman('smallFourWinds', 'Little Four Winds');
-      else {
-        push('smallFourWinds', 'Little Four Winds');
-        return finalise(patterns, ruleset, true);
-      }
+  }
+  if (windCounts.filter((count) => count >= 3).length === 3 && windCounts.some((count) => count === 2)) {
+    if (ruleset === 'riichi') pushYakuman('smallFourWinds', 'Little Four Winds');
+    else if (ruleset === 'chinese-official') push('smallFourWinds', 'Little Four Winds');
+    else {
+      push('smallFourWinds', 'Little Four Winds');
+      return finalise(patterns, ruleset, true);
     }
+  }
+  // 大三风 has no Riichi or Hong Kong equivalent; MCR's Account-Once table
+  // removes it again whenever a four-wind fan is also present.
+  if (ruleset === 'chinese-official' && windCounts.filter((count) => count >= 3).length === 3) {
+    push('bigThreeWinds', 'Big Three Winds');
   }
   if (dragonSets === 2 && dragonPairs === 1) {
     push('littleThreeDragons', 'Little Three Dragons');
   } else {
+    // MCR names the two-Dragon shape in its own right; its Account-Once entry
+    // then removes the individual Dragon Pungs it covers.
+    if (ruleset === 'chinese-official' && dragonSets === 2) {
+      push('twoDragonPungs', 'Two Dragon Pungs');
+    }
     for (let i = 0; i < dragonSets; i += 1) {
       push('dragonTriplet', 'Dragon Triplet');
     }
@@ -406,8 +466,43 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     if (selfDrawn) push('haiteiRaoyue', 'Haitei Raoyue');
     else push('houteiRaoyui', 'Houtei Raoyui');
   }
-  if ((ruleset === 'hongkong' || ruleset === 'riichi') && state.winContext === 'rob-kong') {
+  if (state.winContext === 'rob-kong') {
     push('robbingKong', 'Robbing the Kong');
+  }
+
+  if (ruleset === 'chinese-official') {
+    const wallExhausted = state.wallIndex === state.deadWallIndex;
+    if (selfDrawn && player.lastDrawWasReplacement) push('outWithReplacement', 'Out With Replacement Tile');
+    else if (wallExhausted && selfDrawn) push('lastTileDraw', 'Last Tile Draw');
+    else if (wallExhausted && !selfDrawn) push('lastTileClaim', 'Last Tile Claim');
+
+    // 和绝张: the winning tile's other three copies are already on the table.
+    if (isLastCopy(state, seat, winningTile, selfDrawn)) push('lastTile', 'Last Tile');
+
+    // MCR counts Kongs by concealment, unlike Riichi's sankantsu ladder.
+    const kongs = player.melds.filter((meld) => meld.kind === 'kan');
+    const concealedKongs = kongs.filter((meld) => meld.concealed).length;
+    const meldedKongs = kongs.length - concealedKongs;
+    if (kongs.length >= 4) push('fourKongs', 'Four Kongs');
+    else if (kongs.length === 3) push('threeKongs', 'Three Kongs');
+    else {
+      if (concealedKongs >= 2) push('twoConcealedKongs', 'Two Concealed Kongs');
+      else if (concealedKongs === 1) push('concealedKong', 'Concealed Kong');
+      if (meldedKongs >= 2) push('twoMeldedKongs', 'Two Melded Kongs');
+      else if (meldedKongs === 1) push('meldedKong', 'Melded Kong');
+    }
+
+    if (sets) {
+      // 全求人: every set was claimed from a discard and the pair is completed
+      // by the winning discard.
+      const pairTile = sets.find((block) => block.kind === 'pair')?.tile;
+      if (!selfDrawn && player.melds.length === 4 &&
+        player.melds.every((meld) => !meld.concealed) && pairTile === winningTile) {
+        push('meldedHand', 'Melded Hand');
+      }
+      const wait = mcrWaitFan(sets, winningTile);
+      if (wait) push(wait.id, wait.label);
+    }
   }
 
   // Beginner-friendly product mode: a structurally complete zero-Fan hand
@@ -438,6 +533,12 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     }
     const visible = countDora(allTiles, visibleDoraIndicators(state));
     if (!patterns.some((pattern) => pattern.id === 'renhou') && visible > 0) patterns.push({ id: 'dora', label: 'Dora', value: visible });
+    // Red fives are counted from the tiles themselves, not from an indicator,
+    // so they are added once rather than again under the ura indicators.
+    const red = allTiles.filter(isRedFive).length;
+    if (!patterns.some((pattern) => pattern.id === 'renhou') && red > 0) {
+      patterns.push({ id: 'akaDora', label: 'Red Five', value: red });
+    }
     if (!patterns.some((pattern) => pattern.id === 'renhou') && player.declaredReady) {
       const ura = countDora(allTiles, uraDoraIndicators(state));
       if (ura > 0) patterns.push({ id: 'uraDora', label: 'Ura Dora', value: ura });
@@ -495,6 +596,72 @@ export function scoreHand(input: ScoreInput): ScoreResult {
 
 function isGreenTile(tile: Tile): boolean {
   return (['s2', 's3', 's4', 's6', 's8', 'z6'] as Tile[]).includes(tile);
+}
+
+/**
+ * 和绝张: the winning tile is the fourth and last copy, the other three being
+ * already visible in a discard pile or an exposed meld. A concealed hand tile
+ * is not visible to the table and therefore does not count.
+ */
+function isLastCopy(state: GameState, seat: Seat, winningTile: Tile, selfDrawn: boolean): boolean {
+  let seen = 0;
+  for (const player of state.players) {
+    for (const tile of player.discards) if (tile === winningTile) seen += 1;
+    for (const meld of player.melds) {
+      for (const tile of meld.tiles) if (tile === winningTile) seen += 1;
+    }
+  }
+  // On a discard win the claimed tile is still sitting in the discard pile, so
+  // it must not be counted twice against the winning tile itself.
+  if (!selfDrawn) seen = Math.max(0, seen - 1);
+  // The winner's own concealed copies are hidden, so only count what the hand
+  // must additionally hold beyond the winning tile itself.
+  const concealedCopies = state.players[seat].hand.filter((tile) => tile === winningTile).length;
+  return seen + (selfDrawn ? concealedCopies - 1 : concealedCopies) >= 3;
+}
+
+/**
+ * MCR's three one-point wait fans. They are mutually exclusive and read off
+ * the partition the scorer selected: an edge wait completes 123 on the 3 or
+ * 789 on the 7, a closed wait fills the middle of a chow, and a single wait
+ * completes the pair.
+ */
+function mcrWaitFan(sets: HandSet[], winningTile: Tile): { id: keyof typeof VALUES; label: string } | null {
+  if (sets.some((block) => block.kind === 'pair' && block.tile === winningTile)) {
+    return { id: 'singleWait', label: 'Single Wait' };
+  }
+  if (tileSuit(winningTile) === 'z') return null;
+  const rank = tileRank(winningTile);
+  for (const block of sets) {
+    if (block.kind !== 'run' || tileSuit(block.tile) !== tileSuit(winningTile)) continue;
+    const start = tileRank(block.tile);
+    if (rank === start + 1) return { id: 'closedWait', label: 'Closed Wait' };
+    if ((start === 1 && rank === 3) || (start === 7 && rank === 7)) {
+      return { id: 'edgeWait', label: 'Edge Wait' };
+    }
+  }
+  return null;
+}
+
+/** 推不倒: tiles whose face is unchanged when the tile is turned upside down. */
+function isReversibleTile(tile: Tile): boolean {
+  return (['p1', 'p2', 'p3', 'p4', 'p5', 'p8', 'p9', 's2', 's4', 's5', 's6', 's8', 's9', 'z5'] as Tile[])
+    .includes(tile);
+}
+
+/** 连七对: seven pairs on consecutive ranks within one suit. */
+function isSevenShiftedPairs(counts: number[]): boolean {
+  for (const suit of ['m', 'p', 's'] as Suit[]) {
+    const start = suit === 'm' ? 0 : suit === 'p' ? 9 : 18;
+    if (counts.reduce((sum, count, index) => index >= start && index < start + 9 ? sum + count : sum, 0) !== 14) {
+      continue;
+    }
+    for (let offset = 0; offset <= 2; offset += 1) {
+      const ranks = counts.slice(start + offset, start + offset + 7);
+      if (ranks.length === 7 && ranks.every((count) => count === 2)) return true;
+    }
+  }
+  return false;
 }
 
 function noDiscardHasOccurred(state: GameState): boolean {
@@ -662,7 +829,7 @@ function finalise(
   paymentLabel?: string
 ): ScoreResult {
   const effectivePatterns = ruleset === 'chinese-official'
-    ? applyMcrDirectExclusions(patterns)
+    ? withMcrChickenHand(applyMcrDirectExclusions(patterns))
     : patterns;
   const raw = effectivePatterns.reduce((sum, p) => sum + p.value, 0);
   const qualifyingRaw = ruleset === 'chinese-official'
@@ -683,7 +850,7 @@ function finalise(
     patterns: effectivePatterns,
     limit: forcedLimit || raw >= cap || yakumanCount > 0,
     legalYaku: ruleset !== 'riichi' || forcedLimit || yakumanCount > 0 || patterns.some(
-      (pattern) => pattern.id !== 'dora' && pattern.id !== 'uraDora'
+      (pattern) => pattern.id !== 'dora' && pattern.id !== 'uraDora' && pattern.id !== 'akaDora'
     ),
     han: ruleset === 'riichi' ? (yakumanCount > 0 ? 13 : raw) : undefined,
     fu,
@@ -815,29 +982,121 @@ function selectBestMcrDecomposition(
   return candidates.reduce((best, candidate) => potential(candidate) > potential(best) ? candidate : best);
 }
 
+/** 123 and 789 of the same suit, the shape behind several chow fans. */
+function terminalChowSuits(runs: HandSet[]): Suit[] {
+  return (['m', 'p', 's'] as Suit[]).filter((suit) =>
+    runs.some((block) => block.tile === `${suit}1`) && runs.some((block) => block.tile === `${suit}7`)
+  );
+}
+
+/** 123 / 456 / 789 spread across all three suits, in any order. */
+function hasMixedStraight(runs: HandSet[]): boolean {
+  const suits = ['m', 'p', 's'] as Suit[];
+  for (const a of suits) {
+    for (const b of suits) {
+      for (const c of suits) {
+        if (new Set([a, b, c]).size !== 3) continue;
+        if (
+          runs.some((block) => block.tile === `${a}1`) &&
+          runs.some((block) => block.tile === `${b}4`) &&
+          runs.some((block) => block.tile === `${c}7`)
+        ) return true;
+      }
+    }
+  }
+  return false;
+}
+
+/** Three pungs, one per suit, on consecutive ranks. */
+function hasMixedShiftedPungs(trips: HandSet[]): boolean {
+  const suits = ['m', 'p', 's'] as Suit[];
+  for (let start = 1; start <= 7; start += 1) {
+    for (const a of suits) {
+      for (const b of suits) {
+        for (const c of suits) {
+          if (new Set([a, b, c]).size !== 3) continue;
+          if (
+            trips.some((block) => block.tile === `${a}${start}`) &&
+            trips.some((block) => block.tile === `${b}${start + 1}`) &&
+            trips.some((block) => block.tile === `${c}${start + 2}`)
+          ) return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+/** Every set and the pair contains a five. */
+function isAllFivesBlock(block: HandSet): boolean {
+  if (tileSuit(block.tile) === 'z') return false;
+  const rank = tileRank(block.tile);
+  return block.kind === 'run' ? rank >= 3 && rank <= 5 : rank === 5;
+}
+
+/**
+ * The MCR fans that depend on how a winning hand is partitioned.
+ *
+ * There is a single list so scoring and decomposition selection can never
+ * disagree: `mcrStructuralValue` sums it, `pushMcrStructuralPatterns` emits it.
+ * Fans that are identical for every partition (flushes, winds, Flowers and the
+ * circumstances of the win) are deliberately scored by the main scorer instead.
+ */
+function mcrStructuralFans(
+  blocks: HandSet[],
+  runs: HandSet[],
+  trips: HandSet[],
+  concealedTrips: number
+): Array<{ id: keyof typeof VALUES; label: string }> {
+  const fans: Array<{ id: keyof typeof VALUES; label: string }> = [];
+  const add = (id: keyof typeof VALUES, label: string) => fans.push({ id, label });
+  const pair = blocks.find((block) => block.kind === 'pair');
+  const terminalSuits = terminalChowSuits(runs);
+
+  if (trips.length === 4) add('allTriplets', 'All Pungs');
+  if (runs.length === 4 && blocks.length === 5) add('allSequences', 'All Chows');
+
+  // 一色双龙会 / 三色双龙会 both sit on 123 + 789 plus a pair of fives.
+  const pairIsFive = Boolean(pair && tileSuit(pair.tile) !== 'z' && tileRank(pair.tile) === 5);
+  if (runs.length === 4 && pairIsFive && terminalSuits.length === 1 &&
+    runs.filter((block) => block.tile === `${terminalSuits[0]}1`).length === 2 &&
+    runs.filter((block) => block.tile === `${terminalSuits[0]}7`).length === 2) {
+    add('pureTerminalChows', 'Pure Terminal Chows');
+  } else if (runs.length === 4 && pairIsFive && terminalSuits.length === 2 &&
+    pair && !terminalSuits.includes(tileSuit(pair.tile))) {
+    add('threeSuitedTerminalChows', 'Three-Suited Terminal Chows');
+  } else if (terminalSuits.length > 0) {
+    add('twoTerminalChows', 'Two Terminal Chows');
+  }
+
+  if (hasQuadrupleChow(runs)) add('quadrupleChow', 'Quadruple Chow');
+  if (hasShiftedPungs(trips, 4)) add('fourShiftedPungs', 'Four Shifted Pungs');
+  else if (hasShiftedPungs(trips, 3)) add('pureShiftedPungs', 'Pure Shifted Pungs');
+  if (hasShiftedChows(runs, 4)) add('fourShiftedChows', 'Four Shifted Chows');
+  else if (hasShiftedChows(runs, 3)) add('pureShiftedChows', 'Pure Shifted Chows');
+  if (trips.length === 4 && blocks.every((block) => tileSuit(block.tile) !== 'z' && tileRank(block.tile) % 2 === 0)) add('allEvenPungs', 'All Even Pungs');
+  if (blocks.every(isAllFivesBlock)) add('allFives', 'All Fives');
+  if (hasPureTripleChow(runs)) add('pureTripleChow', 'Pure Triple Chow');
+  else if (countIdenticalRunPairs(runs) > 0) add('pureDoubleChow', 'Pure Double Chow');
+  if (hasIttsuu(runs)) add('pureStraight', 'Pure Straight');
+  if (hasMixedStraight(runs)) add('mixedStraight', 'Mixed Straight');
+  if (hasSanshokuDoujun(runs)) add('mixedTripleChow', 'Mixed Triple Chow');
+  if (hasMixedShiftedChows(runs)) add('mixedShiftedChows', 'Mixed Shifted Chows');
+  if (hasMixedDoubleChow(runs)) add('mixedDoubleChow', 'Mixed Double Chow');
+  if (hasShortStraight(runs)) add('shortStraight', 'Short Straight');
+  if (hasSanshokuDoukou(trips)) add('triplePung', 'Triple Pung');
+  if (hasMixedShiftedPungs(trips)) add('mixedShiftedPungs', 'Mixed Shifted Pungs');
+  if (hasDoublePungs(trips)) add('doublePungs', 'Double Pungs');
+  if (trips.some((block) => isTerminalOrHonour(block.tile))) add('pungTerminalsHonours', 'Pung of Terminals or Honors');
+  if (blocks.every((block) => isOutsideBlock(block, true))) add('outsideHand', 'Outside Hand');
+  if (concealedTrips >= 3) add('threeConcealedPungs', 'Three Concealed Pungs');
+  else if (concealedTrips >= 2) add('twoConcealedPungs', 'Two Concealed Pungs');
+  return fans;
+}
+
 function mcrStructuralValue(blocks: HandSet[], runs: HandSet[], trips: HandSet[], concealedTrips: number): number {
-  let total = 0;
-  if (trips.length === 4) total += value('allTriplets', 'chinese-official');
-  if (hasQuadrupleChow(runs)) total += value('quadrupleChow', 'chinese-official');
-  if (hasShiftedPungs(trips, 4)) total += value('fourShiftedPungs', 'chinese-official');
-  else if (hasShiftedPungs(trips, 3)) total += value('pureShiftedPungs', 'chinese-official');
-  if (hasShiftedChows(runs, 4)) total += value('fourShiftedChows', 'chinese-official');
-  else if (hasShiftedChows(runs, 3)) total += value('pureShiftedChows', 'chinese-official');
-  if (trips.length === 4 && blocks.every((block) => tileSuit(block.tile) !== 'z' && tileRank(block.tile) % 2 === 0)) total += value('allEvenPungs', 'chinese-official');
-  if (hasPureTripleChow(runs)) total += value('pureTripleChow', 'chinese-official');
-  else if (countIdenticalRunPairs(runs) > 0) total += value('pureDoubleChow', 'chinese-official');
-  if (hasIttsuu(runs)) total += value('pureStraight', 'chinese-official');
-  if (hasSanshokuDoujun(runs)) total += value('mixedTripleChow', 'chinese-official');
-  if (hasMixedShiftedChows(runs)) total += value('mixedShiftedChows', 'chinese-official');
-  if (hasMixedDoubleChow(runs)) total += value('mixedDoubleChow', 'chinese-official');
-  if (hasShortStraight(runs)) total += value('shortStraight', 'chinese-official');
-  if (hasSanshokuDoukou(trips)) total += value('triplePung', 'chinese-official');
-  if (hasDoublePungs(trips)) total += value('doublePungs', 'chinese-official');
-  if (trips.some((block) => isTerminalOrHonour(block.tile))) total += value('pungTerminalsHonours', 'chinese-official');
-  if (concealedTrips >= 3) total += value('threeConcealedPungs', 'chinese-official');
-  else if (concealedTrips >= 2) total += value('twoConcealedPungs', 'chinese-official');
-  if (runs.length === 4 && blocks.length === 5) total += value('allSequences', 'chinese-official');
-  return total;
+  return mcrStructuralFans(blocks, runs, trips, concealedTrips)
+    .reduce((total, fan) => total + value(fan.id, 'chinese-official'), 0);
 }
 
 function pushMcrStructuralPatterns(
@@ -847,26 +1106,7 @@ function pushMcrStructuralPatterns(
   trips: HandSet[],
   concealedTrips: number
 ): void {
-  if (trips.length === 4) push('allTriplets', 'All Pungs');
-  if (runs.length === 4 && blocks.length === 5) push('allSequences', 'All Chows');
-  if (hasQuadrupleChow(runs)) push('quadrupleChow', 'Quadruple Chow');
-  if (hasShiftedPungs(trips, 4)) push('fourShiftedPungs', 'Four Shifted Pungs');
-  else if (hasShiftedPungs(trips, 3)) push('pureShiftedPungs', 'Pure Shifted Pungs');
-  if (hasShiftedChows(runs, 4)) push('fourShiftedChows', 'Four Shifted Chows');
-  else if (hasShiftedChows(runs, 3)) push('pureShiftedChows', 'Pure Shifted Chows');
-  if (trips.length === 4 && blocks.every((block) => tileSuit(block.tile) !== 'z' && tileRank(block.tile) % 2 === 0)) push('allEvenPungs', 'All Even Pungs');
-  if (hasPureTripleChow(runs)) push('pureTripleChow', 'Pure Triple Chow');
-  else if (countIdenticalRunPairs(runs) > 0) push('pureDoubleChow', 'Pure Double Chow');
-  if (hasIttsuu(runs)) push('pureStraight', 'Pure Straight');
-  if (hasSanshokuDoujun(runs)) push('mixedTripleChow', 'Mixed Triple Chow');
-  if (hasMixedShiftedChows(runs)) push('mixedShiftedChows', 'Mixed Shifted Chows');
-  if (hasMixedDoubleChow(runs)) push('mixedDoubleChow', 'Mixed Double Chow');
-  if (hasShortStraight(runs)) push('shortStraight', 'Short Straight');
-  if (hasSanshokuDoukou(trips)) push('triplePung', 'Triple Pung');
-  if (hasDoublePungs(trips)) push('doublePungs', 'Double Pungs');
-  if (trips.some((block) => isTerminalOrHonour(block.tile))) push('pungTerminalsHonours', 'Pung of Terminals or Honors');
-  if (concealedTrips >= 3) push('threeConcealedPungs', 'Three Concealed Pungs');
-  else if (concealedTrips >= 2) push('twoConcealedPungs', 'Two Concealed Pungs');
+  for (const fan of mcrStructuralFans(blocks, runs, trips, concealedTrips)) push(fan.id, fan.label);
 }
 
 /** Existing detector identifiers mapped to the official MCR catalogue ids. */
@@ -893,6 +1133,41 @@ const MCR_PATTERN_IDS: Readonly<Record<string, McrFanId>> = {
   pungTerminalsHonours: 'pung-terminals-honors',
   threeConcealedPungs: 'three-concealed-pungs',
   twoConcealedPungs: 'two-concealed-pungs',
+  bigFourWinds: 'big-four-winds',
+  smallFourWinds: 'little-four-winds',
+  bigThreeWinds: 'big-three-winds',
+  twoDragonPungs: 'two-dragon-pungs',
+  allTerminals: 'all-terminals',
+  allGreen: 'all-green',
+  nineGates: 'nine-gates',
+  sevenShiftedPairs: 'seven-shifted-pairs',
+  outsideHand: 'outside-hand',
+  allFives: 'all-fives',
+  upperFour: 'upper-four',
+  lowerFour: 'lower-four',
+  mixedStraight: 'mixed-straight',
+  reversibleTiles: 'reversible-tiles',
+  mixedShiftedPungs: 'mixed-shifted-pungs',
+  tileHog: 'tile-hog',
+  meldedHand: 'melded-hand',
+  twoTerminalChows: 'two-terminal-chows',
+  threeSuitedTerminalChows: 'three-suited-terminal-chows',
+  pureTerminalChows: 'pure-terminal-chows',
+  mcrChickenHand: 'chicken-hand',
+  robbingKong: 'robbing-kong',
+  lastTileDraw: 'last-tile-draw',
+  lastTileClaim: 'last-tile-claim',
+  outWithReplacement: 'out-with-replacement',
+  lastTile: 'last-tile',
+  edgeWait: 'edge-wait',
+  closedWait: 'closed-wait',
+  singleWait: 'single-wait',
+  meldedKong: 'melded-kong',
+  concealedKong: 'concealed-kong',
+  twoMeldedKongs: 'two-melded-kongs',
+  twoConcealedKongs: 'two-concealed-kongs',
+  threeKongs: 'three-kongs',
+  fourKongs: 'four-kongs',
   allTypes: 'all-types',
   oneVoidedSuit: 'one-voided-suit',
   noHonours: 'no-honors',
@@ -933,6 +1208,19 @@ function applyMcrDirectExclusions(patterns: ScorePattern[]): ScorePattern[] {
     const mcrId = MCR_PATTERN_IDS[pattern.id];
     return !mcrId || retainedMcr.has(mcrId);
   });
+}
+
+/**
+ * 无番和: a legal hand that scores no fan at all is worth eight points, which
+ * is exactly the declaration threshold. Flowers are bonus points and never
+ * make a hand non-chicken, so they are ignored here.
+ */
+function withMcrChickenHand(patterns: ScorePattern[]): ScorePattern[] {
+  if (patterns.some((pattern) => pattern.id !== 'flower')) return patterns;
+  return [
+    ...patterns,
+    { id: 'mcrChickenHand', label: 'Chicken Hand', value: value('mcrChickenHand', 'chinese-official') }
+  ];
 }
 
 /** Convenience for the UI: a one-line summary of a score result. */

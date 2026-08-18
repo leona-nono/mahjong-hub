@@ -10,6 +10,7 @@ export type MahjongTelemetryEvent =
   | 'mahjong_hand_completed'
   | 'mahjong_fullscreen'
   | 'mahjong_sound_changed'
+  | 'mahjong_card_focused'
   | 'mahjong_accessibility_changed';
 
 export function trackMahjongEvent(event: MahjongTelemetryEvent, properties: Record<string, string | number | boolean> = {}): void {

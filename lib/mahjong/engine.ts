@@ -18,6 +18,10 @@ import {
   tileSuit,
   tileRank,
   isBonusTile,
+  isRedFive,
+  isSameKind,
+  isTerminalOrHonour,
+  isWind,
   WINDS,
   type Tile
 } from './tiles';
@@ -26,11 +30,22 @@ import { scoreHand, type ScoreResult } from './scoring';
 
 import { calculateRiichiPayment } from './riichi';
 import { calculateHongKongPayment } from './hongkong';
+import { calculateMcrPayment } from './chinese-official';
 export type Seat = 0 | 1 | 2 | 3;
 
 /** Ruleset presets. They share the engine and differ in scoring + legal calls. */
 export type Ruleset = 'hongkong' | 'riichi' | 'chinese-official';
 export type HongKongMode = 'casual' | 'standard';
+/**
+ * Japanese rule flavour.
+ *
+ * `wrc` is the World Riichi Championship ruleset this engine implements by
+ * default, which deliberately abolishes every abortive draw — a hand is always
+ * played to a win or an exhaustive draw. `standard` is the Tenhou / Mahjong
+ * Soul flavour most players arriving from those clients expect, where nine
+ * terminals, four winds and a spread fourth Kong abandon the hand.
+ */
+export type RiichiVariant = 'wrc' | 'standard';
 
 export interface RulesetConfig {
   id: Ruleset;
@@ -52,8 +67,10 @@ export const RULESETS: Record<Ruleset, RulesetConfig> = {
     minimumScore: 3,
     allowChi: true,
     allowSpecialHands: true,
-    // Product rule: no Flowers/Seasons and no White Dragon (white board).
-    excludedTiles: ['z5']
+    // Product rule: no Flowers/Seasons. All three Dragons are present, so the
+    // Dragon fans (Big/Little Three Dragons, All Honours, the three-Dragon
+    // 包牌 trigger) are actually reachable.
+    excludedTiles: []
   },
   riichi: {
     id: 'riichi',
@@ -118,10 +135,23 @@ export interface ClaimOption {
   tiles: Tile[];
 }
 
+/**
+ * Why a hand ended without a winner. Everything except `exhaustive` is a WRC
+ * abortive draw: the hand stops mid-play, nobody pays noten, and the dealer
+ * keeps the seat.
+ */
+export type DrawReason = 'exhaustive' | 'nine-terminals' | 'four-winds' | 'four-kans';
+
+export const ABORTIVE_DRAW_REASONS: readonly DrawReason[] = ['nine-terminals', 'four-winds', 'four-kans'];
+
+export function isAbortiveDraw(result: GameResult | null): boolean {
+  return result?.kind === 'draw' && result.reason !== undefined && ABORTIVE_DRAW_REASONS.includes(result.reason);
+}
+
 export interface GameResult {
   kind: 'win' | 'draw';
   /** Product-visible explanation for an exhaustive or abortive draw. */
-  reason?: 'exhaustive';
+  reason?: DrawReason;
   tenpaiSeats?: Seat[];
   /** Single winner (tsumo, or ron under HK / CO). */
   winner?: Seat;
@@ -182,6 +212,8 @@ export interface GameState {
   honba: number;
   /** A called meld prevents later first-turn Riichi from being Double Riichi. */
   callsMade: boolean;
+  /** WRC has no abortive draws; the standard flavour does. */
+  riichiVariant: RiichiVariant;
   /** Riichi product matches finish after South 4 once the dealer changes. */
   matchEnded?: boolean;
   matchResult?: RiichiMatchResult;
@@ -213,6 +245,8 @@ export interface CreateGameOptions {
   ruleset?: Ruleset;
   seed?: number;
   hongKongMode?: HongKongMode;
+  /** Defaults to WRC, which has no abortive draws. */
+  riichiVariant?: RiichiVariant;
   /** Seat controlled by the person playing; the rest are bots. */
   humanSeat?: Seat;
 }
@@ -220,11 +254,17 @@ export interface CreateGameOptions {
 export function createGame(options: CreateGameOptions = {}): GameState {
   const ruleset = options.ruleset ?? 'hongkong';
   const hongKongMode = options.hongKongMode ?? 'standard';
+  const riichiVariant = options.riichiVariant ?? 'wrc';
   const seed = options.seed ?? Math.floor(Math.random() * 2 ** 31);
   const humanSeat = options.humanSeat ?? 0;
   const rng = createRng(seed);
   const wall = shuffle(
-    buildWall(RULESETS[ruleset].excludedTiles, ruleset === 'chinese-official'),
+    buildWall(
+      RULESETS[ruleset].excludedTiles,
+      ruleset === 'chinese-official',
+      // Red fives are a Tenhou / Mahjong Soul table rule; WRC plays without.
+      ruleset === 'riichi' && riichiVariant === 'standard'
+    ),
     rng
   );
 
@@ -283,6 +323,7 @@ export function createGame(options: CreateGameOptions = {}): GameState {
     riichiSticks: 0,
     honba: 0,
     callsMade: false,
+    riichiVariant,
     riichiLiabilities: []
   };
 
@@ -296,10 +337,13 @@ export function createGame(options: CreateGameOptions = {}): GameState {
  */
 export function startNextHand(state: GameState): GameState {
   if (state.phase !== 'over') return state;
-  const winner = state.result?.winner;
+  // A double ron has no single `winner`; the dealer continues if it is among
+  // the winning seats.
+  const winnerSeats = state.result?.winners?.map((entry) => entry.seat)
+    ?? (state.result?.winner === undefined ? [] : [state.result.winner]);
   const dealerKeepsSeat = state.result?.kind === 'draw'
-    ? Boolean(state.result.tenpaiSeats?.includes(state.dealer))
-    : winner === state.dealer;
+    ? isAbortiveDraw(state.result) || Boolean(state.result.tenpaiSeats?.includes(state.dealer))
+    : winnerSeats.includes(state.dealer);
   const dealer = dealerKeepsSeat ? state.dealer : nextSeat(state.dealer);
   const handNumber = state.handNumber + (dealerKeepsSeat ? 0 : 1);
   // East/South match: South 4 is the final scheduled hand. A dealer
@@ -315,6 +359,7 @@ export function startNextHand(state: GameState): GameState {
   const next = createGame({
     ruleset: state.ruleset,
     hongKongMode: state.hongKongMode,
+    riichiVariant: state.riichiVariant,
     humanSeat,
     seed: state.seed + 1
   });
@@ -357,6 +402,21 @@ function removeTile(hand: Tile[], tile: Tile): boolean {
   if (at === -1) return false;
   hand.splice(at, 1);
   return true;
+}
+
+/**
+ * Take one tile of a kind out of a hand and return the copy actually removed.
+ *
+ * Melds and Kongs are requested by kind, but which physical copy leaves the
+ * hand matters: a red five carries a dora with it. Ordinary copies go first so
+ * a player never loses a red five they could have kept.
+ */
+function takeTileOfKind(hand: Tile[], kind: Tile): Tile | null {
+  const plain = hand.findIndex((tile) => tile === kind);
+  const at = plain >= 0 ? plain : hand.findIndex((tile) => isSameKind(tile, kind));
+  if (at === -1) return null;
+  const [removed] = hand.splice(at, 1);
+  return removed;
 }
 
 function handCounts(player: PlayerState): number[] {
@@ -539,7 +599,7 @@ export function availableAddedKans(state: GameState, seat: Seat): Tile[] {
   if (state.ruleset === 'riichi' && totalKans(state) >= 4) return [];
   const player = state.players[seat];
   return player.melds
-    .filter((meld) => meld.kind === 'pon' && !meld.concealed && player.hand.includes(meld.tiles[0]))
+    .filter((meld) => meld.kind === 'pon' && !meld.concealed && player.hand.some((tile) => isSameKind(tile, meld.tiles[0])))
     .map((meld) => meld.tiles[0]);
 }
 
@@ -551,8 +611,12 @@ export function declareConcealedKan(state: GameState, seat: Seat, tile: Tile): G
   if (!availableConcealedKans(state, seat).includes(tile)) return state;
   const next = clone(state);
   const player = next.players[seat];
-  for (let i = 0; i < 4; i += 1) removeTile(player.hand, tile);
-  player.melds.push({ kind: 'kan', tiles: [tile, tile, tile, tile], concealed: true });
+  const taken: Tile[] = [];
+  for (let i = 0; i < 4; i += 1) {
+    const removed = takeTileOfKind(player.hand, tile);
+    if (removed) taken.push(removed);
+  }
+  player.melds.push({ kind: 'kan', tiles: sortTiles(taken), concealed: true });
   next.callsMade = true;
   drawReplacement(next, seat);
   // Any call, including a concealed kan, breaks ippatsu for every declared
@@ -600,8 +664,10 @@ export function declareAddedKan(state: GameState, seat: Seat, tile: Tile, now = 
 
 function completeAddedKan(state: GameState, seat: Seat, tile: Tile, meldIndex: number): GameState {
   const player = state.players[seat];
-  if (!removeTile(player.hand, tile)) return state;
-  player.melds[meldIndex] = { ...player.melds[meldIndex], kind: 'kan', tiles: [tile, tile, tile, tile] };
+  const promoted = takeTileOfKind(player.hand, tile);
+  if (!promoted) return state;
+  const existing = player.melds[meldIndex];
+  player.melds[meldIndex] = { ...existing, kind: 'kan', tiles: sortTiles([...existing.tiles, promoted]) };
   state.callsMade = true;
   drawReplacement(state, seat);
   state.turn = seat;
@@ -655,6 +721,17 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
   player.discards.push(tile);
   next.lastDiscard = { tile, from: next.turn };
 
+  // Both automatic aborts are decided by the completed discard, before anyone
+  // is offered the tile.
+  if (isFourWindAbort(next)) {
+    next.log.push('Four identical wind discards open the hand: abortive draw.');
+    return endInAbortiveDraw(next, 'four-winds');
+  }
+  if (isFourKanAbort(next)) {
+    next.log.push('A fourth Kong is on the table across several seats: abortive draw.');
+    return endInAbortiveDraw(next, 'four-kans');
+  }
+
   next.claims = collectClaims(next, tile, next.turn);
   next.submitted = {};
 
@@ -665,6 +742,53 @@ export function discard(state: GameState, tile: Tile, now = Date.now()): GameSta
     next.phase = 'claim';
   }
   return next;
+}
+
+/**
+ * 九種九牌: on an untouched first turn a player holding nine or more distinct
+ * terminals and honours may abort the hand rather than play it out.
+ */
+export function canDeclareNineTerminals(state: GameState, seat: Seat): boolean {
+  if (state.ruleset !== 'riichi' || state.riichiVariant !== 'standard') return false;
+  if (state.phase !== 'discard' || state.turn !== seat) return false;
+  const player = state.players[seat];
+  if (player.discards.length > 0 || state.callsMade || player.melds.length > 0) return false;
+  // Only the very first go-around counts: nobody may have drawn twice yet.
+  if (state.players.some((other) => other.discards.length > 1)) return false;
+  const kinds = new Set(player.hand.filter(isTerminalOrHonour));
+  return kinds.size >= 9;
+}
+
+export function declareNineTerminals(state: GameState, seat: Seat): GameState {
+  if (!canDeclareNineTerminals(state, seat)) return state;
+  const next = clone(state);
+  next.log.push(`Seat ${seat} declares nine terminals and honours; the hand is abandoned.`);
+  return endInAbortiveDraw(next, 'nine-terminals');
+}
+
+/** Settle an abortive draw: no payments, the honba advances, the dealer stays. */
+function endInAbortiveDraw(state: GameState, reason: DrawReason): GameState {
+  state.phase = 'over';
+  state.claims = {};
+  state.submitted = {};
+  state.honba += 1;
+  state.result = { kind: 'draw', reason };
+  return state;
+}
+
+/** 四風連打: four identical wind discards open the hand with no call between. */
+function isFourWindAbort(state: GameState): boolean {
+  if (state.ruleset !== 'riichi' || state.riichiVariant !== 'standard' || state.callsMade) return false;
+  if (!state.players.every((player) => player.discards.length === 1)) return false;
+  const [first] = state.players[0].discards;
+  return isWind(first) && state.players.every((player) => player.discards[0] === first);
+}
+
+/** 四槓散了: a fourth Kong on the table while no single seat holds them all. */
+function isFourKanAbort(state: GameState): boolean {
+  if (state.ruleset !== 'riichi' || state.riichiVariant !== 'standard' || totalKans(state) < 4) return false;
+  const owners = state.players.filter((player) => player.melds.some((meld) => meld.kind === 'kan'));
+  return owners.length > 1;
 }
 
 /** WRC final scoring: no oka, +15/+5/-5/-15 uma, split on equal scores. */
@@ -818,9 +942,13 @@ export function maybeResolveClaims(state: GameState): GameState {
     next.claims = {};
     next.submitted = {};
     if (ronSeats.length > 0) {
-      const winner = ronSeats.sort((a, b) => ((a - pendingKan.seat + 4) % 4) - ((b - pendingKan.seat + 4) % 4))[0];
       next.winContext = 'rob-kong';
       next.pendingAddedKan = undefined;
+      // A robbed Kong resolves like any other claimed tile, double ron included.
+      if (ronSeats.length >= 2 && next.ruleset === 'riichi') {
+        return finishWithDoubleRon(next, ronSeats, { tile: pendingKan.tile, from: pendingKan.seat });
+      }
+      const winner = ronSeats.sort((a, b) => ((a - pendingKan.seat + 4) % 4) - ((b - pendingKan.seat + 4) % 4))[0];
       return finishWithWin(next, winner, pendingKan.tile, false, pendingKan.seat);
     }
     return completeAddedKan(next, pendingKan.seat, pendingKan.tile, pendingKan.meldIndex);
@@ -833,12 +961,9 @@ export function maybeResolveClaims(state: GameState): GameState {
     (seat) => next.submitted[seat]!.kind === 'ron'
   );
   if (ronSeats.length >= 2 && next.ruleset === 'riichi') {
-    const winner = ronSeats.sort((a, b) =>
-      ((a - discardInfo.from + 4) % 4) - ((b - discardInfo.from + 4) % 4)
-    )[0];
     next.claims = {};
     next.submitted = {};
-    return finishWithWin(next, winner, discardInfo.tile, false, discardInfo.from);
+    return finishWithDoubleRon(next, ronSeats, discardInfo);
   }
 
   let best: { seat: Seat; option: ClaimOption } | null = null;
@@ -866,11 +991,15 @@ export function maybeResolveClaims(state: GameState): GameState {
   discarder.discards.pop();
 
   const caller = next.players[best.seat];
-  for (const tile of best.option.tiles) removeTile(caller.hand, tile);
+  const contributed: Tile[] = [];
+  for (const tile of best.option.tiles) {
+    const removed = takeTileOfKind(caller.hand, tile);
+    if (removed) contributed.push(removed);
+  }
   caller.hand = sortTiles(caller.hand);
   caller.lastDrawn = undefined;
 
-  const meldTiles = sortTiles([...best.option.tiles, discardInfo.tile]);
+  const meldTiles = sortTiles([...contributed, discardInfo.tile]);
   const kind: MeldKind =
     best.option.kind === 'chi' ? 'chi' : best.option.kind === 'kan' ? 'kan' : 'pon';
   caller.melds.push({ kind, tiles: meldTiles, from: discardInfo.from });
@@ -935,28 +1064,67 @@ export function declareTsumo(state: GameState, seat: Seat): GameState {
   return finishWithWin(clone(state), seat, winningTile, true);
 }
 
-/** Riichi double ron: every winner is paid for the same discard. */
+/**
+ * Riichi double ron: every seat that declared ron wins the same discard and the
+ * discarder pays each of them in full. The winner nearest the discarder in turn
+ * order — the head-bump seat — additionally collects the unclaimed Riichi
+ * deposits and the honba bonus, which are only ever paid once.
+ */
 function finishWithDoubleRon(
   state: GameState,
   ronSeats: Seat[],
   discardInfo: { tile: Tile; from: Seat }
 ): GameState {
-  const winners = ronSeats.map((seat) => {
+  const ordered = [...ronSeats].sort(
+    (a, b) => ((a - discardInfo.from + 4) % 4) - ((b - discardInfo.from + 4) % 4)
+  );
+  const winners = ordered.map((seat, index) => {
     const score = scoreHand({
       state,
       seat,
       winningTile: discardInfo.tile,
       selfDrawn: false
     });
-    state.players[seat].score += score.total;
+    const liability = state.riichiLiabilities.find((entry) =>
+      entry.winner === seat && score.patterns.some((pattern) => pattern.id === entry.yakuman)
+    );
+    const payment = calculateRiichiPayment({
+      han: score.han ?? score.total,
+      fu: score.fu ?? 30,
+      winner: seat,
+      dealer: state.dealer,
+      selfDrawn: false,
+      honba: index === 0 ? state.honba : 0,
+      yakumanCount: score.yakumanCount,
+      loser: discardInfo.from,
+      liability: liability ? { seat: liability.seat, yakumanCount: 1 } : undefined
+    });
+    score.points = payment.winnerGain;
+    score.paymentLabel = payment.label;
+    // Pao spreads the settlement across seats; without it the discarder alone
+    // pays, exactly as in a single ron.
+    if (Object.keys(payment.payments).length > 0) {
+      for (const payer of SEATS) {
+        if (payer === seat) continue;
+        state.players[payer].score -= payment.payments[payer] ?? 0;
+      }
+    } else {
+      state.players[discardInfo.from].score -= payment.winnerGain;
+    }
+    state.players[seat].score += payment.winnerGain;
     return { seat, loser: discardInfo.from, score };
   });
+  if (state.riichiSticks > 0) {
+    state.players[ordered[0]].score += state.riichiSticks * 1000;
+    state.riichiSticks = 0;
+  }
+  state.honba = ordered.includes(state.dealer) ? state.honba + 1 : 0;
   state.claims = {};
   state.submitted = {};
   state.phase = 'over';
   state.result = { kind: 'win', winners };
   state.log.push(
-    `Seat ${discardInfo.from} deals in to seats ${ronSeats.join(' & ')} for a double ron.`
+    `Seat ${discardInfo.from} deals in to seats ${ordered.join(' & ')} for a double ron.`
   );
   return state;
 }
@@ -1024,18 +1192,22 @@ function finishWithWin(
     state.log.push('Hong Kong settlement: ' + payment.label + '.');
     return state;
   }
-  if (selfDrawn) {
-    for (const payer of SEATS) {
-      if (payer === seat) continue;
-      state.players[payer].score -= score.total;
-      state.players[seat].score += score.total;
-    }
-  } else if (loser !== undefined) {
-    state.players[loser].score -= score.total;
-    state.players[seat].score += score.total;
+  const payment = calculateMcrPayment({
+    points: score.total,
+    selfDrawn,
+    winner: seat,
+    loser
+  });
+  score.points = payment.winnerGain;
+  score.paymentLabel = payment.label;
+  for (const payer of SEATS) {
+    if (payer === seat) continue;
+    state.players[payer].score -= payment.payments[payer] ?? 0;
   }
+  state.players[seat].score += payment.winnerGain;
+  state.honba = seat === state.dealer ? state.honba + 1 : 0;
   state.log.push(
-    `Seat ${seat} wins ${selfDrawn ? 'by self-draw' : 'on a discard'} for ${score.total}.`
+    `Seat ${seat} wins ${selfDrawn ? 'by self-draw' : 'on a discard'} for ${score.total}; ${payment.label}.`
   );
   return state;
 }

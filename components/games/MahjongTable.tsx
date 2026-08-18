@@ -10,9 +10,11 @@ import {
   RULESETS,
   availableKans,
   availableRiichiDiscards,
+  canDeclareNineTerminals,
   canDeclareTsumo,
   createGame,
   declareKan,
+  declareNineTerminals,
   declareRiichi,
   declareTsumo,
   discard,
@@ -27,6 +29,7 @@ import {
   type ClaimOption,
   type GameState,
   type HongKongMode,
+  type RiichiVariant,
   type Ruleset,
   type Seat
 } from '@/lib/mahjong/engine';
@@ -64,6 +67,7 @@ export default function MahjongTable({
   const traditional = ruleset === 'hongkong' || ruleset === 'chinese-official';
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
   const [hongKongMode, setHongKongMode] = useState<HongKongMode>('casual');
+  const [riichiVariant, setRiichiVariant] = useState<RiichiVariant>('wrc');
   const [showHints, setShowHints] = useState(true);
   const [paused, setPaused] = useState(false);
   const [state, setState] = useState<GameState>(() =>
@@ -71,12 +75,12 @@ export default function MahjongTable({
   );
 
   const newGame = useCallback(
-    (nextRuleset: Ruleset = ruleset, nextHongKongMode: HongKongMode = hongKongMode) => {
-      setState(createGame({ ruleset: nextRuleset, humanSeat: HUMAN, hongKongMode: nextHongKongMode }));
+    (nextRuleset: Ruleset = ruleset, nextHongKongMode: HongKongMode = hongKongMode, nextVariant: RiichiVariant = riichiVariant) => {
+      setState(createGame({ ruleset: nextRuleset, humanSeat: HUMAN, hongKongMode: nextHongKongMode, riichiVariant: nextVariant }));
       setPaused(false);
       trackMahjongEvent('mahjong_game_started', { variant: nextRuleset, mode: nextRuleset === 'hongkong' ? nextHongKongMode : 'default', source: 'new_hand' });
     },
-    [ruleset, hongKongMode]
+    [ruleset, hongKongMode, riichiVariant]
   );
 
   useEffect(() => {
@@ -179,6 +183,7 @@ export default function MahjongTable({
   const tsumoEvaluation = myTurn ? evaluateSelfDraw(state, HUMAN) : null;
   const canTsumo = Boolean(tsumoEvaluation?.legal);
   const kanTiles = myTurn ? availableKans(state, HUMAN) : [];
+  const canAbortNineTerminals = canDeclareNineTerminals(state, HUMAN);
   const riichiDiscards = myTurn ? availableRiichiDiscards(state, HUMAN) : [];
 
   // A legal self-draw is terminal: show the result automatically instead of
@@ -234,6 +239,13 @@ export default function MahjongTable({
         onTsumo={() => setState((current) => declareTsumo(current, HUMAN))}
         onKan={(tile) => setState((current) => declareKan(current, HUMAN, tile))}
         onRiichi={() => setState((current) => declareRiichi(current, HUMAN))}
+        canAbortNineTerminals={canAbortNineTerminals}
+        onNineTerminals={() => setState((current) => declareNineTerminals(current, HUMAN))}
+        riichiVariant={riichiVariant}
+        onRiichiVariant={(next) => {
+          setRiichiVariant(next);
+          newGame(ruleset, hongKongMode, next);
+        }}
       />
     );
   }
