@@ -102,9 +102,9 @@ export const games: GameConfig[] = [
     featured: true,
     content: {
       intro:
-        'Mahjong Hub Hong Kong Mahjong is a four-player product ruleset based on Hong Kong Old Style. It uses Characters, Dots, Bamboo, Winds, Red Dragon and Green Dragon; White Dragon plus all Flowers and Seasons are deliberately excluded. Build four sets and one pair, then choose Casual mode for beginner-friendly chicken hands or Standard mode for the traditional three-faan minimum.',
+        'Mahjong Hub Hong Kong Mahjong is a four-player product ruleset based on Hong Kong Old Style. It uses Characters, Dots, Bamboo, Winds and all three Dragons — Red, Green and White; Flowers and Seasons are deliberately excluded. Build four sets and one pair, then choose Casual mode for beginner-friendly chicken hands or Standard mode for the traditional three-faan minimum.',
       howToPlay: [
-        'The 132-tile product wall contains Characters, Dots, Bamboo, Winds, Red Dragon and Green Dragon. White Dragon, Flowers and Seasons are not used.',
+        'The 136-tile product wall contains Characters, Dots, Bamboo, Winds and the Red, Green and White Dragons. Flowers and Seasons are not used.',
         'Each player starts with 13 tiles; East starts with 14 and makes the first discard. On a later turn, draw one tile and then discard one, keeping your hand at 13.',
         'A winning hand is four sets plus one pair. A set is either three identical tiles or three consecutive tiles in the same suit.',
         'When another player discards a tile you need, you may call it: pong for a triplet, chi for a sequence (from the player to your left only), or kong for all four copies.',

@@ -32,7 +32,7 @@ Product reference: Mahjongo Riichi, observed only for visible table interaction 
 
 ## Deferred before tournament-complete status
 
-- Responsibility payment (pao) attribution and payment splitting for Big Three Dragons, Big Four Winds and Four Kans.
+- ~~Responsibility payment (pao) attribution and payment splitting for Big Three Dragons, Big Four Winds and Four Kans.~~ **已实现**：`engine.ts` + `riichi.ts` 的 `liability` 责任支付（大三元/大四喜/四杠），见后续提交。
 - Browser acceptance of the end-of-hanchan result screen on desktop, mobile portrait and mobile landscape.
 - Hong Kong fan catalogue, Kong settlement and responsibility rules remain intentionally separate from the WRC scorer and require their own approved product brief.
 
