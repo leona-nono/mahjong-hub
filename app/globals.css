@@ -302,3 +302,33 @@ body {
   border-radius: 0 4px 4px 0;
   transform: skewY(18deg);
 }
+
+/*
+ * Admin is a light-gray canvas nested under the public dark portal body.
+ * Without this, inputs inherit --portal-text (#e8eef7) and look washed out.
+ */
+.admin-shell {
+  color: #000;
+}
+
+.admin-shell input:not([type='checkbox']):not([type='radio']),
+.admin-shell textarea,
+.admin-shell select {
+  color: #000;
+  background-color: #fff;
+}
+
+.admin-shell textarea::placeholder,
+.admin-shell input::placeholder {
+  color: #9ca3af;
+}
+
+.admin-shell .cms-markdown,
+.admin-shell .cms-markdown p,
+.admin-shell .cms-markdown li,
+.admin-shell .cms-markdown h2,
+.admin-shell .cms-markdown h3,
+.admin-shell .cms-markdown span,
+.admin-shell .cms-markdown figcaption {
+  color: #000;
+}

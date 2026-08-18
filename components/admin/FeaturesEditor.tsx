@@ -188,7 +188,7 @@ export default function FeaturesEditor({ slug, initial }: Props) {
               }}
               placeholder={PLACEHOLDER}
               rows={22}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 font-mono text-sm focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 font-mono text-sm text-black focus:border-blue-500 focus:outline-none"
             />
           </div>
 
@@ -197,11 +197,11 @@ export default function FeaturesEditor({ slug, initial }: Props) {
               <p className="mb-2 text-xs font-semibold uppercase text-gray-500">
                 👁 前台预览
               </p>
-              <div className="min-h-[28rem] rounded-lg border border-gray-200 bg-slate-900/95 p-4">
+              <div className="min-h-[28rem] rounded-lg border border-gray-200 bg-white p-4 text-black">
                 {content.trim() ? (
                   <MarkdownContent markdown={content} />
                 ) : (
-                  <p className="text-sm text-portal-muted">开始编辑后会在这里预览。</p>
+                  <p className="text-sm text-gray-500">开始编辑后会在这里预览。</p>
                 )}
               </div>
             </div>

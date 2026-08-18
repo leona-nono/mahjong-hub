@@ -315,14 +315,14 @@ export default function GuideEditorForm({
             onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
             placeholder={PLACEHOLDER}
             rows={22}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 font-mono text-sm"
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 font-mono text-sm text-black"
           />
           {showPreview ? (
-            <div className="min-h-[28rem] rounded-lg border border-gray-200 bg-slate-900/95 p-4">
+            <div className="min-h-[28rem] rounded-lg border border-gray-200 bg-white p-4 text-black">
               {form.content.trim() ? (
                 <MarkdownContent markdown={form.content} />
               ) : (
-                <p className="text-sm text-portal-muted">开始编辑后会在这里预览。</p>
+                <p className="text-sm text-gray-500">开始编辑后会在这里预览。</p>
               )}
             </div>
           ) : null}

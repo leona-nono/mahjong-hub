@@ -58,7 +58,7 @@ export default async function AdminLayout({
   const items = NAV_ITEMS(locale);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="admin-shell flex min-h-screen bg-gray-50 text-black">
       {/* Sidebar */}
       <aside className="w-60 shrink-0 bg-gray-900 text-white">
         <div className="flex h-14 items-center px-5 text-lg font-bold tracking-wide">
@@ -86,7 +86,7 @@ export default async function AdminLayout({
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-6 text-black">{children}</main>
       </div>
     </div>
   );
