@@ -14,6 +14,10 @@ export const LANGUAGE_ALTERNATES = {
   'zh-TW': `${SITE_BASE_URL}/zh-TW`,
   ja: `${SITE_BASE_URL}/ja`,
   ko: `${SITE_BASE_URL}/ko`,
+  es: `${SITE_BASE_URL}/es`,
+  'pt-BR': `${SITE_BASE_URL}/pt-BR`,
+  fr: `${SITE_BASE_URL}/fr`,
+  de: `${SITE_BASE_URL}/de`,
   'x-default': `${SITE_BASE_URL}/en`
 } as const;
 
@@ -34,6 +38,10 @@ export function alternatesFor(
       'zh-TW': `${SITE_BASE_URL}/zh-TW${path}`,
       ja: `${SITE_BASE_URL}/ja${path}`,
       ko: `${SITE_BASE_URL}/ko${path}`,
+      es: `${SITE_BASE_URL}/es${path}`,
+      'pt-BR': `${SITE_BASE_URL}/pt-BR${path}`,
+      fr: `${SITE_BASE_URL}/fr${path}`,
+      de: `${SITE_BASE_URL}/de${path}`,
       'x-default': `${SITE_BASE_URL}/en${path}`
     }
   };

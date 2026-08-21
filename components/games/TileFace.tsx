@@ -155,7 +155,7 @@ export function TileBack({ size = 'md', className = '' }: { size?: TileSize; cla
   return (
     <span
       data-mahjong-tile
-      className={`inline-block border-2 border-emerald-200/70 bg-[linear-gradient(135deg,#34d399,#0f766e)] shadow-[inset_0_0_0_2px_rgba(255,255,255,.18),0_3px_6px_rgba(15,118,110,.28)] ${SIZE_CLASS[size]} ${className}`}
+      className={`inline-block border-2 border-emerald-200/70 bg-[image:var(--mahjong-tile-back-image)] bg-cover bg-center shadow-[inset_0_0_0_2px_rgba(255,255,255,.18),0_3px_6px_rgba(15,118,110,.28)] ${SIZE_CLASS[size]} ${className}`}
       aria-hidden="true"
     />
   );

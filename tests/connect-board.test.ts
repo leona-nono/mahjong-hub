@@ -56,6 +56,23 @@ describe('createBoard', () => {
   it('rejects layouts with an odd number of cells', () => {
     expect(() => createBoard({ rows: 3, cols: 3 })).toThrow();
   });
+
+  it('supports shaped two-dimensional boards without filling their open lanes', () => {
+    const board = createBoard({
+      rows: 4,
+      cols: 4,
+      slots: [
+        { row: 1, col: 2 }, { row: 1, col: 3 },
+        { row: 2, col: 1 }, { row: 2, col: 2 }, { row: 2, col: 3 }, { row: 2, col: 4 },
+        { row: 3, col: 1 }, { row: 3, col: 2 }, { row: 3, col: 3 }, { row: 3, col: 4 },
+        { row: 4, col: 2 }, { row: 4, col: 3 }
+      ],
+      seed: 12
+    });
+    expect(board.remaining).toBe(12);
+    expect(board.grid[1][1]).toBeNull();
+    expect(board.grid[4][4]).toBeNull();
+  });
 });
 
 describe('findPath', () => {

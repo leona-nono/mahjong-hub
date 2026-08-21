@@ -29,6 +29,8 @@ export interface BoardOptions {
   cols?: number;
   /** How many distinct tile faces to draw from. */
   kinds?: number;
+  /** Occupied cells for a shaped 2D board. Omit for a complete rectangle. */
+  slots?: readonly Cell[];
   seed?: number;
 }
 
@@ -47,9 +49,16 @@ export function createBoard(options: BoardOptions = {}): Board {
   const seed = options.seed ?? Math.floor(Math.random() * 2 ** 31);
   const rng = createRng(seed);
 
-  const total = rows * cols;
+  const slots = options.slots ?? Array.from({ length: rows * cols }, (_, index) => ({
+    row: Math.floor(index / cols) + 1,
+    col: (index % cols) + 1
+  }));
+  const total = slots.length;
   if (total % 2 !== 0) {
     throw new Error('Mahjong Connect needs an even number of cells');
+  }
+  if (slots.some(({ row, col }) => row < 1 || row > rows || col < 1 || col > cols)) {
+    throw new Error('Mahjong Connect slots must be inside the board');
   }
 
   const pool: Tile[] = [];
@@ -63,13 +72,9 @@ export function createBoard(options: BoardOptions = {}): Board {
     Array.from({ length: cols + 2 }, () => null)
   );
 
-  let index = 0;
-  for (let r = 1; r <= rows; r += 1) {
-    for (let c = 1; c <= cols; c += 1) {
-      grid[r][c] = pool[index];
-      index += 1;
-    }
-  }
+  slots.forEach((slot, index) => {
+    grid[slot.row][slot.col] = pool[index];
+  });
 
   return { rows, cols, grid, remaining: total };
 }

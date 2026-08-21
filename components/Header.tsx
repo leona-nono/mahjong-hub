@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import LocaleSwitcher from './LocaleSwitcher';
 import { useAuth } from '@/lib/auth';
 import { usePoints } from '@/lib/points';
+import { applyAppearance, savedAppearance } from '@/lib/appearance';
 
 export default function Header({ siteTitle }: { siteTitle: string }) {
   const tn = useTranslations('nav');
@@ -20,10 +21,15 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
   const [showAccount, setShowAccount] = useState(false);
   const user = session?.user;
 
+  useEffect(() => {
+    applyAppearance(savedAppearance());
+  }, []);
+
   const links = [
     { href: '/games/solitaire', label: tn('solitaire') },
     { href: '/games/classic', label: tn('classic') },
     { href: '/games', label: tn('games') },
+    { href: '/wardrobe', label: tn('wardrobe') },
     { href: '/blog', label: tn('beginners') }
   ];
 

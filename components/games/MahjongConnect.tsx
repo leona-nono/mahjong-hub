@@ -226,7 +226,12 @@ export default function MahjongConnect({
       <div className="overflow-x-auto">
         <div
           className="relative mx-auto grid w-max gap-1 rounded-2xl border border-sky-100 bg-white/80 p-3 shadow-inner sm:gap-1.5"
-          style={{ gridTemplateColumns: `repeat(${board.cols}, minmax(0, 1fr))` }}
+          style={{
+            gridTemplateColumns: `repeat(${board.cols}, minmax(0, 1fr))`,
+            backgroundImage: 'linear-gradient(rgba(255,255,255,.76), rgba(255,255,255,.76)), var(--mahjong-table-image)',
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+          }}
         >
           {flash.length > 0 && (
             <svg

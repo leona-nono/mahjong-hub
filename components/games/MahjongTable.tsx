@@ -251,7 +251,7 @@ export default function MahjongTable({
   }
 
   return (
-    <div className={traditional ? "relative min-h-[820px] overflow-hidden rounded-none border-[6px] border-[#073727] bg-[#07553f] p-2 text-white shadow-[0_24px_70px_rgba(2,44,34,.45)] sm:rounded-xl sm:p-4" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
+    <div className={traditional ? "mahjong-desktop-board--seasonal relative min-h-[820px] overflow-hidden rounded-none border-[6px] border-[#073727] bg-[#07553f] p-2 text-white shadow-[0_24px_70px_rgba(2,44,34,.45)] sm:rounded-xl sm:p-4" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
       {/* Controls */}
       {traditional && <div className="absolute right-5 top-5 z-20 text-sm font-semibold tracking-wide text-emerald-100/70">Rate: 10</div>}
       <div className={traditional ? "absolute left-3 top-3 z-30 flex flex-wrap items-center gap-2 rounded-lg border border-emerald-800/80 bg-[#062b23]/95 p-2 text-sm shadow-lg backdrop-blur" : "relative z-20 mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-white/80 bg-white/90 p-2 text-sm shadow-md backdrop-blur lg:absolute lg:left-3 lg:top-3 lg:mb-0"}>
@@ -300,7 +300,7 @@ export default function MahjongTable({
           onClick={() => setPaused((value) => !value)}
           className="rounded-full border border-emerald-700 bg-emerald-900/70 px-3 py-1.5 font-bold text-emerald-50 hover:bg-emerald-800"
         >
-          {paused ? '▶ 继续' : 'Ⅱ 暂停'}
+          {paused ? t('resume') : t('pause')}
         </button>
         <button
           type="button"
@@ -334,7 +334,7 @@ export default function MahjongTable({
           <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-52 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-950/80 bg-[#10131d] p-4 text-center shadow-2xl">
             <div className="text-[10px] uppercase tracking-[.24em] text-emerald-300">{isMcr ? 'MCR TRAINING' : 'HONG KONG'}</div>
             <div className="mt-2 text-3xl font-light text-cyan-200">East 1</div>
-            <div className="mt-1 text-xs text-slate-400">牌墙 {tilesRemaining(state)} · {SEAT_LABEL[state.turn]} 回合</div>
+            <div className="mt-1 text-xs text-slate-400">{t('wallAndTurn', { n: tilesRemaining(state), seat: SEAT_LABEL[state.turn] })}</div>
           </div>
         </>}
         <div className="relative z-10 mb-3 flex items-center justify-between text-xs text-gray-500">
@@ -348,8 +348,8 @@ export default function MahjongTable({
 
         {isMcr && (
           <div className="relative z-10 mb-3 rounded-xl border border-amber-200/30 bg-amber-100/10 px-3 py-2 text-xs text-amber-50">
-            <strong className="mr-2 text-amber-200">MCR 训练赛开发中</strong>
-            已支持 144 张、花季补花与 8 分起和；完整 81 番计分和国标专属结算正在实现。
+            <strong className="mr-2 text-amber-200">{t('mcrBannerTitle')}</strong>
+            {t('mcrBannerBody')}
           </div>
         )}
 
@@ -426,7 +426,7 @@ export default function MahjongTable({
       <div className="relative z-30 rounded-2xl border border-emerald-900/80 bg-[#f5f5ed]/95 p-3 shadow-[0_-10px_28px_rgba(15,23,42,.12)] backdrop-blur lg:absolute lg:bottom-4 lg:left-1/2 lg:w-[72%] lg:-translate-x-1/2">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-sm font-bold text-gray-700">
-            {t('yourHand')} 路 {SEAT_LABEL[HUMAN]}
+            {t('yourHand')} · {SEAT_LABEL[HUMAN]}
           </span>
           {hints && (
             <span className="text-xs text-gray-500">
@@ -451,7 +451,7 @@ export default function MahjongTable({
 
         {isMcr && human.flowers.length > 0 && (
           <div className="mb-2 flex flex-wrap items-center gap-1.5 rounded-lg border border-amber-200/60 bg-amber-50 p-2">
-            <span className="mr-1 text-xs font-bold text-amber-800">补花区 · {human.flowers.length} 张</span>
+            <span className="mr-1 text-xs font-bold text-amber-800">{t('flowerArea', { n: human.flowers.length })}</span>
             {human.flowers.map((tile, index) => (
               <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />
             ))}
@@ -481,6 +481,7 @@ export default function MahjongTable({
 }
 
 function OpponentPanel({ state, seat, traditional }: { state: GameState; seat: Seat; traditional: boolean }) {
+  const t = useTranslations('mahjong');
   const player = state.players[seat];
   const active = state.turn === seat && state.phase !== 'over';
   return (
@@ -511,7 +512,7 @@ function OpponentPanel({ state, seat, traditional }: { state: GameState; seat: S
       )}
       {state.ruleset === 'chinese-official' && player.flowers.length > 0 && (
         <div className="mt-1 flex flex-wrap items-center gap-0.5">
-          <span className="mr-1 text-[10px] text-amber-100">花 {player.flowers.length}</span>
+          <span className="mr-1 text-[10px] text-amber-100">{t('flowerCount', { n: player.flowers.length })}</span>
           {player.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
         </div>
       )}
