@@ -467,6 +467,19 @@
     "tap3Tiles": "Tap 3 tiles to pass · {n}/3",
     "pass3Tiles": "Pass 3 tiles",
     "aiTitle": "AMERICAN MAHJONG · AI",
-    "cardDetail": "{card} · {difficulty} · {points} points"
+    "cardDetail": "{card} · {difficulty} · {points} points",
+    "coachTitle": "Strategy coach",
+    "coachRankings": "Live card lines",
+    "coachKeep": "Keep flexible",
+    "coachPass": "Pass first",
+    "coachDiscard": "Suggested discard",
+    "coachExposureWait": "Do not expose just to chase a tile; keep your options open.",
+    "coachExposureCommit": "An exposure commits your hand. Call only when it matches a live card line.",
+    "coachExposureCompatible": "Your exposed group still fits a live card line.",
+    "coachJokerExchange": "You can exchange the exposed Joker with {tile}.",
+    "coachOuts": "Useful tiles still visible",
+    "coachRiskLow": "Low public risk: another player already discarded {tile}.",
+    "coachRiskMedium": "Public risk is unknown for {tile}.",
+    "coachRiskHigh": "High public risk: an opponent has exposed {tile}."
   }
 }

@@ -443,6 +443,19 @@
     "tap3Tiles": "3枚タップして渡す · {n}/3",
     "pass3Tiles": "3枚渡す",
     "aiTitle": "アメリカ麻雀 · AI",
-    "cardDetail": "{card} · {difficulty} · {points}点"
+    "cardDetail": "{card} · {difficulty} · {points}点",
+    "coachTitle": "戦略コーチ",
+    "coachRankings": "有力なカードライン",
+    "coachKeep": "残す候補",
+    "coachPass": "渡す候補",
+    "coachDiscard": "推奨の捨て牌",
+    "coachExposureWait": "一枚を追うためだけに晒さず、選択肢を残しましょう。",
+    "coachExposureCommit": "晒しは方針を固定します。成立するラインに合う時だけ鳴きましょう。",
+    "coachExposureCompatible": "晒した組は有効なカードラインにまだ合っています。",
+    "coachJokerExchange": "{tile} で晒したジョーカーを交換できます。",
+    "coachOuts": "残っている有効牌",
+    "coachRiskLow": "公開情報では低リスク：他家が {tile} を捨てています。",
+    "coachRiskMedium": "{tile} の公開リスクは不明です。",
+    "coachRiskHigh": "高リスク：他家が {tile} を晒しています。"
   }
 }

@@ -443,6 +443,19 @@
     "tap3Tiles": "点击 3 张以传牌 · {n}/3",
     "pass3Tiles": "传 3 张牌",
     "aiTitle": "美国麻将 · AI",
-    "cardDetail": "{card} · {difficulty} · {points} 分"
+    "cardDetail": "{card} · {difficulty} · {points} 分",
+    "coachTitle": "策略教练",
+    "coachRankings": "可行牌型",
+    "coachKeep": "优先保留",
+    "coachPass": "优先传出",
+    "coachDiscard": "建议打出",
+    "coachExposureWait": "不要只为追一张牌而亮牌，先保留更多选择。",
+    "coachExposureCommit": "亮牌会锁定方向；只在仍符合可行牌型时叫牌。",
+    "coachExposureCompatible": "已亮出的牌组仍符合可行牌型。",
+    "coachJokerExchange": "可用 {tile} 换回已亮出的 Joker。",
+    "coachOuts": "可见有效牌",
+    "coachRiskLow": "公开风险低：已有其他玩家打出过 {tile}。",
+    "coachRiskMedium": "{tile} 的公开风险未知。",
+    "coachRiskHigh": "公开风险高：对手已亮出 {tile}。"
   }
 }
