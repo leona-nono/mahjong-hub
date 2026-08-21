@@ -8,6 +8,7 @@ import { routing } from '@/i18n/routing';
 import '@/app/globals.css';
 import Providers from '@/components/providers';
 import Analytics from '@/components/Analytics';
+import ConsentBanner from '@/components/ConsentBanner';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import PwaInstallHint from '@/components/PwaInstallHint';
 import { LANGUAGE_ALTERNATES } from '@/lib/seo';
@@ -111,6 +112,7 @@ export default async function LocaleLayout({
             }}
           >
             {children}
+            <ConsentBanner />
           </Providers>
           <Analytics />
           <ServiceWorkerRegister />

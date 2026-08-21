@@ -56,6 +56,27 @@
     "rights": "麻将乐园 · 彩虹治愈系麻将游戏合集。",
     "noGambling": "免费游玩 · 无真金赌博"
   },
+  "consent": {
+    "title": "Cookie 与隐私",
+    "body": "我们使用必要 Cookie 运行游戏。分析和广告默认关闭，只有你选择同意后才会开启。拒绝后仍可游玩。",
+    "bodyGpc": "你的浏览器发送了全球隐私控制（GPC）信号。分析和广告保持关闭，除非你在下方主动开启。",
+    "privacy": "隐私政策",
+    "cookies": "Cookie 政策",
+    "settings": "Cookie 设置",
+    "acceptAll": "全部接受",
+    "reject": "拒绝非必要",
+    "customize": "自定义",
+    "save": "保存选择",
+    "necessary": "必要",
+    "necessaryHelp": "登录、隐私选择、无障碍设置，以及本机游客进度。",
+    "analytics": "分析",
+    "analyticsHelp": "匿名漏斗（首次点牌耗时、通关、PWA）。不发送牌面或手牌。",
+    "advertising": "广告",
+    "advertisingHelp": "接入广告网络后的激励视频。目前不会加载。"
+  },
+  "affiliate": {
+    "ftc": "作为 Amazon Associates 联盟成员，商品链接上线后我们可能从符合条件的购买中获得佣金，这不会改变你支付的价格。推荐为编辑选择；我们不会为该佣金向 Amazon 出售你的个人数据。"
+  },
   "auth": {
     "login": "登录",
     "loginToEarn": "登录以保存你的积分",
@@ -203,6 +224,7 @@
     "settingsTitle": "游戏设置",
     "settingsBlurb": "保存在本设备。快捷键：H 提示 · Z 撤销 · P 暂停。",
     "highlightFree": "高亮可点的自由牌",
+    "colorblindMarks": "色盲标记（字母+点数）",
     "tableTheme": "桌面主题",
     "themeTeal": "青绿",
     "themeFelt": "经典绿",

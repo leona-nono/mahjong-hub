@@ -148,8 +148,11 @@ export async function pointsSnapshotForUser(userId: string): Promise<{
     console.error('[points] first_login grant failed', err);
   }
 
-  const [row, checkIn, txs] = await Promise.all([
-    prisma.userPoint.findUnique({ where: { userId } }),
+  const [sum, checkIn, txs] = await Promise.all([
+    prisma.pointTransaction.aggregate({
+      where: { userId },
+      _sum: { amount: true }
+    }),
     checkinStateForUser(userId).catch(() => ({
       claimedToday: false,
       streak: 1,
@@ -164,8 +167,19 @@ export async function pointsSnapshotForUser(userId: string): Promise<{
     })
   ]);
 
+  const total = sum._sum.amount ?? 0;
+  try {
+    await prisma.userPoint.upsert({
+      where: { userId },
+      create: { userId, total },
+      update: { total }
+    });
+  } catch {
+    /* cache row is optional */
+  }
+
   return {
-    total: row?.total ?? 0,
+    total,
     firstLoginGranted,
     checkIn,
     ledger: txs.map((tx) => ({

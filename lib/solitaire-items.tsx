@@ -4,8 +4,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { getAuthState, openLogin } from '@/lib/auth';
 import { hydratePointsFromServer, usePoints } from '@/lib/points';
 import {
-  AD_CAP_RESCUE_PER_LEVEL,
-  AD_CAP_TOOL_PER_LEVEL,
   ITEM_PRICE,
   emptyInventory,
   type ItemInventory,
@@ -19,6 +17,7 @@ import {
   writeProgress,
   type SolitaireProgress
 } from '@/lib/mahjong-solitaire/item-inventory';
+import { adsEnabled } from '@/lib/flags';
 
 export type PayChannel = 'inventory' | 'points' | 'ad';
 
@@ -158,27 +157,11 @@ export function useSolitaireItems() {
         return { ok: true };
       }
 
-      // ad — session one-shot, not stored in inventory
-      if (itemType === 'rescue') {
-        if (ads.rescueAdsUsed >= AD_CAP_RESCUE_PER_LEVEL) {
-          return { ok: false, reason: 'ad_cap' };
-        }
-        setAds((a) => ({ ...a, rescueAdsUsed: a.rescueAdsUsed + 1 }));
-      } else {
-        if (ads.toolAdsUsed >= AD_CAP_TOOL_PER_LEVEL) {
-          return { ok: false, reason: 'ad_cap' };
-        }
-        setAds((a) => ({ ...a, toolAdsUsed: a.toolAdsUsed + 1 }));
+      // ad — requires a verified S2S grant from /api/reward/verify.
+      if (!adsEnabled()) {
+        return { ok: false, reason: 'ads_unavailable' };
       }
-      if (getAuthState().user) {
-        void fetch('/api/solitaire/item', {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'ad_grant', itemType })
-        });
-      }
-      return { ok: true };
+      return { ok: false, reason: 'grant_required' };
     },
     [ads, inventory, points]
   );

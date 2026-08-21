@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db';
 import { START_GAME_POINTS } from '@/lib/points-rules';
 import { pointsSnapshotForUser } from '@/lib/points-server';
 import { requireUserId } from '@/lib/require-user';
+import { ledgerTotal, syncCachedTotal } from '@/lib/points-ledger';
 
 export const dynamic = 'force-dynamic';
 
@@ -74,26 +75,21 @@ export async function POST(req: NextRequest) {
     });
     const used = today._sum.amount ?? 0;
     if (used + amount > cap) {
-      const row = await prisma.userPoint.findUnique({ where: { userId } });
+      const total = await ledgerTotal(prisma, userId);
       return NextResponse.json(
-        { error: 'daily cap exceeded', cap, used, total: row?.total ?? 0, granted: false },
+        { error: 'daily cap exceeded', cap, used, total, granted: false },
         { status: 429 }
       );
     }
 
-    const updated = await prisma.$transaction(async (tx) => {
-      const row = await tx.userPoint.upsert({
-        where: { userId },
-        create: { userId, total: amount },
-        update: { total: { increment: amount } }
-      });
+    const total = await prisma.$transaction(async (tx) => {
       await tx.pointTransaction.create({
         data: { userId, amount, reason, gameSlug }
       });
-      return row;
+      return syncCachedTotal(tx, userId);
     });
 
-    return NextResponse.json({ total: updated.total, granted: true, amount });
+    return NextResponse.json({ total, granted: true, amount });
   } catch {
     return NextResponse.json({ error: 'unavailable' }, { status: 503 });
   }

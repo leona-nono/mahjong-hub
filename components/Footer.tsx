@@ -1,9 +1,11 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { openConsentManager } from '@/lib/consent';
 
 export default function Footer({ siteTitle }: { siteTitle: string }) {
   const t = useTranslations('footer');
   const tn = useTranslations('nav');
+  const tc = useTranslations('consent');
 
   return (
     <footer className="mt-10 border-t border-portal-border bg-portal-elevated/60">
@@ -24,6 +26,19 @@ export default function Footer({ siteTitle }: { siteTitle: string }) {
           <Link href="/blog" className="hover:text-portal-accent">
             {tn('beginners')}
           </Link>
+          <Link href="/privacy" className="hover:text-portal-accent">
+            {tc('privacy')}
+          </Link>
+          <Link href="/cookies" className="hover:text-portal-accent">
+            {tc('cookies')}
+          </Link>
+          <button
+            type="button"
+            className="hover:text-portal-accent"
+            onClick={() => openConsentManager()}
+          >
+            {tc('settings')}
+          </button>
         </div>
       </div>
     </footer>

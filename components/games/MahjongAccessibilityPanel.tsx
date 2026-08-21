@@ -13,6 +13,8 @@ export interface MahjongPreferences {
   tileScale: TileScale;
   /** Highlight free (playable) tiles — TheMahjong-style assist. */
   highlightFreeTiles: boolean;
+  /** Dual-encode suit+rank so tiles do not rely on color alone. */
+  colorblindMarks: boolean;
   /** Board felt / backdrop theme. */
   tableTheme: TableTheme;
 }
@@ -24,6 +26,7 @@ const DEFAULTS: MahjongPreferences = {
   reducedMotion: false,
   tileScale: 'normal',
   highlightFreeTiles: true,
+  colorblindMarks: false,
   tableTheme: 'teal'
 };
 
@@ -94,6 +97,13 @@ export default function MahjongAccessibilityPanel({
               label={t('highlightFree')}
               checked={preferences.highlightFreeTiles}
               onChange={(checked) => onChange('highlightFreeTiles', checked)}
+            />
+          )}
+          {solitaireExtras && (
+            <Setting
+              label={t('colorblindMarks')}
+              checked={preferences.colorblindMarks}
+              onChange={(checked) => onChange('colorblindMarks', checked)}
             />
           )}
           <Setting

@@ -56,6 +56,27 @@
     "rights": "麻將樂園 · 彩虹治癒系麻將遊戲合集。",
     "noGambling": "免費遊玩 · 無真金賭博"
   },
+  "consent": {
+    "title": "Cookie 與隱私",
+    "body": "我們使用必要 Cookie 運作遊戲。分析與廣告預設關閉，只有你選擇同意後才會開啟。拒絕後仍可遊玩。",
+    "bodyGpc": "你的瀏覽器傳送了全球隱私控制（GPC）訊號。分析與廣告保持關閉，除非你在下方主動開啟。",
+    "privacy": "隱私權政策",
+    "cookies": "Cookie 政策",
+    "settings": "Cookie 設定",
+    "acceptAll": "全部接受",
+    "reject": "拒絕非必要",
+    "customize": "自訂",
+    "save": "儲存選擇",
+    "necessary": "必要",
+    "necessaryHelp": "登入、隱私選擇、無障礙設定，以及本機訪客進度。",
+    "analytics": "分析",
+    "analyticsHelp": "匿名漏斗（首次點牌耗時、過關、PWA）。不傳送牌面或手牌。",
+    "advertising": "廣告",
+    "advertisingHelp": "接入廣告網路後的激勵影片。目前不會載入。"
+  },
+  "affiliate": {
+    "ftc": "作為 Amazon Associates 聯盟成員，商品連結上線後我們可能從符合條件的購買中獲得佣金，這不會改變你支付的價格。推薦為編輯選擇；我們不會為該佣金向 Amazon 出售你的個人資料。"
+  },
   "auth": {
     "login": "登入",
     "loginToEarn": "登入以保存你的積分",
@@ -203,6 +224,7 @@
     "settingsTitle": "遊戲設定",
     "settingsBlurb": "保存在本裝置。快捷鍵：H 提示 · Z 復原 · P 暫停。",
     "highlightFree": "高亮可點的自由牌",
+    "colorblindMarks": "色盲標記（字母+點數）",
     "tableTheme": "桌面主題",
     "themeTeal": "青綠",
     "themeFelt": "經典綠",

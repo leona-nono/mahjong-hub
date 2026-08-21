@@ -56,6 +56,27 @@
     "rights": "마작 허브 · 레인보드 힐링 타일 게임 모음.",
     "noGambling": "무료 플레이 · 현금 도박 없음"
   },
+  "consent": {
+    "title": "쿠키와 개인정보",
+    "body": "게임 운영에 필요한 쿠키만 기본으로 사용합니다. 분석과 광고는 동의하기 전까지 꺼져 있습니다. 거부해도 플레이할 수 있습니다.",
+    "bodyGpc": "브라우저가 Global Privacy Control(GPC) 신호를 보냈습니다. 아래에서 직접 켜기 전까지 분석과 광고는 꺼진 상태입니다.",
+    "privacy": "개인정보 처리방침",
+    "cookies": "쿠키 정책",
+    "settings": "쿠키 설정",
+    "acceptAll": "모두 허용",
+    "reject": "필수 외 거부",
+    "customize": "맞춤 설정",
+    "save": "선택 저장",
+    "necessary": "필수",
+    "necessaryHelp": "로그인, 개인정보 선택, 접근성, 이 기기의 게스트 진행.",
+    "analytics": "분석",
+    "analyticsHelp": "익명 퍼널(첫 타일까지 시간, 클리어, PWA). 패 배치는 보내지 않습니다.",
+    "advertising": "광고",
+    "advertisingHelp": "광고 네트워크 연결 후의 리워드 영상. 지금은 로드하지 않습니다."
+  },
+  "affiliate": {
+    "ftc": "Amazon Associates 회원으로서, 상품 링크가 열린 뒤 적격 구매에서 수수료를 받을 수 있습니다. 결제 가격은 달라지지 않습니다. 추천은 편집 판단이며, 그 수수료를 위해 Amazon에 개인정보를 판매하지 않습니다."
+  },
   "auth": {
     "login": "로그인",
     "loginToEarn": "로그인하여 포인트 저장",
@@ -203,6 +224,7 @@
     "settingsTitle": "게임 설정",
     "settingsBlurb": "이 기기에 저장됩니다. 단축키: H 힌트 · Z 실행 취소 · P 일시정지.",
     "highlightFree": "자유 패 강조",
+    "colorblindMarks": "색각 표시(글자+숫자)",
     "tableTheme": "테이블 테마",
     "themeTeal": "청록",
     "themeFelt": "클래식 그린",

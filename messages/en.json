@@ -56,6 +56,27 @@
     "rights": "Mahjong Hub · A rainbow healing tile game collection.",
     "noGambling": "Free to play · No real-money gambling"
   },
+  "consent": {
+    "title": "Cookies and privacy",
+    "body": "We use necessary cookies to run the game. Analytics and advertising stay off unless you opt in. You can play without accepting them.",
+    "bodyGpc": "Your browser sent a Global Privacy Control signal. Analytics and advertising stay off unless you opt in below.",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookie Policy",
+    "settings": "Cookie settings",
+    "acceptAll": "Accept all",
+    "reject": "Reject non-essential",
+    "customize": "Customize",
+    "save": "Save choices",
+    "necessary": "Necessary",
+    "necessaryHelp": "Sign-in, your privacy choice, accessibility, and guest progress on this device.",
+    "analytics": "Analytics",
+    "analyticsHelp": "Anonymous play funnel (first-tile time, clears, PWA). No tile layouts or hands.",
+    "advertising": "Advertising",
+    "advertisingHelp": "Rewarded video when we connect an ad network. Not loaded today."
+  },
+  "affiliate": {
+    "ftc": "As an Amazon Associate we will earn from qualifying purchases when product links go live. That does not change the price you pay. Recommendations are editorial; we do not sell your data to Amazon for those commissions."
+  },
   "auth": {
     "login": "Sign in",
     "loginToEarn": "Sign in to save your points",
@@ -203,6 +224,7 @@
     "settingsTitle": "Game settings",
     "settingsBlurb": "Saved on this device. Shortcuts: H hint · Z undo · P pause.",
     "highlightFree": "Highlight free tiles",
+    "colorblindMarks": "Colorblind marks (letter + rank)",
     "tableTheme": "Table theme",
     "themeTeal": "Teal felt",
     "themeFelt": "Classic green",

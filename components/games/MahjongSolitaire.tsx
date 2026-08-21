@@ -35,6 +35,7 @@ import { recordGuestDailyClear } from '@/lib/mahjong-solitaire/daily-local';
 import { useSolitaireTilePreload, warmSolitaireTileArt } from '@/lib/mahjong-solitaire/tile-preload';
 import { trackSolitaireEvent } from '@/lib/mahjong-solitaire/telemetry';
 import { utcDateString } from '@/lib/points-rules';
+import { adsEnabled } from '@/lib/flags';
 import catalogFile from '@/lib/mahjong-solitaire/seed-catalog.json';
 import {
   applyHint,
@@ -792,13 +793,15 @@ export default function MahjongSolitaire({
             >
               {t('buyWithPoints', { n: items.prices[offer.item] })}
             </button>
-            <button
-              type="button"
-              onClick={() => void offer.run('ad')}
-              className="rounded-full border border-violet-300 px-4 py-2 font-medium"
-            >
-              {t('watchAdOnce')}
-            </button>
+            {adsEnabled() && (
+              <button
+                type="button"
+                onClick={() => void offer.run('ad')}
+                className="rounded-full border border-violet-300 px-4 py-2 font-medium"
+              >
+                {t('watchAdOnce')}
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setOffer(null)}
@@ -878,13 +881,15 @@ export default function MahjongSolitaire({
             >
               {t('buyWithPoints', { n: items.prices.rescue })}
             </button>
-            <button
-              type="button"
-              onClick={() => void runRescue('ad')}
-              className="rounded-full border border-amber-300 px-4 py-2 font-medium"
-            >
-              {t('watchAdRescue')}
-            </button>
+            {adsEnabled() && (
+              <button
+                type="button"
+                onClick={() => void runRescue('ad')}
+                className="rounded-full border border-amber-300 px-4 py-2 font-medium"
+              >
+                {t('watchAdRescue')}
+              </button>
+            )}
             <button
               type="button"
               onClick={() =>
@@ -952,6 +957,7 @@ export default function MahjongSolitaire({
                   selected={isSelected}
                   hinted={isHinted}
                   dimmed={!exposed}
+                  colorblind={preferences.colorblindMarks}
                 />
               </button>
             );

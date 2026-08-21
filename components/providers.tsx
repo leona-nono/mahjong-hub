@@ -4,6 +4,10 @@ import { SessionProvider, useSession } from 'next-auth/react';
 import { useEffect, type ReactNode } from 'react';
 import { clearSessionUser, initAuth, syncSessionUser } from '@/lib/auth';
 import { hydratePointsFromServer, resetPointsForGuest } from '@/lib/points';
+import {
+  clearGuestMergeFlag,
+  mergeGuestProgressOnLogin
+} from '@/lib/guest-snapshot';
 import LoginModal from '@/components/LoginModal';
 
 export interface EnabledAuthProviders {
@@ -28,9 +32,11 @@ function AuthSessionBridge() {
         provider: 'authjs'
       });
       void hydratePointsFromServer();
+      void mergeGuestProgressOnLogin();
     } else if (status === 'unauthenticated') {
       clearSessionUser();
       resetPointsForGuest();
+      clearGuestMergeFlag();
     }
   }, [session, status]);
 

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/db';
+import { verifyGrant } from '@/lib/reward-token';
+import { adsEnabled } from '@/lib/flags';
+import { ledgerTotal, syncCachedTotal } from '@/lib/points-ledger';
 import {
   ITEM_PRICE,
   ITEM_TYPES,
@@ -79,7 +82,7 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: 'invalid body' }, { status: 400 });
   }
-  const b = body as { action?: unknown; itemType?: unknown };
+  const b = body as { action?: unknown; itemType?: unknown; grantToken?: unknown };
 
   if (!isItemType(b.itemType)) {
     return NextResponse.json({ error: 'invalid itemType' }, { status: 400 });
@@ -94,14 +97,30 @@ export async function POST(req: NextRequest) {
     await ensureStarter(userId);
 
     if (action === 'ad_grant') {
-      // Session one-shot token: do NOT enter permanent inventory (design §3).
-      // Client applies effect immediately; we only audit the grant.
+      if (!adsEnabled()) {
+        return NextResponse.json({ error: 'ads_not_configured' }, { status: 501 });
+      }
+      if (typeof b.grantToken !== 'string') {
+        return NextResponse.json({ error: 'grant_required' }, { status: 403 });
+      }
+      const verified = verifyGrant(b.grantToken, { userId });
+      if (!verified.ok || verified.grant.itemType !== itemType) {
+        return NextResponse.json({ error: 'invalid_grant' }, { status: 403 });
+      }
+      const nonceKey = `reward:${verified.grant.nonce}`;
+      const replay = await prisma.itemLedger.findFirst({
+        where: { userId, reason: nonceKey },
+        select: { id: true }
+      });
+      if (replay) {
+        return NextResponse.json({ error: 'replay' }, { status: 409 });
+      }
       await prisma.itemLedger.create({
         data: {
           userId,
           itemType,
           delta: 0,
-          reason: 'ad_grant_audit'
+          reason: nonceKey
         }
       });
       const inventory = await balanceForUser(userId);
@@ -111,19 +130,9 @@ export async function POST(req: NextRequest) {
     if (action === 'buy') {
       const price = ITEM_PRICE[itemType];
       const result = await prisma.$transaction(async (tx) => {
-        const pointRow = await tx.userPoint.findUnique({ where: { userId } });
-        const total = pointRow?.total ?? 0;
+        const total = await ledgerTotal(tx, userId);
         if (total < price) {
           return { error: 'insufficient_points' as const, total };
-        }
-        const updated = await tx.userPoint.upsert({
-          where: { userId },
-          create: { userId, total: 0 },
-          update: { total: { decrement: price } }
-        });
-        // Guard against race going negative
-        if (updated.total < 0) {
-          throw new Error('insufficient_points');
         }
         await tx.pointTransaction.create({
           data: {
@@ -141,7 +150,8 @@ export async function POST(req: NextRequest) {
             reason: 'buy'
           }
         });
-        return { error: null as null, total: updated.total };
+        const next = await syncCachedTotal(tx, userId);
+        return { error: null as null, total: next };
       });
 
       if (result.error) {

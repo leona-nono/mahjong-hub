@@ -56,6 +56,27 @@
     "rights": "麻雀ハブ · レインボー癒やし系タイルゲーム集。",
     "noGambling": "無料で遊べる・金銭賭博なし"
   },
+  "consent": {
+    "title": "Cookie とプライバシー",
+    "body": "ゲーム運営に必要な Cookie を使います。分析と広告は同意するまでオフです。拒否してもプレイできます。",
+    "bodyGpc": "ブラウザが Global Privacy Control（GPC）を送っています。分析と広告は、下で明示的にオンにしない限りオフのままです。",
+    "privacy": "プライバシーポリシー",
+    "cookies": "Cookie ポリシー",
+    "settings": "Cookie 設定",
+    "acceptAll": "すべて許可",
+    "reject": "必須以外を拒否",
+    "customize": "カスタマイズ",
+    "save": "選択を保存",
+    "necessary": "必須",
+    "necessaryHelp": "ログイン、プライバシー選択、アクセシビリティ、ゲスト進行。",
+    "analytics": "分析",
+    "analyticsHelp": "匿名の導線（最初の牌までの時間、クリア、PWA）。牌姿は送りません。",
+    "advertising": "広告",
+    "advertisingHelp": "広告ネットワーク接続後のリワード動画。現在は読み込みません。"
+  },
+  "affiliate": {
+    "ftc": "Amazon アソシエイトとして、商品リンク公開後に適格な購入から紹介料を得ます。支払価格は変わりません。推薦は編集判断であり、その紹介料のために Amazon へ個人データを販売しません。"
+  },
   "auth": {
     "login": "ログイン",
     "loginToEarn": "ログインしてポイントを保存",
@@ -203,6 +224,7 @@
     "settingsTitle": "ゲーム設定",
     "settingsBlurb": "この端末に保存。ショートカット：H ヒント · Z 取消 · P 一時停止。",
     "highlightFree": "フリー牌をハイライト",
+    "colorblindMarks": "色覚サポート（字母+数）",
     "tableTheme": "卓のテーマ",
     "themeTeal": "ティール",
     "themeFelt": "クラシック緑",

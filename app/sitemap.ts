@@ -58,6 +58,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: alternatesFor('/blog') }
     });
 
+    for (const legalPath of ['/privacy', '/cookies'] as const) {
+      entries.push({
+        url: `${BASE}/${locale}${legalPath}`,
+        lastModified,
+        changeFrequency: 'yearly',
+        priority: 0.3,
+        alternates: { languages: alternatesFor(legalPath) }
+      });
+    }
+
     for (const post of blogPosts) {
       const path = `/blog/${post.slug}`;
       entries.push({

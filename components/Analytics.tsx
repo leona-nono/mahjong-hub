@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
+import {
+  CONSENT_CHANGED_EVENT,
+  CONSENT_STORAGE_KEY,
+  detectGlobalPrivacyControl,
+  parseConsent,
+  shouldLoadAnalytics
+} from '@/lib/consent';
 
 type AnalyticsIds = { ga: string; gtm: string };
 
@@ -27,20 +34,37 @@ function fromCache(): AnalyticsIds | null {
   }
 }
 
+function currentConsent(): { allowed: boolean } {
+  try {
+    const stored = parseConsent(localStorage.getItem(CONSENT_STORAGE_KEY));
+    const gpc = detectGlobalPrivacyControl(navigator);
+    if (!stored) return { allowed: false };
+    return { allowed: shouldLoadAnalytics(stored, gpc) };
+  } catch {
+    return { allowed: false };
+  }
+}
+
 /**
- * Injects GA4 / GTM without hitting the origin on every page view.
- *
- * Prefer Vercel env (`NEXT_PUBLIC_GA_ID` / `NEXT_PUBLIC_GTM_ID`) so public
- * pages stay fully static. Fall back to the CMS endpoint at most once per
- * browser session.
+ * GA4 / GTM stay unloaded until analytics consent (GDPR/CCPA).
  */
 export default function Analytics() {
   const env = fromEnv();
+  const [allowed, setAllowed] = useState(false);
   const [data, setData] = useState<AnalyticsIds | null>(
     env.ga || env.gtm ? env : null
   );
 
   useEffect(() => {
+    const apply = () => setAllowed(currentConsent().allowed);
+    apply();
+    const onChange = () => apply();
+    window.addEventListener(CONSENT_CHANGED_EVENT, onChange);
+    return () => window.removeEventListener(CONSENT_CHANGED_EVENT, onChange);
+  }, []);
+
+  useEffect(() => {
+    if (!allowed) return;
     if (env.ga || env.gtm) return;
 
     const cached = fromCache();
@@ -63,9 +87,9 @@ export default function Analytics() {
         }
       })
       .catch(() => {});
-  }, [env.ga, env.gtm]);
+  }, [allowed, env.ga, env.gtm]);
 
-  if (!data) return null;
+  if (!allowed || !data) return null;
   const { ga, gtm } = data;
   if (!ga && !gtm) return null;
 
@@ -85,7 +109,7 @@ export default function Analytics() {
       )}
       {ga && (
         <Script id="ga4-init" strategy="lazyOnload">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga}');`}
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga}',{anonymize_ip:true});`}
         </Script>
       )}
     </>

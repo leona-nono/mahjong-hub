@@ -3,6 +3,7 @@
 import type { Tile } from '@/lib/mahjong/tiles';
 import { tileArtSrc } from '@/lib/mahjong-solitaire/art';
 import { matchGroup } from '@/lib/mahjong-solitaire/tiles';
+import { colorblindLabel } from '@/lib/colorblind-mark';
 
 export type SolitaireTileSize = 'sm' | 'md' | 'lg';
 
@@ -32,13 +33,15 @@ export default function SolitaireTileFace({
   size = 'md',
   selected,
   hinted,
-  dimmed
+  dimmed,
+  colorblind
 }: {
   tile: Tile;
   size?: SolitaireTileSize;
   selected?: boolean;
   hinted?: boolean;
   dimmed?: boolean;
+  colorblind?: boolean;
 }) {
   const group = matchGroup(tile);
   const px = SIZE_PX[size];
@@ -71,6 +74,14 @@ export default function SolitaireTileFace({
       {mark !== null && (
         <span className="solitaire-lookalike-mark" aria-hidden>
           {mark}
+        </span>
+      )}
+      {colorblind && (
+        <span
+          className="pointer-events-none absolute bottom-0 left-0 rounded-bl-md rounded-tr-sm bg-slate-950/80 px-0.5 text-[9px] font-black leading-tight text-amber-100"
+          aria-hidden
+        >
+          {colorblindLabel(tile)}
         </span>
       )}
     </span>

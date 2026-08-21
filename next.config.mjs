@@ -86,7 +86,23 @@ const nextConfig = {
         source: '/:locale/games/beginners/:slug',
         destination: '/:locale/blog/:slug',
         permanent: true
+      },
+      {
+        source: '/privacy-policy',
+        destination: '/en/privacy',
+        permanent: true
+      },
+      {
+        source: '/:locale/privacy-policy',
+        destination: '/:locale/privacy',
+        permanent: true
       }
+    ];
+  },
+  async rewrites() {
+    return [
+      { source: '/ads.txt', destination: '/api/public/ads-txt' },
+      { source: '/sellers.json', destination: '/api/public/sellers-json' }
     ];
   }
 };
