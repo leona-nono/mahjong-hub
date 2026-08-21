@@ -443,6 +443,19 @@
     "tap3Tiles": "3개를 탭하여 전달 · {n}/3",
     "pass3Tiles": "3개 전달",
     "aiTitle": "아메리칸 마작 · AI",
-    "cardDetail": "{card} · {difficulty} · {points}점"
+    "cardDetail": "{card} · {difficulty} · {points}점",
+    "coachTitle": "전략 코치",
+    "coachRankings": "가능한 카드 라인",
+    "coachKeep": "우선 보관",
+    "coachPass": "먼저 넘길 패",
+    "coachDiscard": "추천 버림패",
+    "coachExposureWait": "한 장만 노리고 노출하지 말고 선택지를 남기세요.",
+    "coachExposureCommit": "노출은 방향을 고정합니다. 유효한 카드 라인에 맞을 때만 부르세요.",
+    "coachExposureCompatible": "노출한 그룹은 아직 유효한 카드 라인과 맞습니다.",
+    "coachJokerExchange": "{tile}로 노출된 조커를 교환할 수 있습니다.",
+    "coachOuts": "남아 있는 유효패",
+    "coachRiskLow": "공개 정보상 낮은 위험: 다른 플레이어가 {tile}을 버렸습니다.",
+    "coachRiskMedium": "{tile}의 공개 위험은 알 수 없습니다.",
+    "coachRiskHigh": "높은 위험: 상대가 {tile}을 노출했습니다."
   }
 }

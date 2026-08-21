@@ -267,3 +267,22 @@ model Guide {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+/// Product-owned American Mahjong practice-card drafts. `groups` is the
+/// versioned DSL payload; official NMJL card content must never be stored here.
+model AmericanPracticeCard {
+  id          String   @id
+  version     String
+  title       String
+  difficulty  String
+  points      Int
+  description String
+  groups      Json     @db.JsonB
+  concealed   Boolean  @default(false)
+  status      String   @default("draft") // draft | published | retired
+  seasonIds   String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status, updatedAt])
+}
