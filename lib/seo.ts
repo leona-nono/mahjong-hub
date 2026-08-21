@@ -2,6 +2,50 @@ import type { Metadata } from 'next';
 
 export const SITE_BASE_URL = 'https://mahjonggame.org';
 
+/** Resolve a site-relative path (or absolute URL) to an absolute https URL. */
+export function absoluteUrl(pathOrUrl: string): string {
+  if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+  const path = pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`;
+  return `${SITE_BASE_URL}${path}`;
+}
+
+/** Homepage / brand Open Graph + Twitter card fields. */
+export function socialShareMeta(opts: {
+  title: string;
+  description: string;
+  locale: string;
+  path?: string;
+  ogImage?: string;
+  siteName?: string;
+}): Pick<Metadata, 'openGraph' | 'twitter'> {
+  const url = absoluteUrl(`/${opts.locale}${opts.path ?? ''}`);
+  const image = absoluteUrl(opts.ogImage || '/og-default.png');
+  return {
+    openGraph: {
+      type: 'website',
+      url,
+      title: opts.title,
+      description: opts.description,
+      siteName: opts.siteName,
+      locale: opts.locale,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: opts.title
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: opts.title,
+      description: opts.description,
+      images: [image]
+    }
+  };
+}
+
 // Homepage-level hreflang alternates (locale roots). Used only as the fallback
 // in the public layout — individual public pages build their own per-path
 // alternates via `alternatesFor` so the hreflang tags point at the equivalent
@@ -44,5 +88,41 @@ export function alternatesFor(
       de: `${SITE_BASE_URL}/de${path}`,
       'x-default': `${SITE_BASE_URL}/en${path}`
     }
+  };
+}
+
+/**
+ * Full public-page metadata: self-canonical, full hreflang (+ x-default),
+ * and complete Open Graph / Twitter cards (title, description, image, url).
+ */
+export function pageMeta(opts: {
+  locale: string;
+  path: string;
+  title: string;
+  description: string;
+  ogImage?: string;
+  siteName?: string;
+  type?: 'website' | 'article';
+  robots?: Metadata['robots'];
+  keywords?: Metadata['keywords'];
+}): Metadata {
+  const share = socialShareMeta({
+    title: opts.title,
+    description: opts.description,
+    locale: opts.locale,
+    path: opts.path,
+    ogImage: opts.ogImage,
+    siteName: opts.siteName
+  });
+  if (opts.type && share.openGraph) {
+    share.openGraph = { ...share.openGraph, type: opts.type };
+  }
+  return {
+    title: opts.title,
+    description: opts.description,
+    alternates: alternatesFor(opts.locale, opts.path),
+    ...share,
+    ...(opts.robots ? { robots: opts.robots } : {}),
+    ...(opts.keywords ? { keywords: opts.keywords } : {})
   };
 }

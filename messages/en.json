@@ -3,6 +3,10 @@
     "name": "Mahjong Hub",
     "tagline": "Free online mahjong games"
   },
+  "seo": {
+    "homeTitle": "Mahjong Game Online · Play for free!",
+    "homeDescription": "Play free mahjong games online—solitaire, connect, and tile-match puzzles. Instant play in your browser, no download required."
+  },
   "nav": {
     "home": "Home",
     "games": "Games",
@@ -31,8 +35,8 @@
     "featuredTitle": "Featured",
     "collectionTitle": "All games",
     "originalTitle": "Originals",
-    "originalSubtitle": "Built in-house. Free, no download."
-    ,"seasonalTitle": "Seasonal table collection",
+    "originalSubtitle": "Built in-house. Free, no download.",
+    "seasonalTitle": "Seasonal table collection",
     "seasonalBody": "Choose a free table mood and matching tile back for every game.",
     "openWardrobe": "Open wardrobe"
   },
@@ -51,11 +55,27 @@
     "upcoming": "Coming soon",
     "archive": "Collection archive",
     "chapters": {
-      "foundation": { "title": "Foundation collection", "body": "Calm, always-available tables for every kind of game." },
-      "solar": { "title": "Solar seasons", "body": "Four table moods following the changing light of the year." },
-      "festival": { "title": "Festival chapter", "body": "A small collection for holiday moments and returning events." }
+      "foundation": {
+        "title": "Foundation collection",
+        "body": "Calm, always-available tables for every kind of game."
+      },
+      "solar": {
+        "title": "Solar seasons",
+        "body": "Four table moods following the changing light of the year."
+      },
+      "festival": {
+        "title": "Festival chapter",
+        "body": "A small collection for holiday moments and returning events."
+      }
     },
-    "items": { "jade": "Jade table", "lunar": "Lunar New Year", "spring": "Spring equinox", "summer": "Summer solstice", "autumn": "Autumn equinox", "winter": "Winter solstice" }
+    "items": {
+      "jade": "Jade table",
+      "lunar": "Lunar New Year",
+      "spring": "Spring equinox",
+      "summer": "Summer solstice",
+      "autumn": "Autumn equinox",
+      "winter": "Winter solstice"
+    }
   },
   "game": {
     "play": "Play",
@@ -503,5 +523,10 @@
     "coachRiskLow": "Low public risk: another player already discarded {tile}.",
     "coachRiskMedium": "Public risk is unknown for {tile}.",
     "coachRiskHigh": "High public risk: an opponent has exposed {tile}."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This page does not exist or has been moved.",
+    "home": "Back to home"
   }
 }

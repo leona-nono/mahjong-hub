@@ -3,10 +3,10 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import MarkdownContent from '@/components/MarkdownContent';
-import { alternatesFor } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
 import { getBlogPosts } from '@/data/blog';
 import { getPublicGuide, localizeStaticGuide } from '@/lib/guides';
-import { getSiteSettings } from '@/lib/site-settings';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -30,20 +30,16 @@ export async function generateMetadata({
   const post = cms?.source === 'cms' ? cms : localizeStaticGuide(slug, locale) ?? cms;
   if (!post) return {};
   const site = await getSiteSettings();
-  const url = `${SITE}/${locale}/blog/${slug}`;
-  return {
+  return pageMeta({
+    locale,
+    path: `/blog/${slug}`,
     title: post.title,
     description: post.description,
-    alternates: alternatesFor(locale, `/blog/${slug}`),
-    openGraph: {
-      title: post.title,
-      description: post.description,
-      url,
-      type: 'article',
-      images: post.cover || site.ogImage ? [post.cover || site.ogImage] : undefined
-    },
+    ogImage: post.cover || site.ogImage,
+    siteName: brandName(site),
+    type: 'article',
     robots: { index: true, follow: true }
-  };
+  });
 }
 
 export default async function BlogPostPage({

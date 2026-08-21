@@ -479,5 +479,14 @@
     "coachRiskLow": "公开风险低：已有其他玩家打出过 {tile}。",
     "coachRiskMedium": "{tile} 的公开风险未知。",
     "coachRiskHigh": "公开风险高：对手已亮出 {tile}。"
+  },
+  "seo": {
+    "homeTitle": "免费在线麻将 · 打开即玩",
+    "homeDescription": "免费在线玩麻将消除、连连看与经典四人麻将。浏览器即开即玩，无需下载，支持每日挑战与多语界面。"
+  },
+  "notFound": {
+    "title": "页面不存在",
+    "body": "该页面不存在或已移动。",
+    "home": "返回首页"
   }
 }

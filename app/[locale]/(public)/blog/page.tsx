@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { alternatesFor } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
 import { getPublicGuides } from '@/lib/guides';
-import { getSiteSettings } from '@/lib/site-settings';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 export const revalidate = 86_400;
 
@@ -15,16 +15,14 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'nav' });
   const site = await getSiteSettings();
-  return {
+  return pageMeta({
+    locale,
+    path: '/blog',
     title: t('beginners'),
     description: t('beginnersSubtitle'),
-    alternates: alternatesFor(locale, '/blog'),
-    openGraph: {
-      title: t('beginners'),
-      description: t('beginnersSubtitle'),
-      images: site.ogImage ? [site.ogImage] : undefined
-    }
-  };
+    ogImage: site.ogImage,
+    siteName: brandName(site)
+  });
 }
 
 export default async function BlogPage({

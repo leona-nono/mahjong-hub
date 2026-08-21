@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getBlogPosts, getLocalizedBlogPosts } from '@/data/blog';
-import { alternatesFor } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 export async function generateMetadata({
   params
@@ -10,7 +11,16 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return { alternates: alternatesFor(locale, '/games/beginners') };
+  const t = await getTranslations({ locale, namespace: 'nav' });
+  const site = await getSiteSettings();
+  return pageMeta({
+    locale,
+    path: '/games/beginners',
+    title: t('beginners'),
+    description: t('beginnersSubtitle'),
+    ogImage: site.ogImage,
+    siteName: brandName(site)
+  });
 }
 
 export default async function BeginnersPage({

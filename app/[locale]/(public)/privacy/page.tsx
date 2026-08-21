@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { alternatesFor } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
 import { LEGAL_UPDATED, getPrivacyDoc } from '@/data/legal';
-import { getSiteSettings } from '@/lib/site-settings';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 export async function generateMetadata({
   params
@@ -13,16 +13,14 @@ export async function generateMetadata({
   const { locale } = await params;
   const doc = getPrivacyDoc(locale);
   const site = await getSiteSettings();
-  return {
+  return pageMeta({
+    locale,
+    path: '/privacy',
     title: doc.title,
     description: doc.intro,
-    alternates: alternatesFor(locale, '/privacy'),
-    openGraph: {
-      title: doc.title,
-      description: doc.intro,
-      images: site.ogImage ? [site.ogImage] : undefined
-    }
-  };
+    ogImage: site.ogImage,
+    siteName: brandName(site)
+  });
 }
 
 export default async function PrivacyPage({

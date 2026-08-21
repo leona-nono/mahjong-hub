@@ -11,8 +11,9 @@ import Analytics from '@/components/Analytics';
 import ConsentBanner from '@/components/ConsentBanner';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import PwaInstallHint from '@/components/PwaInstallHint';
-import { LANGUAGE_ALTERNATES } from '@/lib/seo';
-import { brandName, formatHomeMetadata, getSiteSettings } from '@/lib/site-settings';
+import { LANGUAGE_ALTERNATES, SITE_BASE_URL, socialShareMeta } from '@/lib/seo';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { homeSeo } from '@/lib/home-seo';
 
 const display = Fraunces({
   subsets: ['latin'],
@@ -30,11 +31,24 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
   const site = await getSiteSettings();
-  const home = formatHomeMetadata(site);
+  const home = await homeSeo(locale);
   const brand = brandName(site);
+  const share = socialShareMeta({
+    title: home.title,
+    description: home.description,
+    locale,
+    ogImage: site.ogImage,
+    siteName: brand
+  });
   return {
+    metadataBase: new URL(SITE_BASE_URL),
     title: {
       default: home.title,
       template: site.titleTemplate.includes('{page}')
@@ -43,6 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: home.description,
     alternates: {
+      canonical: `${SITE_BASE_URL}/${locale}`,
       languages: LANGUAGE_ALTERNATES
     },
     verification: {
@@ -65,11 +80,7 @@ export async function generateMetadata(): Promise<Metadata> {
       icon: [{ url: '/icons/icon-192.svg', type: 'image/svg+xml' }],
       apple: [{ url: '/icons/icon-192.svg' }]
     },
-    openGraph: {
-      title: home.title,
-      description: home.description,
-      images: site.ogImage ? [site.ogImage] : undefined
-    }
+    ...share
   };
 }
 

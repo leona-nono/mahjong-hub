@@ -3,8 +3,8 @@ import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import { getMergedGames, getMergedLocalizedGames } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
-import { alternatesFor } from '@/lib/seo';
-import { getSiteSettings } from '@/lib/site-settings';
+import { pageMeta } from '@/lib/seo';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 export const revalidate = 86_400;
 
@@ -16,16 +16,14 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'collection' });
   const site = await getSiteSettings();
-  return {
+  return pageMeta({
+    locale,
+    path: '/games',
     title: t('title'),
     description: t('subtitle'),
-    alternates: alternatesFor(locale, '/games'),
-    openGraph: {
-      title: t('title'),
-      description: t('subtitle'),
-      images: site.ogImage ? [site.ogImage] : undefined
-    }
-  };
+    ogImage: site.ogImage,
+    siteName: brandName(site)
+  });
 }
 
 export default async function GamesPage({

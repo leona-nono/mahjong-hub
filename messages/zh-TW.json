@@ -479,5 +479,14 @@
     "coachRiskLow": "公開風險低：已有其他玩家打出過 {tile}。",
     "coachRiskMedium": "{tile} 的公開風險未知。",
     "coachRiskHigh": "公開風險高：對手已亮出 {tile}。"
+  },
+  "seo": {
+    "homeTitle": "免費線上麻將 · 打開即玩",
+    "homeDescription": "免費線上玩麻將消消樂、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。"
+  },
+  "notFound": {
+    "title": "頁面不存在",
+    "body": "此頁面不存在或已移動。",
+    "home": "返回首頁"
   }
 }

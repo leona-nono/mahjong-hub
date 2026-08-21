@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { alternatesFor } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 export async function generateMetadata({
   params
@@ -8,7 +9,16 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return { alternates: alternatesFor(locale, '/games/set') };
+  const t = await getTranslations({ locale, namespace: 'nav' });
+  const site = await getSiteSettings();
+  return pageMeta({
+    locale,
+    path: '/games/set',
+    title: t('set'),
+    description: t('setSubtitle'),
+    ogImage: site.ogImage,
+    siteName: brandName(site)
+  });
 }
 
 export default async function SetPage({

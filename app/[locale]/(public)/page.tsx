@@ -11,8 +11,10 @@ import GameCategoryRow from '@/components/GameCategoryRow';
 import DailyChallengeCard from '@/components/DailyChallengeCard';
 import DailyCheckIn from '@/components/DailyCheckIn';
 import type { GameCategory, GameConfig } from '@/data/games';
-import { formatHomeMetadata, getSiteSettings } from '@/lib/site-settings';
-import { alternatesFor } from '@/lib/seo';
+import { homeSeo } from '@/lib/home-seo';
+import { homeJsonLd } from '@/lib/home-jsonld';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { alternatesFor, socialShareMeta } from '@/lib/seo';
 import type { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 
@@ -25,16 +27,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const site = await getSiteSettings();
-  const home = formatHomeMetadata(site);
+  const home = await homeSeo(locale);
   return {
     title: { absolute: home.title },
     description: home.description,
     alternates: alternatesFor(locale, ''),
-    openGraph: {
+    ...socialShareMeta({
       title: home.title,
       description: home.description,
-      images: site.ogImage ? [site.ogImage] : undefined
-    }
+      locale,
+      ogImage: site.ogImage,
+      siteName: brandName(site)
+    })
   };
 }
 
@@ -53,14 +57,21 @@ export default async function HomePage({
   const t = await getTranslations('home');
   const tp = await getTranslations('portal');
   const site = await getSiteSettings();
+  const home = await homeSeo(locale);
   const featured = getMergedLocalizedGames(await getMergedFeaturedGames(), locale);
   const native = getMergedLocalizedGames(await getMergedNativeGames(), locale);
   const all = getMergedLocalizedGames(await getMergedGames(), locale);
 
+  // English CMS may override H1; other locales always use translated heroTitle.
+  const heroTitle =
+    locale === 'en' ? site.homeH1 || t('heroTitle') : t('heroTitle');
+  const heroSubtitle =
+    locale === 'en' ? site.homeSubtitle || t('heroSubtitle') : t('heroSubtitle');
+
   const faqPage = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    inLanguage: 'en',
+    inLanguage: locale,
     mainEntity: [
       {
         '@type': 'Question',
@@ -113,17 +124,12 @@ export default async function HomePage({
     ]
   };
 
-  const jsonLd = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: site.siteTitle,
-      description: site.siteDescription,
-      url: 'https://mahjonggame.org',
-      inLanguage: ['en', 'zh', 'zh-TW', 'ja', 'ko', 'es', 'pt-BR', 'fr', 'de']
-    },
-    faqPage
-  ];
+  const jsonLd = homeJsonLd({
+    site,
+    locale,
+    description: home.description,
+    faq: locale === 'en' ? faqPage : undefined
+  });
 
   const featuredPack = [...native, ...featured]
     .filter((g, i, arr) => arr.findIndex((x) => x.slug === g.slug) === i)
@@ -136,16 +142,14 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-portal-text sm:text-3xl">
-            {site.homeH1 || t('heroTitle')}
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-portal-text sm:text-3xl">
+            {heroTitle}
           </h1>
-          <p className="mt-1 max-w-2xl text-sm text-portal-muted">
-            {site.homeSubtitle || t('heroSubtitle')}
-          </p>
+          <p className="mt-1 max-w-2xl text-sm text-portal-muted">{heroSubtitle}</p>
         </div>
-      </div>
+      </header>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_240px]">
         <DailyChallengeCard />

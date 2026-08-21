@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getBlogPosts, getLocalizedBlogPost } from '@/data/blog';
-import { alternatesFor } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -22,16 +23,19 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const post = getLocalizedBlogPost(slug, locale);
   if (!post) return {};
+  const site = await getSiteSettings();
 
-  const url = `${SITE}/${locale}/games/beginners/${slug}`;
-  return {
+  return pageMeta({
+    locale,
+    path: `/games/beginners/${slug}`,
     title: post.title,
     description: post.description,
-    alternates: alternatesFor(locale, `/games/beginners/${slug}`),
-    openGraph: { title: post.title, description: post.description, url, type: 'article' },
+    ogImage: site.ogImage,
+    siteName: brandName(site),
+    type: 'article',
     keywords: post.keywords,
     robots: { index: true, follow: true }
-  };
+  });
 }
 
 export default async function BlogPostPage({

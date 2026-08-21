@@ -77,6 +77,12 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        // Prefer /en as the English home URL; / is only an entry hop.
+        source: '/',
+        destination: '/en',
+        permanent: true
+      },
+      {
         // Beginner guides moved to the canonical /blog/ hub.
         source: '/:locale/games/beginners',
         destination: '/:locale/blog',

@@ -14,9 +14,9 @@ import GameCard from '@/components/GameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
 import MarkdownContent from '@/components/MarkdownContent';
-import { alternatesFor } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
 import { getGameFeatureMarkdown } from '@/lib/game-features';
-import { formatGameMetadata, getSiteSettings } from '@/lib/site-settings';
+import { brandName, formatGameMetadata, getSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
@@ -42,25 +42,20 @@ export async function generateMetadata({
   // Coming-soon rulesets ship a full rules guide, so they are indexable
   // introduction pages. Only embedded third-party iframes stay out of the index.
   const isIndexable = game.gameType === 'native' || game.gameType === 'coming-soon';
-  const url = `${SITE}/${locale}/games/${slug}`;
   const site = await getSiteSettings();
   const seo = formatGameMetadata(site, game);
 
-  return {
+  return pageMeta({
+    locale,
+    path: `/games/${slug}`,
     title: seo.title,
     description: seo.description,
-    alternates: alternatesFor(locale, `/games/${slug}`),
-    openGraph: {
-      title: seo.title,
-      description: seo.description,
-      url,
-      type: 'website',
-      images: game.cover || site.ogImage ? [game.cover || site.ogImage] : undefined
-    },
+    ogImage: game.cover || site.ogImage,
+    siteName: brandName(site),
     robots: isIndexable
       ? { index: true, follow: true }
       : { index: false, follow: true }
-  };
+  });
 }
 
 export default async function GamePage({

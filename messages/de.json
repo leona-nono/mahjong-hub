@@ -1,13 +1,186 @@
 {
-  "site":{"name":"Mahjong Hub","tagline":"Ruhige Mahjong- und Kachelspiele für klares, entspanntes Spielen"},
-  "nav":{"home":"Startseite","games":"Spiele","wardrobe":"Designs","about":"Über uns"},
-  "accessibility":{"highContrast":"Hohen Kontrast umschalten","largeTiles":"Große Steine umschalten","reduceMotion":"Bewegung reduzieren"},
-  "wardrobe":{"eyebrow":"Kostenlose saisonale Designs","title":"Tischdesigns","subtitle":"Wähle für jedes Spiel einen Tisch und eine Steinrückseite. Alles ist kostenlos – ohne Münzen, Käufe oder Zufallsmechaniken.","collection":"Deine Sammlung","freeNote":"Alle Designs stehen dir zur Verfügung. Limitierte Designs bleiben nach einem Event in deiner Sammlung.","preview":"Vorschau","equipped":"Ausgewählt","owned":"Besessen · sofort nutzbar","apply":"Dieses Design verwenden","permanent":"Dauerhaft","active":"In Saison","upcoming":"Demnächst","archive":"Sammlungsarchiv","chapters":{"foundation":{"title":"Grundsammlung","body":"Ruhige, stets verfügbare Tische für jede Spielart."},"solar":{"title":"Sonnenjahreszeiten","body":"Vier Tischstimmungen, die dem wechselnden Licht des Jahres folgen."},"festival":{"title":"Festkapitel","body":"Eine kleine Sammlung für Feiertage und wiederkehrende Events."}},"items":{"jade":"Jadetisch","lunar":"Mondneujahr","spring":"Frühlings-Tagundnachtgleiche","summer":"Sommersonnenwende","autumn":"Herbst-Tagundnachtgleiche","winter":"Wintersonnenwende"}},
-  "home":{"heroTitle":"Spiele Mahjong und entspannende Kachelspiele","heroSubtitle":"Eine ruhige Sammlung aus Mahjong Solitaire, Connect und Kachel-Match-Spielen. Kein Login, einfach spielen.","playButton":"Jetzt spielen","featuredTitle":"Empfohlene Spiele","collectionTitle":"Entfernen- und Match-Spiele","originalTitle":"Von uns entwickelt","originalSubtitle":"Echtes Vierer-Mahjong und Connect, intern entwickelt. Kostenlos und ohne Download.","seasonalTitle":"Saisonale Steinsammlung","seasonalBody":"Eine kleine, kostenlose Sammlung von Tischstimmungen und limitierten Steinrückseiten. Keine Münzen, keine Käufe.","seasonalJade":"Jadetisch","seasonalLunar":"Mondfest","seasonalBack":"Mondtor-Steinrückseite"},
-  "game":{"play":"Spielen","loading":"Spiel wird geladen…","failedTitle":"Spiel vorübergehend nicht verfügbar","failedDesc":"Dieses Spiel konnte nicht geladen werden. Probiere unten ein anderes.","tryAnother":"Anderes Spiel versuchen","about":"Über dieses Spiel","howToPlay":"So spielst du","tips":"Strategietipps","faq":"Häufige Fragen"},
-  "collection":{"title":"Mahjong-Entfernungssammlung","subtitle":"Verbinde Steine, räume das Brett ab und entspanne dich."},"ad":{"label":"Werbung"},"footer":{"rights":"Mahjong Hub · Eine ruhige Sammlung von Kachelspielen.","noGambling":"Kostenlos spielbar · Kein Glücksspiel mit echtem Geld"},
-  "auth":{"login":"Anmelden","loginToEarn":"Melde dich an, um deine Punkte zu speichern","connectToSave":"Erstelle ein kostenloses Konto, um Punkte und Anmeldeverlauf geräteübergreifend zu behalten.","close":"Vielleicht später","loginHistory":"Anmeldeverlauf","noHistory":"Noch kein Verlauf","logout":"Abmelden","redirecting":"Weiterleitung…","loginFailed":"Anmeldung fehlgeschlagen. Bitte versuche es erneut.","providerUnavailable":"Die Anmeldung mit Google und Facebook ist noch nicht eingerichtet."},"points":{"youHave":"Du hast {n} Pkt."},
-  "mahjong":{"rulesetLabel":"Regelwerk","difficultyLabel":"Stärke der Gegner","easy":"Leicht","normal":"Normal","hard":"Schwer","hints":"Hinweise","newGame":"Neues Spiel","yourHand":"Deine Hand","waiting":"Warte auf die anderen Spieler…","wallLeft":"{n} Steine im Wall übrig","turnOf":"{seat} ist am Zug","ready":"Bereit – warte auf {tiles}","awayFromReady":"Noch {n} bis bereit","claimPrompt":"{tile} wurde abgeworfen. Beanspruchen?","drawnGame":"Der Wall ist leer – die Hand endet unentschieden.","youWin":"Du gewinnst! {score} Punkte.","seatWins":"{seat} gewinnt mit {score} Punkten.","doubleRon":"Doppel-Ron – beide Spieler gewinnen, der Abwerfer zahlt an beide.","call":{"chi":"Chi","pon":"Pon","kan":"Kan","ron":"Ron","tsumo":"Tsumo","pass":"Passen"}},
-  "connect":{"difficultyLabel":"Brettgröße","gardenBoard":"Gartenbrett","relaxed":"Entspannt","classic":"Klassisch","expert":"Experte","score":"Punktzahl {n}","left":"{n} Steine übrig","hint":"Hinweis","shuffle":"Mischen","restart":"Neustart","cleared":"Brett abgeräumt! {n} Punkte.","timeUp":"Zeit abgelaufen – versuche es erneut.","winTitle":"Ein schöner Abschluss","lossTitle":"Zeit für eine Pause","lossBody":"Die Zeit ist abgelaufen. Atme durch und versuche einen neuen Tisch.","deadTitle":"Kein Weg ist offen","deadBody":"Behalte deine Punkte und teile nur die restlichen Steine neu aus.","rescue":"Restliche Steine neu austeilen","playAgain":"Noch einmal spielen"},
-  "solitaire":{"layoutLabel":"Layout","turtle":"Schildkröte","pyramid":"Pyramide","score":"Punktzahl {n}","left":"{n} Steine übrig","hint":"Hinweis","undo":"Rückgängig","shuffle":"Mischen","restart":"Neustart","cleared":"Brett abgeräumt! {n} Punkte.","tutorialTitle":"Eine sanfte erste Runde","tutorialOne":"Wähle einen freien Stein: Seine linke oder rechte Seite muss offen sein.","tutorialTwo":"Finde gleiche Steine. Jahreszeiten passen zueinander; die vier Opernmasken ebenfalls.","tutorialThree":"Nutze einen Hinweis, wenn du feststeckst. Jede Partie ist lösbar.","next":"Weiter","start":"Spiel starten","victoryTitle":"Ein klarer, ruhiger Abschluss","victoryBody":"Du hast alle Paare gefunden. Bereit für einen weiteren Tisch?","deadTitle":"Keine offenen Paare mehr","deadBody":"Behalte deinen Fortschritt: Teile nur die restlichen Steine auf einem lösbaren Tisch neu aus.","rescue":"Restliche Steine neu austeilen"}
+  "site": {
+    "name": "Mahjong Hub",
+    "tagline": "Ruhige Mahjong- und Kachelspiele für klares, entspanntes Spielen"
+  },
+  "nav": {
+    "home": "Startseite",
+    "games": "Spiele",
+    "wardrobe": "Designs",
+    "about": "Über uns"
+  },
+  "accessibility": {
+    "highContrast": "Hohen Kontrast umschalten",
+    "largeTiles": "Große Steine umschalten",
+    "reduceMotion": "Bewegung reduzieren"
+  },
+  "wardrobe": {
+    "eyebrow": "Kostenlose saisonale Designs",
+    "title": "Tischdesigns",
+    "subtitle": "Wähle für jedes Spiel einen Tisch und eine Steinrückseite. Alles ist kostenlos – ohne Münzen, Käufe oder Zufallsmechaniken.",
+    "collection": "Deine Sammlung",
+    "freeNote": "Alle Designs stehen dir zur Verfügung. Limitierte Designs bleiben nach einem Event in deiner Sammlung.",
+    "preview": "Vorschau",
+    "equipped": "Ausgewählt",
+    "owned": "Besessen · sofort nutzbar",
+    "apply": "Dieses Design verwenden",
+    "permanent": "Dauerhaft",
+    "active": "In Saison",
+    "upcoming": "Demnächst",
+    "archive": "Sammlungsarchiv",
+    "chapters": {
+      "foundation": {
+        "title": "Grundsammlung",
+        "body": "Ruhige, stets verfügbare Tische für jede Spielart."
+      },
+      "solar": {
+        "title": "Sonnenjahreszeiten",
+        "body": "Vier Tischstimmungen, die dem wechselnden Licht des Jahres folgen."
+      },
+      "festival": {
+        "title": "Festkapitel",
+        "body": "Eine kleine Sammlung für Feiertage und wiederkehrende Events."
+      }
+    },
+    "items": {
+      "jade": "Jadetisch",
+      "lunar": "Mondneujahr",
+      "spring": "Frühlings-Tagundnachtgleiche",
+      "summer": "Sommersonnenwende",
+      "autumn": "Herbst-Tagundnachtgleiche",
+      "winter": "Wintersonnenwende"
+    }
+  },
+  "home": {
+    "heroTitle": "Spiele Mahjong und entspannende Kachelspiele",
+    "heroSubtitle": "Eine ruhige Sammlung aus Mahjong Solitaire, Connect und Kachel-Match-Spielen. Kein Login, einfach spielen.",
+    "playButton": "Jetzt spielen",
+    "featuredTitle": "Empfohlene Spiele",
+    "collectionTitle": "Entfernen- und Match-Spiele",
+    "originalTitle": "Von uns entwickelt",
+    "originalSubtitle": "Echtes Vierer-Mahjong und Connect, intern entwickelt. Kostenlos und ohne Download.",
+    "seasonalTitle": "Saisonale Steinsammlung",
+    "seasonalBody": "Eine kleine, kostenlose Sammlung von Tischstimmungen und limitierten Steinrückseiten. Keine Münzen, keine Käufe.",
+    "seasonalJade": "Jadetisch",
+    "seasonalLunar": "Mondfest",
+    "seasonalBack": "Mondtor-Steinrückseite"
+  },
+  "game": {
+    "play": "Spielen",
+    "loading": "Spiel wird geladen…",
+    "failedTitle": "Spiel vorübergehend nicht verfügbar",
+    "failedDesc": "Dieses Spiel konnte nicht geladen werden. Probiere unten ein anderes.",
+    "tryAnother": "Anderes Spiel versuchen",
+    "about": "Über dieses Spiel",
+    "howToPlay": "So spielst du",
+    "tips": "Strategietipps",
+    "faq": "Häufige Fragen"
+  },
+  "collection": {
+    "title": "Mahjong-Entfernungssammlung",
+    "subtitle": "Verbinde Steine, räume das Brett ab und entspanne dich."
+  },
+  "ad": {
+    "label": "Werbung"
+  },
+  "footer": {
+    "rights": "Mahjong Hub · Eine ruhige Sammlung von Kachelspielen.",
+    "noGambling": "Kostenlos spielbar · Kein Glücksspiel mit echtem Geld"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "loginToEarn": "Melde dich an, um deine Punkte zu speichern",
+    "connectToSave": "Erstelle ein kostenloses Konto, um Punkte und Anmeldeverlauf geräteübergreifend zu behalten.",
+    "close": "Vielleicht später",
+    "loginHistory": "Anmeldeverlauf",
+    "noHistory": "Noch kein Verlauf",
+    "logout": "Abmelden",
+    "redirecting": "Weiterleitung…",
+    "loginFailed": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+    "providerUnavailable": "Die Anmeldung mit Google und Facebook ist noch nicht eingerichtet."
+  },
+  "points": {
+    "youHave": "Du hast {n} Pkt."
+  },
+  "mahjong": {
+    "rulesetLabel": "Regelwerk",
+    "difficultyLabel": "Stärke der Gegner",
+    "easy": "Leicht",
+    "normal": "Normal",
+    "hard": "Schwer",
+    "hints": "Hinweise",
+    "newGame": "Neues Spiel",
+    "yourHand": "Deine Hand",
+    "waiting": "Warte auf die anderen Spieler…",
+    "wallLeft": "{n} Steine im Wall übrig",
+    "turnOf": "{seat} ist am Zug",
+    "ready": "Bereit – warte auf {tiles}",
+    "awayFromReady": "Noch {n} bis bereit",
+    "claimPrompt": "{tile} wurde abgeworfen. Beanspruchen?",
+    "drawnGame": "Der Wall ist leer – die Hand endet unentschieden.",
+    "youWin": "Du gewinnst! {score} Punkte.",
+    "seatWins": "{seat} gewinnt mit {score} Punkten.",
+    "doubleRon": "Doppel-Ron – beide Spieler gewinnen, der Abwerfer zahlt an beide.",
+    "call": {
+      "chi": "Chi",
+      "pon": "Pon",
+      "kan": "Kan",
+      "ron": "Ron",
+      "tsumo": "Tsumo",
+      "pass": "Passen"
+    }
+  },
+  "connect": {
+    "difficultyLabel": "Brettgröße",
+    "gardenBoard": "Gartenbrett",
+    "relaxed": "Entspannt",
+    "classic": "Klassisch",
+    "expert": "Experte",
+    "score": "Punktzahl {n}",
+    "left": "{n} Steine übrig",
+    "hint": "Hinweis",
+    "shuffle": "Mischen",
+    "restart": "Neustart",
+    "cleared": "Brett abgeräumt! {n} Punkte.",
+    "timeUp": "Zeit abgelaufen – versuche es erneut.",
+    "winTitle": "Ein schöner Abschluss",
+    "lossTitle": "Zeit für eine Pause",
+    "lossBody": "Die Zeit ist abgelaufen. Atme durch und versuche einen neuen Tisch.",
+    "deadTitle": "Kein Weg ist offen",
+    "deadBody": "Behalte deine Punkte und teile nur die restlichen Steine neu aus.",
+    "rescue": "Restliche Steine neu austeilen",
+    "playAgain": "Noch einmal spielen"
+  },
+  "solitaire": {
+    "layoutLabel": "Layout",
+    "turtle": "Schildkröte",
+    "pyramid": "Pyramide",
+    "score": "Punktzahl {n}",
+    "left": "{n} Steine übrig",
+    "hint": "Hinweis",
+    "undo": "Rückgängig",
+    "shuffle": "Mischen",
+    "restart": "Neustart",
+    "cleared": "Brett abgeräumt! {n} Punkte.",
+    "tutorialTitle": "Eine sanfte erste Runde",
+    "tutorialOne": "Wähle einen freien Stein: Seine linke oder rechte Seite muss offen sein.",
+    "tutorialTwo": "Finde gleiche Steine. Jahreszeiten passen zueinander; die vier Opernmasken ebenfalls.",
+    "tutorialThree": "Nutze einen Hinweis, wenn du feststeckst. Jede Partie ist lösbar.",
+    "next": "Weiter",
+    "start": "Spiel starten",
+    "victoryTitle": "Ein klarer, ruhiger Abschluss",
+    "victoryBody": "Du hast alle Paare gefunden. Bereit für einen weiteren Tisch?",
+    "deadTitle": "Keine offenen Paare mehr",
+    "deadBody": "Behalte deinen Fortschritt: Teile nur die restlichen Steine auf einem lösbaren Tisch neu aus.",
+    "rescue": "Restliche Steine neu austeilen"
+  },
+  "seo": {
+    "homeTitle": "Mahjong online · Kostenlos spielen",
+    "homeDescription": "Spiele kostenlos Mahjong Solitaire, Connect und klassisches Viererspieler-Mahjong. Sofort im Browser — ohne Download."
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "body": "Diese Seite existiert nicht oder wurde verschoben.",
+    "home": "Zur Startseite"
+  }
 }

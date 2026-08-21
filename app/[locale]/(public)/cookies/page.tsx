@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
-import { alternatesFor } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
 import { getCookiesDoc } from '@/data/legal';
-import { getSiteSettings } from '@/lib/site-settings';
+import { brandName, getSiteSettings } from '@/lib/site-settings';
 import { LEGAL_UPDATED } from '@/data/legal';
 
 export async function generateMetadata({
@@ -15,16 +15,14 @@ export async function generateMetadata({
   const { locale } = await params;
   const doc = getCookiesDoc(locale);
   const site = await getSiteSettings();
-  return {
+  return pageMeta({
+    locale,
+    path: '/cookies',
     title: doc.title,
     description: doc.intro,
-    alternates: alternatesFor(locale, '/cookies'),
-    openGraph: {
-      title: doc.title,
-      description: doc.intro,
-      images: site.ogImage ? [site.ogImage] : undefined
-    }
-  };
+    ogImage: site.ogImage,
+    siteName: brandName(site)
+  });
 }
 
 export default async function CookiesPage({

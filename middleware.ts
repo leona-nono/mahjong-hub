@@ -11,11 +11,10 @@ const intlMiddleware = createMiddleware(routing);
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // The bare root has no matching [locale] route, so without a redirect it
-  // 404s — most visibly in development, where the intl middleware below is
-  // skipped. Point it at the default locale in every environment.
+  // The bare root has no matching [locale] route. Permanent redirect consolidates
+  // ranking signals on /en (same as homepage canonical).
   if (pathname === '/') {
-    return NextResponse.redirect(new URL(`/${routing.defaultLocale}`, req.url));
+    return NextResponse.redirect(new URL(`/${routing.defaultLocale}`, req.url), 308);
   }
 
   // The local desktop proxy can loop when next-intl rewrites a dev URL to the

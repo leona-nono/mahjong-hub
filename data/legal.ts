@@ -419,7 +419,7 @@ const cookiesKo: LegalDoc = {
   ]
 };
 
-const privacyByLocale: Record<Locale, LegalDoc> = {
+const privacyByLocale: Partial<Record<Locale, LegalDoc>> = {
   en: privacyEn,
   zh: privacyZh,
   'zh-TW': privacyZhTw,
@@ -427,7 +427,7 @@ const privacyByLocale: Record<Locale, LegalDoc> = {
   ko: privacyKo
 };
 
-const cookiesByLocale: Record<Locale, LegalDoc> = {
+const cookiesByLocale: Partial<Record<Locale, LegalDoc>> = {
   en: cookiesEn,
   zh: cookiesZh,
   'zh-TW': cookiesZhTw,
@@ -436,9 +436,9 @@ const cookiesByLocale: Record<Locale, LegalDoc> = {
 };
 
 export function getPrivacyDoc(locale: string): LegalDoc {
-  return privacyByLocale[(locale as Locale) in privacyByLocale ? (locale as Locale) : 'en'];
+  return privacyByLocale[locale as Locale] ?? privacyEn;
 }
 
 export function getCookiesDoc(locale: string): LegalDoc {
-  return cookiesByLocale[(locale as Locale) in cookiesByLocale ? (locale as Locale) : 'en'];
+  return cookiesByLocale[locale as Locale] ?? cookiesEn;
 }

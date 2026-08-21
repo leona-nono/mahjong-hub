@@ -1,13 +1,186 @@
 {
-  "site":{"name":"Mahjong Hub","tagline":"Jogos tranquilos de mahjong e peças, feitos para uma experiência clara e relaxada"},
-  "nav":{"home":"Início","games":"Jogos","wardrobe":"Visuais","about":"Sobre"},
-  "accessibility":{"highContrast":"Alternar alto contraste","largeTiles":"Alternar peças grandes","reduceMotion":"Reduzir movimento"},
-  "wardrobe":{"eyebrow":"Visuais sazonais gratuitos","title":"Visuais da mesa","subtitle":"Escolha uma mesa e um verso de peça para todos os jogos. Tudo é gratuito — sem moedas, compras ou mecânicas de sorte.","collection":"Sua coleção","freeNote":"Todos os visuais podem ser usados por você. Visuais limitados permanecem na coleção após o evento.","preview":"Prévia","equipped":"Em uso","owned":"Seu · pronto para usar","apply":"Usar este visual","permanent":"Permanente","active":"Na temporada","upcoming":"Em breve","archive":"Arquivo da coleção","chapters":{"foundation":{"title":"Coleção essencial","body":"Mesas calmas, sempre disponíveis, para todo tipo de jogo."},"solar":{"title":"Estações solares","body":"Quatro climas de mesa que acompanham a luz do ano."},"festival":{"title":"Capítulo de festivais","body":"Uma pequena coleção para feriados e eventos que retornam."}},"items":{"jade":"Mesa de jade","lunar":"Ano-Novo Lunar","spring":"Equinócio de primavera","summer":"Solstício de verão","autumn":"Equinócio de outono","winter":"Solstício de inverno"}},
-  "home":{"heroTitle":"Jogue Mahjong e jogos relaxantes de peças","heroSubtitle":"Uma coleção tranquila de paciência mahjong, Connect e jogos de combinar peças. Sem login: é só jogar.","playButton":"Jogar agora","featuredTitle":"Jogos em destaque","collectionTitle":"Jogos de eliminar e combinar","originalTitle":"Feitos por nós","originalSubtitle":"Mahjong real para quatro jogadores e Connect, desenvolvidos internamente. Grátis e sem download.","seasonalTitle":"Coleção sazonal de peças","seasonalBody":"Uma pequena coleção gratuita de mesas e versos de peças limitados. Sem moedas nem compras.","seasonalJade":"Mesa de jade","seasonalLunar":"Festival lunar","seasonalBack":"Verso Portal da Lua"},
-  "game":{"play":"Jogar","loading":"Carregando jogo…","failedTitle":"Jogo temporariamente indisponível","failedDesc":"Este jogo não carregou. Tente outro abaixo.","tryAnother":"Tentar outro jogo","about":"Sobre este jogo","howToPlay":"Como jogar","tips":"Dicas de estratégia","faq":"Perguntas frequentes"},
-  "collection":{"title":"Coleção de eliminação Mahjong","subtitle":"Conecte peças, limpe o tabuleiro e relaxe."},"ad":{"label":"Publicidade"},"footer":{"rights":"Mahjong Hub · Uma coleção tranquila de jogos de peças.","noGambling":"Grátis para jogar · Sem apostas com dinheiro real"},
-  "auth":{"login":"Entrar","loginToEarn":"Entre para salvar seus pontos","connectToSave":"Crie uma conta gratuita para manter pontos e histórico de login em todos os dispositivos.","close":"Talvez depois","loginHistory":"Histórico de login","noHistory":"Ainda não há histórico","logout":"Sair","redirecting":"Redirecionando…","loginFailed":"Falha ao entrar. Tente novamente.","providerUnavailable":"O login com Google e Facebook ainda não está configurado."},"points":{"youHave":"Você tem {n} pts"},
-  "mahjong":{"rulesetLabel":"Regras","difficultyLabel":"Habilidade dos oponentes","easy":"Fácil","normal":"Normal","hard":"Difícil","hints":"Dicas","newGame":"Novo jogo","yourHand":"Sua mão","waiting":"Aguardando os outros jogadores…","wallLeft":"Restam {n} peças no muro","turnOf":"Vez de {seat}","ready":"Pronto — esperando {tiles}","awayFromReady":"Faltam {n} para ficar pronto","claimPrompt":"{tile} foi descartada. Chamar?","drawnGame":"O muro acabou — a mão terminou empatada.","youWin":"Você venceu! {score} pontos.","seatWins":"{seat} vence com {score} pontos.","doubleRon":"Ron duplo — ambos vencem e quem descartou paga cada um.","call":{"chi":"Chi","pon":"Pon","kan":"Kan","ron":"Ron","tsumo":"Tsumo","pass":"Passar"}},
-  "connect":{"difficultyLabel":"Tamanho do tabuleiro","gardenBoard":"Tabuleiro jardim","relaxed":"Relaxado","classic":"Clássico","expert":"Especialista","score":"Pontuação {n}","left":"Restam {n} peças","hint":"Dica","shuffle":"Embaralhar","restart":"Recomeçar","cleared":"Tabuleiro limpo! {n} pontos.","timeUp":"O tempo acabou — tente novamente.","winTitle":"Um final luminoso","lossTitle":"Hora de pausar","lossBody":"O tempo acabou. Respire e tente uma mesa nova.","deadTitle":"Nenhum caminho está aberto","deadBody":"Mantenha sua pontuação e redistribua apenas as peças restantes.","rescue":"Redistribuir peças restantes","playAgain":"Jogar de novo"},
-  "solitaire":{"layoutLabel":"Layout","turtle":"Tartaruga","pyramid":"Pirâmide","score":"Pontuação {n}","left":"Restam {n} peças","hint":"Dica","undo":"Desfazer","shuffle":"Embaralhar","restart":"Recomeçar","cleared":"Tabuleiro limpo! {n} pontos.","tutorialTitle":"Uma primeira rodada tranquila","tutorialOne":"Escolha uma peça livre: ela precisa ter o lado esquerdo ou direito aberto.","tutorialTwo":"Combine peças idênticas. As estações combinam entre si; as quatro máscaras de ópera também.","tutorialThree":"Use uma dica se travar. Toda partida pode ser concluída.","next":"Próximo","start":"Começar a jogar","victoryTitle":"Um final claro e calmo","victoryBody":"Você encontrou todos os pares. Pronto para outra mesa?","deadTitle":"Não há pares abertos","deadBody":"Mantenha seu progresso: redistribua apenas as peças restantes em uma mesa solucionável.","rescue":"Redistribuir peças restantes"}
+  "site": {
+    "name": "Mahjong Hub",
+    "tagline": "Jogos tranquilos de mahjong e peças, feitos para uma experiência clara e relaxada"
+  },
+  "nav": {
+    "home": "Início",
+    "games": "Jogos",
+    "wardrobe": "Visuais",
+    "about": "Sobre"
+  },
+  "accessibility": {
+    "highContrast": "Alternar alto contraste",
+    "largeTiles": "Alternar peças grandes",
+    "reduceMotion": "Reduzir movimento"
+  },
+  "wardrobe": {
+    "eyebrow": "Visuais sazonais gratuitos",
+    "title": "Visuais da mesa",
+    "subtitle": "Escolha uma mesa e um verso de peça para todos os jogos. Tudo é gratuito — sem moedas, compras ou mecânicas de sorte.",
+    "collection": "Sua coleção",
+    "freeNote": "Todos os visuais podem ser usados por você. Visuais limitados permanecem na coleção após o evento.",
+    "preview": "Prévia",
+    "equipped": "Em uso",
+    "owned": "Seu · pronto para usar",
+    "apply": "Usar este visual",
+    "permanent": "Permanente",
+    "active": "Na temporada",
+    "upcoming": "Em breve",
+    "archive": "Arquivo da coleção",
+    "chapters": {
+      "foundation": {
+        "title": "Coleção essencial",
+        "body": "Mesas calmas, sempre disponíveis, para todo tipo de jogo."
+      },
+      "solar": {
+        "title": "Estações solares",
+        "body": "Quatro climas de mesa que acompanham a luz do ano."
+      },
+      "festival": {
+        "title": "Capítulo de festivais",
+        "body": "Uma pequena coleção para feriados e eventos que retornam."
+      }
+    },
+    "items": {
+      "jade": "Mesa de jade",
+      "lunar": "Ano-Novo Lunar",
+      "spring": "Equinócio de primavera",
+      "summer": "Solstício de verão",
+      "autumn": "Equinócio de outono",
+      "winter": "Solstício de inverno"
+    }
+  },
+  "home": {
+    "heroTitle": "Jogue Mahjong e jogos relaxantes de peças",
+    "heroSubtitle": "Uma coleção tranquila de paciência mahjong, Connect e jogos de combinar peças. Sem login: é só jogar.",
+    "playButton": "Jogar agora",
+    "featuredTitle": "Jogos em destaque",
+    "collectionTitle": "Jogos de eliminar e combinar",
+    "originalTitle": "Feitos por nós",
+    "originalSubtitle": "Mahjong real para quatro jogadores e Connect, desenvolvidos internamente. Grátis e sem download.",
+    "seasonalTitle": "Coleção sazonal de peças",
+    "seasonalBody": "Uma pequena coleção gratuita de mesas e versos de peças limitados. Sem moedas nem compras.",
+    "seasonalJade": "Mesa de jade",
+    "seasonalLunar": "Festival lunar",
+    "seasonalBack": "Verso Portal da Lua"
+  },
+  "game": {
+    "play": "Jogar",
+    "loading": "Carregando jogo…",
+    "failedTitle": "Jogo temporariamente indisponível",
+    "failedDesc": "Este jogo não carregou. Tente outro abaixo.",
+    "tryAnother": "Tentar outro jogo",
+    "about": "Sobre este jogo",
+    "howToPlay": "Como jogar",
+    "tips": "Dicas de estratégia",
+    "faq": "Perguntas frequentes"
+  },
+  "collection": {
+    "title": "Coleção de eliminação Mahjong",
+    "subtitle": "Conecte peças, limpe o tabuleiro e relaxe."
+  },
+  "ad": {
+    "label": "Publicidade"
+  },
+  "footer": {
+    "rights": "Mahjong Hub · Uma coleção tranquila de jogos de peças.",
+    "noGambling": "Grátis para jogar · Sem apostas com dinheiro real"
+  },
+  "auth": {
+    "login": "Entrar",
+    "loginToEarn": "Entre para salvar seus pontos",
+    "connectToSave": "Crie uma conta gratuita para manter pontos e histórico de login em todos os dispositivos.",
+    "close": "Talvez depois",
+    "loginHistory": "Histórico de login",
+    "noHistory": "Ainda não há histórico",
+    "logout": "Sair",
+    "redirecting": "Redirecionando…",
+    "loginFailed": "Falha ao entrar. Tente novamente.",
+    "providerUnavailable": "O login com Google e Facebook ainda não está configurado."
+  },
+  "points": {
+    "youHave": "Você tem {n} pts"
+  },
+  "mahjong": {
+    "rulesetLabel": "Regras",
+    "difficultyLabel": "Habilidade dos oponentes",
+    "easy": "Fácil",
+    "normal": "Normal",
+    "hard": "Difícil",
+    "hints": "Dicas",
+    "newGame": "Novo jogo",
+    "yourHand": "Sua mão",
+    "waiting": "Aguardando os outros jogadores…",
+    "wallLeft": "Restam {n} peças no muro",
+    "turnOf": "Vez de {seat}",
+    "ready": "Pronto — esperando {tiles}",
+    "awayFromReady": "Faltam {n} para ficar pronto",
+    "claimPrompt": "{tile} foi descartada. Chamar?",
+    "drawnGame": "O muro acabou — a mão terminou empatada.",
+    "youWin": "Você venceu! {score} pontos.",
+    "seatWins": "{seat} vence com {score} pontos.",
+    "doubleRon": "Ron duplo — ambos vencem e quem descartou paga cada um.",
+    "call": {
+      "chi": "Chi",
+      "pon": "Pon",
+      "kan": "Kan",
+      "ron": "Ron",
+      "tsumo": "Tsumo",
+      "pass": "Passar"
+    }
+  },
+  "connect": {
+    "difficultyLabel": "Tamanho do tabuleiro",
+    "gardenBoard": "Tabuleiro jardim",
+    "relaxed": "Relaxado",
+    "classic": "Clássico",
+    "expert": "Especialista",
+    "score": "Pontuação {n}",
+    "left": "Restam {n} peças",
+    "hint": "Dica",
+    "shuffle": "Embaralhar",
+    "restart": "Recomeçar",
+    "cleared": "Tabuleiro limpo! {n} pontos.",
+    "timeUp": "O tempo acabou — tente novamente.",
+    "winTitle": "Um final luminoso",
+    "lossTitle": "Hora de pausar",
+    "lossBody": "O tempo acabou. Respire e tente uma mesa nova.",
+    "deadTitle": "Nenhum caminho está aberto",
+    "deadBody": "Mantenha sua pontuação e redistribua apenas as peças restantes.",
+    "rescue": "Redistribuir peças restantes",
+    "playAgain": "Jogar de novo"
+  },
+  "solitaire": {
+    "layoutLabel": "Layout",
+    "turtle": "Tartaruga",
+    "pyramid": "Pirâmide",
+    "score": "Pontuação {n}",
+    "left": "Restam {n} peças",
+    "hint": "Dica",
+    "undo": "Desfazer",
+    "shuffle": "Embaralhar",
+    "restart": "Recomeçar",
+    "cleared": "Tabuleiro limpo! {n} pontos.",
+    "tutorialTitle": "Uma primeira rodada tranquila",
+    "tutorialOne": "Escolha uma peça livre: ela precisa ter o lado esquerdo ou direito aberto.",
+    "tutorialTwo": "Combine peças idênticas. As estações combinam entre si; as quatro máscaras de ópera também.",
+    "tutorialThree": "Use uma dica se travar. Toda partida pode ser concluída.",
+    "next": "Próximo",
+    "start": "Começar a jogar",
+    "victoryTitle": "Um final claro e calmo",
+    "victoryBody": "Você encontrou todos os pares. Pronto para outra mesa?",
+    "deadTitle": "Não há pares abertos",
+    "deadBody": "Mantenha seu progresso: redistribua apenas as peças restantes em uma mesa solucionável.",
+    "rescue": "Redistribuir peças restantes"
+  },
+  "seo": {
+    "homeTitle": "Mahjong online · Jogue grátis",
+    "homeDescription": "Jogue grátis paciência mahjong, Connect e mahjong clássico para quatro. No navegador, sem download e sem cadastro."
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "body": "Esta página não existe ou foi movida.",
+    "home": "Voltar ao início"
+  }
 }
