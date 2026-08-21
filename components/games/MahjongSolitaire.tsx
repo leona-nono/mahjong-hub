@@ -898,7 +898,14 @@ export default function MahjongSolitaire({
         </div>
       )}
 
-      <div className="solitaire-board-stage overflow-x-auto rounded-2xl border border-slate-700 bg-[#1e3843] px-3 py-5 shadow-inner">
+      <div
+        className="solitaire-board-stage overflow-x-auto rounded-2xl border border-slate-700 bg-[#1e3843] px-3 py-5 shadow-inner"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(15,34,42,.78), rgba(15,34,42,.78)), var(--mahjong-table-image)',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+        }}
+      >
         <div
           className="relative mx-auto"
           style={{ width: geometry.width, height: geometry.height }}

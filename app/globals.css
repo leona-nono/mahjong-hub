@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 :root {
+  --mahjong-table-image: url('/images/solitaire/backgrounds/solitaire-jade-table-v1.webp');
+  --mahjong-tile-back-image: url('/images/tiles/backs/jade-moon-gate-tile-back-v1.webp');
+}
+
+:root {
   --rb-red: #ff6b6b;
   --rb-orange: #ffa94d;
   --rb-yellow: #ffd43b;
@@ -173,6 +178,16 @@ body {
 .mahjong-table-shell[data-tile-scale='large'] [data-mahjong-tile] {
   transform: scale(1.1);
   transform-origin: bottom center;
+}
+
+/* Chosen from the wardrobe. The dark overlay keeps hand states readable while
+   letting the seasonal artwork carry across every four-player table. */
+.mahjong-desktop-board--seasonal {
+  background-image:
+    linear-gradient(rgba(0, 56, 39, 0.66), rgba(0, 56, 39, 0.66)),
+    var(--mahjong-table-image);
+  background-position: center;
+  background-size: cover;
 }
 
 /* Solitaire accessibility shell — same prefs key as table, separate selectors. */

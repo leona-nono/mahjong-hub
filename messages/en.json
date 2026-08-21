@@ -7,6 +7,7 @@
     "home": "Home",
     "games": "Games",
     "about": "About",
+    "wardrobe": "Wardrobe",
     "classic": "Mahjong Classic",
     "classicSubtitle": "Play real four-player mahjong — Chinese, Japanese, American, Taiwanese and Sichuan rulesets.",
     "solitaire": "Mahjong Solitaire",
@@ -31,6 +32,30 @@
     "collectionTitle": "All games",
     "originalTitle": "Originals",
     "originalSubtitle": "Built in-house. Free, no download."
+    ,"seasonalTitle": "Seasonal table collection",
+    "seasonalBody": "Choose a free table mood and matching tile back for every game.",
+    "openWardrobe": "Open wardrobe"
+  },
+  "wardrobe": {
+    "eyebrow": "Free seasonal looks",
+    "title": "Table wardrobe",
+    "subtitle": "Choose a table and tile back for every game. All looks are free—no coins, purchases, or chance mechanics.",
+    "collection": "Your collection",
+    "freeNote": "Every appearance is yours to use. Limited looks remain in your collection after an event.",
+    "preview": "Preview",
+    "equipped": "Equipped",
+    "owned": "Owned · ready to use",
+    "apply": "Apply this look",
+    "permanent": "Permanent",
+    "active": "In season",
+    "upcoming": "Coming soon",
+    "archive": "Collection archive",
+    "chapters": {
+      "foundation": { "title": "Foundation collection", "body": "Calm, always-available tables for every kind of game." },
+      "solar": { "title": "Solar seasons", "body": "Four table moods following the changing light of the year." },
+      "festival": { "title": "Festival chapter", "body": "A small collection for holiday moments and returning events." }
+    },
+    "items": { "jade": "Jade table", "lunar": "Lunar New Year", "spring": "Spring equinox", "summer": "Summer solstice", "autumn": "Autumn equinox", "winter": "Winter solstice" }
   },
   "game": {
     "play": "Play",

@@ -14,6 +14,7 @@ import type { GameCategory, GameConfig } from '@/data/games';
 import { formatHomeMetadata, getSiteSettings } from '@/lib/site-settings';
 import { alternatesFor } from '@/lib/seo';
 import type { Metadata } from 'next';
+import { Link } from '@/i18n/navigation';
 
 export const revalidate = 86_400;
 
@@ -119,7 +120,7 @@ export default async function HomePage({
       name: site.siteTitle,
       description: site.siteDescription,
       url: 'https://mahjonggame.org',
-      inLanguage: ['en', 'zh', 'zh-TW', 'ja', 'ko']
+      inLanguage: ['en', 'zh', 'zh-TW', 'ja', 'ko', 'es', 'pt-BR', 'fr', 'de']
     },
     faqPage
   ];
@@ -152,6 +153,15 @@ export default async function HomePage({
       </div>
 
       <FeaturedGroup title={t('featuredTitle')} href="/games" games={featuredPack} />
+
+      <section className="rounded-2xl border border-portal-border bg-portal-panel/70 p-5 shadow-portal sm:flex sm:items-center sm:justify-between sm:gap-6">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[.18em] text-portal-accent">{tp('connect')}</p>
+          <h2 className="mt-1 font-display text-xl font-semibold text-portal-text">{t('seasonalTitle')}</h2>
+          <p className="mt-1 max-w-2xl text-sm text-portal-muted">{t('seasonalBody')}</p>
+        </div>
+        <Link href="/wardrobe" className="mt-4 inline-flex shrink-0 rounded-xl bg-portal-accent px-4 py-2.5 text-sm font-bold text-slate-950 hover:brightness-110 sm:mt-0">{t('openWardrobe')}</Link>
+      </section>
 
       <GameCategoryRow
         title={tp('solitaire')}

@@ -247,7 +247,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           <div className="flex items-center gap-3 text-emerald-100"><span className="text-xs font-black">{t('originalPracticeCard')}</span><span className="text-2xl">⚙</span></div>
         </div>
 
-        <div className="mahjong-desktop-board relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-[#00553e] shadow-[inset_0_0_90px_rgba(0,30,22,.34)]" style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}>
+        <div className="mahjong-desktop-board mahjong-desktop-board--seasonal relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-[#00553e] shadow-[inset_0_0_90px_rgba(0,30,22,.34)]" style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}>
           <div className="absolute inset-y-0 left-0 w-[11%] bg-[linear-gradient(105deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute inset-y-0 right-0 w-[11%] bg-[linear-gradient(255deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute left-4 top-3 text-xl font-semibold leading-6 text-emerald-100/45">NMJL-STYLE<br />PRACTICE<br />Rate: 10</div>

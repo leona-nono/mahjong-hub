@@ -251,7 +251,7 @@ export default function MahjongTable({
   }
 
   return (
-    <div className={traditional ? "relative min-h-[820px] overflow-hidden rounded-none border-[6px] border-[#073727] bg-[#07553f] p-2 text-white shadow-[0_24px_70px_rgba(2,44,34,.45)] sm:rounded-xl sm:p-4" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
+    <div className={traditional ? "mahjong-desktop-board--seasonal relative min-h-[820px] overflow-hidden rounded-none border-[6px] border-[#073727] bg-[#07553f] p-2 text-white shadow-[0_24px_70px_rgba(2,44,34,.45)] sm:rounded-xl sm:p-4" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
       {/* Controls */}
       {traditional && <div className="absolute right-5 top-5 z-20 text-sm font-semibold tracking-wide text-emerald-100/70">Rate: 10</div>}
       <div className={traditional ? "absolute left-3 top-3 z-30 flex flex-wrap items-center gap-2 rounded-lg border border-emerald-800/80 bg-[#062b23]/95 p-2 text-sm shadow-lg backdrop-blur" : "relative z-20 mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-white/80 bg-white/90 p-2 text-sm shadow-md backdrop-blur lg:absolute lg:left-3 lg:top-3 lg:mb-0"}>
