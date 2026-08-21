@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { routing } from '@/i18n/routing';
 
 import { getGame, getRelatedGames, getGames } from '@/data/games';
+import { localizeGame } from '@/data/game-locales';
 import IframeSection from '@/components/IframeSection';
 import NativeGameMount from '@/components/games/NativeGameMount';
 import GameCard from '@/components/GameCard';
 import AdSlot from '@/components/AdSlot';
 
 const SITE = 'https://mahjonggame.org';
-const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
+const LOCALES = routing.locales;
 
 export function generateStaticParams() {
   return getGames().flatMap((g) =>
@@ -23,8 +25,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const game = getGame(slug);
-  if (!game) return {};
+  const sourceGame = getGame(slug);
+  if (!sourceGame) return {};
+  const game = localizeGame(sourceGame, locale);
 
   const isNative = game.gameType === 'native';
   const url = `${SITE}/${locale}/games/${slug}`;
@@ -61,8 +64,9 @@ export default async function GamePage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const game = getGame(slug);
-  if (!game) notFound();
+  const sourceGame = getGame(slug);
+  if (!sourceGame) notFound();
+  const game = localizeGame(sourceGame, locale);
 
   const t = await getTranslations('game');
   const related = getRelatedGames(slug, 4);
@@ -124,7 +128,7 @@ export default async function GamePage({
       )}
 
       {isNative && game.native ? (
-        <NativeGameMount native={game.native} ruleset={game.ruleset} slug={game.slug} />
+        <NativeGameMount native={game.native} ruleset={game.ruleset} connectVariant={game.connectVariant} slug={game.slug} />
       ) : (
         <IframeSection game={game} />
       )}

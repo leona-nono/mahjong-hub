@@ -10,7 +10,7 @@
  * Written from scratch; the rules are public game mechanics.
  */
 
-import { type Tile } from '../mahjong/tiles';
+import { canSolitaireMatch, type Tile } from '../mahjong/tiles';
 import { getNeighbors, isExposedFor, type Pos, type SolitaireLayout } from './layouts';
 
 export interface HistoryEntry {
@@ -57,7 +57,7 @@ export function canRemove(board: Board, a: number, b: number): boolean {
   if (a === b) return false;
   const tileA = board.tiles[a];
   const tileB = board.tiles[b];
-  if (tileA === null || tileB === null || tileA !== tileB) return false;
+  if (tileA === null || tileB === null || !canSolitaireMatch(tileA, tileB)) return false;
   return isExposed(board, a) && isExposed(board, b);
 }
 
@@ -67,7 +67,7 @@ export function removePair(board: Board, a: number, b: number): Board {
   const tileB = board.tiles[b];
   if (a === b) throw new Error('cannot match a tile with itself');
   if (tileA === null || tileB === null) throw new Error('tile already removed');
-  if (tileA !== tileB) throw new Error('tiles do not match');
+  if (!canSolitaireMatch(tileA, tileB)) throw new Error('tiles do not match');
   if (!isExposed(board, a) || !isExposed(board, b)) {
     throw new Error('tile is not exposed');
   }

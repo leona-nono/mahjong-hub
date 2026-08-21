@@ -10,6 +10,7 @@ import {
 } from '@/lib/mahjong-solitaire/board';
 import { createBoard, reshuffle } from '@/lib/mahjong-solitaire/generator';
 import { findHint, findPairs, isDead, undo } from '@/lib/mahjong-solitaire/solver';
+import { canSolitaireMatch, isFlower } from '@/lib/mahjong/tiles';
 
 function indexOf(
   board: Board,
@@ -40,7 +41,8 @@ function kindCounts(board: Board): Map<string, number> {
   const counts = new Map<string, number>();
   for (const t of board.tiles) {
     if (t === null) continue;
-    counts.set(t, (counts.get(t) ?? 0) + 1);
+    const kind = isFlower(t) ? (Number(t.slice(1)) <= 4 ? 'flower-season' : 'flower-gentleman') : t;
+    counts.set(kind, (counts.get(kind) ?? 0) + 1);
   }
   return counts;
 }
@@ -82,12 +84,14 @@ describe('createBoard layouts', () => {
     expect(board.tiles.every((t) => t !== null)).toBe(true);
   });
 
-  it('keeps every tile kind to an even copy count, max four copies', () => {
+  it('keeps regular tile kinds capped at four and flower families even', () => {
     for (const layout of ['turtle', 'pyramid'] as const) {
       const board = createBoard({ layout, seed: 7 });
-      for (const count of kindCounts(board).values()) {
+      for (const [kind, count] of kindCounts(board)) {
         expect(count % 2).toBe(0);
-        expect(count).toBeLessThanOrEqual(4);
+        // Flowers pair by family (seasons or gentlemen), so either family may
+        // legitimately contain more than four tiles in a larger layout.
+        if (!kind.startsWith('flower-')) expect(count).toBeLessThanOrEqual(4);
       }
     }
   });
@@ -182,6 +186,12 @@ describe('exposure (左右有一侧空且顶部无遮挡)', () => {
 });
 
 describe('removal, hints and undo', () => {
+  it('matches season flowers and opera-mask specials by their own families', () => {
+    expect(canSolitaireMatch('f1', 'f4')).toBe(true);
+    expect(canSolitaireMatch('f5', 'f8')).toBe(true);
+    expect(canSolitaireMatch('f1', 'f5')).toBe(false);
+  });
+
   it('removes a matching exposed pair immutably', () => {
     const board = createBoard({ layout: 'pyramid', seed: 1 });
     const [a, b] = findHint(board)!;

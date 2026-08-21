@@ -14,7 +14,11 @@ const LOCALES = [
   { code: 'zh-TW', label: '中文(繁)' },
   { code: 'zh-CN', label: '中文(简)' },
   { code: 'ja', label: '日本語' },
-  { code: 'ko', label: '한국어' }
+  { code: 'ko', label: '한국어' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'fr', label: 'Français' },
+  { code: 'es', label: 'Español' },
+  { code: 'pt-BR', label: 'Português (Brasil)' }
 ];
 
 const PLACEHOLDER = `## 简介

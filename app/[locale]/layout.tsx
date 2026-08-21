@@ -15,18 +15,22 @@ export function generateStaticParams() {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Mahjong Hub · Rainbow Mahjong Games',
+    default: 'Mahjong Hub · Calm Mahjong Games',
     template: '%s · Mahjong Hub'
   },
   description:
-    'A rainbow-themed collection of relaxing mahjong solitaire, connect and tile-match games. Free to play, no login.',
+    'A calm collection of clear, relaxing mahjong solitaire, connect and tile-match games. Free to play, no login.',
   alternates: {
     languages: {
       en: '/en',
       zh: '/zh',
       'zh-TW': '/zh-TW',
       ja: '/ja',
-      ko: '/ko'
+      ko: '/ko',
+      es: '/es',
+      'pt-BR': '/pt-BR',
+      fr: '/fr',
+      de: '/de'
     }
   }
 };

@@ -7,6 +7,7 @@ export type GameCategory =
 
 /** Which in-house component renders a native game. */
 export type NativeGame = 'mahjong-table' | 'mahjong-connect' | 'mahjong-solitaire';
+export type ConnectVariant = 'classic' | 'garden';
 
 /**
  * Ruleset id mirrored from lib/mahjong/engine. Kept as a string literal so this
@@ -47,6 +48,8 @@ export interface GameConfig {
   native?: NativeGame;
   /** Ruleset passed to the native four-player table. */
   ruleset?: NativeRuleset;
+  /** Layout family passed to the native Connect board. */
+  connectVariant?: ConnectVariant;
   /** Player count, used in the schema.org payload. */
   players?: number;
   /** Highlight on the home page. */
@@ -231,6 +234,44 @@ export const games: GameConfig[] = [
           question: 'What counts as a turn in the path?',
           answer:
             'Every change of direction. A straight line has no turns, an L shape has one, and a Z or U shape has two. Three or more is not allowed.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'mahjong-connect-garden',
+    pageName: 'mahjong-connect-garden',
+    title: 'Mahjong Connect Garden',
+    description:
+      'A calm 2D Mahjong Connect garden board with open corners and the classic two-turn matching rule. Free, untimed and playable in your browser.',
+    category: 'connect',
+    gameType: 'native',
+    native: 'mahjong-connect',
+    connectVariant: 'garden',
+    players: 1,
+    content: {
+      intro:
+        'Mahjong Connect Garden is a distinct flat-board variation of Mahjong Connect. Its shaped garden frame keeps the familiar rule—match identical tiles with a route of no more than two turns—while open corners create a different routing puzzle from the classic rectangle.',
+      howToPlay: [
+        'Select two identical tiles. They clear when an empty path joins them with no more than two turns.',
+        'The empty garden corners are part of the board space, so routes can bend through them or around the outside edge.',
+        'Clear every tile to finish. This variation is untimed, so you can study the open routes at your own pace.'
+      ],
+      tips: [
+        'Use the corner openings as routing lanes, but do not spend every easy edge pair immediately.',
+        'A central tile often gains several routes after one neighbouring pair clears, so alternate between the frame and the middle.',
+        'Hints reveal one legal connection; use them to learn the board shape rather than to rush the clear.'
+      ],
+      faq: [
+        {
+          question: 'How is Garden different from Classic Mahjong Connect?',
+          answer:
+            'Both use the same two-turn connection rule. Garden uses a shaped, flat 2D board with open corner lanes instead of Classic’s complete rectangle, so the available paths develop differently.'
+        },
+        {
+          question: 'Does Garden replace the classic board?',
+          answer:
+            'No. It is a separate variation with its own page; Classic remains available with relaxed, classic and expert board sizes.'
         }
       ]
     }

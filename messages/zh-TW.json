@@ -1,21 +1,35 @@
 {
   "site": {
     "name": "麻將樂園",
-    "tagline": "彩虹治癒系麻將遊樂場"
+    "tagline": "清晰、舒適的麻將與消除遊戲"
   },
   "nav": {
     "home": "首頁",
     "games": "遊戲",
+    "wardrobe": "衣櫥",
     "about": "關於"
+  },
+  "accessibility": { "highContrast": "切換高對比", "largeTiles": "切換大牌面", "reduceMotion": "減少動態效果" },
+  "wardrobe": {
+    "eyebrow": "免費賽季外觀", "title": "牌桌衣櫥", "subtitle": "為所有遊戲選擇桌布與牌背。全部外觀免費，沒有代幣、購買或隨機抽取。",
+    "collection": "你的圖鑑", "freeNote": "每一款外觀皆可免費使用；限時主題在活動結束後仍會保留於圖鑑中。", "preview": "預覽", "equipped": "目前使用中", "owned": "已擁有 · 可立即使用", "apply": "套用此套外觀",
+    "permanent": "常駐", "active": "當季主題", "upcoming": "即將推出", "archive": "往期收藏",
+    "chapters": { "foundation": { "title": "基礎館藏", "body": "隨時可用、適合所有遊戲的安靜牌桌。" }, "solar": { "title": "四季章節", "body": "跟隨一年光影變化的四款季節桌布。" }, "festival": { "title": "節日章節", "body": "為節日時刻與回歸活動保留的小型主題收藏。" } },
+    "items": { "jade": "青玉桌布", "lunar": "新春限定", "spring": "春分桌布", "summer": "夏至桌布", "autumn": "秋分桌布", "winter": "冬至桌布" }
   },
   "home": {
     "heroTitle": "玩麻將，玩轉治癒系消除遊戲",
-    "heroSubtitle": "彩虹主題麻將接龍、連連看與消除遊戲合集。無需登入，即點即玩。",
+    "heroSubtitle": "舒適易讀的麻將接龍、連連看與消除遊戲合集。無需登入，即點即玩。",
     "playButton": "立即遊玩",
     "featuredTitle": "精選推薦",
     "collectionTitle": "消除與配對遊戲",
     "originalTitle": "自研遊戲",
-    "originalSubtitle": "真人四人麻將與連連看，全部自研。免費，無需下載。"
+    "originalSubtitle": "真人四人麻將與連連看，全部自研。免費，無需下載。",
+    "seasonalTitle": "賽季牌面圖鑑",
+    "seasonalBody": "免費使用的桌布與限時牌背小型圖鑑；不設金幣、不含購買。",
+    "seasonalJade": "青玉桌布",
+    "seasonalLunar": "新春限定",
+    "seasonalBack": "月門牌背"
   },
   "game": {
     "play": "開始遊戲",
@@ -36,7 +50,7 @@
     "label": "廣告"
   },
   "footer": {
-    "rights": "麻將樂園 · 彩虹治癒系麻將遊戲合集。",
+    "rights": "麻將樂園 · 輕鬆易讀的麻將遊戲合集。",
     "noGambling": "免費遊玩 · 無真金賭博"
   },
   "auth": {
@@ -84,6 +98,7 @@
   },
   "connect": {
     "difficultyLabel": "棋盤大小",
+    "gardenBoard": "花園棋盤",
     "relaxed": "輕鬆",
     "classic": "經典",
     "expert": "高手",
@@ -93,7 +108,14 @@
     "shuffle": "重排",
     "restart": "重新開始",
     "cleared": "全部消除！{n} 分。",
-    "timeUp": "時間到，再來一局。"
+    "timeUp": "時間到，再來一局。",
+    "winTitle": "完美收官",
+    "lossTitle": "稍作休息",
+    "lossBody": "時間到了，深呼吸後再開一桌。",
+    "deadTitle": "沒有可連接的路徑",
+    "deadBody": "保留目前得分，只重排剩餘牌。",
+    "rescue": "重排剩餘牌",
+    "playAgain": "再玩一局"
   },
   "solitaire": {
     "layoutLabel": "牌型",
@@ -105,6 +127,17 @@
     "undo": "復原",
     "shuffle": "重排",
     "restart": "重新開始",
-    "cleared": "全部消除！{n} 分。"
+    "cleared": "全部消除！{n} 分。",
+    "tutorialTitle": "從容開局",
+    "tutorialOne": "先選可用牌：它的左邊或右邊必須有一側空著。",
+    "tutorialTwo": "配對相同的牌；春夏秋冬可互配，生旦淨丑四種臉譜可互配。",
+    "tutorialThree": "卡住時使用提示；每一局都可完成。",
+    "next": "下一步",
+    "start": "開始遊戲",
+    "victoryTitle": "清台成功",
+    "victoryBody": "你已找到了全部配對。再來一桌？",
+    "deadTitle": "沒有可配對的牌了",
+    "deadBody": "保留目前進度，僅重新排列剩餘牌，生成可解棋盤。",
+    "rescue": "重排剩餘牌"
   }
 }

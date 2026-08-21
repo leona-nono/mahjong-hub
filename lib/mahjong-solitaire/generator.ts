@@ -60,9 +60,12 @@ function dealSolvable(
 
   const tiles: (Tile | null)[] = new Array(n).fill(null);
   pairs.forEach(([a, b], i) => {
-    const tile = tileFromIndex(i % kinds);
-    tiles[a] = tile;
-    tiles[b] = tile;
+    // Sprinkle in flower groups: different faces in the same group still match.
+    const flowerPair = i % 11 === 0
+      ? ([['f1', 'f2'], ['f3', 'f4'], ['f5', 'f6'], ['f7', 'f8']][Math.floor(i / 11) % 4])
+      : null;
+    tiles[a] = flowerPair?.[0] ?? tileFromIndex(i % kinds);
+    tiles[b] = flowerPair?.[1] ?? tileFromIndex(i % kinds);
   });
   return tiles;
 }

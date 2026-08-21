@@ -1,21 +1,35 @@
 {
   "site": {
     "name": "마작 허브",
-    "tagline": "레인보드 힐링 마작 놀이터"
+    "tagline": "편안하고 또렷한 마작·타일 게임"
   },
   "nav": {
     "home": "홈",
     "games": "게임",
+    "wardrobe": "꾸미기",
     "about": "소개"
+  },
+  "accessibility": { "highContrast": "고대비 전환", "largeTiles": "큰 패 전환", "reduceMotion": "동작 줄이기" },
+  "wardrobe": {
+    "eyebrow": "무료 시즌 외관", "title": "테이블 꾸미기", "subtitle": "모든 게임에서 테이블과 패 뒷면을 선택하세요. 코인, 구매, 확률 요소가 없는 완전 무료 외관입니다.",
+    "collection": "내 컬렉션", "freeNote": "모든 외관은 무료로 사용할 수 있습니다. 기간 한정 테마도 종료 후 컬렉션에 남습니다.", "preview": "미리 보기", "equipped": "사용 중", "owned": "보유함 · 바로 사용 가능", "apply": "이 외관 적용",
+    "permanent": "상시", "active": "시즌 진행 중", "upcoming": "출시 예정", "archive": "지난 시즌 컬렉션",
+    "chapters": { "foundation": { "title": "기본 컬렉션", "body": "언제나 사용할 수 있고 모든 게임에 어울리는 차분한 테이블입니다." }, "solar": { "title": "사계절 챕터", "body": "한 해의 빛 변화를 따라가는 네 가지 테이블 분위기입니다." }, "festival": { "title": "축제 챕터", "body": "명절과 재방문 이벤트를 위한 작은 테마 컬렉션입니다." } },
+    "items": { "jade": "비취 테이블", "lunar": "설날 테마", "spring": "춘분", "summer": "하지", "autumn": "추분", "winter": "동지" }
   },
   "home": {
     "heroTitle": "마작과 힐링 타일 게임을 즐기세요",
-    "heroSubtitle": "레인보드 마작 솔리테어·연결·타일 매치 게임 모음. 로그인 없이 바로 플레이.",
+    "heroSubtitle": "편안하고 또렷한 마작 솔리테어·연결·타일 게임 모음. 로그인 없이 바로 플레이.",
     "playButton": "지금 하기",
     "featuredTitle": "추천 게임",
     "collectionTitle": "제거·매치 게임",
     "originalTitle": "자체 제작",
-    "originalSubtitle": "4인 마작과 사천성을 직접 개발했습니다. 무료, 설치 불필요."
+    "originalSubtitle": "4인 마작과 사천성을 직접 개발했습니다. 무료, 설치 불필요.",
+    "seasonalTitle": "시즌 패 컬렉션",
+    "seasonalBody": "무료로 쓰는 테이블 분위기와 기간 한정 패 뒷면 모음입니다. 코인이나 구매는 없습니다.",
+    "seasonalJade": "비취 테이블",
+    "seasonalLunar": "설날 한정",
+    "seasonalBack": "달문 패 뒷면"
   },
   "game": {
     "play": "플레이",
@@ -36,7 +50,7 @@
     "label": "광고"
   },
   "footer": {
-    "rights": "마작 허브 · 레인보드 힐링 타일 게임 모음.",
+    "rights": "마작 허브 · 편안한 타일 게임 모음.",
     "noGambling": "무료 플레이 · 현금 도박 없음"
   },
   "auth": {
@@ -84,6 +98,7 @@
   },
   "connect": {
     "difficultyLabel": "보드 크기",
+    "gardenBoard": "정원 보드",
     "relaxed": "여유",
     "classic": "클래식",
     "expert": "전문가",
@@ -93,7 +108,14 @@
     "shuffle": "섞기",
     "restart": "다시 시작",
     "cleared": "모두 제거! {n}점.",
-    "timeUp": "시간 종료 — 다시 도전하세요."
+    "timeUp": "시간 종료 — 다시 도전하세요.",
+    "winTitle": "기분 좋은 마무리",
+    "lossTitle": "잠시 쉬어가기",
+    "lossBody": "시간이 끝났습니다. 숨을 고르고 새 판을 시작하세요.",
+    "deadTitle": "연결할 길이 없습니다",
+    "deadBody": "현재 점수를 유지한 채 남은 패만 다시 섞습니다.",
+    "rescue": "남은 패 다시 섞기",
+    "playAgain": "다시 플레이"
   },
   "solitaire": {
     "layoutLabel": "배치",
@@ -105,6 +127,17 @@
     "undo": "실행 취소",
     "shuffle": "섞기",
     "restart": "다시 시작",
-    "cleared": "모두 제거! {n}점."
+    "cleared": "모두 제거! {n}점.",
+    "tutorialTitle": "차분한 첫 판",
+    "tutorialOne": "왼쪽이나 오른쪽이 비어 있는 패를 고르세요.",
+    "tutorialTwo": "같은 패을 맞추세요. 계절끼리, 네 가지 가면끼리도 짝이 됩니다.",
+    "tutorialThree": "막히면 힌트를 쓰세요. 모든 판은 풀 수 있습니다.",
+    "next": "다음",
+    "start": "게임 시작",
+    "victoryTitle": "클리어 성공",
+    "victoryBody": "모든 짝을 찾았습니다. 한 판 더 할까요?",
+    "deadTitle": "열린 짝이 없습니다",
+    "deadBody": "진행 상황을 보존하고 남은 패만 풀 수 있게 다시 섞습니다.",
+    "rescue": "남은 패 다시 섞기"
   }
 }

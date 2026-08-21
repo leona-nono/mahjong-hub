@@ -6,11 +6,12 @@ import MahjongTable from './MahjongTable';
 import MahjongConnect from './MahjongConnect';
 import MahjongSolitaire from './MahjongSolitaire';
 import { awardPoints } from '@/lib/points';
-import type { NativeGame, NativeRuleset } from '@/data/games';
+import type { ConnectVariant, NativeGame, NativeRuleset } from '@/data/games';
 
 export interface NativeGameMountProps {
   native: NativeGame;
   ruleset?: NativeRuleset;
+  connectVariant?: ConnectVariant;
   slug: string;
 }
 
@@ -22,6 +23,7 @@ export interface NativeGameMountProps {
 export default function NativeGameMount({
   native,
   ruleset,
+  connectVariant,
   slug
 }: NativeGameMountProps) {
   const handleWin = useCallback(
@@ -37,7 +39,7 @@ export default function NativeGameMount({
   }
 
   if (native === 'mahjong-connect') {
-    return <MahjongConnect onWin={handleWin} />;
+    return <MahjongConnect variant={connectVariant} onWin={handleWin} />;
   }
 
   if (native === 'mahjong-solitaire') {

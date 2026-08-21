@@ -1,21 +1,35 @@
 {
   "site": {
     "name": "麻雀ハブ",
-    "tagline": "レインボー癒やし系麻雀遊園地"
+    "tagline": "見やすく、くつろげる麻雀とタイルゲーム"
   },
   "nav": {
     "home": "ホーム",
     "games": "ゲーム",
+    "wardrobe": "きせかえ",
     "about": "について"
+  },
+  "accessibility": { "highContrast": "高コントラストを切り替える", "largeTiles": "大きな牌を切り替える", "reduceMotion": "動きを減らす" },
+  "wardrobe": {
+    "eyebrow": "無料の季節テーマ", "title": "卓上きせかえ", "subtitle": "すべてのゲームで卓と牌背を選べます。コイン、購入、抽選のない完全無料の外観です。",
+    "collection": "コレクション", "freeNote": "すべての外観を無料で使えます。期間限定テーマも終了後にコレクションへ残ります。", "preview": "プレビュー", "equipped": "使用中", "owned": "所持済み・すぐ使える", "apply": "この外観を使う",
+    "permanent": "常設", "active": "シーズン中", "upcoming": "まもなく登場", "archive": "アーカイブ",
+    "chapters": { "foundation": { "title": "定番コレクション", "body": "いつでも使える、どのゲームにも合う穏やかな卓です。" }, "solar": { "title": "四季の章", "body": "一年の光の移ろいをたどる四つの卓テーマです。" }, "festival": { "title": "祝祭の章", "body": "祝日と再登場イベントのための小さなテーマコレクションです。" } },
+    "items": { "jade": "翡翠の卓", "lunar": "旧正月", "spring": "春分", "summer": "夏至", "autumn": "秋分", "winter": "冬至" }
   },
   "home": {
     "heroTitle": "麻雀と癒やし系消除ゲームを遊ぼう",
-    "heroSubtitle": "レインボーカラーの麻雀ソリティア・スリーマッチ・タイル消除ゲーム集。ログイン不要、すぐ遊べる。",
+    "heroSubtitle": "見やすく、くつろげる麻雀ソリティア・コネクト・タイルゲーム集。ログイン不要、すぐ遊べる。",
     "playButton": "今すぐ遊ぶ",
     "featuredTitle": "おすすめ",
     "collectionTitle": "消除・マッチゲーム",
     "originalTitle": "オリジナル",
-    "originalSubtitle": "四人麻雀と上海（連結）を自社開発。無料・インストール不要。"
+    "originalSubtitle": "四人麻雀と上海（連結）を自社開発。無料・インストール不要。",
+    "seasonalTitle": "季節の牌コレクション",
+    "seasonalBody": "無料で使える卓の雰囲気と期間限定の牌背コレクション。コインや購入はありません。",
+    "seasonalJade": "翡翠の卓",
+    "seasonalLunar": "旧正月限定",
+    "seasonalBack": "月門の牌背"
   },
   "game": {
     "play": "プレイ",
@@ -36,7 +50,7 @@
     "label": "広告"
   },
   "footer": {
-    "rights": "麻雀ハブ · レインボー癒やし系タイルゲーム集。",
+    "rights": "麻雀ハブ · くつろげるタイルゲーム集。",
     "noGambling": "無料で遊べる・金銭賭博なし"
   },
   "auth": {
@@ -84,6 +98,7 @@
   },
   "connect": {
     "difficultyLabel": "盤面サイズ",
+    "gardenBoard": "ガーデン盤面",
     "relaxed": "のんびり",
     "classic": "クラシック",
     "expert": "エキスパート",
@@ -93,7 +108,14 @@
     "shuffle": "シャッフル",
     "restart": "やり直す",
     "cleared": "全消し！{n} 点。",
-    "timeUp": "時間切れ。もう一度。"
+    "timeUp": "時間切れ。もう一度。",
+    "winTitle": "気持ちよくクリア",
+    "lossTitle": "ひと休み",
+    "lossBody": "時間切れです。ひと息ついて、新しい卓で始めましょう。",
+    "deadTitle": "つながる道がありません",
+    "deadBody": "得点を保ったまま、残りの牌だけを並べ直します。",
+    "rescue": "残りの牌を並べ直す",
+    "playAgain": "もう一度遊ぶ"
   },
   "solitaire": {
     "layoutLabel": "レイアウト",
@@ -105,6 +127,17 @@
     "undo": "取り消し",
     "shuffle": "シャッフル",
     "restart": "やり直す",
-    "cleared": "全消し！{n} 点。"
+    "cleared": "全消し！{n} 点。",
+    "tutorialTitle": "ゆったり始めよう",
+    "tutorialOne": "左右どちらかが空いている牌を選びます。",
+    "tutorialTwo": "同じ牌を合わせます。季節同士、四種の京劇面同士も組にできます。",
+    "tutorialThree": "迷ったらヒントを使いましょう。すべての局はクリア可能です。",
+    "next": "次へ",
+    "start": "ゲームを始める",
+    "victoryTitle": "クリアしました",
+    "victoryBody": "すべての組を見つけました。もう一局どうぞ。",
+    "deadTitle": "組める牌がありません",
+    "deadBody": "進行はそのままに、残った牌だけを解ける形へ並べ直します。",
+    "rescue": "残りの牌を並べ直す"
   }
 }

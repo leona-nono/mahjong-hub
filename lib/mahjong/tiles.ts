@@ -20,6 +20,25 @@ export type Suit = 'm' | 'p' | 's' | 'z';
 
 export type Tile = string; // e.g. 'm1', 'z7'
 
+/** Cosmetic-only flower tiles used by Mahjong Solitaire, never by four-player rules. */
+/** Solitaire-only tiles: four seasons followed by four opera-mask specials. */
+export const FLOWERS: Tile[] = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8'];
+
+export function isFlower(tile: Tile): boolean {
+  return tile[0] === 'f';
+}
+
+export function isSpecialFace(tile: Tile): boolean {
+  return isFlower(tile) && tileRank(tile) >= 5;
+}
+
+/** Seasons match seasons; the four opera-mask specials match each other. */
+export function canSolitaireMatch(a: Tile, b: Tile): boolean {
+  if (a === b) return true;
+  if (!isFlower(a) || !isFlower(b)) return false;
+  return (tileRank(a) <= 4) === (tileRank(b) <= 4);
+}
+
 /** Number of distinct tile kinds (9 * 3 suits + 7 honours). */
 export const TILE_KINDS = 34;
 
@@ -50,6 +69,7 @@ export function tileRank(tile: Tile): number {
 
 /** Map a tile id to its 0..33 index. */
 export function tileIndex(tile: Tile): number {
+  if (isFlower(tile)) return 34 + tileRank(tile) - 1;
   return SUIT_OFFSET[tileSuit(tile)] + tileRank(tile) - 1;
 }
 
@@ -182,6 +202,7 @@ const HONOUR_LABEL: Record<number, string> = {
 
 /** Short CJK face label used on the tile faces in the UI. */
 export function tileFace(tile: Tile): string {
+  if (isFlower(tile)) return ['春', '夏', '秋', '冬', '生', '旦', '淨', '丑'][tileRank(tile) - 1];
   const suit = tileSuit(tile);
   const rank = tileRank(tile);
   if (suit === 'z') return HONOUR_LABEL[rank];
@@ -207,6 +228,7 @@ const SUIT_NAME: Record<Suit, string> = {
 
 /** Accessible English name, used for aria-labels and alt text (also good SEO). */
 export function tileName(tile: Tile): string {
+  if (isFlower(tile)) return ['Spring', 'Summer', 'Autumn', 'Winter', 'Sheng Mask', 'Dan Mask', 'Jing Mask', 'Chou Mask'][tileRank(tile) - 1];
   const suit = tileSuit(tile);
   const rank = tileRank(tile);
   if (suit === 'z') return HONOUR_NAME[rank];

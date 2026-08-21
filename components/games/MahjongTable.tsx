@@ -172,7 +172,7 @@ export default function MahjongTable({
   };
 
   return (
-    <div className="rounded-3xl rainbow-card p-4 sm:p-6">
+    <div className="relative rounded-3xl rainbow-card p-4 sm:p-6">
       {/* Controls */}
       <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">
         <select
@@ -232,8 +232,8 @@ export default function MahjongTable({
       </div>
 
       {/* Table centre */}
-      <div className="my-4 rounded-2xl bg-white/70 p-4">
-        <div className="mb-3 flex items-center justify-between text-xs text-gray-500">
+      <div className="my-4 rounded-2xl border border-white/25 bg-cover bg-center p-4 shadow-inner" style={{ backgroundImage: 'linear-gradient(rgba(19, 58, 51, .82), rgba(19, 58, 51, .88)), var(--mahjong-table-image)' }}>
+        <div className="mb-3 flex items-center justify-between text-xs text-white/75">
           <span>
             {t('wallLeft', { n: tilesRemaining(state) })}
           </span>
@@ -245,7 +245,7 @@ export default function MahjongTable({
         <DiscardPool state={state} />
       </div>
 
-      {/* Result banner */}
+      {/* Table-level settlement overlay */}
       {state.phase === 'over' && state.result && (
         <ResultBanner state={state} onNewGame={() => newGame()} />
       )}
@@ -361,15 +361,16 @@ export default function MahjongTable({
 function OpponentPanel({ state, seat }: { state: GameState; seat: Seat }) {
   const player = state.players[seat];
   const active = state.turn === seat && state.phase !== 'over';
+  const justWon = state.result?.kind === 'win' && (state.result.winner === seat || state.result.winners?.some((winner) => winner.seat === seat));
   return (
     <div
       className={`rounded-2xl border p-2 transition ${
-        active ? 'border-amber-300 bg-amber-50' : 'border-gray-100 bg-white/70'
+        active ? 'border-[#e8c476] bg-[#fff9e9]' : 'border-[#d8d7cd] bg-[#fffdf7]'
       }`}
     >
       <div className="mb-1 flex items-center justify-between text-xs font-semibold text-gray-600">
-        <span>{SEAT_LABEL[seat]}</span>
-        <span className="text-gray-400">{player.hand.length}</span>
+        <span className="flex items-center gap-1.5"><span className={`h-6 w-6 rounded-full border bg-cover ${justWon ? 'border-[#d6a544] ring-2 ring-[#f6df9c]' : active ? 'border-[#1e554d] ring-2 ring-[#a8cfc5]' : 'border-[#d6c69d]'}`} aria-hidden="true" style={{ backgroundImage: "url('/images/mahjong/ai-avatars-default.webp')", backgroundSize: '200% 200%', backgroundPosition: seat === 1 ? '100% 0%' : seat === 2 ? '0% 100%' : '100% 100%' }} />{SEAT_LABEL[seat]}</span>
+        <span className={`flex items-center gap-1 text-[10px] ${active ? 'text-[#1e554d]' : justWon ? 'text-[#9a6a19]' : 'text-gray-400'}`}><i className={`h-1.5 w-1.5 rounded-full ${active ? 'animate-pulse bg-[#2d756a]' : justWon ? 'bg-[#d6a544]' : 'bg-gray-300'}`} />{player.hand.length}</span>
       </div>
       <div className="flex flex-wrap gap-0.5">
         {player.hand.map((_, i) => (
@@ -435,7 +436,9 @@ function ResultBanner({
   const result = state.result!;
 
   return (
-    <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+    <div className="absolute inset-0 z-30 grid place-items-center rounded-3xl bg-[#102720]/65 p-4 backdrop-blur-[2px]">
+      <div className="w-full max-w-md rounded-3xl border border-[#fff6df]/45 bg-[#fffdf7]/95 p-6 text-center shadow-2xl">
+      <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#f9e6b4] text-2xl">✦</div>
       {result.kind === 'draw' ? (
         <p className="font-bold text-emerald-800">{t('drawnGame')}</p>
       ) : result.winners ? (
@@ -481,6 +484,7 @@ function ResultBanner({
       >
         {t('newGame')}
       </button>
+      </div>
     </div>
   );
 }

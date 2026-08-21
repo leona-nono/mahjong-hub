@@ -8,6 +8,7 @@
  */
 
 import { exposedIndices, type Board } from './board';
+import { canSolitaireMatch } from '../mahjong/tiles';
 
 /** Every currently removable pair, up to `limit` (default: all). */
 export function findPairs(
@@ -20,7 +21,7 @@ export function findPairs(
     const a = exposed[i];
     for (let j = i + 1; j < exposed.length; j += 1) {
       const b = exposed[j];
-      if (board.tiles[a] === board.tiles[b]) {
+      if (board.tiles[a] && board.tiles[b] && canSolitaireMatch(board.tiles[a], board.tiles[b])) {
         pairs.push([a, b]);
         if (pairs.length >= limit) return pairs;
       }

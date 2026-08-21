@@ -9,7 +9,11 @@ const LABELS: Record<string, string> = {
   zh: '简',
   'zh-TW': '繁',
   ja: '日',
-  ko: '한'
+  ko: '한',
+  es: 'ES',
+  'pt-BR': 'PT',
+  fr: 'FR',
+  de: 'DE'
 };
 
 export default function LocaleSwitcher() {

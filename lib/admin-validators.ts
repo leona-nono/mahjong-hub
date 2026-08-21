@@ -30,11 +30,11 @@ export const MAX_TAGS = 32; // upper bound on tags array length
 export const MAX_TAG_LEN = 64; // upper bound on a single tag
 
 export const ALL_LOCALES = [
-  'en', 'zh-TW', 'zh-CN', 'ja', 'ko', 'de', 'fr', 'es', 'pt', 'it', 'nl',
+  'en', 'zh-TW', 'zh-CN', 'ja', 'ko', 'de', 'fr', 'es', 'pt', 'pt-BR', 'it', 'nl',
   'pl', 'ru', 'ar', 'th', 'vi', 'id', 'ms'
 ] as const;
 
-export const FEATURE_LOCALES = ['en', 'zh-TW', 'zh-CN', 'ja', 'ko'] as const;
+export const FEATURE_LOCALES = ['en', 'zh-TW', 'zh-CN', 'ja', 'ko', 'de', 'fr', 'es', 'pt-BR'] as const;
 
 export const GAME_CATEGORIES = [
   'mahjong', 'connect', 'solitaire', 'tile-match', 'four-player'

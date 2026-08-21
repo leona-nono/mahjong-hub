@@ -1,21 +1,35 @@
 {
   "site": {
     "name": "Mahjong Hub",
-    "tagline": "Rainbow healing mahjong playground"
+    "tagline": "Calm mahjong and tile games, made for clear, relaxed play"
   },
   "nav": {
     "home": "Home",
     "games": "Games",
+    "wardrobe": "Wardrobe",
     "about": "About"
+  },
+  "accessibility": { "highContrast": "Toggle high contrast", "largeTiles": "Toggle large tiles", "reduceMotion": "Reduce motion" },
+  "wardrobe": {
+    "eyebrow": "Free seasonal looks", "title": "Table wardrobe", "subtitle": "Choose a table and tile back for every game. All looks are free—no coins, purchases, or chance mechanics.",
+    "collection": "Your collection", "freeNote": "Every appearance is yours to use. Limited looks remain in your collection after an event.", "preview": "Preview", "equipped": "Equipped", "owned": "Owned · ready to use", "apply": "Apply this look",
+    "permanent": "Permanent", "active": "In season", "upcoming": "Coming soon", "archive": "Collection archive",
+    "chapters": { "foundation": { "title": "Foundation collection", "body": "Calm, always-available tables for every kind of game." }, "solar": { "title": "Solar seasons", "body": "Four table moods following the changing light of the year." }, "festival": { "title": "Festival chapter", "body": "A small collection for holiday moments and returning events." } },
+    "items": { "jade": "Jade table", "lunar": "Lunar New Year", "spring": "Spring equinox", "summer": "Summer solstice", "autumn": "Autumn equinox", "winter": "Winter solstice" }
   },
   "home": {
     "heroTitle": "Play Mahjong & Relaxing Tile Games",
-    "heroSubtitle": "A rainbow-themed collection of mahjong solitaire, connect and tile-match games. No login, just play.",
+    "heroSubtitle": "A calm collection of mahjong solitaire, connect and tile-match games. No login, just play.",
     "playButton": "Play Now",
     "featuredTitle": "Featured Games",
     "collectionTitle": "Elimination & Match Games",
     "originalTitle": "Built by us",
-    "originalSubtitle": "Real four-player mahjong and connect, written in-house. Free, no download."
+    "originalSubtitle": "Real four-player mahjong and connect, written in-house. Free, no download.",
+    "seasonalTitle": "Seasonal tile cabinet",
+    "seasonalBody": "A small, free-to-use collection of table moods and limited tile backs. No coins, no purchases.",
+    "seasonalJade": "Jade table",
+    "seasonalLunar": "Lunar festival",
+    "seasonalBack": "Moon-gate tile back"
   },
   "game": {
     "play": "Play",
@@ -36,7 +50,7 @@
     "label": "Advertisement"
   },
   "footer": {
-    "rights": "Mahjong Hub · A rainbow healing tile game collection.",
+    "rights": "Mahjong Hub · A calm collection of tile games.",
     "noGambling": "Free to play · No real-money gambling"
   },
   "auth": {
@@ -84,6 +98,7 @@
   },
   "connect": {
     "difficultyLabel": "Board size",
+    "gardenBoard": "Garden board",
     "relaxed": "Relaxed",
     "classic": "Classic",
     "expert": "Expert",
@@ -93,7 +108,14 @@
     "shuffle": "Shuffle",
     "restart": "Restart",
     "cleared": "Board cleared! {n} points.",
-    "timeUp": "Time's up — try again."
+    "timeUp": "Time's up — try again.",
+    "winTitle": "A bright finish",
+    "lossTitle": "Time to pause",
+    "lossBody": "The clock ran out. Take a breath and try a fresh table.",
+    "deadTitle": "No path is open",
+    "deadBody": "Keep your score and re-deal only the remaining tiles.",
+    "rescue": "Re-deal remaining tiles",
+    "playAgain": "Play again"
   },
   "solitaire": {
     "layoutLabel": "Layout",
@@ -105,6 +127,17 @@
     "undo": "Undo",
     "shuffle": "Shuffle",
     "restart": "Restart",
-    "cleared": "Board cleared! {n} points."
+    "cleared": "Board cleared! {n} points.",
+    "tutorialTitle": "A gentle first round",
+    "tutorialOne": "Choose a free tile: it needs an open left or right side.",
+    "tutorialTwo": "Match identical tiles. Seasons match seasons; the four opera masks match each other.",
+    "tutorialThree": "Use a hint when you are stuck. Every deal can be completed.",
+    "next": "Next",
+    "start": "Start playing",
+    "victoryTitle": "A clear, calm finish",
+    "victoryBody": "You found every pair. Ready for another table?",
+    "deadTitle": "No open pairs left",
+    "deadBody": "Keep your progress: re-deal only the remaining tiles into a solvable table.",
+    "rescue": "Re-deal remaining tiles"
   }
 }

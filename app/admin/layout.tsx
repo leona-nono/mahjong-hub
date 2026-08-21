@@ -14,6 +14,7 @@ export const metadata = {
 const NAV_ITEMS = [
   { label: '概览', href: '/admin', icon: '📊' },
   { label: '游戏管理', href: '/admin/games', icon: '🎮' },
+  { label: '外观与赛季', href: '/admin/appearance', icon: '🎨' },
   { label: '站点设置', href: '/admin/settings', icon: '⚙️' },
   { label: 'i18n 文案', href: '/admin/settings/i18n', icon: '🌐' }
 ];

@@ -3,64 +3,33 @@
 @tailwind utilities;
 
 :root {
-  --rb-red: #ff6b6b;
-  --rb-orange: #ffa94d;
-  --rb-yellow: #ffd43b;
-  --rb-green: #51cf66;
-  --rb-blue: #4dabf7;
-  --rb-indigo: #748ffc;
-  --rb-violet: #b197fc;
-  --rb-pink: #f783ac;
+  --mahjong-table-image: url('/images/solitaire/backgrounds/solitaire-jade-table-v1.webp');
+  --mahjong-tile-back-image: url('/images/tiles/backs/jade-moon-gate-tile-back-v1.webp');
+  --mahjong-standard-atlas: url('/images/tiles/atlas/standard-atlas.webp');
 }
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-}
+:root { --ink: #1d2a44; --ink-soft: #52617a; --paper: #fffdf7; --canvas: #edf1ed; --jade: #2d756a; --jade-dark: #1e554d; --vermilion: #b54b4b; --gold: #c9973d; --line: #d8d7cd; }
+html, body { padding: 0; margin: 0; }
+body { background: radial-gradient(circle at 12% 0%, #f8eedb 0, transparent 31rem), linear-gradient(145deg, #f4f5ef, #e7efec); color: var(--ink); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif; }
+button, select, a { -webkit-tap-highlight-color: transparent; }
+.rainbow-text { color: var(--ink); }
+.rainbow-bar { background: linear-gradient(90deg, var(--jade-dark), var(--jade), #81a88c, var(--gold)); }
+.rainbow-card { background: rgba(255, 253, 247, .9); border: 1px solid rgba(216, 215, 205, .9); box-shadow: 0 14px 35px -24px rgba(29, 42, 68, .38); }
 
-body {
-  background: linear-gradient(135deg, #fff5f7 0%, #f0f8ff 50%, #f5fff7 100%);
-  background-attachment: fixed;
-  color: #2b2b3a;
-  font-family:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'PingFang SC', 'Hiragino Sans', 'Noto Sans CJK SC', 'Microsoft YaHei',
-    sans-serif;
-}
-
-.rainbow-text {
-  background: linear-gradient(
-    90deg,
-    var(--rb-red),
-    var(--rb-orange),
-    var(--rb-yellow),
-    var(--rb-green),
-    var(--rb-blue),
-    var(--rb-violet),
-    var(--rb-pink)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.rainbow-bar {
-  background: linear-gradient(
-    90deg,
-    var(--rb-red),
-    var(--rb-orange),
-    var(--rb-yellow),
-    var(--rb-green),
-    var(--rb-blue),
-    var(--rb-violet),
-    var(--rb-pink)
-  );
-}
-
-.rainbow-card {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 30px -12px rgba(116, 143, 252, 0.35);
-}
+.tile-face { position: relative; overflow: hidden; border-color: #d5d1c6; background: linear-gradient(145deg, #fffef9 0%, #f3efe5 100%); color: var(--ink); font-family: Georgia, 'Times New Roman', serif; isolation: isolate; }
+.tile-face::after { content: ''; position: absolute; inset: 3px; z-index: -1; border: 1px solid rgba(75, 83, 90, .12); border-radius: inherit; }
+.tile-corner { position: absolute; z-index: 1; font-family: system-ui, sans-serif; font-size: .55em; font-weight: 800; line-height: 1; }
+.tile-corner-top { left: 4px; top: 4px; }.tile-corner-bottom { bottom: 4px; right: 4px; transform: rotate(180deg); }
+.tile-number { font-size: 2.3em; font-weight: 800; line-height: 1; }.tile-character { color: var(--vermilion); }.tile-dot { color: #286a91; }.tile-bamboo { color: var(--jade); }.tile-honour { color: var(--ink); }
+.tile-flower { color: #8d4b69; background: linear-gradient(145deg, #fffdf8, #f6e9ef); }.flower-mark { display: flex; flex-direction: column; align-items: center; font-size: 1.38em; font-weight: 800; line-height: .9; }.flower-mark i { color: #b7834c; font-size: .55em; font-style: normal; margin-bottom: 4px; }
+.tile-special-art { position: absolute; inset: 0; z-index: 0; background-position: center; background-size: cover; }
+.tile-standard-art { position: absolute; inset: 0; z-index: 0; background-image: var(--mahjong-standard-atlas); background-repeat: no-repeat; background-size: 900% 400%; }
+.tile-a11y-marker { position: absolute; z-index: 2; right: 4px; top: 4px; width: 10px; height: 10px; background-image: url('/images/tiles/atlas/a11y-suit-markers.webp'); background-size: 400% 100%; background-repeat: no-repeat; }.tile-a11y-m { background-position: 0 0; }.tile-a11y-p { background-position: 33.333% 0; }.tile-a11y-s { background-position: 66.667% 0; }.tile-a11y-z { background-position: 100% 0; }
+.dot-grid { position: relative; width: 27px; height: 31px; }.dot-grid i { position: absolute; width: 6px; height: 6px; border-radius: 999px; background: currentColor; box-shadow: inset 1px 1px rgba(255,255,255,.45); }.dot-grid .top-left { top: 0; left: 0; }.dot-grid .top-middle { top: 0; left: 10px; }.dot-grid .top-right { top: 0; right: 0; }.dot-grid .mid-left { top: 12px; left: 0; }.dot-grid .middle { top: 12px; left: 10px; }.dot-grid .mid-right { top: 12px; right: 0; }.dot-grid .bottom-left { bottom: 0; left: 0; }.dot-grid .bottom-middle { bottom: 0; left: 10px; }.dot-grid .bottom-right { bottom: 0; right: 0; }.bamboo-mark { display: grid; grid-template-columns: repeat(3, 5px); grid-auto-rows: 11px; gap: 2px; align-content: center; }.bamboo-mark i { width: 5px; height: 11px; border-radius: 4px; background: currentColor; transform: skew(-7deg); }.honour-mark { display: flex; flex-direction: column; align-items: center; font-size: 1.3em; font-weight: 800; line-height: .92; }.honour-mark i { font-family: system-ui, sans-serif; font-size: .52em; font-style: normal; margin-bottom: 3px; }
+.tile-covered { filter: none; color: #788590; background: linear-gradient(145deg, #edf0ec, #dce3dd); }.tile-covered::before { content: '•'; position: absolute; top: 3px; right: 4px; color: var(--jade-dark); font-family: system-ui; font-size: 10px; }.tile-drawn { outline: 3px solid #d6a544; outline-offset: 2px; }
+.tile-heritage::after { border-color: rgba(173, 115, 58, .36); }.tile-heritage .tile-zodiac { position: absolute; right: 3px; top: 50%; transform: translateY(-50%); border: 1px solid currentColor; border-radius: 999px; padding: 1px 2px; font-family: 'PingFang SC', serif; font-size: .43em; font-weight: 700; opacity: .64; }.tile-heritage.tile-honour .honour-mark i { color: #ad733a; }.tile-heritage.tile-honour .honour-mark { text-shadow: 0 1px #f7ead5; }
+.tile-back { position: relative; overflow: hidden; border: 1px solid #1f5a52; background: linear-gradient(145deg, #2b786d, #174b48); box-shadow: 0 2px 5px rgba(29,42,68,.18); }.tile-back i { position: absolute; inset: 5px; border: 1px solid rgba(255,255,255,.65); background: repeating-linear-gradient(45deg, transparent 0 4px, rgba(255,255,255,.18) 4px 5px); }
+.high-contrast { --ink: #101827; --mahjong-standard-atlas: url('/images/tiles/atlas/standard-atlas-contrast.webp'); }.high-contrast .tile-face { border: 2px solid #101827; background: #fff; color: #101827; }.high-contrast .tile-character { color: #9b1c1c; }.high-contrast .tile-dot { color: #075985; }.high-contrast .tile-bamboo { color: #166534; }.high-contrast .tile-covered { color: #3f4b59; background: #e5e7eb; }
+.tile-size-large .tile-face, .tile-size-large .tile-back { zoom: 1.12; }
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }

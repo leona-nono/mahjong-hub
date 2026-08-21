@@ -1,13 +1,12 @@
 import { Link } from '@/i18n/navigation';
 import type { GameConfig } from '@/data/games';
 
-/** Category accent so the grid is scannable at a glance. */
-const ACCENT: Record<string, string> = {
-  'four-player': 'from-rose-400 via-amber-400 to-emerald-400',
-  connect: 'from-sky-400 via-indigo-400 to-violet-400',
-  solitaire: 'from-emerald-400 via-teal-400 to-sky-400',
-  mahjong: 'from-amber-400 via-orange-400 to-rose-400',
-  'tile-match': 'from-violet-400 via-pink-400 to-rose-400'
+const ART: Record<string, { icon: string; label: string; tone: string }> = {
+  'four-player': { icon: '🀄', label: 'TABLE', tone: 'from-[#234b50] to-[#4f8275]' },
+  connect: { icon: '⌘', label: 'CONNECT', tone: 'from-[#285774] to-[#77a1a8]' },
+  solitaire: { icon: '◈', label: 'SOLITAIRE', tone: 'from-[#6a5541] to-[#b99a64]' },
+  mahjong: { icon: '◉', label: 'MAHJONG', tone: 'from-[#8d5146] to-[#c58c67]' },
+  'tile-match': { icon: '✦', label: 'TILE MATCH', tone: 'from-[#515a78] to-[#9299a5]' }
 };
 
 export default function GameCard({ game }: { game: GameConfig }) {
@@ -16,13 +15,13 @@ export default function GameCard({ game }: { game: GameConfig }) {
   return (
     <Link
       href={`/games/${game.slug}`}
-      className="group block overflow-hidden rounded-2xl rainbow-card transition hover:-translate-y-1 hover:shadow-lg"
+      className="group block overflow-hidden rounded-2xl rainbow-card transition hover:-translate-y-1 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2d756a]"
     >
       <div
-        className={`relative h-24 bg-gradient-to-r opacity-80 transition group-hover:opacity-100 ${
-          ACCENT[game.category] ?? 'rainbow-bar'
-        }`}
+        className={`relative flex h-28 items-center justify-center bg-gradient-to-br transition group-hover:brightness-110 ${ART[game.category]?.tone ?? 'from-[#2d756a] to-[#c9973d]'}`}
       >
+        <span className="text-4xl text-white/95 drop-shadow-sm" aria-hidden="true">{ART[game.category]?.icon ?? '◈'}</span>
+        <span className="absolute bottom-2 left-3 text-[10px] font-bold tracking-[.18em] text-white/80">{ART[game.category]?.label ?? 'PLAY'}</span>
         {isNative && (
           <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-700">
             Original
