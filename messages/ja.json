@@ -457,5 +457,6 @@
     "coachRiskLow": "公開情報では低リスク：他家が {tile} を捨てています。",
     "coachRiskMedium": "{tile} の公開リスクは不明です。",
     "coachRiskHigh": "高リスク：他家が {tile} を晒しています。"
-  }
+  },
+  "regional": { "baseline": "プレイ可能なルール基準", "sichuanTitle": "四川血戦", "taiwanTitle": "台湾16枚麻雀", "seatEast": "東", "seatSouth": "南", "seatWest": "西", "seatNorth": "北", "turnDealer": "手番：{turn} ・ 親：{dealer}", "exchange": "三枚交換：同じ種類から3枚選択（{n}/3）。", "exchangeAction": "時計回りに交換", "clear": "クリア", "chooseVoid": "欠ける種類を選択してください（最少枚数のみ）。", "forbidden": "和了前に {suit} を全て捨ててください", "nextHand": "次の局", "winner": "勝者：{seats}", "wallExhausted": "牌山が尽きました", "scope": "この卓はMahjong Hubの地域ルール基準を使用します。", "shareReplay": "牌譜を共有", "replayCopied": "牌譜リンクをコピーしました。", "replayCopyFallback": "ブラウザのアドレスバーから牌譜URLをコピーしてください。", "declareReady": "聴牌を宣言", "readyHint": "ハイライトされた捨て牌を選んで聴牌を宣言します。", "scoreTaiwanHand": "この0台基準は16枚・五面子一雀頭で、底点に台数を加えて精算します。", "scoreTaiwanFlowers": "花牌と座花は補充牌を引き、台数に加算します。八花と七奪一はこの卓の基準で即時精算します。", "scoreTaiwanSettlement": "ツモは他の三家が支払い、ロン・搶槓・槓上ツモは本卓の底点＋台数で精算します。", "scoreSichuanHand": "成都血戦は換三張と定缺から始まり、和了者が抜けて三家和了または牌山切れまで続きます。", "scoreSichuanKong": "明槓は放銃者が支払い、暗槓は残り三家で分担します。槓後は補充牌を引きます。", "scoreSichuanDraw": "流局時は査叫・花猪・槓点の戻しを、この製品の上限番基準で精算します。" }
 }

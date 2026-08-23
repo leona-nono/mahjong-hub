@@ -3,7 +3,7 @@
 import type { Tile } from './tiles';
 
 export type MahjongSound = 'build' | 'shuffle' | 'deal' | 'draw' | 'discard' | 'flower' | 'chi' | 'pon' | 'kan' | 'win' | 'toggle';
-export type MahjongVoiceLocale = 'cantonese' | 'japanese' | 'english' | 'none';
+export type MahjongVoiceLocale = 'cantonese' | 'mandarin' | 'japanese' | 'english' | 'none';
 
 let audioContext: AudioContext | null = null;
 let openingTimers: ReturnType<typeof setTimeout>[] = [];
@@ -42,10 +42,36 @@ function tone(
   oscillator.stop(start + duration + 0.02);
 }
 
+/** A short band-passed noise transient keeps tile impacts from sounding like
+ * UI beeps. It is generated locally, so it needs no external sound asset. */
+function ceramicNoise(context: AudioContext, start: number, strength: number): void {
+  const duration = 0.045;
+  const frames = Math.ceil(context.sampleRate * duration);
+  const buffer = context.createBuffer(1, frames, context.sampleRate);
+  const samples = buffer.getChannelData(0);
+  for (let index = 0; index < frames; index += 1) {
+    const decay = 1 - index / frames;
+    samples[index] = (Math.random() * 2 - 1) * decay * decay;
+  }
+  const source = context.createBufferSource();
+  const filter = context.createBiquadFilter();
+  const gain = context.createGain();
+  filter.type = 'bandpass';
+  filter.frequency.setValueAtTime(2350, start);
+  filter.Q.setValueAtTime(1.5, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(0.09 * strength, start + 0.003);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+  source.buffer = buffer;
+  source.connect(filter).connect(gain).connect(context.destination);
+  source.start(start);
+}
+
 function tileClack(context: AudioContext, start: number, strength = 1): void {
-  tone(context, 920, start, 0.045, 0.12 * strength, 'square');
-  tone(context, 510, start + 0.012, 0.075, 0.09 * strength, 'triangle');
-  tone(context, 180, start + 0.018, 0.06, 0.035 * strength, 'sine');
+  ceramicNoise(context, start, strength);
+  tone(context, 760, start, 0.038, 0.08 * strength, 'triangle');
+  tone(context, 410, start + 0.012, 0.07, 0.075 * strength, 'triangle');
+  tone(context, 155, start + 0.018, 0.055, 0.03 * strength, 'sine');
 }
 
 export function cantoneseTileLabel(tile: Tile): string {
@@ -100,6 +126,13 @@ function preferredJapaneseVoice(): SpeechSynthesisVoice | undefined {
   const voices = window.speechSynthesis.getVoices();
   return voices.find((voice) => /^ja-jp/i.test(voice.lang)) ?? voices.find((voice) => /japanese|kyoko|otoya/i.test(voice.name));
 }
+function preferredMandarinVoice(): SpeechSynthesisVoice | undefined {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return undefined;
+  const voices = window.speechSynthesis.getVoices();
+  return voices.find((voice) => /^zh-cn/i.test(voice.lang)) ??
+    voices.find((voice) => /^cmn/i.test(voice.lang)) ??
+    voices.find((voice) => /^zh/i.test(voice.lang));
+}
 function preferredEnglishVoice(): SpeechSynthesisVoice | undefined {
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return undefined;
   return window.speechSynthesis.getVoices().find((voice) => /^en(-us|-gb)?$/i.test(voice.lang));
@@ -112,6 +145,15 @@ export function japaneseTileLabel(tile: Tile): string {
   if (tile[0] === 'p') return `${rank}ピン`;
   if (tile[0] === 's') return `${rank}ソウ`;
   const honours: Record<string, string> = { z1: 'トン', z2: 'ナン', z3: 'シャー', z4: 'ペー', z5: 'ハク', z6: 'ハツ', z7: 'チュン' };
+  return honours[tile] ?? tile;
+}
+export function mandarinTileLabel(tile: Tile): string {
+  const rankNames = ['一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  const rank = Number(tile.slice(1));
+  if (tile[0] === 'm') return `${rankNames[rank - 1] ?? ''}万`;
+  if (tile[0] === 'p') return `${rankNames[rank - 1] ?? ''}筒`;
+  if (tile[0] === 's') return `${rankNames[rank - 1] ?? ''}条`;
+  const honours: Record<string, string> = { z1: '东风', z2: '南风', z3: '西风', z4: '北风', z5: '白板', z6: '发财', z7: '红中' };
   return honours[tile] ?? tile;
 }
 export function englishTileLabel(tile: Tile): string {
@@ -144,15 +186,15 @@ function announceCall(sound: MahjongSound, tile: Tile | undefined, voiceLocale: 
     shuffle: 'Shuffling tiles', draw: 'Draw', discard: 'Discard', chi: 'Chi', pon: 'Pung', kan: 'Kong', win: 'Mah Jongg'
   };
   const word = sound === 'discard' && tile
-    ? (voiceLocale === 'japanese' ? japaneseTileLabel(tile) : voiceLocale === 'cantonese' ? cantoneseTileLabel(tile) : englishTileLabel(tile))
+    ? (voiceLocale === 'japanese' ? japaneseTileLabel(tile) : voiceLocale === 'cantonese' ? cantoneseTileLabel(tile) : voiceLocale === 'mandarin' ? mandarinTileLabel(tile) : englishTileLabel(tile))
     : (voiceLocale === 'japanese' ? japanese[sound] : voiceLocale === 'cantonese' ? cantonese[sound] : english[sound]);
   if (!word) return;
   // The spoken call belongs to the latest visible event. Do not let an old
   // discard survive into a later draw, claim window, or even a new hand.
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(word);
-  utterance.lang = voiceLocale === 'japanese' ? 'ja-JP' : voiceLocale === 'cantonese' ? 'zh-HK' : 'en-US';
-  const voice = voiceLocale === 'japanese' ? preferredJapaneseVoice() : voiceLocale === 'cantonese' ? preferredCantoneseVoice() : preferredEnglishVoice();
+  utterance.lang = voiceLocale === 'japanese' ? 'ja-JP' : voiceLocale === 'cantonese' ? 'zh-HK' : voiceLocale === 'mandarin' ? 'zh-CN' : 'en-US';
+  const voice = voiceLocale === 'japanese' ? preferredJapaneseVoice() : voiceLocale === 'cantonese' ? preferredCantoneseVoice() : voiceLocale === 'mandarin' ? preferredMandarinVoice() : preferredEnglishVoice();
   if (voice) utterance.voice = voice;
   utterance.rate = 1.08;
   utterance.pitch = 0.9;

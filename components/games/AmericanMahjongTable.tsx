@@ -351,16 +351,16 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-[10px] font-bold tracking-wide text-emerald-50">{t('practiceTableNotice')}</p>
           {lessonGoal && <p className="absolute left-1/2 top-9 z-20 -translate-x-1/2 rounded-full bg-amber-300/90 px-3 py-1 text-[10px] font-black text-emerald-950">Lesson goal · {lessonGoal}</p>}
 
-          <Wall className="left-1/2 top-8 -translate-x-1/2" count={13} />
-          <Wall className="left-[16%] top-1/2 -translate-y-1/2" count={13} vertical />
-          <Wall className="right-[16%] top-1/2 -translate-y-1/2" count={13} vertical />
+          <Wall className="left-1/2 top-8 -translate-x-1/2" count={13} orientation="top" />
+          <Wall className="left-[16%] top-1/2 -translate-y-1/2" count={13} orientation="left" />
+          <Wall className="right-[16%] top-1/2 -translate-y-1/2" count={13} orientation="right" />
           <CharlestonReserve className="left-1/2 top-[13%] -translate-x-1/2" />
           <CharlestonReserve className="left-[31%] top-[39%]" vertical />
           <CharlestonReserve className="right-[31%] top-[39%]" vertical />
-          <Avatar seat="P4" score="8900" portrait={3} status={botStatus(3)} className="right-[20%] top-[9%]" />
+          <Avatar seat="P4" score="8900" portrait={0} status={botStatus(3)} className="right-[20%] top-[9%]" />
           <Avatar seat="P3" score="8900" portrait={2} status={botStatus(2)} className="left-5 top-[37%]" />
           <Avatar seat="P2" score="8900" portrait={1} status={botStatus(1)} className="right-5 top-[37%]" />
-          <Avatar seat="YOU" score="8920" className="bottom-[15%] left-[13%]" human />
+          <Avatar seat="YOU" score="8920" portrait={3} className="bottom-[15%] left-[13%]" human />
 
           <div className="absolute left-1/2 top-[16%] z-30 flex -translate-x-1/2 gap-1 rounded-full bg-[#002f24]/90 p-1 text-[10px] font-black shadow-lg">
             {[t('step1'), t('step2'), t('step3'), t('step4')].map((label, index) => {
@@ -383,12 +383,12 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
             <p className="mt-2 text-xs font-bold text-emerald-200/80">{notice}</p>
           </div>}
           {game.phase === 'turn' && <div className="absolute left-1/2 top-[57%] z-20 -translate-x-1/2 rounded-full bg-[#002f24]/85 px-4 py-2 text-center text-xs font-bold text-emerald-100 shadow-lg">{notice}</div>}
-          <div className="absolute right-[12%] top-[58%] z-20 w-56 rounded-xl border border-emerald-100/15 bg-[#002f24]/90 p-3 text-xs text-emerald-50 shadow-xl">
+          <div className="absolute right-[2%] top-[58%] z-20 w-56 rounded-xl border border-emerald-100/15 bg-[#002f24]/90 p-3 text-xs text-emerald-50 shadow-xl">
             <p className="font-black uppercase tracking-[.13em] text-amber-200">{card.title} · {card.points} {t('points')}</p>
             <div className="mt-2 space-y-1.5">{targetProgress.groups.map((group) => <div key={group.label} className="flex items-center justify-between gap-2"><span className="flex min-w-0 items-center gap-1 truncate">{group.relation && <b title={group.relationRule} className={`inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded text-[9px] ${group.relation === 'A' ? 'bg-amber-300 text-amber-950' : 'bg-sky-300 text-sky-950'}`}>{group.relation}</b>}<span className="truncate">{group.label}</span></span><strong className={group.current === group.required ? 'text-emerald-300' : 'text-amber-100'}>{group.current}/{group.required}</strong></div>)}</div>
             <p className="mt-2 border-t border-white/10 pt-2 text-[10px] text-emerald-100/70">{t('jokersHeld', { n: targetProgress.jokers, s: targetProgress.jokers === 1 ? '' : 's' })}</p>
           </div>
-          <CoachPanel coach={coach} t={t} className="absolute left-[12%] top-[58%] z-20 w-56" />
+          <CoachPanel coach={coach} t={t} className="absolute left-[2%] top-[58%] z-20 w-56" />
 
           <div className="absolute bottom-[20%] left-1/2 z-30 flex -translate-x-1/2 items-center gap-4 rounded-xl bg-transparent p-3">
             {inCharleston && selectedTiles.map((tile, index) => <AmericanTile key={`${tile}-${index}`} tile={tile} selected />)}
@@ -453,7 +453,10 @@ function AmericanTile({ tile, selected = false, highlight = false, compact = fal
   return <button type="button" onClick={onClick} className={`inline-flex items-center justify-center rounded-lg border-2 border-slate-500 bg-[radial-gradient(circle,#d9ddd7_0%,#8e958d_100%)] font-black text-emerald-950 shadow-[0_4px_0_rgba(0,0,0,.3)] ${classes}`}>J<br /><span className="text-[.42em]">OKER</span></button>;
 }
 
-function Wall({ className, count, vertical = false }: { className: string; count: number; vertical?: boolean }) { return <div className={`absolute flex ${vertical ? 'flex-col' : ''} ${className}`}>{Array.from({ length: count }, (_, index) => <span key={index} className={vertical ? '-my-[5px]' : '-mx-[2px]'}><TileBack size="table" /></span>)}</div>; }
+function Wall({ className, count, orientation }: { className: string; count: number; orientation: 'top' | 'left' | 'right' }) {
+  const vertical = orientation !== 'top';
+  return <div className={`absolute ${className}`}><div className={`mahjong-standing-rack mahjong-standing-rack--${orientation} flex ${vertical ? 'flex-col' : ''}`} aria-label={`Concealed American Mahjong hand: ${count} tiles`}>{Array.from({ length: count }, (_, index) => <span key={index} className={`mahjong-standing-tile mahjong-standing-tile--${orientation} ${vertical ? '-my-[5px]' : '-mx-[2px]'}`}><span className={`mahjong-standing-tile__back mahjong-standing-tile__back--${orientation}`} /></span>)}</div></div>;
+}
 function CharlestonReserve({ className, vertical = false }: { className: string; vertical?: boolean }) { return <div className={`absolute z-[3] flex ${vertical ? 'flex-col' : ''} gap-4 ${className}`}>{Array.from({ length: 3 }, (_, index) => <span key={index} className="inline-block"><TileBack size="xl" /></span>)}</div>; }
 function CoachPanel({ coach, t, className, compact = false }: { coach: ReturnType<typeof americanCoachAdvice>; t: (key: string, values?: Record<string, string | number>) => string; className: string; compact?: boolean }) {
   const exposureKey = coach.exposure === 'wait-for-mah-jongg' ? 'coachExposureWait' : coach.exposure === 'call-commits-to-line' ? 'coachExposureCommit' : 'coachExposureCompatible';
@@ -477,7 +480,7 @@ function Portrait({ index, label, compact = false }: { index: 0 | 1 | 2 | 3; lab
     <img src="/images/mahjong/ai-avatars-default.webp" alt="" className="absolute h-[200%] w-[200%] max-w-none" style={{ left: `${-column * 100}%`, top: `${-row * 100}%` }} />
   </span>;
 }
-function Avatar({ seat, score, className, human = false, portrait = 0, status }: { seat: string; score: string; className: string; human?: boolean; portrait?: 0 | 1 | 2 | 3; status?: string }) { return <div className={`absolute z-20 flex w-24 flex-col items-center ${className}`}><div className={`rounded-full border-4 ${human ? 'border-amber-300 bg-sky-500' : 'border-white bg-violet-500'} shadow-lg`}>{human ? <span className="flex h-14 w-14 items-center justify-center text-xs font-black">{seat}</span> : <Portrait index={portrait} label={seat} />}</div><div className="mt-1 rounded-full bg-black/40 px-2 py-0.5 text-xs font-black text-amber-100">{status ?? `G ${score}`}</div></div>; }
+function Avatar({ seat, score, className, human = false, portrait = 0, status }: { seat: string; score: string; className: string; human?: boolean; portrait?: 0 | 1 | 2 | 3; status?: string }) { return <div className={`absolute z-20 flex w-24 flex-col items-center ${className}`}><div className={`rounded-full border-4 ${human ? 'border-amber-300' : 'border-white'} bg-[#f7f1df] shadow-lg`}><Portrait index={portrait} label={seat} /></div><div className="mt-1 rounded-full bg-black/40 px-2 py-0.5 text-xs font-black text-amber-100">{status ?? `G ${score}`}</div></div>; }
 function Opponent({ label, portrait, status }: { label: string; portrait: 0 | 1 | 2 | 3; status: string }) { return <div className="flex items-center rounded-full bg-black/35 p-2"><Portrait index={portrait} label={label} compact /><span className="ml-1 font-black text-amber-100">{status}</span></div>; }
 function TableButton({ children, onClick, active = false }: { children: ReactNode; onClick: () => void; active?: boolean }) { return <button type="button" onClick={onClick} className={`h-9 rounded-lg border px-4 text-xs font-black ${active ? 'border-amber-300 bg-amber-300 text-emerald-950' : 'border-white/10 bg-[#07553b] text-white'}`}>{children}</button>; }
 /** One line describing what the table did while the human was not acting. */

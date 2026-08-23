@@ -2,44 +2,54 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 
 const ITEMS = [
-  { key: 'solitaire', href: '/games/solitaire', icon: '🀄' },
-  { key: 'classic', href: '/games/classic', icon: '🀄️' },
-  { key: 'connect', href: '/games', icon: '🔗' },
-  { key: 'tileMatch', href: '/games', icon: '🧩' },
-  { key: 'beginners', href: '/blog', icon: '📖' }
+  { key: 'solitaire', href: '/games/solitaire', icon: 'clear' },
+  { key: 'classic', href: '/games/classic', icon: 'classic' },
+  { key: 'connect', href: '/games', icon: 'connect' },
+  { key: 'tileMatch', href: '/games', icon: 'pair' },
+  { key: 'beginners', href: '/blog', icon: 'learn' }
 ] as const;
+
+function SidebarIcon({ name }: { name: (typeof ITEMS)[number]['icon'] }) {
+  const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
+  if (name === 'clear') return <svg viewBox="0 0 24 24" aria-hidden><rect x="4" y="5" width="11" height="13" rx="2" {...common} /><rect x="9" y="9" width="11" height="11" rx="2" {...common} /><path d="M19 3v4m-2-2h4" {...common} /></svg>;
+  if (name === 'classic') return <svg viewBox="0 0 24 24" aria-hidden><rect x="5" y="3" width="14" height="18" rx="3" {...common} /><path d="M12 7v10m-3-5h6" {...common} /></svg>;
+  if (name === 'connect') return <svg viewBox="0 0 24 24" aria-hidden><circle cx="6" cy="17" r="3" {...common} /><circle cx="18" cy="7" r="3" {...common} /><path d="m8.5 15 7-6" {...common} /></svg>;
+  if (name === 'pair') return <svg viewBox="0 0 24 24" aria-hidden><rect x="4" y="4" width="11" height="11" rx="2" {...common} /><rect x="9" y="9" width="11" height="11" rx="2" {...common} /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden><path d="M4 5.5c3.4-1 6 .2 8 2.1 2-1.9 4.6-3.1 8-2.1v13c-3.1-.8-5.5.1-8 2-2.5-1.9-4.9-2.8-8-2Z" {...common} /><path d="M12 7.6v12" {...common} /></svg>;
+}
 
 export default function CategorySidebar() {
   const t = useTranslations('portal');
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   const nav = (
-    <nav className="flex flex-col gap-1 p-3">
-      <p className="mb-2 px-2 text-[11px] font-bold uppercase tracking-wider text-portal-muted">
+    <nav className="catalog-sidebar-nav">
+      <p className="catalog-sidebar-nav__title">
         {t('categories')}
       </p>
-      {ITEMS.map((item) => (
+      {ITEMS.map((item) => {
+        const active = pathname === item.href || (item.key === 'connect' && pathname === '/games');
+        return (
         <Link
           key={item.key}
           href={item.href}
           onClick={() => setOpen(false)}
-          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-portal-text/90 transition hover:bg-white/5 hover:text-portal-accent"
+          className={`catalog-sidebar-nav__item ${active ? 'catalog-sidebar-nav__item--active' : ''}`}
         >
-          <span className="text-base" aria-hidden>
-            {item.icon}
-          </span>
+          <span className="catalog-sidebar-nav__icon"><SidebarIcon name={item.icon} /></span>
           <span>{t(item.key)}</span>
         </Link>
-      ))}
+      );})}
     </nav>
   );
 
   return (
     <>
-      <aside className="fixed bottom-0 left-0 top-16 z-30 hidden w-[var(--portal-sidebar-w)] border-r border-portal-border bg-portal-elevated/95 backdrop-blur md:block">
+      <aside className="catalog-sidebar fixed bottom-0 left-0 top-16 z-30 hidden w-[var(--portal-sidebar-w)] md:block">
         {nav}
       </aside>
 
@@ -60,7 +70,7 @@ export default function CategorySidebar() {
             aria-label="Close"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute bottom-0 left-0 top-0 w-[min(80vw,280px)] border-r border-portal-border bg-portal-elevated shadow-2xl">
+          <div className="catalog-sidebar absolute bottom-0 left-0 top-0 w-[min(80vw,280px)] shadow-2xl">
             <div className="flex items-center justify-between border-b border-portal-border px-4 py-3">
               <span className="font-display font-semibold">{t('categories')}</span>
               <button

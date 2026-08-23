@@ -4,13 +4,14 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import {
   getMergedGames,
+  getMergedGamesByNavGroup,
   getMergedLocalizedGame,
   getMergedLocalizedGames,
   getMergedRelatedGames
 } from '@/lib/games-db';
 import IframeSection from '@/components/IframeSection';
 import NativeGameMount from '@/components/games/NativeGameMount';
-import GameCard from '@/components/GameCard';
+import CatalogGameCard from '@/components/CatalogGameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
 import MarkdownContent from '@/components/MarkdownContent';
@@ -80,10 +81,19 @@ export default async function GamePage({
     await getMergedRelatedGames(slug, 8),
     locale
   );
+  const regionalSwitchGames = getMergedLocalizedGames(
+    await getMergedGamesByNavGroup('classic'),
+    locale
+  ).filter((candidate) => candidate.slug !== slug);
+  const solitaireSwitchGames = getMergedLocalizedGames(
+    await getMergedGamesByNavGroup('solitaire'),
+    locale
+  ).filter((candidate) => candidate.slug !== slug);
   const isNative = game.gameType === 'native';
   const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
   const isHongKong = game.ruleset === 'hongkong';
+  const isFourPlayer = game.category === 'four-player';
 
   const jsonLd: Record<string, unknown>[] = [];
   if (isNative) {
@@ -128,7 +138,7 @@ export default async function GamePage({
   const stage = isComingSoon ? (
     <ComingSoonGame game={game} />
   ) : isNative && game.native ? (
-    <NativeGameMount native={game.native} ruleset={game.ruleset} slug={game.slug} />
+    <NativeGameMount native={game.native} ruleset={game.ruleset} regionalRuleset={game.regionalRuleset} slug={game.slug} />
   ) : (
     <IframeSection
       game={game}
@@ -179,9 +189,14 @@ export default async function GamePage({
           <h2 className="mb-3 font-display text-sm font-semibold uppercase tracking-wide text-portal-muted">
             {t('tryAnother')}
           </h2>
-          <div className="grid grid-cols-2 gap-2">
-            {related.map((g) => (
-              <GameCard key={g.slug} game={g} size="sm" />
+          <div className="regional-switch-grid">
+            {(isFourPlayer ? regionalSwitchGames : solitaireSwitchGames).map((g) => (
+              <CatalogGameCard
+                key={g.slug}
+                game={g}
+                kind={isFourPlayer ? 'classic' : 'solitaire'}
+                compact
+              />
             ))}
           </div>
         </aside>
@@ -261,9 +276,14 @@ export default async function GamePage({
         <h2 className="mb-3 font-display text-lg font-semibold text-portal-text">
           {t('tryAnother')}
         </h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {related.map((g) => (
-            <GameCard key={g.slug} game={g} />
+        <div className="regional-switch-grid regional-switch-grid--mobile">
+          {(isFourPlayer ? regionalSwitchGames : solitaireSwitchGames).map((g) => (
+            <CatalogGameCard
+              key={g.slug}
+              game={g}
+              kind={isFourPlayer ? 'classic' : 'solitaire'}
+              compact
+            />
           ))}
         </div>
       </section>

@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { CLASSIC_REGIONS } from '@/data/games';
-import { getMergedClassicByRegion, getMergedLocalizedGames } from '@/lib/games-db';
-import GameCard from '@/components/GameCard';
+import { getMergedGamesByNavGroup, getMergedLocalizedGames } from '@/lib/games-db';
+import CatalogGameCard from '@/components/CatalogGameCard';
 import { alternatesFor } from '@/lib/seo';
 import { getSiteSettings } from '@/lib/site-settings';
 
@@ -37,48 +36,22 @@ export default async function ClassicGamesPage({
   setRequestLocale(locale);
 
   const t = await getTranslations('nav');
-  const tg = await getTranslations('game');
-  const gamesByRegion = new Map(
-    await Promise.all(
-      CLASSIC_REGIONS.map(
-        async (r) =>
-          [
-            r.region,
-            getMergedLocalizedGames(await getMergedClassicByRegion(r.region), locale)
-          ] as const
-      )
-    )
-  );
+  const priority = ['american-mahjong', 'riichi-mahjong', 'chinese-official-mahjong', 'hong-kong-mahjong', 'taiwan-mahjong', 'sichuan-mahjong'];
+  const index = new Map(priority.map((slug, order) => [slug, order]));
+  const games = getMergedLocalizedGames(await getMergedGamesByNavGroup('classic'), locale)
+    .filter((game) => index.has(game.slug))
+    .sort((a, b) => (index.get(a.slug) ?? 99) - (index.get(b.slug) ?? 99));
 
   return (
-    <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8">
-      <h1 className="font-display text-2xl font-semibold text-portal-text sm:text-3xl">
+    <div className="catalog-page catalog-page--classic mx-auto max-w-[1400px] px-5 py-8 sm:px-10 sm:py-10">
+      <h1 className="catalog-page__title">
         {t('classic')}
       </h1>
-      <p className="mt-1 max-w-2xl text-sm text-portal-muted">{t('classicSubtitle')}</p>
-
-      <div className="mt-8 space-y-10">
-        {CLASSIC_REGIONS.map((region) => {
-          const games = gamesByRegion.get(region.region) ?? [];
-          return (
-            <section key={region.region}>
-              <h2 className="mb-3 font-display text-lg font-semibold text-portal-text">
-                {t(region.labelKey)}
-              </h2>
-              {games.length ? (
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                  {games.map((g) => (
-                    <GameCard key={g.slug} game={g} />
-                  ))}
-                </div>
-              ) : (
-                <p className="rounded-xl border border-dashed border-portal-border p-4 text-sm text-portal-muted">
-                  {tg('comingSoon')}
-                </p>
-              )}
-            </section>
-          );
-        })}
+      <p className="catalog-page__subtitle">{t('classicSubtitle')}</p>
+      <div className="catalog-page__grid catalog-page__grid--classic">
+        {games.map((game) => (
+          <CatalogGameCard key={game.slug} game={game} kind="classic" />
+        ))}
       </div>
     </div>
   );

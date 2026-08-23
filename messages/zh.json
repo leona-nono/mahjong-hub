@@ -457,5 +457,6 @@
     "coachRiskLow": "公开风险低：已有其他玩家打出过 {tile}。",
     "coachRiskMedium": "{tile} 的公开风险未知。",
     "coachRiskHigh": "公开风险高：对手已亮出 {tile}。"
-  }
+  },
+  "regional": { "baseline": "可玩规则基线", "sichuanTitle": "四川血战到底", "taiwanTitle": "台湾十六张麻将", "seatEast": "东", "seatSouth": "南", "seatWest": "西", "seatNorth": "北", "turnDealer": "轮到：{turn} · 庄家：{dealer}", "exchange": "换三张：请选择同一花色的三张牌（{n}/3）。", "exchangeAction": "顺时针换牌", "clear": "清除", "chooseVoid": "请选择定缺花色（只能选张数最少的花色）。", "forbidden": "胡牌前必须打完 {suit}", "nextHand": "下一局", "winner": "赢家：{seats}", "wallExhausted": "牌墙耗尽", "scope": "本桌采用麻将乐园的地区规则基线。", "shareReplay": "分享牌谱", "replayCopied": "牌谱链接已复制。", "replayCopyFallback": "请从浏览器地址栏复制牌谱链接。", "declareReady": "宣告听牌", "readyHint": "请选择高亮的弃牌来宣告听牌。", "scoreTaiwanHand": "本桌采用 16 张、五副牌加一对的 0 台起和基线；计分为底分加台数。", "scoreTaiwanFlowers": "花牌和座花会补牌并加入台数；八花与七抢一按当前桌面基线即时结算。", "scoreTaiwanSettlement": "自摸由其余三家支付；放铳、抢杠和杠上自摸按本桌的底分加台数结算。", "scoreSichuanHand": "成都血战到底先换三张、定缺；胡牌者离开后继续至三家胡牌或牌墙耗尽。", "scoreSichuanKong": "明杠由出牌者支付，暗杠由其余三家分摊；杠后补牌并支持杠上事件。", "scoreSichuanDraw": "流局时执行查叫、查花猪与杠分回退；胡牌番数按本桌封顶基线结算。" }
 }
