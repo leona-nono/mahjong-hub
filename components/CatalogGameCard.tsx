@@ -1,5 +1,6 @@
 import { Link } from '@/i18n/navigation';
 import type { GameConfig } from '@/data/games';
+import { catalogCover } from '@/lib/game-cover';
 
 type CatalogKind = 'solitaire' | 'classic';
 
@@ -10,30 +11,6 @@ const CLASSIC_COPY: Record<string, string> = {
   'hong-kong-mahjong': 'HONG KONG MAHJONG',
   'taiwan-mahjong': 'TAIWAN MAHJONG',
   'sichuan-mahjong': 'SICHUAN MAHJONG'
-};
-
-const SOLITAIRE_ART: Record<string, string> = {
-  'mahjong-connect-classic': '/images/catalog/solitaire/mahjong-connect.png',
-  'mahjong-solitaire-classic': '/images/catalog/solitaire/mahjong-solitaire-classic.png',
-  'mahjong-connect': '/images/catalog/solitaire/mahjong-connect-lite.png',
-  'mahjong-classic': '/images/catalog/solitaire/mahjong-classic.png',
-  'mahjong-solitaire': '/images/catalog/solitaire/mahjong-connect-pipe.png',
-  'mahjong-3d': '/images/catalog/solitaire/mahjong-3d.png',
-  'onet-connect-classic': '/images/catalog/solitaire/onet-connect-classic.png',
-  'bee-connect': '/images/catalog/solitaire/bee-connect.png',
-  'aloha-mahjong': '/images/catalog/solitaire/aloha-mahjong.png',
-  '8x8-match-tiles': '/images/catalog/solitaire/8x8-match-tiles.png',
-  'tile-guru': '/images/catalog/solitaire/tile-guru.png',
-  'tile-journey': '/images/catalog/solitaire/tile-journey.png'
-};
-
-const CLASSIC_ART: Record<string, string> = {
-  'american-mahjong': '/images/catalog/classic/american-mahjong.png',
-  'riichi-mahjong': '/images/catalog/classic/riichi-mahjong.png',
-  'chinese-official-mahjong': '/images/catalog/classic/chinese-official-mahjong.png',
-  'hong-kong-mahjong': '/images/catalog/classic/hong-kong-mahjong.png',
-  'taiwan-mahjong': '/images/catalog/classic/taiwan-mahjong.png',
-  'sichuan-mahjong': '/images/catalog/classic/sichuan-mahjong.png'
 };
 
 function visualKey(game: GameConfig) {
@@ -50,7 +27,7 @@ export default function CatalogGameCard({
   compact?: boolean;
 }) {
   const english = kind === 'classic' ? CLASSIC_COPY[game.slug] ?? game.title : undefined;
-  const art = kind === 'solitaire' ? SOLITAIRE_ART[game.slug] : CLASSIC_ART[game.slug];
+  const art = catalogCover(game.slug);
 
   return (
     <Link
