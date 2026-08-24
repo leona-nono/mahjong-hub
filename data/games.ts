@@ -8,7 +8,7 @@ export type GameCategory =
   | 'four-player';
 
 /** Which in-house component renders a native game. */
-export type NativeGame = 'mahjong-table' | 'mahjong-connect' | 'mahjong-solitaire' | 'american-mahjong';
+export type NativeGame = 'mahjong-table' | 'mahjong-connect' | 'mahjong-solitaire' | 'american-mahjong' | 'regional-mahjong';
 export type GameType = 'iframe' | 'native' | 'coming-soon';
 
 /**
@@ -16,6 +16,7 @@ export type GameType = 'iframe' | 'native' | 'coming-soon';
  * module — which every page imports — stays free of engine imports.
  */
 export type NativeRuleset = 'hongkong' | 'riichi' | 'chinese-official';
+export type RegionalRuleset = 'sichuan' | 'taiwan';
 
 /** Top-level navigation group (4 一级目录). */
 export type NavGroup = 'classic' | 'solitaire' | 'beginners' | 'set';
@@ -61,6 +62,8 @@ export interface GameConfig {
   native?: NativeGame;
   /** Ruleset passed to the native four-player table. */
   ruleset?: NativeRuleset;
+  /** Ruleset passed to the independent regional table engine. */
+  regionalRuleset?: RegionalRuleset;
   /** Player count, used in the schema.org payload. */
   players?: number;
   /** Highlight on the home page. */
@@ -239,7 +242,9 @@ export const games: GameConfig[] = [
     title: 'Sichuan Mahjong',
     description: 'Sichuan Blood Battle Mahjong with Exchange Three, a forbidden suit, and continued play after the first win.',
     category: 'four-player',
-    gameType: 'coming-soon',
+    gameType: 'native',
+    native: 'regional-mahjong',
+    regionalRuleset: 'sichuan',
     navGroup: 'classic',
     region: 'sichuan',
     players: 4,
@@ -273,7 +278,9 @@ export const games: GameConfig[] = [
     title: 'Taiwan Mahjong',
     description: 'Taiwanese 16-tile Mahjong with Flower replacement and Tai-based scoring.',
     category: 'four-player',
-    gameType: 'coming-soon',
+    gameType: 'native',
+    native: 'regional-mahjong',
+    regionalRuleset: 'taiwan',
     navGroup: 'classic',
     region: 'taiwan',
     players: 4,

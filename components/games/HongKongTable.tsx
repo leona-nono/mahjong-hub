@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
-import TileFace, { TileBack, useTraditionalTilePreload } from './TileFace';
+import TileFace, { useTraditionalTilePreload } from './TileFace';
 import MobileMahjongTable from './MobileMahjongTable';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type RiichiVariant, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { describeScore } from '@/lib/mahjong/scoring';
@@ -90,7 +90,10 @@ export default function HongKongTable({
   const currentWind = SEAT_LABEL[state.turn];
   const isRiichi = variant === 'riichi';
   const isMcr = variant === 'chinese-official';
-  const voiceLocale = isRiichi ? 'japanese' as const : 'cantonese' as const;
+  // Keep the call-outs faithful to the ruleset, rather than to the site's UI
+  // language.  Chinese Official is played with Mandarin call-outs; Hong Kong
+  // remains Cantonese and Riichi remains Japanese.
+  const voiceLocale = isRiichi ? 'japanese' as const : isMcr ? 'mandarin' as const : 'cantonese' as const;
   const gameName = isRiichi ? 'Japanese Riichi' : isMcr ? 'Chinese Official · MCR' : 'Hong Kong';
   const scoreUnit = t(isRiichi ? 'unitHan' : isMcr ? 'unitPoints' : 'unitFan');
   const mcrQualifying = tsumoEvaluation?.score?.qualifyingTotal ?? 0;
@@ -184,9 +187,9 @@ export default function HongKongTable({
     const previousDiscards = previous.players.reduce((total, player) => total + player.discards.length, 0);
     const currentDiscards = state.players.reduce((total, player) => total + player.discards.length, 0);
     if (currentDiscards > previousDiscards) {
-      // Mobile human discards already announce inside the user gesture. Keep
-      // this state effect for desktop and bot discards without double speech.
-      if (state.lastDiscard?.from === HUMAN && typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) return;
+      // Human discards play inside the click gesture (desktop and mobile), so
+      // the AudioContext is guaranteed to be active. This effect is for AI.
+      if (state.lastDiscard?.from === HUMAN) return;
       playMahjongSound('discard', state.lastDiscard?.tile, voiceLocale);
       return;
     }
@@ -319,15 +322,14 @@ export default function HongKongTable({
           <PlayerBadge state={state} seat={0} className="bottom-[16%] left-[12%]" human showFlowers={isMcr} />
 
           <div className="pointer-events-none absolute left-[28%] right-[28%] top-[18%] h-[48%] border border-[#003d2f]">
-            <span className="absolute -left-[13%] top-[18%] h-[78%] w-[15%] skew-x-[-9deg] border border-[#003d2f]" />
-            <span className="absolute -right-[13%] top-[18%] h-[78%] w-[15%] skew-x-[9deg] border border-[#003d2f]" />
-            <span className="absolute bottom-[-16%] left-[2%] h-[17%] w-[96%] border border-[#003d2f]" />
           </div>
 
-          <DiscardZone state={state} seat={3} className="left-1/2 top-[18%] -translate-x-1/2" />
-          <DiscardZone state={state} seat={2} className="left-[25%] top-[31%]" />
-          <DiscardZone state={state} seat={1} className="right-[25%] top-[31%]" />
-          <DiscardZone state={state} seat={0} className="bottom-[25%] left-1/2 -translate-x-1/2" />
+          {/* Hand racks stay on the outside of the table.  Each player's
+              discard / exposed-meld area is one of these four inner zones. */}
+          <DiscardZone state={state} seat={3} className="left-1/2 top-[22%] -translate-x-1/2" />
+          <DiscardZone state={state} seat={2} className="left-[27%] top-[32%]" />
+          <DiscardZone state={state} seat={1} className="right-[27%] top-[32%]" />
+          <DiscardZone state={state} seat={0} className="bottom-[24%] left-1/2 -translate-x-1/2" />
 
           <div className="absolute left-1/2 top-[45%] z-10 h-44 w-52 -translate-x-1/2 -translate-y-1/2 rounded-xl border-[5px] border-[#20222d] bg-[#11121a] shadow-[0_12px_20px_rgba(0,0,0,.45)]">
             <div className="absolute inset-5 flex flex-col items-center justify-center bg-[#07090d] text-center">
@@ -473,7 +475,10 @@ export default function HongKongTable({
                     traditional
                     onClick={(tile) => {
                       primeMahjongAudio();
-                      if (!human.riichiPending || riichiDiscards.includes(tile)) onDiscard(tile);
+                      if (!human.riichiPending || riichiDiscards.includes(tile)) {
+                        if (soundEnabled) playMahjongSound('discard', tile, voiceLocale);
+                        onDiscard(tile);
+                      }
                     }}
                     disabled={!myTurn || paused || (human.riichiPending && !riichiDiscards.includes(tile))}
                     highlight={(myTurn && index === human.hand.length - 1) || (human.riichiPending && riichiDiscards.includes(tile))}
@@ -561,6 +566,7 @@ function TableToolButton({
 
 function ConcealedRack({ count, tiles, orientation }: { seat: Seat; count: number; tiles?: Tile[]; orientation: 'top' | 'left' | 'right' }) {
   const vertical = orientation !== 'top';
+  const visibleCount = Math.min(count, 14);
   const perspective = orientation === 'top'
     ? '[transform:perspective(1100px)_rotateX(18deg)] origin-top'
     : orientation === 'left'
@@ -568,14 +574,46 @@ function ConcealedRack({ count, tiles, orientation }: { seat: Seat; count: numbe
       : '[transform:perspective(1100px)_rotateY(18deg)] origin-right';
   return (
     <div className={`mahjong-standing-rack mahjong-standing-rack--${orientation} flex ${vertical ? 'flex-col' : ''} ${perspective}`} aria-label={`Opponent concealed hand: ${count} tiles`}>
-      {Array.from({ length: Math.min(count, 14) }, (_, index) => (
-        <span key={index} className={`mahjong-standing-tile mahjong-standing-tile--${orientation} ${vertical ? '-my-[5px]' : '-mx-[2px]'}`}>
+      {Array.from({ length: visibleCount }, (_, index) => (
+        <span key={index} className={`mahjong-standing-tile mahjong-standing-tile--${orientation} ${count === 14 && index === visibleCount - 1 ? 'mahjong-standing-tile--drawn' : ''} ${vertical ? '-my-[5px]' : '-mx-[2px]'}`}>
           {tiles?.[index]
             ? <TileFace tile={tiles[index]} size="table" traditional />
-            : <TileBack size="table" className="mahjong-standing-tile__face" />}
+            : <StandingTileBack orientation={orientation} />}
         </span>
       ))}
     </div>
+  );
+}
+
+/**
+ * Concealed opponents use a dedicated three-dimensional tile body. Reusing the
+ * generic TileBack here made a standing rack read as a column of framed cards.
+ */
+function StandingTileBack({ orientation }: { orientation: 'top' | 'left' | 'right' }) {
+  return <span className={`mahjong-standing-tile__back mahjong-standing-tile__back--${orientation}`} aria-hidden="true" />;
+}
+
+const DEFAULT_PORTRAIT_BY_SEAT: Record<Seat, 0 | 1 | 2 | 3> = {
+  0: 3,
+  1: 1,
+  2: 2,
+  3: 0
+};
+
+/** A single source image supplies the four default players, cropped as a sprite. */
+function DefaultPlayerPortrait({ seat }: { seat: Seat }) {
+  const index = DEFAULT_PORTRAIT_BY_SEAT[seat];
+  const row = index > 1 ? 1 : 0;
+  const column = index % 2;
+  return (
+    <span className="relative block h-14 w-14 overflow-hidden rounded-[10px]" aria-hidden="true">
+      <img
+        src="/images/mahjong/ai-avatars-default.webp"
+        alt=""
+        className="absolute h-[200%] w-[200%] max-w-none"
+        style={{ left: `${-column * 100}%`, top: `${-row * 100}%` }}
+      />
+    </span>
   );
 }
 
@@ -593,12 +631,13 @@ function PlayerBadge({
   showFlowers?: boolean;
 }) {
   const active = state.turn === seat && state.phase !== 'over';
-  const colors = ['from-sky-300 to-cyan-600', 'from-orange-300 to-rose-500', 'from-violet-300 to-fuchsia-600', 'from-lime-300 to-emerald-600'];
   return (
     <div className={`absolute z-20 flex w-24 flex-col items-center ${className}`}>
-      <div className={`relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-lg border-4 bg-gradient-to-br ${colors[seat]} shadow-lg ${active ? 'border-yellow-300' : 'border-[#e8ece3]'}`}>
-        <span className="absolute top-2 h-3 w-8 rounded-t-full bg-slate-800/80" />
-        <span className="mt-2 flex h-8 w-9 items-center justify-center rounded-full bg-amber-50 text-xs font-black text-slate-700">{human ? 'YOU' : `P${seat + 1}`}</span>
+      <div
+        className={`relative overflow-hidden rounded-xl border-4 bg-[#f7f1df] shadow-lg ${active ? 'border-yellow-300' : 'border-[#e8ece3]'}`}
+        aria-label={human ? 'You' : `Player ${seat + 1}`}
+      >
+        <DefaultPlayerPortrait seat={seat} />
       </div>
       <div className="mt-1 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-xs font-black text-amber-100">
         <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-amber-300 text-[9px] text-amber-900">G</span>

@@ -178,6 +178,87 @@ body {
   transform-origin: bottom center;
 }
 
+/* Catalogue pages: the illustrations remain semantic cards, while the visual
+   system follows the approved deep-ink / ivory / jade art direction. */
+.catalog-page {
+  min-height: calc(100vh - 4rem);
+  background:
+    radial-gradient(ellipse 45% 45% at 3% 9%, rgba(23, 124, 117, .20), transparent 68%),
+    radial-gradient(ellipse 35% 34% at 92% 12%, rgba(184, 132, 50, .10), transparent 70%),
+    #061521;
+}
+.catalog-page__title { margin: 0; color: #f5e4c6; font-family: var(--font-portal-display), Georgia, serif; font-size: clamp(2.35rem, 4vw, 4rem); font-weight: 700; letter-spacing: -.035em; line-height: 1; }
+.catalog-page__subtitle { margin: .85rem 0 0; color: #d8b783; font-size: clamp(1rem, 1.4vw, 1.2rem); }
+.catalog-page__grid { display: grid; margin-top: 2.2rem; gap: 1rem; }
+.catalog-page__grid--solitaire { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.catalog-page__grid--classic { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+@media (min-width: 640px) { .catalog-page__grid--solitaire { grid-template-columns: repeat(2, minmax(0, 1fr)); } .catalog-page__grid--classic { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .catalog-page__grid--solitaire { grid-template-columns: repeat(4, minmax(0, 1fr)); } .catalog-page__grid--classic { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.catalog-game-card__frame { display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(230, 183, 99, .88); border-radius: 18px; background: #f2e5cb; box-shadow: 0 14px 28px rgba(0, 0, 0, .35); transition: transform .2s ease, box-shadow .2s ease; }
+.catalog-game-card:hover .catalog-game-card__frame { box-shadow: 0 19px 32px rgba(0, 0, 0, .48), 0 0 0 2px rgba(67, 220, 195, .33); transform: translateY(-3px); }
+.catalog-game-card__art { position: relative; flex: 0 0 67%; min-height: 0; overflow: hidden; isolation: isolate; background: linear-gradient(135deg, #174a43, #102b2b); }
+.catalog-game-card__frame--solitaire { aspect-ratio: 4 / 3; }
+.catalog-game-card__frame--classic { aspect-ratio: 4 / 3; }
+.catalog-game-card__frame--classic .catalog-game-card__art { flex-basis: 72%; min-height: 0; }
+.catalog-game-card__cover { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.catalog-game-card__glow { position: absolute; inset: 0; background: radial-gradient(circle at 55% 40%, rgba(255, 238, 194, .35), transparent 42%); }
+.catalog-game-card__tiles { position: absolute; inset: 0; z-index: 2; }
+.catalog-tile { position: absolute; width: 31%; filter: drop-shadow(0 9px 7px rgba(0,0,0,.31)); transform-origin: center bottom; }
+.catalog-tile--1 { left: 23%; bottom: 8%; transform: rotate(-12deg); }
+.catalog-tile--2 { left: 43%; bottom: 14%; transform: rotate(7deg); }
+.catalog-tile--3 { left: 59%; bottom: 7%; transform: rotate(16deg); }
+.catalog-game-card__motif { position: absolute; z-index: 1; inset: 16% 11%; border: 1px solid rgba(255, 227, 169, .32); border-radius: 14px; transform: rotate(-5deg); }
+.catalog-game-card__players { flex: 0 0 auto; order: 2; border: 1px solid rgba(62, 30, 9, .3); border-radius: 999px; background: rgba(248, 233, 199, .88); color: #4b321b; font-size: .6rem; font-weight: 800; letter-spacing: .06em; padding: .25rem .45rem; }
+.catalog-game-card__meta { display: flex; flex: 1 1 auto; align-items: center; justify-content: space-between; gap: .5rem; border-top: 1px solid rgba(126, 77, 27, .24); background: linear-gradient(105deg, #f9edcf, #ebd9b7); color: #1b211d; padding: .7rem .85rem; }
+.catalog-game-card__meta h2 { margin: 0; font-family: var(--font-portal-display), Georgia, serif; font-size: clamp(1.05rem, 1.65vw, 1.45rem); font-weight: 700; line-height: 1.1; }
+.catalog-game-card__meta p { margin: .32rem 0 0; color: #5a4a39; font-size: .66rem; font-weight: 800; letter-spacing: .11em; }
+.catalog-game-card__play { display: grid; flex: 0 0 auto; order: 3; width: 2.4rem; height: 2.4rem; place-items: center; border-radius: 999px; background: #14bfb0; color: white; font-size: 2rem; font-weight: 300; line-height: 1; }
+
+/* The game table's side rail reuses the very same regional cover language at
+   a smaller density, so choosing another ruleset never falls back to generic
+   thumbnails or metadata badges. */
+.regional-switch-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+.regional-switch-grid--mobile { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.catalog-game-card__frame--compact { aspect-ratio: 4 / 3; border-radius: 12px; }
+.catalog-game-card__frame--compact .catalog-game-card__art { flex-basis: 72%; }
+.catalog-game-card__frame--compact .catalog-game-card__meta { min-width: 0; padding: .38rem .48rem; }
+.catalog-game-card__frame--compact .catalog-game-card__meta h2 { overflow: hidden; font-family: var(--font-portal-sans), 'PingFang SC', sans-serif; font-size: .72rem; font-weight: 800; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
+@media (min-width: 640px) { .regional-switch-grid--mobile { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Distinct rule/game stories, without shipping a page screenshot as the UI. */
+.catalog-art--mahjong-solitaire-classic .catalog-game-card__art, .catalog-art--mahjong-connect-classic .catalog-game-card__art { background: linear-gradient(135deg, #6f241d, #421f1d); }
+.catalog-art--mahjong-solitaire-classic .catalog-game-card__tiles, .catalog-art--mahjong-connect-classic .catalog-game-card__tiles { transform: scale(.78) translateY(11%); }
+.catalog-art--mahjong-3d .catalog-game-card__art { background: radial-gradient(circle at 50% 40%, #464a92, #10142b 66%); }
+.catalog-art--mahjong-3d .catalog-game-card__tiles { transform: perspective(300px) rotateX(47deg) rotateZ(-20deg) scale(1.16); }
+.catalog-art--mahjong-3d .catalog-game-card__motif { border-color: #9ee8fa; border-radius: 50%; transform: rotate(31deg) scale(.72); }
+.catalog-art--8x8-match-tiles .catalog-game-card__art { background: repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 1px, transparent 1px 12.5%), repeating-linear-gradient(0deg, rgba(255,255,255,.16) 0 1px, transparent 1px 12.5%), #314b47; }
+.catalog-art--8x8-match-tiles .catalog-game-card__tiles { display: none; }
+.catalog-art--8x8-match-tiles .catalog-game-card__motif { inset: 12%; border-radius: 4px; border: 0; background: repeating-linear-gradient(90deg, #d7d4bf 0 10%, #9dc4b0 10% 20%, #bcb3cf 20% 30%, #d7d4bf 30% 40%); opacity: .92; transform: none; }
+.catalog-art--tile-guru .catalog-game-card__art { background: linear-gradient(135deg, #a34521, #442019); }
+.catalog-art--tile-guru .catalog-game-card__tiles { display: none; }
+.catalog-art--tile-guru .catalog-game-card__motif { border: 0; background: linear-gradient(115deg, transparent 28%, #ffbf48 30% 34%, transparent 36% 44%, #ffcb54 46% 50%, transparent 52%), linear-gradient(135deg, #d84d36, #f1a431 43%, #365c9b 44%); box-shadow: 0 0 23px rgba(255, 204, 77, .56); transform: none; }
+.catalog-art--american-mahjong .catalog-game-card__art { background: linear-gradient(135deg, #b6523f, #eab67c); }
+.catalog-art--riichi-mahjong .catalog-game-card__art { background: linear-gradient(135deg, #174d3e, #09291f); }
+.catalog-art--chinese-official-mahjong .catalog-game-card__art { background: linear-gradient(135deg, #68452c, #211b17); }
+.catalog-art--chinese-official-mahjong .catalog-game-card__motif { background: repeating-linear-gradient(0deg, rgba(237,215,171,.75) 0 12px, rgba(126,76,40,.45) 12px 14px); transform: rotate(-8deg); }
+.catalog-art--hong-kong-mahjong .catalog-game-card__art { background: linear-gradient(135deg, #102e28, #604321); }
+.catalog-art--taiwan-mahjong .catalog-game-card__art { background: linear-gradient(135deg, #df7138, #f0ba79); }
+.catalog-art--taiwan-mahjong .catalog-game-card__tiles { transform: scale(.89) translateY(8%); }
+.catalog-art--sichuan-mahjong .catalog-game-card__art { background: linear-gradient(135deg, #214a34, #803224); }
+.catalog-art--sichuan-mahjong .catalog-game-card__motif { border-radius: 50%; border-color: #e8c568; background: radial-gradient(circle, transparent 47%, rgba(232,197,104,.68) 48% 51%, transparent 52%); }
+
+.catalog-sidebar { border-right: 1px solid rgba(155, 215, 202, .16); background: linear-gradient(180deg, #061c26 0%, #071522 62%); }
+.catalog-sidebar-nav { display: flex; flex-direction: column; gap: .48rem; padding: 1.45rem 1rem; }
+.catalog-sidebar-nav__title { margin: 0 0 .55rem; padding: 0 .7rem; color: #f0ead9; font-size: .8rem; font-weight: 800; letter-spacing: .12em; }
+.catalog-sidebar-nav__item { position: relative; display: flex; align-items: center; gap: .95rem; border-radius: 17px; color: #e6e5db; padding: .83rem .8rem; font-size: 1rem; font-weight: 700; transition: background .2s ease, color .2s ease; }
+.catalog-sidebar-nav__item:hover { background: rgba(87, 173, 157, .12); color: #fff5df; }
+.catalog-sidebar-nav__item--active { background: linear-gradient(100deg, rgba(52, 156, 143, .4), rgba(52, 156, 143, .13)); color: #fff4dd; }
+.catalog-sidebar-nav__item--active::before { position: absolute; left: 0; width: 3px; height: 55%; border-radius: 99px; background: #45e0ca; content: ''; }
+.catalog-sidebar-nav__icon { width: 2rem; color: #b7d2c1; }
+.catalog-sidebar-nav__item--active .catalog-sidebar-nav__icon { color: #f4e8c9; }
+.catalog-sidebar-nav__icon svg { display: block; width: 1.9rem; height: 1.9rem; }
+
 /* Chosen from the wardrobe. The dark overlay keeps hand states readable while
    letting the seasonal artwork carry across every four-player table. */
 .mahjong-desktop-board--seasonal {
@@ -258,62 +339,160 @@ body {
   box-shadow: 0 0 0 2px rgba(125, 211, 252, 0.85), 0 6px 14px rgba(14, 165, 233, 0.25);
 }
 
-/* Upright concealed racks: these are project-owned CSS tile bodies, not flat
-   card backs. Each direction exposes the physical lip that a player sees when
-   looking across a real table. */
+/* Concealed hands use the simple green, upright backs of a physical table.
+   They are intentionally separate from the decorative tile-back artwork used
+   by walls: all opponent tiles form one continuous, three-dimensional rack. */
 .mahjong-standing-rack {
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
   transform-style: preserve-3d;
-  filter: drop-shadow(0 6px 5px rgba(0, 31, 24, .28));
+}
+
+.mahjong-standing-rack--top {
+  /* Face the player: a concealed top hand must read as thirteen standing
+     tiles, not as one foreshortened green bar. */
+  /* Same tight join as the two side hands: a hairline seam, not card-like
+     whitespace between every concealed tile. */
+  gap: 0 !important;
+  align-items: flex-start;
+  /* Positioning belongs to the outer table slot. This rack only controls the
+     physical appearance, so it works for every regional table. */
+  transform: none;
+  transform-origin: top;
+}
+
+.mahjong-standing-rack--left {
+  transform: perspective(1100px) rotateY(-18deg);
+  transform-origin: left;
+}
+
+.mahjong-standing-rack--right {
+  transform: perspective(1100px) rotateY(18deg);
+  transform-origin: right;
 }
 
 .mahjong-standing-tile {
   position: relative;
   display: block;
+  flex: 0 0 auto;
+  /* Larger concealed racks make opponents' hands readable on a full-screen
+     table without turning the centre of the table into a cramped board. */
+  width: 2.5rem;
+  height: 3.5rem;
+  margin: 0 !important;
   transform-style: preserve-3d;
 }
 
-.mahjong-standing-tile__face {
+.mahjong-standing-rack--top .mahjong-standing-tile + .mahjong-standing-tile {
+  /* Match the gentle interlock used by the vertical racks.  The overlap
+     removes doubled ceramic edges while preserving a single dark tile seam. */
+  margin-left: -3px !important;
+}
+
+.mahjong-standing-rack--left .mahjong-standing-tile + .mahjong-standing-tile,
+.mahjong-standing-rack--right .mahjong-standing-tile + .mahjong-standing-tile {
+  margin-top: -7px !important;
+}
+
+/* The freshly drawn fourteenth tile sits just apart from the existing hand,
+   matching how a real player keeps the tile they are about to discard. */
+.mahjong-standing-rack--top .mahjong-standing-tile--drawn {
+  margin-left: .55rem !important;
+}
+
+.mahjong-standing-rack--left .mahjong-standing-tile--drawn,
+.mahjong-standing-rack--right .mahjong-standing-tile--drawn {
+  margin-top: .55rem !important;
+}
+
+.mahjong-standing-tile__back {
   position: relative;
-  z-index: 2;
   display: block;
-  border-color: rgba(180, 255, 230, .72) !important;
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,.18), 0 4px 0 rgba(7, 94, 64, .85), 0 8px 11px rgba(0, 24, 18, .26) !important;
+  width: 100%;
+  height: 100%;
+  border-top: 5px solid #d9e1d8;
+  border-radius: 3px 3px 4px 4px;
+  background: linear-gradient(90deg, #0c8b15 0%, #1cc128 27%, #17ad23 72%, #087c11 100%);
+  box-shadow: inset 1px 0 rgba(255,255,255,.24), inset -2px 0 rgba(0,57,9,.28), inset 0 -4px rgba(0,86,12,.45), 0 3px 4px rgba(0,30,8,.30);
 }
 
-.mahjong-standing-tile::after {
+.mahjong-standing-tile__back::before {
   position: absolute;
-  z-index: 1;
-  content: '';
-  display: block;
-  background: linear-gradient(135deg, #eff8ef 0%, #a9c9b5 52%, #5a8672 100%);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.55);
-}
-
-.mahjong-standing-tile--top::after {
   top: -5px;
-  left: 3px;
-  width: calc(100% - 4px);
-  height: 7px;
-  border-radius: 4px 4px 1px 1px;
-  transform: skewX(-18deg);
+  right: 2px;
+  left: 2px;
+  height: 5px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(180deg, #f7faf3 0%, #bdcbbb 100%);
+  content: '';
 }
 
-.mahjong-standing-tile--left::after {
-  top: 3px;
-  bottom: 2px;
+.mahjong-standing-tile__back::after {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  width: 6px;
+  background: linear-gradient(90deg, #f1f5ec, #a5b3a2);
+  content: '';
+}
+
+.mahjong-standing-tile__back--left::after {
   left: -6px;
-  width: 8px;
-  border-radius: 4px 0 0 4px;
-  transform: skewY(-18deg);
+  border-radius: 3px 0 0 3px;
+  transform: skewY(-13deg);
 }
 
-.mahjong-standing-tile--right::after {
-  top: 3px;
+.mahjong-standing-tile__back--right::after {
   right: -6px;
-  bottom: 2px;
-  width: 8px;
-  border-radius: 0 4px 4px 0;
-  transform: skewY(18deg);
+  border-radius: 0 3px 3px 0;
+  transform: skewY(13deg);
+}
+
+.mahjong-standing-tile__back--top::after {
+  /* Keep the bottom bevel inside its own tile.  A negative horizontal inset
+     joined all thirteen pseudo-elements into the solid green slab seen from
+     the top seat. */
+  right: 2px;
+  bottom: -4px;
+  left: 2px;
+  width: auto;
+  height: auto;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(180deg, #168d20, #075d0f);
+}
+
+/* Top hand: individual upright backs remain distinguishable by their narrow
+   green seams. Side hands: do not repeat a white top edge between tiles—the
+   outer ceramic side is the continuous light strip visible to the player. */
+.mahjong-standing-tile__back--top {
+  /* Every top-hand tile keeps its own silhouette and narrow ceramic side.
+     Without this edge, adjacent green backs visually merge into one slab. */
+  border-right: 1px solid rgba(4, 87, 14, .78);
+  border-left: 1px solid rgba(230, 255, 228, .22);
+  border-radius: 4px 4px 5px 5px;
+  box-shadow: inset 1px 0 rgba(255,255,255,.3), inset -2px 0 rgba(0,57,9,.4), inset 0 -4px rgba(0,86,12,.45), 0 3px 4px rgba(0,30,8,.34);
+}
+
+.mahjong-standing-tile__back--left,
+.mahjong-standing-tile__back--right {
+  height: 3.25rem;
+  border-top: 0;
+  border-radius: 2px;
+}
+
+.mahjong-standing-tile__back--left::before,
+.mahjong-standing-tile__back--right::before {
+  display: none;
+}
+
+.mahjong-standing-tile__back--left {
+  border-left: 5px solid #d9e1d8;
+}
+
+.mahjong-standing-tile__back--right {
+  border-right: 5px solid #d9e1d8;
 }
 
 /*

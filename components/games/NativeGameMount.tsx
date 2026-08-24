@@ -6,12 +6,14 @@ import MahjongTable from './MahjongTable';
 import MahjongConnect from './MahjongConnect';
 import MahjongSolitaire from './MahjongSolitaire';
 import AmericanMahjongTable from './AmericanMahjongTable';
+import RegionalMahjongTable from './RegionalMahjongTable';
 import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
-import type { NativeGame, NativeRuleset } from '@/data/games';
+import type { NativeGame, NativeRuleset, RegionalRuleset } from '@/data/games';
 
 export interface NativeGameMountProps {
   native: NativeGame;
   ruleset?: NativeRuleset;
+  regionalRuleset?: RegionalRuleset;
   slug: string;
   /** Solitaire: open on daily / campaign / teach id */
   defaultLevelId?: string;
@@ -25,6 +27,7 @@ export interface NativeGameMountProps {
 export default function NativeGameMount({
   native,
   ruleset,
+  regionalRuleset,
   slug,
   defaultLevelId
 }: NativeGameMountProps) {
@@ -38,6 +41,10 @@ export default function NativeGameMount({
 
   if (native === 'american-mahjong') {
     return <AmericanMahjongTable onWin={handleWin} />;
+  }
+
+  if (native === 'regional-mahjong') {
+    return <RegionalMahjongTable ruleset={regionalRuleset ?? 'sichuan'} onWin={handleWin} />;
   }
 
   if (native === 'mahjong-connect') {

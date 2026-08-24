@@ -17,7 +17,7 @@ export function resolveGameCover(game: Pick<GameConfig, 'cover' | 'category' | '
   if (game.native === 'mahjong-connect') {
     return '/assets/mahjong-solitaire/tiles/pin-05.png';
   }
-  if (game.native === 'mahjong-table' || game.native === 'american-mahjong') {
+  if (game.native === 'mahjong-table' || game.native === 'american-mahjong' || game.native === 'regional-mahjong') {
     return '/assets/mahjong-solitaire/tiles/wind-e.png';
   }
   return CATEGORY_COVER[game.category] ?? CATEGORY_COVER.mahjong;

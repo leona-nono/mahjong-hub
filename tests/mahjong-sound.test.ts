@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { cantoneseTileLabel, japaneseTileLabel } from '@/lib/mahjong/sound';
+import { cantoneseTileLabel, japaneseTileLabel, mandarinTileLabel } from '@/lib/mahjong/sound';
 
 describe('Hong Kong discard voice labels', () => {
   it('uses Cantonese table terminology for suits and honours', () => {
@@ -19,5 +19,16 @@ describe('Riichi discard voice labels', () => {
     expect(japaneseTileLabel('p2')).toBe('リャンピン');
     expect(japaneseTileLabel('s7')).toBe('チーソウ');
     expect(japaneseTileLabel('z5')).toBe('ハク');
+  });
+});
+
+describe('Chinese Official discard voice labels', () => {
+  it('uses simplified Mandarin names rather than Hong Kong Cantonese labels', () => {
+    expect(mandarinTileLabel('m3')).toBe('三万');
+    expect(mandarinTileLabel('s2')).toBe('二条');
+    expect(mandarinTileLabel('p5')).toBe('五筒');
+    expect(mandarinTileLabel('z1')).toBe('东风');
+    expect(mandarinTileLabel('z6')).toBe('发财');
+    expect(mandarinTileLabel('z7')).toBe('红中');
   });
 });
