@@ -34,7 +34,7 @@ export default async function FeaturedGroup({
         )}
       </div>
       <div className="grid gap-3 md:grid-cols-2">
-        <GameCard game={hero} size="lg" />
+        <GameCard game={hero} size="lg" priority />
         <div className="grid grid-cols-2 gap-3">
           {side.map((g) => (
             <GameCard key={g.slug} game={g} size="sm" />

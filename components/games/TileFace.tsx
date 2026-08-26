@@ -6,11 +6,11 @@ import { isBonusTile, isRedFive, normalTile, tileFace, tileName, tileRank, tileS
 export type TileSize = 'xs' | 'sm' | 'md' | 'lg' | 'table' | 'xl';
 
 const SIZE_CLASS: Record<TileSize, string> = {
-  sm: 'h-9 w-7 text-xs rounded-md',
-  xs: 'h-10 w-6 text-[10px] rounded',
+  sm: 'h-9 w-7 text-sm rounded-md',
+  xs: 'h-10 w-6 text-sm rounded',
   md: 'h-14 w-10 text-lg rounded-lg',
   lg: 'h-[4.5rem] w-14 text-2xl rounded-xl',
-  table: 'h-12 w-9 text-sm rounded-md',
+  table: 'h-12 w-9 text-base rounded-md',
   xl: 'h-24 w-[4.25rem] text-3xl rounded-lg'
 };
 
@@ -115,7 +115,7 @@ export default function TileFace({
   ) : tileFace(tile);
 
   const classes = [
-    'inline-flex select-none items-center justify-center border-2 font-bold shadow-[0_3px_0_rgba(148,163,184,.35),0_7px_12px_rgba(15,23,42,.12)] transition duration-150',
+    'inline-flex select-none items-center justify-center border-2 font-bold shadow-[0_3px_0_rgba(148,163,184,.35),0_7px_12px_rgba(15,23,42,.12)] transition duration-200 motion-safe:transition-transform motion-safe:hover:scale-105 motion-safe:active:scale-95',
     SIZE_CLASS[size],
     SUIT_CLASS[suit] ?? 'text-gray-700',
     muted ? 'border-slate-200 bg-slate-100 opacity-45 saturate-50' : 'border-slate-200 bg-gradient-to-b from-white to-slate-50',

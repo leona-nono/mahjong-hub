@@ -30,7 +30,7 @@ export const DEFAULT_PUBLIC_SITE_SETTINGS: PublicSiteSettings = {
   titleTemplate: '{page} | {brand}',
   homeH1: 'Free Mahjong Games Online',
   homeSubtitle: 'Mahjong Hub · Rainbow Mahjong Games',
-  gameTitleTemplate: '{game} - Free Online | {brand}',
+  gameTitleTemplate: '{game} | {brand}',
   gameDescriptionTemplate:
     'Play {game} free online at {brand}. Instant play in your browser — no download required. {summary}',
   facebook: '',

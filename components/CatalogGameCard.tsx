@@ -39,7 +39,11 @@ export default function CatalogGameCard({
           {art ? (
             // The approved catalogue design uses a different playable scene for every game.
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={art} alt="" className="catalog-game-card__cover" />
+            <img
+              src={art}
+              alt={`Play ${game.title} free online`}
+              className="catalog-game-card__cover"
+            />
           ) : (
             <>
               <div className="catalog-game-card__glow" />

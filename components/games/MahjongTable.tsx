@@ -262,7 +262,7 @@ export default function MahjongTable({
             setRuleset(next);
             newGame(next);
           }}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium"
+          className="min-h-11 rounded-full border border-gray-200 bg-white px-3 py-2 font-medium"
           aria-label={t('rulesetLabel')}
         >
           {Object.values(RULESETS).map((config) => (
@@ -275,7 +275,7 @@ export default function MahjongTable({
         <select
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value as Difficulty)}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-medium"
+          className="min-h-11 rounded-full border border-gray-200 bg-white px-3 py-2 font-medium"
           aria-label={t('difficultyLabel')}
         >
           <option value="easy">{t('easy')}</option>
@@ -286,7 +286,7 @@ export default function MahjongTable({
         <button
           type="button"
           onClick={() => setShowHints((v) => !v)}
-          className={`rounded-full border px-3 py-1.5 font-medium transition ${
+          className={`min-h-11 rounded-full border px-3 py-2 font-medium transition ${
             showHints
               ? 'border-transparent rainbow-bar text-white'
               : 'border-gray-200 bg-white text-gray-600'
@@ -298,14 +298,14 @@ export default function MahjongTable({
         <button
           type="button"
           onClick={() => setPaused((value) => !value)}
-          className="rounded-full border border-emerald-700 bg-emerald-900/70 px-3 py-1.5 font-bold text-emerald-50 hover:bg-emerald-800"
+          className="min-h-11 rounded-full border border-emerald-700 bg-emerald-900/70 px-3 py-2 font-bold text-emerald-50 hover:bg-emerald-800"
         >
           {paused ? t('resume') : t('pause')}
         </button>
         <button
           type="button"
           onClick={() => newGame()}
-          className="ml-auto rounded-full border border-amber-300/70 bg-amber-300 px-3 py-1.5 font-bold text-emerald-950 hover:bg-amber-200"
+          className="ml-auto min-h-11 rounded-full border border-amber-300/70 bg-amber-300 px-3 py-2 font-bold text-emerald-950 hover:bg-amber-200"
         >
           {t('newGame')}
         </button>
@@ -332,7 +332,7 @@ export default function MahjongTable({
           <WallRail position="right" />
           <WallRail position="bottom" />
           <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-52 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-950/80 bg-[#10131d] p-4 text-center shadow-2xl">
-            <div className="text-[10px] uppercase tracking-[.24em] text-emerald-300">{isMcr ? 'MCR TRAINING' : 'HONG KONG'}</div>
+            <div className="text-sm uppercase tracking-[.24em] text-emerald-300">{isMcr ? 'MCR TRAINING' : 'HONG KONG'}</div>
             <div className="mt-2 text-3xl font-light text-cyan-200">East 1</div>
             <div className="mt-1 text-xs text-slate-400">{t('wallAndTurn', { n: tilesRemaining(state), seat: SEAT_LABEL[state.turn] })}</div>
           </div>
@@ -353,7 +353,7 @@ export default function MahjongTable({
           </div>
         )}
 
-        {traditional && (<div className="mb-3 grid grid-cols-2 gap-2 rounded-xl border border-white/15 bg-black/10 p-2 text-center text-[10px] font-semibold uppercase tracking-[.18em] text-emerald-100 sm:grid-cols-4">{(["East", "South", "West", "North"] as const).map((seat) => (<span key={seat} className={SEAT_LABEL[state.turn] === seat ? "rounded-lg bg-amber-300/25 py-1 text-amber-100" : "py-1 opacity-70"}>{seat} {SEAT_LABEL[state.turn] === seat ? "· PLAYING" : ""}</span>))}</div>)}
+        {traditional && (<div className="mb-3 grid grid-cols-1 gap-2 rounded-xl border border-white/15 bg-black/10 p-2 text-center text-sm font-semibold uppercase tracking-[.18em] text-emerald-100 sm:grid-cols-4">{(["East", "South", "West", "North"] as const).map((seat) => (<span key={seat} className={SEAT_LABEL[state.turn] === seat ? "rounded-lg bg-amber-300/25 py-1 text-amber-100" : "py-1 opacity-70"}>{seat} {SEAT_LABEL[state.turn] === seat ? "· PLAYING" : ""}</span>))}</div>)}
         <div className={traditional ? "relative z-10 mt-28 rounded-xl border border-white/10 bg-black/15 p-2" : ""}><DiscardPool state={state} traditional={traditional} /></div>
       </div>
 
@@ -512,7 +512,7 @@ function OpponentPanel({ state, seat, traditional }: { state: GameState; seat: S
       )}
       {state.ruleset === 'chinese-official' && player.flowers.length > 0 && (
         <div className="mt-1 flex flex-wrap items-center gap-0.5">
-          <span className="mr-1 text-[10px] text-amber-100">{t('flowerCount', { n: player.flowers.length })}</span>
+          <span className="mr-1 text-sm text-amber-100">{t('flowerCount', { n: player.flowers.length })}</span>
           {player.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
         </div>
       )}

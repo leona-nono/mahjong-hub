@@ -35,7 +35,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-portal-border bg-portal-elevated/90 backdrop-blur-md">
-      <div className="rainbow-bar h-0.5" />
+      <div className="rainbow-bar" />
       <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-3 px-4">
         <Link href="/" className="font-display text-xl font-bold tracking-tight text-portal-text">
           {siteTitle.includes('·') ? (
@@ -134,7 +134,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Menu"
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-xl text-portal-text hover:bg-white/5 md:hidden"
+            className="flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-lg text-xl text-portal-text hover:bg-white/5 md:hidden"
           >
             {mobileOpen ? '✕' : '☰'}
           </button>

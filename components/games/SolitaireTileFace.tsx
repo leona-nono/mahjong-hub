@@ -78,7 +78,7 @@ export default function SolitaireTileFace({
       )}
       {colorblind && (
         <span
-          className="pointer-events-none absolute bottom-0 left-0 rounded-bl-md rounded-tr-sm bg-slate-950/80 px-0.5 text-[9px] font-black leading-tight text-amber-100"
+          className="pointer-events-none absolute bottom-0 left-0 rounded-bl-md rounded-tr-sm bg-slate-950/80 px-1 text-xs font-black leading-tight text-amber-100"
           aria-hidden
         >
           {colorblindLabel(tile)}

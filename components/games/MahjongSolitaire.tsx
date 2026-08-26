@@ -601,7 +601,7 @@ export default function MahjongSolitaire({
         onClick={onClick}
         disabled={disabled || !unlocked}
         title={!unlocked ? t('itemLocked') : undefined}
-        className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-200 hover:bg-[#2c4b57] disabled:cursor-not-allowed disabled:opacity-40"
+        className="min-h-11 rounded-full border border-slate-600 bg-[#213c47] px-3 py-2 font-medium text-emerald-200 hover:bg-[#2c4b57] disabled:cursor-not-allowed disabled:opacity-40"
       >
         {label}
         <span className="ml-1 text-xs text-amber-200">×{count}</span>
@@ -700,14 +700,14 @@ export default function MahjongSolitaire({
         <button
           type="button"
           onClick={() => setPaused((value) => !value)}
-          className="rounded-full border border-slate-500 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100"
+          className="min-h-11 rounded-full border border-slate-500 bg-[#213c47] px-3 py-2 font-medium text-emerald-100"
         >
           {paused ? t('resume') : t('pause')}
         </button>
         <button
           type="button"
           onClick={() => setA11yOpen(true)}
-          className="rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100 hover:bg-[#2c4b57]"
+          className="min-h-11 rounded-full border border-slate-600 bg-[#213c47] px-3 py-2 font-medium text-emerald-100 hover:bg-[#2c4b57]"
           aria-label={t('settings')}
           title={t('settings')}
         >
@@ -718,7 +718,7 @@ export default function MahjongSolitaire({
           onClick={() =>
             mode === 'level' ? restartLevel(level) : restartFree()
           }
-          className="ml-auto rounded-full bg-emerald-600 px-4 py-1.5 font-bold text-white hover:bg-emerald-500"
+          className="ml-auto min-h-11 rounded-full bg-emerald-600 px-4 py-2 font-bold text-white hover:bg-emerald-500"
         >
           {t('restart')}
         </button>

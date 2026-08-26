@@ -5,6 +5,8 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import TileFace, { useTraditionalTilePreload } from './TileFace';
 import MobileMahjongTable from './MobileMahjongTable';
+import BoardScaleFrame from './BoardScaleFrame';
+import TableToolButton from './TableToolButton';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type RiichiVariant, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { describeScore } from '@/lib/mahjong/scoring';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
@@ -228,24 +230,26 @@ export default function HongKongTable({
         onFullscreen={enterFullscreen}
         onAccessibility={() => setShowAccessibility(true)}
       />
+      <div className="hidden lg:block">
+        <BoardScaleFrame designWidth={980} designHeight={824}>
       <div
-        className="mahjong-desktop-shell hidden min-w-[980px] lg:block"
+        className="mahjong-desktop-shell flex min-w-[980px] flex-col"
         style={isFullscreen ? { display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 16px)' } : undefined}
       >
         <div className="mahjong-table-toolbar mb-2 flex h-11 items-center justify-between gap-3" style={isFullscreen ? { flex: '0 0 44px', marginBottom: 0 } : undefined}>
           <div className="flex items-center gap-2">
-            <TableToolButton onClick={togglePause} active={paused}>
+            <TableToolButton tone="green" onClick={togglePause} active={paused}>
               {paused ? t('resume') : t('pause')}
             </TableToolButton>
-            <TableToolButton onClick={startNewGame}>↻ {t('newGame')}</TableToolButton>
-            <TableToolButton onClick={onToggleHints} active={showHints}>
+            <TableToolButton tone="green" onClick={startNewGame}>↻ {t('newGame')}</TableToolButton>
+            <TableToolButton tone="green" onClick={onToggleHints} active={showHints}>
               ◇ {t('hints')}
             </TableToolButton>
-            <TableToolButton onClick={toggleSound} active={soundEnabled}>
+            <TableToolButton tone="green" onClick={toggleSound} active={soundEnabled}>
               {soundEnabled ? t('soundOn') : t('soundOff')}
             </TableToolButton>
             {isRiichi && onRiichiVariant && (
-              <label className="flex h-9 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
+              <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
                 {t('rules')}
                 <select
                   value={riichiVariant}
@@ -259,7 +263,7 @@ export default function HongKongTable({
               </label>
             )}
             {variant === 'hongkong' && (
-              <label className="flex h-9 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
+              <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
                 {t('mode')}
                 <select
                   value={hongKongMode}
@@ -272,7 +276,7 @@ export default function HongKongTable({
                 </select>
               </label>
             )}
-            <label className="flex h-9 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
+            <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">
               {t('ai')}
               <select
                 value={difficulty}
@@ -285,7 +289,7 @@ export default function HongKongTable({
                 <option className="text-slate-900" value="hard">{t('hard')}</option>
               </select>
             </label>
-            <TableToolButton onClick={() => setShowAccessibility(true)}>Aa</TableToolButton>
+            <TableToolButton tone="green" onClick={() => setShowAccessibility(true)}>Aa</TableToolButton>
           </div>
           <div className="flex items-center gap-4 text-emerald-100">
             <span className="flex items-end gap-1" aria-label="Connection good">
@@ -304,7 +308,7 @@ export default function HongKongTable({
           <div className="absolute inset-y-0 left-0 w-[11%] bg-[linear-gradient(105deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute inset-y-0 right-0 w-[11%] bg-[linear-gradient(255deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute left-4 top-3 z-20 text-xl font-semibold text-emerald-100/45">Rate: 10</div>
-          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-[10px] font-bold tracking-wide text-emerald-50">{t('practiceTableAI')}</p>
+          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">{t('practiceTableAI')}</p>
 
           <div className="absolute left-1/2 top-8 -translate-x-1/2">
             <ConcealedRack seat={3} count={state.players[3].hand.length} tiles={revealAllHands ? state.players[3].hand : undefined} orientation="top" />
@@ -343,7 +347,7 @@ export default function HongKongTable({
             <CenterWind position="left" active={state.turn === 2}>W</CenterWind>
           </div>
           {isMcr && (
-            <div className="absolute left-1/2 top-[57%] z-10 -translate-x-1/2 rounded-full border border-emerald-200/30 bg-[#063d30]/90 px-3 py-1 text-[10px] font-black tracking-[.12em] text-emerald-100">
+            <div className="absolute left-1/2 top-[57%] z-10 -translate-x-1/2 rounded-full border border-emerald-200/30 bg-[#063d30]/90 px-3 py-1 text-sm font-black tracking-[.12em] text-emerald-100">
               {t('mcrStrip')}
             </div>
           )}
@@ -352,12 +356,12 @@ export default function HongKongTable({
               <p className="font-black uppercase tracking-[.14em] text-amber-200">{t('mcrScoreCoach')}</p>
               <div className="mt-2 flex justify-between"><span>{t('qualifyingHand')}</span><strong>{mcrQualifying}/8</strong></div>
               <div className="mt-1 flex justify-between"><span>{t('flowersSeasons')}</span><strong>+{mcrFlowers}</strong></div>
-              <p className="mt-2 text-[10px] leading-4 text-emerald-100/75">{t('flowerGateNote')}</p>
-              {tsumoEvaluation?.score?.patterns.length ? <p className="mt-2 border-t border-white/10 pt-2 text-[10px] leading-4 text-amber-50">{tsumoEvaluation.score.patterns.map((pattern) => `${pattern.label} +${pattern.value}`).join(' · ')}</p> : null}
+              <p className="mt-2 text-sm leading-5 text-emerald-100/75">{t('flowerGateNote')}</p>
+              {tsumoEvaluation?.score?.patterns.length ? <p className="mt-2 border-t border-white/10 pt-2 text-sm leading-5 text-amber-50">{tsumoEvaluation.score.patterns.map((pattern) => `${pattern.label} +${pattern.value}`).join(' · ')}</p> : null}
             </div>
           )}
           {isRiichi && (
-            <div className="absolute left-[58%] top-[24%] z-10 rounded-lg bg-black/30 p-2 text-center text-[10px] font-bold uppercase tracking-wider text-amber-200">
+            <div className="absolute left-[58%] top-[24%] z-10 rounded-lg bg-black/30 p-2 text-center text-sm font-bold uppercase tracking-wider text-amber-200">
               <span className="mb-1 block">{t('doraIndicators')}</span>
               <div className="flex justify-center gap-0.5">
                 {visibleDoraIndicators(state).map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}
@@ -461,7 +465,7 @@ export default function HongKongTable({
               </div>
             )}
             {isMcr && human.flowers.length > 0 && (
-              <div className="absolute bottom-[84px] right-0 flex items-center gap-1 rounded-lg bg-amber-50/95 px-2 py-1 text-[10px] font-black text-emerald-950 shadow-lg">
+              <div className="absolute bottom-[84px] right-0 flex items-center gap-1 rounded-lg bg-amber-50/95 px-2 py-1 text-sm font-black text-emerald-950 shadow-lg">
                 <span>{t('flowersLabel')}</span>
                 {human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}
               </div>
@@ -501,12 +505,14 @@ export default function HongKongTable({
           </div>
         </div>
       </div>
+        </BoardScaleFrame>
+      </div>
       {showScoring && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/65 p-4" role="dialog" aria-modal="true" aria-label={gameName + ' Mahjong scoring tips'}>
           <div className="w-full max-w-lg rounded-2xl bg-[#f4f0df] p-6 text-slate-900 shadow-2xl">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-black">{gameName} {t('scoringTips')}</h2>
-              <button type="button" onClick={() => setShowScoring(false)} className="h-9 w-9 rounded-full bg-slate-900 text-white" aria-label={t('closeScoringTips')}>X</button>
+              <button type="button" onClick={() => setShowScoring(false)} className="flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-full bg-slate-900 text-white" aria-label={t('closeScoringTips')}>X</button>
             </div>
             <ul className="mt-4 space-y-2 text-sm leading-6">
               {isRiichi ? (
@@ -541,26 +547,6 @@ export default function HongKongTable({
       )}
       {showAccessibility && <MahjongAccessibilityPanel preferences={preferences} onChange={(key, value) => { setPreference(key, value); trackMahjongEvent('mahjong_accessibility_changed', { setting: key, value: String(value) }); }} onClose={() => setShowAccessibility(false)} />}
     </section>
-  );
-}
-
-function TableToolButton({
-  children,
-  onClick,
-  active = false
-}: {
-  children: ReactNode;
-  onClick: () => void;
-  active?: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`h-9 rounded-lg border px-4 text-xs font-black transition ${active ? 'border-amber-300 bg-amber-300 text-emerald-950' : 'border-white/10 bg-[#07553b] text-white hover:bg-[#096246]'}`}
-    >
-      {children}
-    </button>
   );
 }
 

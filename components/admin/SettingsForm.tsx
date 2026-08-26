@@ -31,7 +31,7 @@ const DEFAULTS: SettingsForm = {
   homeH1: 'Play free mahjong games',
   homeSubtitle:
     'Solitaire, connect, and classic tile games — instant play, no download.',
-  gameTitleTemplate: '{game} - Free Online | {brand}',
+  gameTitleTemplate: '{game} | {brand}',
   gameDescriptionTemplate:
     'Play {game} free online at {brand}. Instant play in your browser — no download required. {summary}',
   facebook: '',

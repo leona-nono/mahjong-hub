@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import TileFace from './TileFace';
+import BoardScaleFrame from './BoardScaleFrame';
+import TableToolButton from './TableToolButton';
 import {
   allowedSichuanVoidSuits,
   availableRegionalKans,
@@ -234,16 +236,17 @@ export default function RegionalMahjongTable({
 
   return (
     <section ref={tableShellRef} data-tile-scale={largeTiles ? 'large' : 'normal'} className={`mahjong-table-shell ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 text-white shadow-[0_22px_60px_rgba(2,44,34,.35)] lg:p-3 fullscreen:rounded-none`}>
+      <BoardScaleFrame designWidth={700} designHeight={824}>
       <div className="mahjong-desktop-shell flex min-w-[700px] flex-col" style={isFullscreen ? { height: 'calc(100dvh - 16px)' } : undefined}>
       <header className="mahjong-table-toolbar mb-2 flex h-11 items-center justify-between gap-3 rounded-xl bg-[#14704d] px-3" style={isFullscreen ? { flex: '0 0 44px', marginBottom: 0 } : undefined}>
         <div className="flex items-center gap-2">
-          <TableToolButton onClick={() => setPaused((value) => !value)} active={paused}>{paused ? t('resume') : t('pause')}</TableToolButton>
-          <TableToolButton onClick={reset}>↻ {t('newGame')}</TableToolButton>
-          <TableToolButton onClick={() => setShowHints((value) => !value)} active={showHints}>◇ {t('hints')}</TableToolButton>
-          <TableToolButton onClick={() => setSoundEnabled((value) => !value)} active={soundEnabled}>{soundEnabled ? t('soundOn') : t('soundOff')}</TableToolButton>
-          <label className="flex h-9 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">{t('rules')}<span className="ml-2 text-emerald-50">{isSichuan ? r('sichuanTitle') : r('taiwanTitle')}</span></label>
-          <label className="flex h-9 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">{t('ai')}<select value={difficulty} onChange={(event) => setDifficulty(event.target.value as 'easy' | 'normal' | 'hard')} className="ml-2 bg-transparent text-emerald-50 outline-none" aria-label={t('difficultyLabel')}><option className="text-slate-900" value="easy">{t('easy')}</option><option className="text-slate-900" value="normal">{t('normal')}</option><option className="text-slate-900" value="hard">{t('hard')}</option></select></label>
-          <TableToolButton onClick={() => setLargeTiles((value) => !value)} active={largeTiles}>Aa</TableToolButton>
+          <TableToolButton tone="green" onClick={() => setPaused((value) => !value)} active={paused}>{paused ? t('resume') : t('pause')}</TableToolButton>
+          <TableToolButton tone="green" onClick={reset}>↻ {t('newGame')}</TableToolButton>
+          <TableToolButton tone="green" onClick={() => setShowHints((value) => !value)} active={showHints}>◇ {t('hints')}</TableToolButton>
+          <TableToolButton tone="green" onClick={() => setSoundEnabled((value) => !value)} active={soundEnabled}>{soundEnabled ? t('soundOn') : t('soundOff')}</TableToolButton>
+          <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">{t('rules')}<span className="ml-2 text-emerald-50">{isSichuan ? r('sichuanTitle') : r('taiwanTitle')}</span></label>
+          <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">{t('ai')}<select value={difficulty} onChange={(event) => setDifficulty(event.target.value as 'easy' | 'normal' | 'hard')} className="ml-2 bg-transparent text-emerald-50 outline-none" aria-label={t('difficultyLabel')}><option className="text-slate-900" value="easy">{t('easy')}</option><option className="text-slate-900" value="normal">{t('normal')}</option><option className="text-slate-900" value="hard">{t('hard')}</option></select></label>
+          <TableToolButton tone="green" onClick={() => setLargeTiles((value) => !value)} active={largeTiles}>Aa</TableToolButton>
         </div>
         <span className="text-xs font-semibold text-emerald-100">{t('wallLeft', { n: wallLeft })}</span>
       </header>
@@ -251,7 +254,7 @@ export default function RegionalMahjongTable({
       <div className="mahjong-desktop-board mahjong-desktop-board--seasonal relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-[#00553e] shadow-[inset_0_0_90px_rgba(0,30,22,.34)]">
         <div className="absolute inset-y-0 left-0 w-[11%] bg-[linear-gradient(105deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
         <div className="absolute inset-y-0 right-0 w-[11%] bg-[linear-gradient(255deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
-        <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-[10px] font-bold tracking-wide text-emerald-50">{t('practiceTableAI')}</p>
+        <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">{t('practiceTableAI')}</p>
 
         <div className="absolute left-1/2 top-8 -translate-x-1/2"><RegionalConcealedRack count={state.players[3].hand.length} tiles={revealHands ? state.players[3].hand : undefined} orientation="top" /></div>
         <div className="absolute left-[15%] top-1/2 -translate-y-1/2"><RegionalConcealedRack count={state.players[2].hand.length} tiles={revealHands ? state.players[2].hand : undefined} orientation="left" /></div>
@@ -279,7 +282,7 @@ export default function RegionalMahjongTable({
           <strong className="mt-2 text-2xl font-normal text-cyan-200">{r('turnDealer', { turn: seatNames[state.turn], dealer: seatNames[state.dealer] })}</strong>
           <span className="mt-2 text-4xl font-light text-cyan-200">{wallLeft}</span>
         </div>
-        {!isSichuan && human.flowers.length > 0 && <div className="absolute right-[12%] top-[57%] z-20 flex items-center gap-1 rounded-lg bg-amber-50/95 px-2 py-1 text-[10px] font-black text-emerald-950 shadow-lg"><span>{t('flowersLabel')}</span>{human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}</div>}
+        {!isSichuan && human.flowers.length > 0 && <div className="absolute right-[12%] top-[57%] z-20 flex items-center gap-1 rounded-lg bg-amber-50/95 px-2 py-1 text-sm font-black text-emerald-950 shadow-lg"><span>{t('flowersLabel')}</span>{human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}</div>}
         {readyIntent && <p className="absolute bottom-[28%] left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#063d30]/95 px-3 py-1 text-xs font-bold text-amber-100">{r('readyHint')}</p>}
         {actionButtons}
         {state.phase === 'over' && state.result && <div className="absolute left-1/2 top-[56%] z-40 -translate-x-1/2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-center text-slate-800 shadow-xl"><strong>{state.result.kind === 'win' ? r('winner', { seats: state.result.winners.map((seat) => seatNames[seat]).join(', ') }) : r('wallExhausted')}</strong>{state.result.tai !== undefined && <span className="ml-2">{state.result.tai} Tai</span>}<button type="button" onClick={() => setState(startNextRegionalHand)} className="ml-3 rounded-lg bg-emerald-700 px-3 py-2 text-sm font-black text-white">{r('nextHand')}</button></div>}
@@ -288,19 +291,16 @@ export default function RegionalMahjongTable({
       </div>
       <div className="mahjong-table-footer flex h-10 items-center justify-between bg-[#15583e] px-3 text-sm font-semibold text-emerald-100/75" style={isFullscreen ? { flex: '0 0 40px' } : undefined}><div className="flex items-center gap-3"><span>{r('scope')}</span><button type="button" onClick={shareReplay} className="rounded-full border border-emerald-100/50 px-3 py-1 font-bold text-emerald-50">{r('shareReplay')}</button>{replayNotice && <span className="text-emerald-100">{replayNotice}</span>}</div><div className="flex gap-2"><button type="button" onClick={() => setShowScoring(true)} className="rounded px-2 py-1 hover:bg-white/10">{t('scoringTips')}</button><button type="button" onClick={enterFullscreen} className="rounded px-2 py-1 hover:bg-white/10">{t('fullScreen')}</button></div></div>
       </div>
+      </BoardScaleFrame>
       {paused && <button type="button" onClick={() => setPaused(false)} className="absolute inset-0 z-50 flex items-center justify-center bg-black/55 text-4xl font-semibold text-amber-100 backdrop-blur-[2px]">{t('resume')}</button>}
       {showScoring && <RegionalScoringTips isSichuan={isSichuan} onClose={() => setShowScoring(false)} t={t} r={r} />}
     </section>
   );
 }
 
-function TableToolButton({ children, onClick, active = false }: { children: React.ReactNode; onClick: () => void; active?: boolean }) {
-  return <button type="button" onClick={onClick} className={`h-9 rounded-lg border px-4 text-xs font-black transition ${active ? 'border-amber-300 bg-amber-300 text-emerald-950' : 'border-white/10 bg-[#07553b] text-white hover:bg-[#096246]'}`}>{children}</button>;
-}
-
 function RegionalScoringTips({ isSichuan, onClose, t, r }: { isSichuan: boolean; onClose: () => void; t: ReturnType<typeof useTranslations>; r: ReturnType<typeof useTranslations> }) {
   const tips = isSichuan ? [r('scoreSichuanHand'), r('scoreSichuanKong'), r('scoreSichuanDraw')] : [r('scoreTaiwanHand'), r('scoreTaiwanFlowers'), r('scoreTaiwanSettlement')];
-  return <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/65 p-4" role="dialog" aria-modal="true"><div className="w-full max-w-lg rounded-2xl bg-[#f4f0df] p-6 text-slate-900 shadow-2xl"><div className="flex items-center justify-between"><h2 className="text-xl font-black">{isSichuan ? r('sichuanTitle') : r('taiwanTitle')} {t('scoringTips')}</h2><button type="button" onClick={onClose} className="h-9 w-9 rounded-full bg-slate-900 text-white" aria-label={t('closeScoringTips')}>X</button></div><ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-6">{tips.map((tip) => <li key={tip}>{tip}</li>)}</ul></div></div>;
+  return <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/65 p-4" role="dialog" aria-modal="true"><div className="w-full max-w-lg rounded-2xl bg-[#f4f0df] p-6 text-slate-900 shadow-2xl"><div className="flex items-center justify-between"><h2 className="text-xl font-black">{isSichuan ? r('sichuanTitle') : r('taiwanTitle')} {t('scoringTips')}</h2><button type="button" onClick={onClose} className="flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-full bg-slate-900 text-white" aria-label={t('closeScoringTips')}>X</button></div><ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-6">{tips.map((tip) => <li key={tip}>{tip}</li>)}</ul></div></div>;
 }
 
 function RegionalConcealedRack({ count, tiles, orientation }: { count: number; tiles?: Tile[]; orientation: 'top' | 'left' | 'right' }) {

@@ -60,6 +60,93 @@ body {
     serif;
 }
 
+.rainbow-bar {
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--rb-red),
+    var(--rb-orange),
+    var(--rb-yellow),
+    var(--rb-green),
+    var(--rb-blue),
+    var(--rb-indigo),
+    var(--rb-violet),
+    var(--rb-pink),
+    var(--rb-red)
+  );
+  background-size: 200% 100%;
+  animation: rainbow-flow 12s linear infinite;
+}
+
+@keyframes rainbow-flow {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rainbow-bar {
+    animation: none;
+    background: linear-gradient(
+      90deg,
+      var(--portal-accent),
+      #38bdf8,
+      var(--portal-accent-2)
+    );
+  }
+}
+
+.hero-tile-stack .hero-tile {
+  display: inline-block;
+  font-size: 2.25rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+  animation: hero-tile-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.hero-tile--1 {
+  animation-delay: 0.15s;
+}
+
+.hero-tile--2 {
+  animation-delay: 0.3s;
+}
+
+@keyframes hero-tile-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotate(-12deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--hero-tile-rotate, 0deg));
+  }
+}
+
+.hero-tile--0 {
+  --hero-tile-rotate: -8deg;
+}
+
+.hero-tile--1 {
+  --hero-tile-rotate: 0deg;
+}
+
+.hero-tile--2 {
+  --hero-tile-rotate: 8deg;
+}
+
+@media (min-width: 640px) {
+  .hero-tile-stack .hero-tile {
+    font-size: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-tile-stack .hero-tile {
+    animation: none;
+  }
+}
+
 .rainbow-text {
   background: linear-gradient(
     90deg,
@@ -70,15 +157,6 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-}
-
-.rainbow-bar {
-  background: linear-gradient(
-    90deg,
-    var(--portal-accent),
-    #38bdf8,
-    var(--portal-accent-2)
-  );
 }
 
 .rainbow-card {

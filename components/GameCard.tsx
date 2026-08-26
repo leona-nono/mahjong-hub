@@ -4,17 +4,21 @@ import { resolveGameCover } from '@/lib/game-cover';
 
 export default function GameCard({
   game,
-  size = 'md'
+  size = 'md',
+  priority = false
 }: {
   game: GameConfig;
   locale?: string;
   size?: 'sm' | 'md' | 'lg';
+  /** First-screen hero card — eager load for LCP. */
+  priority?: boolean;
 }) {
   const cover = resolveGameCover(game);
   const isComingSoon = game.gameType === 'coming-soon';
   const isNative = game.gameType === 'native';
   const aspect =
     size === 'lg' ? 'aspect-[16/10]' : size === 'sm' ? 'aspect-[16/11]' : 'aspect-[16/10]';
+  const coverAlt = `Play ${game.title} free online`;
 
   return (
     <Link
@@ -27,8 +31,9 @@ export default function GameCard({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={cover}
-          alt=""
-          loading="lazy"
+          alt={coverAlt}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
         />
@@ -39,18 +44,18 @@ export default function GameCard({
           </h3>
         </div>
         {isComingSoon ? (
-          <span className="absolute left-2 top-2 rounded-md bg-amber-400/95 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-900">
-            Soon
+          <span className="absolute left-2 top-2 rounded-md bg-amber-400/95 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-slate-900">
+            ⏳ Soon
           </span>
         ) : (
           isNative && (
-            <span className="absolute left-2 top-2 rounded-md bg-portal-accent/95 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-900">
-              Original
+            <span className="absolute left-2 top-2 rounded-md bg-portal-accent/95 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-slate-900">
+              ✓ Original
             </span>
           )
         )}
         {game.players && game.players > 1 && (
-          <span className="absolute right-2 top-2 rounded-md bg-black/50 px-1.5 py-0.5 text-[10px] font-bold text-white">
+          <span className="absolute right-2 top-2 rounded-md bg-black/50 px-2 py-0.5 text-xs font-bold text-white">
             {game.players}P
           </span>
         )}

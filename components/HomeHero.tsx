@@ -52,6 +52,11 @@ export default function HomeHero() {
       <h1 className="font-display text-3xl font-semibold tracking-tight text-portal-text sm:text-4xl">
         {t('heroTitle')}
       </h1>
+      <div className="hero-tile-stack mt-3 flex gap-2" aria-hidden>
+        <span className="hero-tile hero-tile--0">🀄</span>
+        <span className="hero-tile hero-tile--1">🀀</span>
+        <span className="hero-tile hero-tile--2">🀅</span>
+      </div>
       <p className="mt-2 text-sm font-medium text-portal-accent sm:text-base">{t('brandLine')}</p>
 
       <div className="mt-8 flex flex-col items-start gap-2">

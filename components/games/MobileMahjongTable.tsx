@@ -7,6 +7,7 @@ import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, ty
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 import { playMahjongSound, primeMahjongAudio } from '@/lib/mahjong/sound';
 import { visibleDoraIndicators } from '@/lib/mahjong/riichi';
+import TableToolButton from './TableToolButton';
 
 const HUMAN: Seat = 0;
 const NAMES: Record<Seat, string> = { 0: 'YOU', 1: 'SOUTH', 2: 'WEST', 3: 'NORTH' };
@@ -84,30 +85,49 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
   })();
 
   return (
-    <div className="relative h-[calc(100dvh-7rem)] min-h-[520px] overflow-hidden rounded-xl bg-[#004b38] text-white lg:hidden landscape:fixed landscape:inset-0 landscape:z-[60] landscape:h-dvh landscape:min-h-0 landscape:rounded-none">
-      <div className="flex h-12 items-center justify-between gap-1 border-b border-white/10 bg-[#0b6548] px-2">
-        <div className="flex gap-1">
-          <Tool onClick={onTogglePause}>{paused ? t('play') : t('pause')}</Tool>
-          <Tool onClick={() => { primeMahjongAudio(); onNewGame(); }}>{t('newGameShort')}</Tool>
-          <Tool onClick={onToggleHints} active={showHints}>{t('hints')}</Tool>
-          <Tool onClick={onToggleSound} active={soundEnabled}>{soundEnabled ? t('sound') : t('muted')}</Tool>
-          <Tool onClick={onAccessibility}>Aa</Tool>
+    <div className="relative flex h-[calc(100dvh-7rem)] min-h-[520px] flex-col overflow-hidden rounded-xl bg-[#004b38] text-white lg:hidden landscape:fixed landscape:inset-0 landscape:z-[60] landscape:h-dvh landscape:min-h-0 landscape:rounded-none">
+      <div className="flex min-h-11 items-center justify-between gap-1 border-b border-white/10 bg-[#0b6548] px-2">
+        <div className="flex flex-wrap gap-1">
+          <TableToolButton label={paused ? t('play') : t('pause')} onClick={onTogglePause}>
+            {paused ? t('play') : t('pause')}
+          </TableToolButton>
+          <TableToolButton
+            label={t('newGameShort')}
+            onClick={() => {
+              primeMahjongAudio();
+              onNewGame();
+            }}
+          >
+            {t('newGameShort')}
+          </TableToolButton>
+          <TableToolButton label={t('hints')} onClick={onToggleHints} active={showHints}>
+            {t('hints')}
+          </TableToolButton>
+          <TableToolButton
+            label={soundEnabled ? t('sound') : t('muted')}
+            onClick={onToggleSound}
+            active={soundEnabled}
+          >
+            {soundEnabled ? t('sound') : t('muted')}
+          </TableToolButton>
+          <TableToolButton label="Accessibility" onClick={onAccessibility}>Aa</TableToolButton>
         </div>
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           {variant === 'hongkong' && (
-            <Tool
+            <TableToolButton
+              label={hongKongMode === 'casual' ? t('casualShort') : t('standard3FanShort')}
               onClick={() => onHongKongMode(hongKongMode === 'casual' ? 'standard' : 'casual')}
               active={hongKongMode === 'casual'}
             >
               {hongKongMode === 'casual' ? t('casualShort') : t('standard3FanShort')}
-            </Tool>
+            </TableToolButton>
           )}
-          <Tool onClick={onFullscreen}>{t('full')}</Tool>
+          <TableToolButton label={t('full')} onClick={onFullscreen}>{t('full')}</TableToolButton>
         </div>
       </div>
 
-      <div className="relative h-[calc(100%-3rem)] overflow-hidden bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_58%,#003c2d_100%)] landscape:h-[calc(100dvh-3rem)]">
-        <p className="absolute left-1/2 top-1 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#003d2f]/85 px-2 py-0.5 text-[9px] font-bold text-emerald-50">{t('allOpponentsAI')}</p>
+      <div className="relative min-h-0 flex-1 overflow-hidden bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_58%,#003c2d_100%)] landscape:h-[calc(100dvh-3rem)]">
+        <p className="absolute left-1/2 top-1 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#003d2f]/85 px-2 py-0.5 text-xs font-bold text-emerald-50">{t('allOpponentsAI')}</p>
         <Opponent state={state} seat={3} className="left-1/2 top-2 -translate-x-1/2" />
         <Opponent state={state} seat={2} className="left-1 top-[24%]" />
         <Opponent state={state} seat={1} className="right-1 top-[24%]" />
@@ -124,14 +144,14 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
         <Discards state={state} seat={0} className="bottom-[27%] left-1/2 -translate-x-1/2" />
 
         <div className="absolute left-1/2 top-[47%] z-10 flex h-20 w-[5.4rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-4 border-[#242632] bg-[#080b10] shadow-xl">
-          <span className="text-[9px] font-bold tracking-[.2em] text-cyan-300">{isRiichi ? 'RIICHI' : isMcr ? 'CHINESE MCR' : 'HONG KONG'}</span>
+          <span className="text-xs font-bold tracking-[.2em] text-cyan-300">{isRiichi ? 'RIICHI' : isMcr ? 'CHINESE MCR' : 'HONG KONG'}</span>
           <strong className="text-base font-medium text-cyan-100">{roundLabel}</strong>
           <span className="text-xl font-light text-cyan-200">{tilesRemaining(state)}</span>
-          <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-[9px] font-black">{NAMES[state.turn]}</span>
+          <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-xs font-black">{NAMES[state.turn]}</span>
         </div>
 
         {isRiichi && (
-          <div className="absolute right-[23%] top-[29%] rounded-md bg-black/30 p-1 text-center text-[8px] font-bold text-amber-200">
+          <div className="absolute right-[23%] top-[29%] rounded-md bg-black/30 p-1 text-center text-xs font-bold text-amber-200">
             <span className="block">{t('dora')}</span>
             <div className="flex gap-px">{visibleDoraIndicators(state).map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}</div>
           </div>
@@ -148,7 +168,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                 <span className="block text-sm">{t('handComplete')}</span>
                 {t('pointsRequiredNow', { score: tsumoEvaluation.score?.total ?? 0, unit: isMcr ? t('unitPoints') : t('unitFan'), min: tsumoEvaluation.minimum })}
                 {tsumoEvaluation.score?.patterns.length ? (
-                  <span className="mt-1 block text-[10px] font-bold text-amber-800">
+                  <span className="mt-1 block text-sm font-bold text-amber-800">
                     {t('currentPatterns')}
                     {tsumoEvaluation.score.patterns.map((pattern) => pattern.label).join(' · ')}
                   </span>
@@ -157,7 +177,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                   <button
                     type="button"
                     onClick={() => onHongKongMode('casual')}
-                    className="mt-2 rounded-md bg-emerald-700 px-3 py-1.5 text-[10px] font-black text-white"
+                    className="mt-2 rounded-md bg-emerald-700 px-3 py-2 text-sm font-black text-white"
                   >
                     {t('switchToCasual')}
                   </button>
@@ -173,7 +193,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
         )}
 
         <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-white/15 bg-[#063d30]/95 pb-[max(.4rem,env(safe-area-inset-bottom))] pt-1 shadow-[0_-8px_22px_rgba(0,0,0,.3)]">
-          <div className="flex h-6 items-center justify-between px-2 text-[10px] font-bold text-emerald-100">
+          <div className="flex h-7 items-center justify-between px-2 text-sm font-bold text-emerald-100">
             <span>{myTurn ? t('yourTurnTap') : t('seatPlaying', { seat: NAMES[state.turn] })}</span>
             {hintStatus && <span className={tsumoEvaluation?.complete ? 'text-amber-200' : ''}>{hintStatus}</span>}
           </div>
@@ -188,7 +208,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
           )}
           {isMcr && human.flowers.length > 0 && (
             <div className="mb-1 flex items-center justify-center gap-px">
-              <span className="mr-1 text-[9px] font-black text-amber-200">{t('flowersLabel')}</span>
+              <span className="mr-1 text-xs font-black text-amber-200">{t('flowersLabel')}</span>
               {human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
             </div>
           )}
@@ -260,14 +280,14 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
               {opponentWon && (
                 <div className="mt-3 rounded-xl border border-emerald-200 bg-white/90 p-3 text-left">
                   <p className="text-center text-xs font-black uppercase tracking-[.12em] text-emerald-800">{t('winningHandLabel')} · {NAMES[winnerSeat]}</p>
-                  <p className="mt-1 text-center text-[10px] font-bold text-slate-500">{t('completeHandRevealed')}</p>
+                  <p className="mt-1 text-center text-sm font-bold text-slate-500">{t('completeHandRevealed')}</p>
                   {winnerScore && <p className="mt-1 text-center text-[11px] font-black text-amber-700">{isRiichi ? `${winnerScore.han ?? winnerScore.total} Han · ${winnerScore.fu ?? 0} Fu · ${winnerScore.points ?? 0} points` : `${winnerScore.total} ${isMcr ? t('unitPoints') : t('unitFan')} · ${winnerScore.points ?? 0} ${t('unitPoints')}`}</p>}
                   <div className="mt-2 flex flex-wrap justify-center gap-0.5">
                     {revealedTiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional highlight={Boolean(state.result?.loser !== undefined && index === revealedTiles.length - 1)} />)}
                   </div>
                   {winnerMelds.length > 0 && (
                     <div className="mt-2 border-t border-emerald-100 pt-2">
-                      <p className="mb-1 text-center text-[10px] font-black text-emerald-800">{t('calledMelds')}</p>
+                      <p className="mb-1 text-center text-sm font-black text-emerald-800">{t('calledMelds')}</p>
                       <div className="flex flex-wrap justify-center gap-2">
                         {winnerMelds.map((meld, meldIndex) => <div key={meldIndex} className="flex gap-px rounded bg-emerald-50 p-0.5">{meld.tiles.map((tile, tileIndex) => <TileFace key={`${tile}-${tileIndex}`} tile={tile} size="xs" traditional />)}</div>)}
                       </div>
@@ -285,10 +305,6 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
   );
 }
 
-function Tool({ children, onClick, active = false }: { children: ReactNode; onClick: () => void; active?: boolean }) {
-  return <button type="button" onClick={onClick} className={active ? 'rounded-md bg-amber-300 px-2 py-1 text-[10px] font-black text-emerald-950' : 'rounded-md border border-white/15 bg-black/10 px-2 py-1 text-[10px] font-black'}>{children}</button>;
-}
-
 function Action({ children, onClick, danger = false }: { children: ReactNode; onClick?: () => void; danger?: boolean }) {
   return <button type="button" onClick={onClick} className={danger ? 'min-h-10 rounded-lg bg-rose-500 px-4 text-sm font-black' : 'min-h-10 rounded-lg bg-amber-300 px-4 text-sm font-black text-emerald-950'}>{children}</button>;
 }
@@ -297,8 +313,8 @@ function Opponent({ state, seat, className }: { state: GameState; seat: Seat; cl
   const active = state.turn === seat && state.phase !== 'over';
   return (
     <div className={'absolute z-20 flex items-center gap-1 rounded-full bg-black/35 p-1 pr-2 ' + className}>
-      <span className={active ? 'flex h-8 w-8 items-center justify-center rounded-full border-2 border-yellow-300 bg-violet-400 text-[10px] font-black' : 'flex h-8 w-8 items-center justify-center rounded-full border-2 border-white/60 bg-violet-500 text-[10px] font-black'}>P{seat + 1}</span>
-      <span className="text-[10px] font-black text-amber-100">{state.players[seat].score}</span>
+      <span className={active ? 'flex h-9 w-9 items-center justify-center rounded-full border-2 border-yellow-300 bg-violet-400 text-xs font-black' : 'flex h-9 w-9 items-center justify-center rounded-full border-2 border-white/60 bg-violet-500 text-xs font-black'}>P{seat + 1}</span>
+      <span className="text-sm font-black text-amber-100">{state.players[seat].score}</span>
     </div>
   );
 }
@@ -317,7 +333,7 @@ function Discards({ state, seat, className }: { state: GameState; seat: Seat; cl
   const recent = state.players[seat].discards.slice(-6);
   return (
     <div className={'absolute z-[15] w-[54px] rounded-md bg-[#003d2f]/70 p-0.5 shadow-[0_1px_5px_rgba(0,0,0,.3)] ' + className}>
-      <span className="mb-px block text-center text-[7px] font-black tracking-wide text-amber-200">P{seat + 1} DISCARD</span>
+      <span className="mb-px block text-center text-xs font-black tracking-wide text-amber-200">P{seat + 1} DISCARD</span>
       <div className="grid grid-cols-3 gap-px">
       {recent.map((tile, index) => (
         <span key={tile + index} className={index === recent.length - 1 ? 'scale-[.68] rounded ring-1 ring-amber-300' : 'scale-[.68]'}><TileFace tile={tile} size="sm" traditional muted={index !== recent.length - 1} /></span>
