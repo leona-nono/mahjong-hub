@@ -42,7 +42,7 @@ export default async function GamesHallPage({
   const t = await getTranslations('nav');
   const th = await getTranslations('home');
   const all = getMergedLocalizedGames(await getMergedGames(), locale);
-  const wall = all.filter((g) => g.gameType !== 'coming-soon');
+  const wall = all.filter((g) => g.gameType === 'iframe');
 
   return (
     <div className="mx-auto max-w-[1400px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
@@ -57,7 +57,7 @@ export default async function GamesHallPage({
 
       <section>
         <h2 className="mb-3 font-display text-xl font-semibold text-portal-text">
-          {th('collectionTitle')}
+          {th('featuredHall')}
         </h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {wall.map((g) => (

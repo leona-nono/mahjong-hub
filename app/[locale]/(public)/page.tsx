@@ -51,7 +51,7 @@ export default async function HomePage({
   const site = await getSiteSettings();
   const home = await homeSeo(locale);
   const all = getMergedLocalizedGames(await getMergedGames(), locale);
-  const wall = all.filter((g) => g.gameType !== 'coming-soon').slice(0, 18);
+  const wall = all.filter((g) => g.gameType === 'iframe');
   const todayLevel = dailyLevelId(utcDateString());
 
   const jsonLd = homeJsonLd({
@@ -77,7 +77,7 @@ export default async function HomePage({
             id="home-game-wall"
             className="font-display text-xl font-semibold text-portal-text sm:text-2xl"
           >
-            {t('collectionTitle')}
+            {t('featuredHall')}
           </h2>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
