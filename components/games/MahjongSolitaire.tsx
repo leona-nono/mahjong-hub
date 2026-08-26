@@ -68,6 +68,10 @@ export interface MahjongSolitaireProps {
   defaultLayout?: SolitaireLayout;
   defaultLevelId?: string;
   onWin?: (points: number) => void;
+  /** Slim chrome for homepage daily embed — hides free-play / campaign chrome. */
+  compact?: boolean;
+  /** Prefer starting play immediately (skips coach / free-play entry). */
+  autoStart?: boolean;
 }
 
 const CELL_W = 44;
@@ -86,7 +90,9 @@ type OfferState = {
 export default function MahjongSolitaire({
   defaultLayout = 'classic',
   defaultLevelId = 'teach-1',
-  onWin
+  onWin,
+  compact = false,
+  autoStart = false
 }: MahjongSolitaireProps) {
   const t = useTranslations('solitaire');
   const { points } = usePoints();
@@ -111,7 +117,7 @@ export default function MahjongSolitaire({
   const [paused, setPaused] = useState(false);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [savePromptPts, setSavePromptPts] = useState<number | null>(null);
-  const [coachDismissed, setCoachDismissed] = useState(false);
+  const [coachDismissed, setCoachDismissed] = useState(autoStart || compact);
   const [itemUses, setItemUses] = useState(0);
   const [offer, setOffer] = useState<OfferState>(null);
   const [dailyHud, setDailyHud] = useState<{
@@ -341,7 +347,8 @@ export default function MahjongSolitaire({
     };
   }, [board.positions]);
 
-  const showCoach = mode === 'level' && Boolean(level.coachKey) && !coachDismissed;
+  const showCoach =
+    !compact && mode === 'level' && Boolean(level.coachKey) && !coachDismissed;
   const campaignUpto = Math.max(12, parseCampaignLevel(level.id) ?? 0);
   const campaignLevels = useMemo(
     () => campaignOptions(campaignUpto, SEED_CATALOG),
@@ -611,7 +618,10 @@ export default function MahjongSolitaire({
 
   return (
     <div
-      className="solitaire-shell rounded-3xl border border-slate-950/20 bg-[#13252d] p-3 text-slate-100 shadow-[0_24px_70px_rgba(15,23,42,.28)] sm:p-5"
+      className={`solitaire-shell rounded-3xl border border-slate-950/20 bg-[#13252d] p-3 text-slate-100 shadow-[0_24px_70px_rgba(15,23,42,.28)] ${
+        compact ? 'sm:p-4' : 'sm:p-5'
+      }`}
+      data-compact={compact ? 'true' : 'false'}
       data-high-contrast={preferences.highContrast ? 'true' : 'false'}
       data-reduced-motion={preferences.reducedMotion ? 'true' : 'false'}
       data-tile-scale={preferences.tileScale}
@@ -626,6 +636,7 @@ export default function MahjongSolitaire({
         />
       )}
       <div className="sticky top-2 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-700 bg-[#172f39]/95 p-2 text-sm shadow-md backdrop-blur">
+        {!compact && (
         <select
           value={mode === 'level' ? level.id : `free:${layout}`}
           onChange={(e) => {
@@ -675,6 +686,13 @@ export default function MahjongSolitaire({
             ))}
           </optgroup>
         </select>
+        )}
+        {compact && (
+          <span className="rounded-full bg-[#213c47] px-3 py-1.5 font-semibold text-emerald-100">
+            {t('dailyChallenge')}
+            {dailyHud?.cleared ? ` · ${t('dailyDone')}` : ''}
+          </span>
+        )}
 
         <span className="rounded-full bg-[#213c47] px-3 py-1.5 font-semibold text-emerald-100">
           {t('score', { n: scoreState.score })}
@@ -724,7 +742,7 @@ export default function MahjongSolitaire({
         </button>
       </div>
 
-      {mode === 'free' && (
+      {!compact && mode === 'free' && (
         <div className="mb-3">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
             {t('layoutPicker')}
@@ -840,7 +858,7 @@ export default function MahjongSolitaire({
             {'★'.repeat(stars)}
             {'☆'.repeat(3 - stars)}
           </p>
-          {mode === 'level' && nextLevelId(level.id) && (
+          {mode === 'level' && nextLevelId(level.id) && !compact && (
             <button
               type="button"
               onClick={() => {
@@ -855,7 +873,7 @@ export default function MahjongSolitaire({
                 : t('nextLesson')}
             </button>
           )}
-          {mode === 'level' && parseDailyLevelId(level.id) && (
+          {mode === 'level' && parseDailyLevelId(level.id) && !compact && (
             <button
               type="button"
               onClick={() => {
@@ -867,7 +885,7 @@ export default function MahjongSolitaire({
               {t('playCampaign')}
             </button>
           )}
-          {mode === 'level' && !nextLevelId(level.id) && !parseDailyLevelId(level.id) && (
+          {mode === 'level' && !nextLevelId(level.id) && !parseDailyLevelId(level.id) && !compact && (
             <button
               type="button"
               onClick={enterFree}
@@ -875,6 +893,11 @@ export default function MahjongSolitaire({
             >
               {t('freePlay')}
             </button>
+          )}
+          {compact && parseDailyLevelId(level.id) && (
+            <p className="mt-2 text-sm font-semibold text-emerald-100/90">
+              {t('cleared', { n: scoreState.score })}
+            </p>
           )}
         </div>
       )}

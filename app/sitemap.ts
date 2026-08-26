@@ -48,6 +48,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: alternatesFor('/games') }
     });
 
+    for (const hub of ['/games/solitaire', '/games/classic'] as const) {
+      entries.push({
+        url: `${BASE}/${locale}${hub}`,
+        lastModified,
+        changeFrequency: 'weekly',
+        priority: 0.85,
+        alternates: { languages: alternatesFor(hub) }
+      });
+    }
+
     // Blog hub + every article. These are the core SEO landing pages, so they
     // must be in the sitemap with full hreflang alternates.
     entries.push({

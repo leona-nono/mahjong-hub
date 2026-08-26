@@ -8,7 +8,7 @@
     "games": "游戏",
     "about": "关于",
     "wardrobe": "衣橱",
-    "classic": "经典麻将",
+    "classic": "四人麻将",
     "classicSubtitle": "玩真正的四人麻将——中国、日本、美国、台湾与四川玩法。",
     "solitaire": "麻将消除",
     "solitaireSubtitle": "休闲配对与消除小游戏，轻松放松片刻。",
@@ -22,7 +22,8 @@
     "regionJapan": "日本麻将",
     "regionAmerica": "美国麻将",
     "regionTaiwan": "台湾麻将",
-    "regionSichuan": "四川麻将"
+    "regionSichuan": "四川麻将",
+    "gameHall": "游戏大厅"
   },
   "home": {
     "heroTitle": "免费在线麻将游戏",
@@ -51,7 +52,20 @@
     "checkInClaimed": "今日已签到 · +{n} 积分",
     "checkInNow": "立即签到",
     "checkInDone": "已签到",
-    "emailBonusHint": "💡 邮箱登录可额外获得 {n} 积分！"
+    "emailBonusHint": "💡 邮箱登录可额外获得 {n} 积分！",
+    "categoriesTitle": "按分类浏览",
+    "catSolitaire": "麻将消除",
+    "catSolitaireBody": "配对空闲牌清空棋盘，轻松无倒计时。",
+    "catFourPlayer": "四人麻将",
+    "catFourPlayerBody": "港式、立直、国标等规则对战 AI。",
+    "catMore": "更多益智",
+    "catMoreBody": "连连看、对对碰等免费游戏尽在游戏大厅。",
+    "seoTitle": "浏览器即可玩的免费麻将游戏",
+    "seoBody": "麻将乐园是免费的在线游戏大厅，提供麻将消除、四人麻将与益智玩法。可直接挑战今日棋盘，或进入消除 / 四人分类与任意游戏卡——无需下载，无需注册即可开玩。",
+    "seoLinkSolitaire": "麻将消除游戏",
+    "seoLinkClassic": "四人麻将",
+    "seoLinkPlay": "玩经典消除",
+    "seoLinkBeginners": "麻将入门"
   },
   "game": {
     "play": "开始游戏",
@@ -379,13 +393,14 @@
   "challenge": {
     "eyebrow": "今日",
     "title": "每日挑战",
-    "subtitle": "全服同一盘牌，通关延续连胜。",
+    "subtitle": "今日全站同一棋盘，通关保持连胜——奖励在本页结算，无需跳转。",
     "reward": "+{n} 积分",
     "streakBonus": "连胜奖励 +{n}",
     "streak": "连胜 {n} 天",
     "cleared": "今日已通关",
     "play": "开始今日挑战",
-    "playAgain": "再玩一局"
+    "playAgain": "再玩一局",
+    "moreSolitaire": "更多消除 →"
   },
   "portal": {
     "categories": "分类",

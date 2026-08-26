@@ -17,6 +17,8 @@ export interface NativeGameMountProps {
   slug: string;
   /** Solitaire: open on daily / campaign / teach id */
   defaultLevelId?: string;
+  compact?: boolean;
+  autoStart?: boolean;
 }
 
 /**
@@ -29,7 +31,9 @@ export default function NativeGameMount({
   ruleset,
   regionalRuleset,
   slug,
-  defaultLevelId
+  defaultLevelId,
+  compact,
+  autoStart
 }: NativeGameMountProps) {
   const handleWin = useCallback((points: number) => {
     trackMahjongEvent('mahjong_hand_completed', { game: slug, displayed_points: Math.min(Math.max(points, 1), 50) });
@@ -53,7 +57,13 @@ export default function NativeGameMount({
 
   if (native === 'mahjong-solitaire') {
     // Campaign/daily points go through /api/solitaire/complete (not the generic cap).
-    return <MahjongSolitaire defaultLevelId={defaultLevelId} />;
+    return (
+      <MahjongSolitaire
+        defaultLevelId={defaultLevelId}
+        compact={compact}
+        autoStart={autoStart}
+      />
+    );
   }
 
   return null;

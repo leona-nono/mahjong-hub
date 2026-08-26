@@ -94,6 +94,12 @@ const nextConfig = {
         permanent: true
       },
       {
+        // Wardrobe UI paused — keep equity on locale home.
+        source: '/:locale/wardrobe',
+        destination: '/:locale',
+        permanent: true
+      },
+      {
         source: '/privacy-policy',
         destination: '/en/privacy',
         permanent: true

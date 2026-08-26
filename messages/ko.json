@@ -8,7 +8,7 @@
     "games": "게임",
     "about": "소개",
     "wardrobe": "꾸미기",
-    "classic": "클래식 마작",
+    "classic": "Mahjong 4 Player",
     "classicSubtitle": "진짜 4인 마작——중국, 일본, 미국, 대만, 쓰촨 룰.",
     "solitaire": "마작 솔리테어",
     "solitaireSubtitle": "캐주얼 타일 맞추기·소거 게임으로 가볍게 즐기세요.",
@@ -22,7 +22,8 @@
     "regionJapan": "일본 마작",
     "regionAmerica": "미국 마작",
     "regionTaiwan": "대만 마작",
-    "regionSichuan": "쓰촨 마작"
+    "regionSichuan": "쓰촨 마작",
+    "gameHall": "Game Hall"
   },
   "home": {
     "heroTitle": "무료 온라인 마작 게임",
@@ -51,7 +52,20 @@
     "checkInClaimed": "Checked in today · +{n} points",
     "checkInNow": "Check in now",
     "checkInDone": "Checked in",
-    "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!"
+    "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!",
+    "categoriesTitle": "Browse by category",
+    "catSolitaire": "Mahjong Solitaire",
+    "catSolitaireBody": "Match free tiles and clear the board — relax, no timer required.",
+    "catFourPlayer": "Mahjong 4 Player",
+    "catFourPlayerBody": "Hong Kong, Riichi, Chinese Official and more rulesets vs AI.",
+    "catMore": "More puzzles",
+    "catMoreBody": "Connect, tile-match and more free games in the Game Hall.",
+    "seoTitle": "Free mahjong games you can play in the browser",
+    "seoBody": "Mahjong Hub is a free online Game Hall for mahjong solitaire, four-player tables and tile puzzles. Jump into today’s daily challenge above, explore Solitaire and 4 Player categories, or open any game card — no download, no account required to start.",
+    "seoLinkSolitaire": "Mahjong Solitaire games",
+    "seoLinkClassic": "Four-player mahjong",
+    "seoLinkPlay": "Play Solitaire Classic",
+    "seoLinkBeginners": "Mahjong for beginners"
   },
   "game": {
     "play": "플레이",
@@ -385,7 +399,8 @@
     "streak": "{n}일 연속",
     "cleared": "오늘 완료",
     "play": "오늘의 도전 시작",
-    "playAgain": "다시 하기"
+    "playAgain": "다시 하기",
+    "moreSolitaire": "More solitaire →"
   },
   "portal": {
     "categories": "카테고리",

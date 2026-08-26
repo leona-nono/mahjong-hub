@@ -8,7 +8,7 @@
     "games": "遊戲",
     "about": "關於",
     "wardrobe": "衣櫥",
-    "classic": "經典麻將",
+    "classic": "四人麻將",
     "classicSubtitle": "玩真正的四人麻將——中國、日本、美國、台灣與四川玩法。",
     "solitaire": "麻將消除",
     "solitaireSubtitle": "休閒配對與消除小遊戲，輕鬆放鬆片刻。",
@@ -22,7 +22,8 @@
     "regionJapan": "日本麻將",
     "regionAmerica": "美國麻將",
     "regionTaiwan": "台灣麻將",
-    "regionSichuan": "四川麻將"
+    "regionSichuan": "四川麻將",
+    "gameHall": "遊戲大廳"
   },
   "home": {
     "heroTitle": "免費線上麻將遊戲",
@@ -51,7 +52,20 @@
     "checkInClaimed": "今日已簽到 · +{n} 積分",
     "checkInNow": "立即簽到",
     "checkInDone": "已簽到",
-    "emailBonusHint": "💡 信箱登入可額外獲得 {n} 積分！"
+    "emailBonusHint": "💡 信箱登入可額外獲得 {n} 積分！",
+    "categoriesTitle": "Browse by category",
+    "catSolitaire": "Mahjong Solitaire",
+    "catSolitaireBody": "Match free tiles and clear the board — relax, no timer required.",
+    "catFourPlayer": "Mahjong 4 Player",
+    "catFourPlayerBody": "Hong Kong, Riichi, Chinese Official and more rulesets vs AI.",
+    "catMore": "More puzzles",
+    "catMoreBody": "Connect, tile-match and more free games in the Game Hall.",
+    "seoTitle": "Free mahjong games you can play in the browser",
+    "seoBody": "Mahjong Hub is a free online Game Hall for mahjong solitaire, four-player tables and tile puzzles. Jump into today’s daily challenge above, explore Solitaire and 4 Player categories, or open any game card — no download, no account required to start.",
+    "seoLinkSolitaire": "Mahjong Solitaire games",
+    "seoLinkClassic": "Four-player mahjong",
+    "seoLinkPlay": "Play Solitaire Classic",
+    "seoLinkBeginners": "Mahjong for beginners"
   },
   "game": {
     "play": "開始遊戲",
@@ -385,7 +399,8 @@
     "streak": "連勝 {n} 天",
     "cleared": "今日已通關",
     "play": "開始今日挑戰",
-    "playAgain": "再玩一局"
+    "playAgain": "再玩一局",
+    "moreSolitaire": "More solitaire →"
   },
   "portal": {
     "categories": "分類",

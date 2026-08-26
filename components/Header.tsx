@@ -28,8 +28,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
   const links = [
     { href: '/games/solitaire', label: tn('solitaire') },
     { href: '/games/classic', label: tn('classic') },
-    { href: '/games', label: tn('games') },
-    { href: '/wardrobe', label: tn('wardrobe') },
+    { href: '/games', label: tn('gameHall') },
     { href: '/blog', label: tn('beginners') }
   ];
 

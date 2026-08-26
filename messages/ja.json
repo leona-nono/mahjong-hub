@@ -8,7 +8,7 @@
     "games": "ゲーム",
     "about": "について",
     "wardrobe": "きせかえ",
-    "classic": "クラシック麻雀",
+    "classic": "Mahjong 4 Player",
     "classicSubtitle": "本格四人麻雀——中国、日本、アメリカ、台湾、四川のルール。",
     "solitaire": "麻雀ソリティア",
     "solitaireSubtitle": "カジュアルな牌合わせ・消しゲーで、気軽にリラックス。",
@@ -22,7 +22,8 @@
     "regionJapan": "日本麻雀",
     "regionAmerica": "アメリカ麻雀",
     "regionTaiwan": "台湾麻雀",
-    "regionSichuan": "四川麻雀"
+    "regionSichuan": "四川麻雀",
+    "gameHall": "Game Hall"
   },
   "home": {
     "heroTitle": "無料オンライン麻雀ゲーム",
@@ -51,7 +52,20 @@
     "checkInClaimed": "Checked in today · +{n} points",
     "checkInNow": "Check in now",
     "checkInDone": "Checked in",
-    "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!"
+    "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!",
+    "categoriesTitle": "Browse by category",
+    "catSolitaire": "Mahjong Solitaire",
+    "catSolitaireBody": "Match free tiles and clear the board — relax, no timer required.",
+    "catFourPlayer": "Mahjong 4 Player",
+    "catFourPlayerBody": "Hong Kong, Riichi, Chinese Official and more rulesets vs AI.",
+    "catMore": "More puzzles",
+    "catMoreBody": "Connect, tile-match and more free games in the Game Hall.",
+    "seoTitle": "Free mahjong games you can play in the browser",
+    "seoBody": "Mahjong Hub is a free online Game Hall for mahjong solitaire, four-player tables and tile puzzles. Jump into today’s daily challenge above, explore Solitaire and 4 Player categories, or open any game card — no download, no account required to start.",
+    "seoLinkSolitaire": "Mahjong Solitaire games",
+    "seoLinkClassic": "Four-player mahjong",
+    "seoLinkPlay": "Play Solitaire Classic",
+    "seoLinkBeginners": "Mahjong for beginners"
   },
   "game": {
     "play": "プレイ",
@@ -385,7 +399,8 @@
     "streak": "{n}日連続",
     "cleared": "本日クリア済み",
     "play": "今日の盤面を遊ぶ",
-    "playAgain": "もう一度"
+    "playAgain": "もう一度",
+    "moreSolitaire": "More solitaire →"
   },
   "portal": {
     "categories": "カテゴリ",
