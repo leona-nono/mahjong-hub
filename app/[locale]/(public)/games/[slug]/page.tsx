@@ -227,31 +227,25 @@ export default async function GamePage({
 
           {isNative && content ? (
             <>
-          <details className="rounded-xl border border-portal-border bg-portal-panel p-4">
-            <summary className="cursor-pointer font-semibold text-portal-text">
-              {t('howToPlay')}
-            </summary>
+          <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
+            <h2 className="font-semibold text-portal-text">{t('howToPlay')}</h2>
             <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-portal-muted">
               {content.howToPlay.map((step, i) => (
                 <li key={i}>{step}</li>
               ))}
             </ol>
-          </details>
-          <details className="rounded-xl border border-portal-border bg-portal-panel p-4">
-            <summary className="cursor-pointer font-semibold text-portal-text">
-              {t('tips')}
-            </summary>
+          </section>
+          <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
+            <h2 className="font-semibold text-portal-text">{t('tips')}</h2>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-portal-muted">
               {content.tips.map((tip, i) => (
                 <li key={i}>{tip}</li>
               ))}
             </ul>
-          </details>
+          </section>
           {content.faq?.length ? (
-            <details className="rounded-xl border border-portal-border bg-portal-panel p-4">
-              <summary className="cursor-pointer font-semibold text-portal-text">
-                {t('faq')}
-              </summary>
+            <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
+              <h2 className="font-semibold text-portal-text">{t('faq')}</h2>
               <div className="mt-3 space-y-3">
                 {content.faq.map((item, i) => (
                   <div key={i}>
@@ -260,7 +254,7 @@ export default async function GamePage({
                   </div>
                 ))}
               </div>
-            </details>
+            </section>
           ) : null}
             </>
           ) : null}

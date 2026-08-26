@@ -119,15 +119,13 @@ export default async function BlogPostPage({
           <h2 className="mb-4 text-xl font-bold text-gray-800">{t('faq')}</h2>
           <div className="space-y-3">
             {post.faq.map((item, i) => (
-              <details
+              <div
                 key={i}
                 className="rounded-2xl border border-gray-100 bg-white/70 p-4"
               >
-                <summary className="cursor-pointer font-semibold text-gray-800">
-                  {item.question}
-                </summary>
+                <h3 className="font-semibold text-gray-800">{item.question}</h3>
                 <p className="mt-2 text-sm text-gray-600">{item.answer}</p>
-              </details>
+              </div>
             ))}
           </div>
         </section>
