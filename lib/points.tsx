@@ -1,6 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { APPEARANCES, markLocalOwned, type AppearanceId } from './appearance';
 import { getAuthState, openLogin } from './auth';
 import { FIRST_LOGIN_BONUS } from './points-rules';
 import {
@@ -199,6 +200,7 @@ export async function claimDailyCheckIn(): Promise<
       amount?: number;
       checkIn?: CheckInState;
       error?: string;
+      cosmetics?: { unlocked?: string[] };
     };
     if (!res.ok) {
       return {
@@ -231,6 +233,11 @@ export async function claimDailyCheckIn(): Promise<
               ].slice(0, 20)
             : state.ledger
       });
+    }
+    if (data.cosmetics?.unlocked?.length) {
+      for (const id of data.cosmetics.unlocked) {
+        if (id in APPEARANCES) markLocalOwned(id as AppearanceId);
+      }
     }
     return {
       granted: !!data.granted,

@@ -1,27 +1,49 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { APPEARANCES, applyAppearance, savedAppearance, type AppearanceId } from '@/lib/appearance';
-
-function isAvailable(id: AppearanceId) {
-  const item = APPEARANCES[id];
-  if (!item.availableFrom || !item.availableUntil) return true;
-  const today = new Date().toISOString().slice(0, 10);
-  return today >= item.availableFrom && today <= item.availableUntil;
-}
+import {
+  APPEARANCES,
+  applyAppearance,
+  freeAppearanceIds,
+  readLocalOwnedAppearances,
+  savedAppearance,
+  type AppearanceId
+} from '@/lib/appearance';
 
 export default function AppearanceCabinet() {
   const t = useTranslations('wardrobe');
+  const { status } = useSession();
   const [selected, setSelected] = useState<AppearanceId>('jade');
-  const ids = useMemo(
-    () => (Object.keys(APPEARANCES) as AppearanceId[]).filter(isAvailable),
-    []
-  );
+  const [owned, setOwned] = useState<AppearanceId[]>(() => freeAppearanceIds());
+
   useEffect(() => {
     const saved = savedAppearance();
-    setSelected(isAvailable(saved) ? saved : 'jade');
+    const local = readLocalOwnedAppearances();
+    setOwned(local);
+    setSelected(local.includes(saved) ? saved : 'jade');
   }, []);
+
+  useEffect(() => {
+    if (status !== 'authenticated') return;
+    void (async () => {
+      try {
+        const res = await fetch('/api/wardrobe', { credentials: 'same-origin' });
+        if (!res.ok) return;
+        const data = (await res.json()) as { owned?: string[] };
+        const next = (data.owned ?? []).filter(
+          (id): id is AppearanceId => id in APPEARANCES
+        );
+        if (next.length) setOwned(next);
+      } catch {
+        /* keep local */
+      }
+    })();
+  }, [status]);
+
+  const ids = useMemo(() => owned, [owned]);
+
   return (
     <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
       {ids.map((id) => (

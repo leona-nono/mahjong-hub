@@ -44,7 +44,14 @@
     "pointsBalance": "{n} 積分",
     "dailyCheckInLine": "每日簽到：+{n} 積分",
     "moreRulesets": "更多玩法 2026 陸續上線",
-    "featuredClassic": "經典四人桌"
+    "featuredClassic": "經典四人桌",
+    "signInRegister": "登入 / 註冊",
+    "checkInTitle": "📅 每日簽到（第 {day} 天）",
+    "checkInToday": "今日：+{n} 積分",
+    "checkInClaimed": "今日已簽到 · +{n} 積分",
+    "checkInNow": "立即簽到",
+    "checkInDone": "已簽到",
+    "emailBonusHint": "💡 信箱登入可額外獲得 {n} 積分！"
   },
   "game": {
     "play": "開始遊戲",
@@ -366,7 +373,7 @@
     "pointsTip": "積分有什麼用？",
     "tipBody": "積分可兌換精美牌背、牌桌皮膚、特效！即將上線。",
     "yourPoints": "{n} 積分",
-    "guestNote": "登入後積分才會記入帳號。",
+    "guestNote": "Guests can tap Check in — we will ask you to register with email first.",
     "claimFailed": "簽到未能入帳，請重新整理後再試。"
   },
   "challenge": {
@@ -533,5 +540,80 @@
     "scoreSichuanHand": "成都血戰到底先換三張、定缺；胡牌者離開後繼續至三家胡牌或牌牆耗盡。",
     "scoreSichuanKong": "明槓由出牌者支付，暗槓由其餘三家分攤；槓後補牌並支援槓上事件。",
     "scoreSichuanDraw": "流局時執行查叫、查花豬與槓分回退；胡牌番數依本桌封頂基線結算。"
+  },
+  "wardrobe": {
+    "eyebrow": "Looks & unlocks",
+    "title": "Table wardrobe",
+    "subtitle": "Free Foundation looks, seasonal check-in unlocks, Premium skins for points, and Limited editions from weekly fragments.",
+    "collection": "Your collection",
+    "freeNote": "Foundation looks are free. Premium and Limited need points or fragments.",
+    "tierNote": "Foundation free · Seasonal check-in · Premium points · Limited fragments",
+    "balance": "{n} pts",
+    "preview": "Preview",
+    "equipped": "Equipped",
+    "owned": "Owned · ready to use",
+    "locked": "Locked",
+    "apply": "Apply this look",
+    "working": "Working…",
+    "permanent": "Permanent",
+    "active": "In season",
+    "upcoming": "Coming soon",
+    "archive": "Collection archive",
+    "seasonalEnded": "Season ended",
+    "unlockCheckIn": "Check-in unlock",
+    "checkInToUnlock": "Check in to unlock",
+    "pricePoints": "{n} pts",
+    "limitedBadge": "Limited",
+    "fragmentProgress": "{have}/{need} fragments",
+    "redeemFor": "Redeem for {n} pts",
+    "craftFor": "Craft ({n} fragments)",
+    "needMorePoints": "Not enough points yet — keep playing or check in.",
+    "needMoreFragments": "Need more weekly check-in fragments.",
+    "unlockFailed": "Could not unlock. Try again.",
+    "buyMatchingSet": "Buy matching real mahjong set →",
+    "shopDisclaimer": "As an Amazon Associate we earn from qualifying purchases. Links open Amazon or our shop.",
+    "chapters": {
+      "foundation": {
+        "title": "Foundation",
+        "body": "Five free starter tables and tile backs."
+      },
+      "seasonal": {
+        "title": "Seasonal",
+        "body": "Time-limited free looks unlocked with daily check-in."
+      },
+      "premium": {
+        "title": "Premium Collection",
+        "body": "High-end tile backs unlocked with points."
+      },
+      "limited": {
+        "title": "Limited Edition",
+        "body": "Craft from seven weekly check-in fragments."
+      },
+      "solar": {
+        "title": "Seasonal",
+        "body": "Time-limited free looks unlocked with daily check-in."
+      },
+      "festival": {
+        "title": "Limited Edition",
+        "body": "Festival and limited looks."
+      }
+    },
+    "items": {
+      "jade": "Jade Moon Gate",
+      "ivory-classic": "Ivory Classic",
+      "charcoal-night": "Charcoal Night",
+      "coral-dawn": "Coral Dawn",
+      "mist-lilac": "Mist Lilac",
+      "lunar": "Lunar New Year",
+      "spring": "Spring Equinox",
+      "summer": "Summer Solstice",
+      "autumn": "Autumn Equinox",
+      "winter": "Winter Solstice",
+      "deep-sea-blue": "Deep Sea Blue",
+      "sakura-pink": "Sakura Pink",
+      "bamboo-green": "Bamboo Green",
+      "gold-dynasty": "Gold Dynasty",
+      "ink-wash": "Ink Wash"
+    }
   }
 }

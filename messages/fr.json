@@ -15,40 +15,78 @@
     "reduceMotion": "Réduire les animations"
   },
   "wardrobe": {
-    "eyebrow": "Habillages saisonniers gratuits",
-    "title": "Habillages de table",
-    "subtitle": "Choisissez une table et un dos de tuile pour tous les jeux. Tout est gratuit : sans pièces, achats ni mécaniques aléatoires.",
-    "collection": "Votre collection",
-    "freeNote": "Tous les habillages vous appartiennent. Les habillages limités restent dans votre collection après un événement.",
-    "preview": "Aperçu",
-    "equipped": "Utilisé",
-    "owned": "Possédé · prêt à utiliser",
-    "apply": "Utiliser cet habillage",
+    "eyebrow": "Looks & unlocks",
+    "title": "Table wardrobe",
+    "subtitle": "Free Foundation looks, seasonal check-in unlocks, Premium skins for points, and Limited editions from weekly fragments.",
+    "collection": "Your collection",
+    "freeNote": "Foundation looks are free. Premium and Limited need points or fragments.",
+    "tierNote": "Foundation free · Seasonal check-in · Premium points · Limited fragments",
+    "balance": "{n} pts",
+    "preview": "Preview",
+    "equipped": "Equipped",
+    "owned": "Owned · ready to use",
+    "locked": "Locked",
+    "apply": "Apply this look",
+    "working": "Working…",
     "permanent": "Permanent",
-    "active": "En saison",
-    "upcoming": "Bientôt disponible",
-    "archive": "Archives de collection",
+    "active": "In season",
+    "upcoming": "Coming soon",
+    "archive": "Collection archive",
+    "seasonalEnded": "Season ended",
+    "unlockCheckIn": "Check-in unlock",
+    "checkInToUnlock": "Check in to unlock",
+    "pricePoints": "{n} pts",
+    "limitedBadge": "Limited",
+    "fragmentProgress": "{have}/{need} fragments",
+    "redeemFor": "Redeem for {n} pts",
+    "craftFor": "Craft ({n} fragments)",
+    "needMorePoints": "Not enough points yet — keep playing or check in.",
+    "needMoreFragments": "Need more weekly check-in fragments.",
+    "unlockFailed": "Could not unlock. Try again.",
+    "buyMatchingSet": "Buy matching real mahjong set →",
+    "shopDisclaimer": "As an Amazon Associate we earn from qualifying purchases. Links open Amazon or our shop.",
     "chapters": {
       "foundation": {
-        "title": "Collection essentielle",
-        "body": "Des tables calmes, toujours disponibles, pour chaque jeu."
+        "title": "Foundation",
+        "body": "Five free starter tables and tile backs."
+      },
+      "seasonal": {
+        "title": "Seasonal",
+        "body": "Time-limited free looks unlocked with daily check-in."
+      },
+      "premium": {
+        "title": "Premium Collection",
+        "body": "High-end tile backs unlocked with points."
+      },
+      "limited": {
+        "title": "Limited Edition",
+        "body": "Craft from seven weekly check-in fragments."
       },
       "solar": {
-        "title": "Saisons solaires",
-        "body": "Quatre ambiances de table qui suivent la lumière changeante de l’année."
+        "title": "Seasonal",
+        "body": "Time-limited free looks unlocked with daily check-in."
       },
       "festival": {
-        "title": "Chapitre des fêtes",
-        "body": "Une petite collection pour les fêtes et les événements de retour."
+        "title": "Limited Edition",
+        "body": "Festival and limited looks."
       }
     },
     "items": {
       "jade": "Table de jade",
+      "ivory-classic": "Ivory Classic",
+      "charcoal-night": "Charcoal Night",
+      "coral-dawn": "Coral Dawn",
+      "mist-lilac": "Mist Lilac",
       "lunar": "Nouvel An lunaire",
       "spring": "Équinoxe de printemps",
       "summer": "Solstice d’été",
       "autumn": "Équinoxe d’automne",
-      "winter": "Solstice d’hiver"
+      "winter": "Solstice d’hiver",
+      "deep-sea-blue": "Deep Sea Blue",
+      "sakura-pink": "Sakura Pink",
+      "bamboo-green": "Bamboo Green",
+      "gold-dynasty": "Gold Dynasty",
+      "ink-wash": "Ink Wash"
     }
   },
   "home": {
@@ -76,7 +114,14 @@
     "pointsBalance": "{n} pts",
     "dailyCheckInLine": "Check-in quotidien : +{n} pts",
     "moreRulesets": "Plus de règles en 2026",
-    "featuredClassic": "Tables classiques"
+    "featuredClassic": "Tables classiques",
+    "signInRegister": "Sign in / Register",
+    "checkInTitle": "📅 Daily Check-in (Day {day})",
+    "checkInToday": "Today: +{n} points",
+    "checkInClaimed": "Checked in today · +{n} points",
+    "checkInNow": "Check in now",
+    "checkInDone": "Checked in",
+    "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!"
   },
   "game": {
     "play": "Jouer",

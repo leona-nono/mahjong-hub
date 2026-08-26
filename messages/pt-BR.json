@@ -15,40 +15,78 @@
     "reduceMotion": "Reduzir movimento"
   },
   "wardrobe": {
-    "eyebrow": "Visuais sazonais gratuitos",
-    "title": "Visuais da mesa",
-    "subtitle": "Escolha uma mesa e um verso de peça para todos os jogos. Tudo é gratuito — sem moedas, compras ou mecânicas de sorte.",
-    "collection": "Sua coleção",
-    "freeNote": "Todos os visuais podem ser usados por você. Visuais limitados permanecem na coleção após o evento.",
-    "preview": "Prévia",
-    "equipped": "Em uso",
-    "owned": "Seu · pronto para usar",
-    "apply": "Usar este visual",
-    "permanent": "Permanente",
-    "active": "Na temporada",
-    "upcoming": "Em breve",
-    "archive": "Arquivo da coleção",
+    "eyebrow": "Looks & unlocks",
+    "title": "Table wardrobe",
+    "subtitle": "Free Foundation looks, seasonal check-in unlocks, Premium skins for points, and Limited editions from weekly fragments.",
+    "collection": "Your collection",
+    "freeNote": "Foundation looks are free. Premium and Limited need points or fragments.",
+    "tierNote": "Foundation free · Seasonal check-in · Premium points · Limited fragments",
+    "balance": "{n} pts",
+    "preview": "Preview",
+    "equipped": "Equipped",
+    "owned": "Owned · ready to use",
+    "locked": "Locked",
+    "apply": "Apply this look",
+    "working": "Working…",
+    "permanent": "Permanent",
+    "active": "In season",
+    "upcoming": "Coming soon",
+    "archive": "Collection archive",
+    "seasonalEnded": "Season ended",
+    "unlockCheckIn": "Check-in unlock",
+    "checkInToUnlock": "Check in to unlock",
+    "pricePoints": "{n} pts",
+    "limitedBadge": "Limited",
+    "fragmentProgress": "{have}/{need} fragments",
+    "redeemFor": "Redeem for {n} pts",
+    "craftFor": "Craft ({n} fragments)",
+    "needMorePoints": "Not enough points yet — keep playing or check in.",
+    "needMoreFragments": "Need more weekly check-in fragments.",
+    "unlockFailed": "Could not unlock. Try again.",
+    "buyMatchingSet": "Buy matching real mahjong set →",
+    "shopDisclaimer": "As an Amazon Associate we earn from qualifying purchases. Links open Amazon or our shop.",
     "chapters": {
       "foundation": {
-        "title": "Coleção essencial",
-        "body": "Mesas calmas, sempre disponíveis, para todo tipo de jogo."
+        "title": "Foundation",
+        "body": "Five free starter tables and tile backs."
+      },
+      "seasonal": {
+        "title": "Seasonal",
+        "body": "Time-limited free looks unlocked with daily check-in."
+      },
+      "premium": {
+        "title": "Premium Collection",
+        "body": "High-end tile backs unlocked with points."
+      },
+      "limited": {
+        "title": "Limited Edition",
+        "body": "Craft from seven weekly check-in fragments."
       },
       "solar": {
-        "title": "Estações solares",
-        "body": "Quatro climas de mesa que acompanham a luz do ano."
+        "title": "Seasonal",
+        "body": "Time-limited free looks unlocked with daily check-in."
       },
       "festival": {
-        "title": "Capítulo de festivais",
-        "body": "Uma pequena coleção para feriados e eventos que retornam."
+        "title": "Limited Edition",
+        "body": "Festival and limited looks."
       }
     },
     "items": {
       "jade": "Mesa de jade",
+      "ivory-classic": "Ivory Classic",
+      "charcoal-night": "Charcoal Night",
+      "coral-dawn": "Coral Dawn",
+      "mist-lilac": "Mist Lilac",
       "lunar": "Ano-Novo Lunar",
       "spring": "Equinócio de primavera",
       "summer": "Solstício de verão",
       "autumn": "Equinócio de outono",
-      "winter": "Solstício de inverno"
+      "winter": "Solstício de inverno",
+      "deep-sea-blue": "Deep Sea Blue",
+      "sakura-pink": "Sakura Pink",
+      "bamboo-green": "Bamboo Green",
+      "gold-dynasty": "Gold Dynasty",
+      "ink-wash": "Ink Wash"
     }
   },
   "home": {
@@ -76,7 +114,14 @@
     "pointsBalance": "{n} pts",
     "dailyCheckInLine": "Check-in diário: +{n} pts",
     "moreRulesets": "Mais regras em 2026",
-    "featuredClassic": "Mesas clássicas"
+    "featuredClassic": "Mesas clássicas",
+    "signInRegister": "Sign in / Register",
+    "checkInTitle": "📅 Daily Check-in (Day {day})",
+    "checkInToday": "Today: +{n} points",
+    "checkInClaimed": "Checked in today · +{n} points",
+    "checkInNow": "Check in now",
+    "checkInDone": "Checked in",
+    "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!"
   },
   "game": {
     "play": "Jogar",

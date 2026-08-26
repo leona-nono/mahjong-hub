@@ -47,48 +47,93 @@
     "entryClassic": "4-Player Mahjong",
     "entryTileMatch": "Tile Match",
     "signInEmail": "Sign in with Email",
+    "signInRegister": "Sign in / Register",
     "playAsGuest": "Play as Guest",
     "welcomeBack": "Welcome back, {name}",
     "pointsBalance": "{n} pts",
     "dailyCheckInLine": "Daily Check-in: +{n} pts",
+    "checkInTitle": "📅 Daily Check-in (Day {day})",
+    "checkInToday": "Today: +{n} points",
+    "checkInClaimed": "Checked in today · +{n} points",
+    "checkInNow": "Check in now",
+    "checkInDone": "Checked in",
+    "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!",
     "moreRulesets": "More rulesets coming 2026",
     "featuredClassic": "Classic tables"
   },
   "wardrobe": {
-    "eyebrow": "Free seasonal looks",
+    "eyebrow": "Looks & unlocks",
     "title": "Table wardrobe",
-    "subtitle": "Choose a table and tile back for every game. All looks are free—no coins, purchases, or chance mechanics.",
+    "subtitle": "Free Foundation looks, seasonal check-in unlocks, Premium skins for points, and Limited editions from weekly fragments.",
     "collection": "Your collection",
-    "freeNote": "Every appearance is yours to use. Limited looks remain in your collection after an event.",
+    "freeNote": "Foundation looks are free. Premium and Limited need points or fragments.",
+    "tierNote": "Foundation free · Seasonal check-in · Premium points · Limited fragments",
+    "balance": "{n} pts",
     "preview": "Preview",
     "equipped": "Equipped",
     "owned": "Owned · ready to use",
+    "locked": "Locked",
     "apply": "Apply this look",
+    "working": "Working…",
     "permanent": "Permanent",
     "active": "In season",
     "upcoming": "Coming soon",
     "archive": "Collection archive",
+    "seasonalEnded": "Season ended",
+    "unlockCheckIn": "Check-in unlock",
+    "checkInToUnlock": "Check in to unlock",
+    "pricePoints": "{n} pts",
+    "limitedBadge": "Limited",
+    "fragmentProgress": "{have}/{need} fragments",
+    "redeemFor": "Redeem for {n} pts",
+    "craftFor": "Craft ({n} fragments)",
+    "needMorePoints": "Not enough points yet — keep playing or check in.",
+    "needMoreFragments": "Need more weekly check-in fragments.",
+    "unlockFailed": "Could not unlock. Try again.",
+    "buyMatchingSet": "Buy matching real mahjong set →",
+    "shopDisclaimer": "As an Amazon Associate we earn from qualifying purchases. Links open Amazon or our shop.",
     "chapters": {
       "foundation": {
-        "title": "Foundation collection",
-        "body": "Calm, always-available tables for every kind of game."
+        "title": "Foundation",
+        "body": "Five free starter tables and tile backs."
+      },
+      "seasonal": {
+        "title": "Seasonal",
+        "body": "Time-limited free looks unlocked with daily check-in."
+      },
+      "premium": {
+        "title": "Premium Collection",
+        "body": "High-end tile backs unlocked with points."
+      },
+      "limited": {
+        "title": "Limited Edition",
+        "body": "Craft from seven weekly check-in fragments."
       },
       "solar": {
-        "title": "Solar seasons",
-        "body": "Four table moods following the changing light of the year."
+        "title": "Seasonal",
+        "body": "Time-limited free looks unlocked with daily check-in."
       },
       "festival": {
-        "title": "Festival chapter",
-        "body": "A small collection for holiday moments and returning events."
+        "title": "Limited Edition",
+        "body": "Festival and limited looks."
       }
     },
     "items": {
-      "jade": "Jade table",
+      "jade": "Jade Moon Gate",
+      "ivory-classic": "Ivory Classic",
+      "charcoal-night": "Charcoal Night",
+      "coral-dawn": "Coral Dawn",
+      "mist-lilac": "Mist Lilac",
       "lunar": "Lunar New Year",
-      "spring": "Spring equinox",
-      "summer": "Summer solstice",
-      "autumn": "Autumn equinox",
-      "winter": "Winter solstice"
+      "spring": "Spring Equinox",
+      "summer": "Summer Solstice",
+      "autumn": "Autumn Equinox",
+      "winter": "Winter Solstice",
+      "deep-sea-blue": "Deep Sea Blue",
+      "sakura-pink": "Sakura Pink",
+      "bamboo-green": "Bamboo Green",
+      "gold-dynasty": "Gold Dynasty",
+      "ink-wash": "Ink Wash"
     }
   },
   "game": {
@@ -409,9 +454,9 @@
     "doneMark": "✓",
     "weekAria": "Seven-day check-in progress",
     "pointsTip": "What can points be used for?",
-    "tipBody": "Points unlock beautiful tile backs, table skins and effects — coming soon!",
+    "tipBody": "Points unlock Premium tile backs in the Wardrobe (from 800 pts). Keep checking in for Seasonal looks and Limited fragments.",
     "yourPoints": "{n} pts",
-    "guestNote": "Sign in to save points to your account.",
+    "guestNote": "Guests can tap Check in — we will ask you to register with email first.",
     "claimFailed": "Check-in could not be saved. Refresh and try again."
   },
   "challenge": {

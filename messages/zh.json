@@ -44,7 +44,14 @@
     "pointsBalance": "{n} 积分",
     "dailyCheckInLine": "每日签到：+{n} 积分",
     "moreRulesets": "更多玩法 2026 陆续上线",
-    "featuredClassic": "经典四人桌"
+    "featuredClassic": "经典四人桌",
+    "signInRegister": "登录 / 注册",
+    "checkInTitle": "📅 每日签到（第 {day} 天）",
+    "checkInToday": "今日：+{n} 积分",
+    "checkInClaimed": "今日已签到 · +{n} 积分",
+    "checkInNow": "立即签到",
+    "checkInDone": "已签到",
+    "emailBonusHint": "💡 邮箱登录可额外获得 {n} 积分！"
   },
   "game": {
     "play": "开始游戏",
@@ -366,7 +373,7 @@
     "pointsTip": "积分有什么用？",
     "tipBody": "积分可兑换精美牌背、牌桌皮肤、特效！即将上线。",
     "yourPoints": "{n} 积分",
-    "guestNote": "登录后积分才会记入账号。",
+    "guestNote": "Guests can tap Check in — we will ask you to register with email first.",
     "claimFailed": "签到未能入账，请刷新后重试。"
   },
   "challenge": {
@@ -533,5 +540,80 @@
     "scoreSichuanHand": "成都血战到底先换三张、定缺；胡牌者离开后继续至三家胡牌或牌墙耗尽。",
     "scoreSichuanKong": "明杠由出牌者支付，暗杠由其余三家分摊；杠后补牌并支持杠上事件。",
     "scoreSichuanDraw": "流局时执行查叫、查花猪与杠分回退；胡牌番数按本桌封顶基线结算。"
+  },
+  "wardrobe": {
+    "eyebrow": "外观与解锁",
+    "title": "牌桌衣橱",
+    "subtitle": "免费基础款、签到解锁季节款、积分兑换 Premium，以及周签到碎片合成的限定款。",
+    "collection": "我的收藏",
+    "freeNote": "基础款免费；Premium 与限定款需积分或碎片。",
+    "tierNote": "基础免费 · 季节签到 · Premium 积分 · 限定碎片",
+    "balance": "{n} 积分",
+    "preview": "预览",
+    "equipped": "使用中",
+    "owned": "已拥有 · 可立即使用",
+    "locked": "未解锁",
+    "apply": "应用此外观",
+    "working": "处理中…",
+    "permanent": "常驻",
+    "active": "当季",
+    "upcoming": "即将上线",
+    "archive": "往期收藏",
+    "seasonalEnded": "赛季已结束",
+    "unlockCheckIn": "签到解锁",
+    "checkInToUnlock": "签到解锁",
+    "pricePoints": "{n} 积分",
+    "limitedBadge": "限定",
+    "fragmentProgress": "碎片 {have}/{need}",
+    "redeemFor": "用 {n} 积分兑换",
+    "craftFor": "合成（需 {n} 碎片）",
+    "needMorePoints": "积分不足——继续游玩或签到。",
+    "needMoreFragments": "周签到碎片不足。",
+    "unlockFailed": "解锁失败，请重试。",
+    "buyMatchingSet": "购买同款实体麻将 →",
+    "shopDisclaimer": "作为 Amazon Associates 联盟成员，符合条件的购买我们可能获得佣金。链接将打开 Amazon 或商店。",
+    "chapters": {
+      "foundation": {
+        "title": "Foundation 基础款",
+        "body": "五款免费入门桌布与牌背。"
+      },
+      "seasonal": {
+        "title": "Seasonal 季节款",
+        "body": "限时免费，每日签到解锁。"
+      },
+      "premium": {
+        "title": "Premium Collection",
+        "body": "高端牌背，用积分兑换。"
+      },
+      "limited": {
+        "title": "Limited Edition 限定",
+        "body": "收集 7 周签到碎片合成。"
+      },
+      "solar": {
+        "title": "Seasonal 季节款",
+        "body": "限时免费，每日签到解锁。"
+      },
+      "festival": {
+        "title": "Limited Edition 限定",
+        "body": "节日与限定外观。"
+      }
+    },
+    "items": {
+      "jade": "碧玉月门",
+      "ivory-classic": "象牙白典",
+      "charcoal-night": "墨炭夜色",
+      "coral-dawn": "珊瑚破晓",
+      "mist-lilac": "薄雾丁香",
+      "lunar": "新春朱红",
+      "spring": "春分",
+      "summer": "夏至",
+      "autumn": "秋分",
+      "winter": "冬至",
+      "deep-sea-blue": "深海蓝",
+      "sakura-pink": "樱花粉",
+      "bamboo-green": "竹韵绿",
+      "gold-dynasty": "鎏金岁月",
+      "ink-wash": "水墨山河"
+    }
   }
 }

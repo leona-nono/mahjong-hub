@@ -4,16 +4,20 @@ import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { openLogin, useAuth } from '@/lib/auth';
-import { usePoints } from '@/lib/points';
+import { setPendingCheckIn } from '@/lib/appearance';
+import { claimDailyCheckIn, usePoints } from '@/lib/points';
 import { ensureGuestId } from '@/lib/guest-points';
+import { CHECKIN_REWARDS, FIRST_LOGIN_BONUS } from '@/lib/points-rules';
+import { useState } from 'react';
 
 const SOLITAIRE_HREF = '/games/mahjong-solitaire-classic';
 
 export default function HomeHero() {
   const t = useTranslations('home');
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { user: localUser } = useAuth();
-  const { points, checkIn } = usePoints();
+  const { points, checkIn, hydrated } = usePoints();
+  const [claiming, setClaiming] = useState(false);
   const signedIn = Boolean(session?.user || localUser);
   const name =
     session?.user?.name?.trim() ||
@@ -21,6 +25,27 @@ export default function HomeHero() {
     localUser?.name?.trim() ||
     localUser?.email?.split('@')[0] ||
     '';
+
+  const claimedToday = checkIn?.claimedToday ?? false;
+  const todayReward = checkIn?.todayReward ?? CHECKIN_REWARDS[0];
+  const streak = checkIn?.streak ?? 1;
+  const cycleDay = ((streak - 1) % 7) + 1;
+  const displayDay = claimedToday ? cycleDay : cycleDay;
+
+  const onCheckIn = async () => {
+    if (claiming || claimedToday) return;
+    if (status !== 'authenticated') {
+      setPendingCheckIn(true);
+      openLogin();
+      return;
+    }
+    setClaiming(true);
+    try {
+      await claimDailyCheckIn();
+    } finally {
+      setClaiming(false);
+    }
+  };
 
   return (
     <section className="rounded-3xl border border-portal-border bg-gradient-to-br from-portal-panel via-portal-elevated to-teal-950/40 px-5 py-8 shadow-portal sm:px-8 sm:py-10">
@@ -46,7 +71,26 @@ export default function HomeHero() {
         <SecondaryEntry href="/games/8x8-match-tiles" label={t('entryTileMatch')} />
       </div>
 
-      <div className="mt-8 border-t border-portal-border/80 pt-6">
+      <div className="mt-8 space-y-4 border-t border-portal-border/80 pt-6">
+        <div className="rounded-2xl border border-portal-border/80 bg-black/20 px-4 py-4">
+          <p className="font-display text-base font-semibold text-portal-text">
+            {t('checkInTitle', { day: displayDay })}
+          </p>
+          <p className="mt-1 text-sm text-portal-accent">
+            {claimedToday
+              ? t('checkInClaimed', { n: todayReward })
+              : t('checkInToday', { n: todayReward })}
+          </p>
+          <button
+            type="button"
+            onClick={() => void onCheckIn()}
+            disabled={claimedToday || claiming || (signedIn && !hydrated)}
+            className="mt-3 inline-flex rounded-xl bg-portal-accent px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {claimedToday ? t('checkInDone') : t('checkInNow')}
+          </button>
+        </div>
+
         {signedIn ? (
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -55,9 +99,6 @@ export default function HomeHero() {
               </p>
               <p className="mt-1 text-sm text-portal-accent">
                 {t('pointsBalance', { n: points })}
-                {checkIn && !checkIn.claimedToday
-                  ? ` · ${t('dailyCheckInLine', { n: checkIn.todayReward })}`
-                  : null}
               </p>
             </div>
             <Link
@@ -68,21 +109,20 @@ export default function HomeHero() {
             </Link>
           </div>
         ) : (
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="rounded-2xl border border-portal-border/60 bg-portal-panel/40 px-4 py-4">
+            <p className="text-sm text-portal-text">
+              {t('emailBonusHint', { n: FIRST_LOGIN_BONUS })}
+            </p>
             <button
               type="button"
-              onClick={() => openLogin()}
-              className="inline-flex items-center justify-center rounded-xl bg-white/10 px-4 py-2.5 text-sm font-bold text-portal-text hover:bg-white/15"
+              onClick={() => {
+                setPendingCheckIn(true);
+                openLogin();
+              }}
+              className="mt-3 inline-flex items-center justify-center rounded-xl bg-white/10 px-4 py-2.5 text-sm font-bold text-portal-text hover:bg-white/15"
             >
-              {t('signInEmail')}
+              {t('signInRegister')}
             </button>
-            <Link
-              href={SOLITAIRE_HREF}
-              onClick={() => ensureGuestId()}
-              className="inline-flex items-center justify-center rounded-xl border border-portal-border px-4 py-2.5 text-sm font-bold text-portal-muted hover:text-portal-text"
-            >
-              {t('playAsGuest')}
-            </Link>
           </div>
         )}
       </div>

@@ -39,6 +39,8 @@ model User {
   solitaireProgress SolitaireProgress[]
   solitaireDaily    SolitaireDaily[]
   solitaireStreak   SolitaireStreak?
+  appearanceUnlocks AppearanceUnlock[]
+  fragmentLedger    FragmentLedger[]
 }
 
 model Account {
@@ -166,6 +168,35 @@ model ItemLedger {
 
   @@index([userId, itemType])
   @@index([userId, createdAt])
+}
+
+/// Wardrobe ownership — Foundation free rows are not stored; only unlocked skins.
+model AppearanceUnlock {
+  userId       String
+  appearanceId String
+  source       String // seasonal_checkin | points | fragments | grant
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, appearanceId])
+  @@index([userId])
+}
+
+/// Limited-edition fragment ledger. Balance = SUM(delta) per (userId, fragmentId).
+model FragmentLedger {
+  id         String   @id @default(cuid())
+  userId     String
+  fragmentId String
+  delta      Int
+  reason     String // checkin_week | craft | grant
+  weekKey    String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, fragmentId])
+  @@unique([userId, fragmentId, weekKey, reason])
 }
 
 // ── FaWeb 运营后台扩展 (Site/Game/FAQ/Features/i18n/Themes) ──────────

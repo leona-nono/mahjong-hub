@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth';
+import { setPendingCheckIn } from '@/lib/appearance';
 import { usePoints, claimDailyCheckIn } from '@/lib/points';
 import { CHECKIN_REWARDS } from '@/lib/points-rules';
 
@@ -26,6 +27,7 @@ export default function DailyCheckIn({ compact = false }: { compact?: boolean })
   const claim = async () => {
     if (pending || claimedToday) return;
     if (!loggedIn) {
+      setPendingCheckIn(true);
       openLogin();
       return;
     }

@@ -2,8 +2,13 @@
 
 import { SessionProvider, useSession } from 'next-auth/react';
 import { useEffect, type ReactNode } from 'react';
+import { hasPendingCheckIn, setPendingCheckIn } from '@/lib/appearance';
 import { clearSessionUser, initAuth, syncSessionUser } from '@/lib/auth';
-import { hydratePointsFromServer, resetPointsForGuest } from '@/lib/points';
+import {
+  claimDailyCheckIn,
+  hydratePointsFromServer,
+  resetPointsForGuest
+} from '@/lib/points';
 import {
   clearGuestMergeFlag,
   mergeGuestProgressOnLogin
@@ -31,8 +36,14 @@ function AuthSessionBridge() {
         avatar: user.image ?? undefined,
         provider: 'authjs'
       });
-      void hydratePointsFromServer();
-      void mergeGuestProgressOnLogin();
+      void (async () => {
+        await hydratePointsFromServer();
+        await mergeGuestProgressOnLogin();
+        if (hasPendingCheckIn()) {
+          setPendingCheckIn(false);
+          await claimDailyCheckIn();
+        }
+      })();
     } else if (status === 'unauthenticated') {
       clearSessionUser();
       resetPointsForGuest();
