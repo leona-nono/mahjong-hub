@@ -30,7 +30,7 @@ import {
   type LevelDef
 } from '@/lib/mahjong-solitaire/levels';
 import type { CatalogEntry } from '@/lib/mahjong-solitaire/difficulty';
-import { parseDailyLevelId, type SolitaireDeal } from '@/lib/mahjong-solitaire/progress-rules';
+import { parseDailyLevelId, type SolitaireDeal, DAILY_CLEAR_POINTS } from '@/lib/mahjong-solitaire/progress-rules';
 import { recordGuestDailyClear } from '@/lib/mahjong-solitaire/daily-local';
 import { useSolitaireTilePreload, warmSolitaireTileArt } from '@/lib/mahjong-solitaire/tile-preload';
 import { trackSolitaireEvent } from '@/lib/mahjong-solitaire/telemetry';
@@ -52,6 +52,8 @@ import {
 } from '@/lib/solitaire-items';
 import { tileName } from '@/lib/mahjong/tiles';
 import { applyLedgerTotal, usePoints } from '@/lib/points';
+import { awardGuestPoints, ensureGuestId } from '@/lib/guest-points';
+import { openLogin } from '@/lib/auth';
 import MahjongAccessibilityPanel, {
   useMahjongPreferences
 } from '@/components/games/MahjongAccessibilityPanel';
@@ -108,6 +110,7 @@ export default function MahjongSolitaire({
   const [status, setStatus] = useState<'playing' | 'won' | 'dead'>('playing');
   const [paused, setPaused] = useState(false);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
+  const [savePromptPts, setSavePromptPts] = useState<number | null>(null);
   const [coachDismissed, setCoachDismissed] = useState(false);
   const [itemUses, setItemUses] = useState(0);
   const [offer, setOffer] = useState<OfferState>(null);
@@ -278,13 +281,17 @@ export default function MahjongSolitaire({
         })
       });
       if (res.status === 401) {
+        ensureGuestId();
+        const guestAward = parseDailyLevelId(level.id) ? DAILY_CLEAR_POINTS : 50;
+        const total = awardGuestPoints(guestAward, 'solitaire_clear');
         if (parseDailyLevelId(level.id)) {
           const g = recordGuestDailyClear();
           setDailyHud((d) =>
             d ? { ...d, cleared: true, streak: g.streak } : d
           );
         }
-        setStatusMsg(t('guestClear'));
+        setStatusMsg(t('savePointsPrompt', { n: total }));
+        setSavePromptPts(total);
         return;
       }
       const data = (await res.json()) as {
@@ -773,10 +780,23 @@ export default function MahjongSolitaire({
         </div>
       )}
 
-      {(statusMsg || items.msg) && (
-        <p className="mb-2 text-center text-xs text-amber-200">
-          {statusMsg || items.msg}
-        </p>
+      {(statusMsg || items.msg || savePromptPts) && (
+        <div className="mb-3 rounded-2xl border border-amber-300/30 bg-amber-500/10 px-4 py-3 text-center">
+          <p className="text-sm font-semibold text-amber-100">
+            {savePromptPts != null
+              ? t('savePointsPrompt', { n: savePromptPts })
+              : statusMsg || items.msg}
+          </p>
+          {savePromptPts != null && savePromptPts > 0 && (
+            <button
+              type="button"
+              onClick={() => openLogin()}
+              className="mt-2 rounded-full bg-amber-300 px-4 py-1.5 text-xs font-black text-emerald-950"
+            >
+              {t('savePointsPrompt', { n: savePromptPts })}
+            </button>
+          )}
+        </div>
       )}
 
       {offer && (

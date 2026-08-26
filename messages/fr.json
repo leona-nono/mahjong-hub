@@ -52,8 +52,8 @@
     }
   },
   "home": {
-    "heroTitle": "Jouez au Mahjong et à des jeux de tuiles relaxants",
-    "heroSubtitle": "Une collection apaisante de mahjong solitaire, Connect et jeux d’association. Sans connexion : jouez simplement.",
+    "heroTitle": "Jeux de mahjong gratuits en ligne",
+    "heroSubtitle": "Jeu instantané, sans téléchargement",
     "playButton": "Jouer",
     "featuredTitle": "Jeux à la une",
     "collectionTitle": "Jeux d’élimination et d’association",
@@ -63,7 +63,20 @@
     "seasonalBody": "Une petite collection gratuite d’ambiances de table et de dos de tuiles limités. Sans pièces ni achats.",
     "seasonalJade": "Table de jade",
     "seasonalLunar": "Fête lunaire",
-    "seasonalBack": "Dos Porte de Lune"
+    "seasonalBack": "Dos Porte de Lune",
+    "brandLine": "Mahjong Hub · Jeux rainbow de mahjong",
+    "playSolitaire": "Jouer au Mahjong Solitaire",
+    "instantPlay": "Jeu instantané, sans téléchargement",
+    "entryConnect": "Connect",
+    "entryClassic": "Mahjong à 4",
+    "entryTileMatch": "Tile Match",
+    "signInEmail": "Connexion par e-mail",
+    "playAsGuest": "Jouer en invité",
+    "welcomeBack": "Bon retour, {name}",
+    "pointsBalance": "{n} pts",
+    "dailyCheckInLine": "Check-in quotidien : +{n} pts",
+    "moreRulesets": "Plus de règles en 2026",
+    "featuredClassic": "Tables classiques"
   },
   "game": {
     "play": "Jouer",
@@ -74,7 +87,8 @@
     "about": "À propos de ce jeu",
     "howToPlay": "Comment jouer",
     "tips": "Conseils de stratégie",
-    "faq": "Questions fréquentes"
+    "faq": "Questions fréquentes",
+    "savePointsPrompt": "Connectez-vous par e-mail pour sauvegarder vos {n} points"
   },
   "collection": {
     "title": "Collection d’élimination Mahjong",
@@ -175,8 +189,9 @@
     "rescue": "Redistribuer les tuiles restantes"
   },
   "seo": {
-    "homeTitle": "Mahjong en ligne · Jouez gratuitement",
-    "homeDescription": "Jouez gratuitement au mahjong solitaire, Connect et mahjong classique à quatre. Dans le navigateur, sans téléchargement."
+    "homeTitle": "Jeux de mahjong gratuits en ligne | Mahjong Hub",
+    "homeDescription": "Jouez gratuitement au mahjong solitaire, Connect et mahjong classique à quatre. Dans le navigateur, sans téléchargement.",
+    "wardrobeTitle": "Dos de tuiles et tables | Mahjong Hub"
   },
   "notFound": {
     "title": "Page introuvable",

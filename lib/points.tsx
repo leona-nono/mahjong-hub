@@ -3,6 +3,11 @@
 import { useSyncExternalStore } from 'react';
 import { getAuthState, openLogin } from './auth';
 import { FIRST_LOGIN_BONUS } from './points-rules';
+import {
+  awardGuestPoints,
+  ensureGuestId,
+  readGuestPoints
+} from './guest-points';
 
 interface AwardResult {
   granted: boolean;
@@ -62,14 +67,17 @@ function setState(next: Partial<PointsState>) {
 }
 
 export function initPoints() {
-  // Balance lives on the server after login. Guests see 0 until they sign in.
+  if (typeof window === 'undefined') return;
+  if (!getAuthState().user) {
+    setState({ points: readGuestPoints(), hydrated: true });
+  }
 }
 
 export async function hydratePointsFromServer(): Promise<void> {
   try {
     const res = await fetch('/api/points', { credentials: 'same-origin' });
     if (res.status === 401) {
-      setState({ points: 0, checkIn: null, ledger: [], hydrated: true });
+      setState({ points: readGuestPoints(), checkIn: null, ledger: [], hydrated: true });
       return;
     }
     if (!res.ok) {
@@ -118,7 +126,7 @@ export function applyLedgerTotal(
 
 export function resetPointsForGuest() {
   setState({
-    points: 0,
+    points: readGuestPoints(),
     recentAwards: [],
     checkIn: null,
     ledger: [],
@@ -132,8 +140,14 @@ export async function awardPoints(
   gameSlug?: string
 ): Promise<AwardResult> {
   if (!getAuthState().user) {
-    openLogin();
-    return { granted: false, needLogin: true };
+    ensureGuestId();
+    const total = awardGuestPoints(amount, reason);
+    setState({
+      points: total,
+      recentAwards: [{ amount, reason, at: Date.now() }, ...state.recentAwards].slice(0, 50),
+      hydrated: true
+    });
+    return { granted: true, needLogin: false };
   }
 
   try {
@@ -144,8 +158,14 @@ export async function awardPoints(
       body: JSON.stringify({ amount, reason, gameSlug })
     });
     if (res.status === 401) {
-      openLogin();
-      return { granted: false, needLogin: true };
+      ensureGuestId();
+      const total = awardGuestPoints(amount, reason);
+      setState({
+        points: total,
+        recentAwards: [{ amount, reason, at: Date.now() }, ...state.recentAwards].slice(0, 50),
+        hydrated: true
+      });
+      return { granted: true, needLogin: false };
     }
     const data = (await res.json()) as { total?: number; granted?: boolean };
     if (typeof data.total === 'number') {

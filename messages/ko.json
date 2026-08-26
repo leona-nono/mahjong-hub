@@ -25,13 +25,26 @@
     "regionSichuan": "쓰촨 마작"
   },
   "home": {
-    "heroTitle": "무료 마작 게임",
-    "heroSubtitle": "솔리테어·연결·클래식 — 설치 없이 바로 플레이.",
+    "heroTitle": "무료 온라인 마작 게임",
+    "heroSubtitle": "다운로드 없이 바로 플레이",
     "playButton": "지금 하기",
     "featuredTitle": "추천",
     "collectionTitle": "전체 게임",
     "originalTitle": "자체 제작",
-    "originalSubtitle": "4인 마작과 연결 게임을 직접 만들었습니다. 무료."
+    "originalSubtitle": "4인 마작과 연결 게임을 직접 만들었습니다. 무료.",
+    "brandLine": "Mahjong Hub · 레인보우 마작",
+    "playSolitaire": "마작 솔리테어 플레이",
+    "instantPlay": "다운로드 없이 바로 플레이",
+    "entryConnect": "커넥트",
+    "entryClassic": "4인 마작",
+    "entryTileMatch": "타일 매치",
+    "signInEmail": "이메일로 로그인",
+    "playAsGuest": "게스트로 플레이",
+    "welcomeBack": "다시 오신 걸 환영해요, {name}",
+    "pointsBalance": "{n} pts",
+    "dailyCheckInLine": "매일 출석: +{n} pts",
+    "moreRulesets": "2026년 더 많은 규칙 공개",
+    "featuredClassic": "클래식 테이블"
   },
   "game": {
     "play": "플레이",
@@ -44,7 +57,8 @@
     "howToPlay": "게임 방법",
     "tips": "전략 팁",
     "faq": "자주 묻는 질문",
-    "comingSoon": "곧 출시"
+    "comingSoon": "곧 출시",
+    "savePointsPrompt": "이메일로 로그인하여 {n} 포인트 저장"
   },
   "collection": {
     "title": "마작 제거 게임 컬렉션",
@@ -481,8 +495,9 @@
     "coachRiskHigh": "높은 위험: 상대가 {tile}을 노출했습니다."
   },
   "seo": {
-    "homeTitle": "무료 온라인 마작 · 바로 플레이",
-    "homeDescription": "마작 솔리테어, 커넥트, 클래식 4인 마작을 무료로 즐기세요. 브라우저에서 즉시 플레이, 다운로드 불필요."
+    "homeTitle": "무료 온라인 마작 | Mahjong Hub",
+    "homeDescription": "마작 솔리테어, 커넥트, 클래식 4인 마작을 무료로 즐기세요. 브라우저에서 즉시 플레이, 다운로드 불필요.",
+    "wardrobeTitle": "타일 뒷면 & 테이블 스킨 | Mahjong Hub"
   },
   "notFound": {
     "title": "페이지를 찾을 수 없습니다",

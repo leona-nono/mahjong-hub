@@ -4,8 +4,9 @@
     "tagline": "Free online mahjong games"
   },
   "seo": {
-    "homeTitle": "Mahjong Game Online · Play for free!",
-    "homeDescription": "Play free mahjong games online—solitaire, connect, and tile-match puzzles. Instant play in your browser, no download required."
+    "homeTitle": "Free Mahjong Games Online | Mahjong Hub",
+    "homeDescription": "Play free mahjong games online—solitaire, connect, and tile-match puzzles. Instant play in your browser, no download required.",
+    "wardrobeTitle": "Mahjong Tile Backs & Table Skins | Mahjong Hub"
   },
   "nav": {
     "home": "Home",
@@ -29,8 +30,8 @@
     "regionSichuan": "Sichuan Mahjong"
   },
   "home": {
-    "heroTitle": "Play free mahjong games",
-    "heroSubtitle": "Solitaire, connect, and classic tile games — instant play, no download.",
+    "heroTitle": "Free Mahjong Games Online",
+    "heroSubtitle": "Instant play, no download",
     "playButton": "Play Now",
     "featuredTitle": "Featured",
     "collectionTitle": "All games",
@@ -38,7 +39,20 @@
     "originalSubtitle": "Built in-house. Free, no download.",
     "seasonalTitle": "Seasonal table collection",
     "seasonalBody": "Choose a free table mood and matching tile back for every game.",
-    "openWardrobe": "Open wardrobe"
+    "openWardrobe": "Open wardrobe",
+    "brandLine": "Mahjong Hub · Rainbow Mahjong Games",
+    "playSolitaire": "Play Mahjong Solitaire",
+    "instantPlay": "Instant play, no download",
+    "entryConnect": "Connect",
+    "entryClassic": "4-Player Mahjong",
+    "entryTileMatch": "Tile Match",
+    "signInEmail": "Sign in with Email",
+    "playAsGuest": "Play as Guest",
+    "welcomeBack": "Welcome back, {name}",
+    "pointsBalance": "{n} pts",
+    "dailyCheckInLine": "Daily Check-in: +{n} pts",
+    "moreRulesets": "More rulesets coming 2026",
+    "featuredClassic": "Classic tables"
   },
   "wardrobe": {
     "eyebrow": "Free seasonal looks",
@@ -88,7 +102,8 @@
     "howToPlay": "How to play",
     "tips": "Strategy tips",
     "faq": "Frequently asked questions",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "savePointsPrompt": "Sign in with Email to save your {n} points"
   },
   "collection": {
     "title": "Mahjong Elimination Collection",

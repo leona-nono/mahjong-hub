@@ -52,8 +52,8 @@
     }
   },
   "home": {
-    "heroTitle": "Jogue Mahjong e jogos relaxantes de peças",
-    "heroSubtitle": "Uma coleção tranquila de paciência mahjong, Connect e jogos de combinar peças. Sem login: é só jogar.",
+    "heroTitle": "Jogos de mahjong grátis online",
+    "heroSubtitle": "Jogue na hora, sem download",
     "playButton": "Jogar agora",
     "featuredTitle": "Jogos em destaque",
     "collectionTitle": "Jogos de eliminar e combinar",
@@ -63,7 +63,20 @@
     "seasonalBody": "Uma pequena coleção gratuita de mesas e versos de peças limitados. Sem moedas nem compras.",
     "seasonalJade": "Mesa de jade",
     "seasonalLunar": "Festival lunar",
-    "seasonalBack": "Verso Portal da Lua"
+    "seasonalBack": "Verso Portal da Lua",
+    "brandLine": "Mahjong Hub · Jogos rainbow de mahjong",
+    "playSolitaire": "Jogar Mahjong Solitaire",
+    "instantPlay": "Jogue na hora, sem download",
+    "entryConnect": "Connect",
+    "entryClassic": "Mahjong 4 jogadores",
+    "entryTileMatch": "Tile Match",
+    "signInEmail": "Entrar com e-mail",
+    "playAsGuest": "Jogar como convidado",
+    "welcomeBack": "Bem-vindo de volta, {name}",
+    "pointsBalance": "{n} pts",
+    "dailyCheckInLine": "Check-in diário: +{n} pts",
+    "moreRulesets": "Mais regras em 2026",
+    "featuredClassic": "Mesas clássicas"
   },
   "game": {
     "play": "Jogar",
@@ -74,7 +87,8 @@
     "about": "Sobre este jogo",
     "howToPlay": "Como jogar",
     "tips": "Dicas de estratégia",
-    "faq": "Perguntas frequentes"
+    "faq": "Perguntas frequentes",
+    "savePointsPrompt": "Entre com e-mail para salvar seus {n} pontos"
   },
   "collection": {
     "title": "Coleção de eliminação Mahjong",
@@ -175,8 +189,9 @@
     "rescue": "Redistribuir peças restantes"
   },
   "seo": {
-    "homeTitle": "Mahjong online · Jogue grátis",
-    "homeDescription": "Jogue grátis paciência mahjong, Connect e mahjong clássico para quatro. No navegador, sem download e sem cadastro."
+    "homeTitle": "Mahjong grátis online | Mahjong Hub",
+    "homeDescription": "Jogue grátis paciência mahjong, Connect e mahjong clássico para quatro. No navegador, sem download e sem cadastro.",
+    "wardrobeTitle": "Versos e mesas de mahjong | Mahjong Hub"
   },
   "notFound": {
     "title": "Página não encontrada",

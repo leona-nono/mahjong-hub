@@ -4,8 +4,8 @@ import { getSiteSettings } from '@/lib/site-settings';
 
 /**
  * Locale-aware homepage title + description.
- * CMS siteTitle/siteDescription are English brand copy — apply them only to `en`
- * so FR/DE/ES/PT (and others) do not inherit untranslated meta and compete with /en.
+ * English title is product-controlled via messages (not CMS) so typos like
+ * "Onlien" in site settings cannot ship to <title>.
  */
 export async function homeSeo(locale: string): Promise<{
   title: string;
@@ -16,7 +16,7 @@ export async function homeSeo(locale: string): Promise<{
 
   if (locale === 'en') {
     return {
-      title: clipSeo(site.siteTitle || t('homeTitle'), 70),
+      title: clipSeo(t('homeTitle'), 70),
       description: clipSeo(site.siteDescription || t('homeDescription'), 160)
     };
   }

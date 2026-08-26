@@ -20,6 +20,8 @@ export type GuestMergePayload = {
     lessonsCleared?: number;
     seenDeadEnd?: boolean;
   };
+  /** Guest hub points earned on-device before login. */
+  points?: number;
 };
 
 function clampItem(n: unknown): number {
@@ -36,7 +38,33 @@ export async function mergeGuestIntoUser(
     where: { userId, reason: 'guest_merge' },
     select: { id: true }
   });
-  if (already) return { merged: false, already: true };
+
+  const guestPoints = Math.max(
+    0,
+    Math.min(50_000, Math.floor(Number(payload.points) || 0))
+  );
+
+  if (already) {
+    if (guestPoints > 0) {
+      await prisma.$transaction(async (tx) => {
+        const alreadyPoints = await tx.pointTransaction.findFirst({
+          where: { userId, reason: 'guest_points_merge' },
+          select: { id: true }
+        });
+        if (!alreadyPoints) {
+          await tx.pointTransaction.create({
+            data: { userId, amount: guestPoints, reason: 'guest_points_merge' }
+          });
+          await tx.userPoint.upsert({
+            where: { userId },
+            create: { userId, total: guestPoints },
+            update: { total: { increment: guestPoints } }
+          });
+        }
+      });
+    }
+    return { merged: false, already: true };
+  }
 
   const rows = await prisma.itemLedger.groupBy({
     by: ['itemType'],
@@ -83,6 +111,23 @@ export async function mergeGuestIntoUser(
           reason: 'guest_merge_item'
         }))
       });
+    }
+
+    if (guestPoints > 0) {
+      const alreadyPoints = await tx.pointTransaction.findFirst({
+        where: { userId, reason: 'guest_points_merge' },
+        select: { id: true }
+      });
+      if (!alreadyPoints) {
+        await tx.pointTransaction.create({
+          data: { userId, amount: guestPoints, reason: 'guest_points_merge' }
+        });
+        await tx.userPoint.upsert({
+          where: { userId },
+          create: { userId, total: guestPoints },
+          update: { total: { increment: guestPoints } }
+        });
+      }
     }
 
     const meta = await tx.solitaireStreak.findUnique({ where: { userId } });

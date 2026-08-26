@@ -52,8 +52,8 @@
     }
   },
   "home": {
-    "heroTitle": "Juega al Mahjong y a relajantes juegos de fichas",
-    "heroSubtitle": "Una colección tranquila de solitario mahjong, Connect y juegos de parejas. Sin inicio de sesión: solo juega.",
+    "heroTitle": "Juegos de mahjong gratis online",
+    "heroSubtitle": "Juego instantáneo, sin descarga",
     "playButton": "Jugar ahora",
     "featuredTitle": "Juegos destacados",
     "collectionTitle": "Juegos de eliminación y parejas",
@@ -63,7 +63,20 @@
     "seasonalBody": "Una pequeña colección gratuita de mesas y dorsos de ficha limitados. Sin monedas ni compras.",
     "seasonalJade": "Mesa de jade",
     "seasonalLunar": "Festival lunar",
-    "seasonalBack": "Dorso Puerta de la Luna"
+    "seasonalBack": "Dorso Puerta de la Luna",
+    "brandLine": "Mahjong Hub · Juegos rainbow de mahjong",
+    "playSolitaire": "Jugar Mahjong Solitaire",
+    "instantPlay": "Juego instantáneo, sin descarga",
+    "entryConnect": "Connect",
+    "entryClassic": "Mahjong de 4",
+    "entryTileMatch": "Tile Match",
+    "signInEmail": "Entrar con email",
+    "playAsGuest": "Jugar como invitado",
+    "welcomeBack": "Bienvenido, {name}",
+    "pointsBalance": "{n} pts",
+    "dailyCheckInLine": "Check-in diario: +{n} pts",
+    "moreRulesets": "Más reglas en 2026",
+    "featuredClassic": "Mesas clásicas"
   },
   "game": {
     "play": "Jugar",
@@ -74,7 +87,8 @@
     "about": "Sobre este juego",
     "howToPlay": "Cómo jugar",
     "tips": "Consejos de estrategia",
-    "faq": "Preguntas frecuentes"
+    "faq": "Preguntas frecuentes",
+    "savePointsPrompt": "Inicia sesión con email para guardar tus {n} puntos"
   },
   "collection": {
     "title": "Colección de eliminación Mahjong",
@@ -175,8 +189,9 @@
     "rescue": "Repartir fichas restantes"
   },
   "seo": {
-    "homeTitle": "Mahjong online · Juega gratis",
-    "homeDescription": "Juega gratis al mahjong solitario, Connect y mahjong clásico de cuatro jugadores. En el navegador, sin descarga ni registro."
+    "homeTitle": "Mahjong gratis online | Mahjong Hub",
+    "homeDescription": "Juega gratis al mahjong solitario, Connect y mahjong clásico de cuatro jugadores. En el navegador, sin descarga ni registro.",
+    "wardrobeTitle": "Reversos y mesas de mahjong | Mahjong Hub"
   },
   "notFound": {
     "title": "Página no encontrada",

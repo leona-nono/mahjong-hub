@@ -206,6 +206,7 @@ export const games: GameConfig[] = [
     navGroup: 'classic',
     region: 'china',
     players: 4,
+    featured: true,
     content: {
       intro:
         'This is our Chinese Official Mahjong (MCR) training table. It already uses 144 tiles, exposes and replaces Flowers and Seasons, and enforces the eight-point win gate. The full 81-element competition scorer and its exclusion rules are still in development, so this page must not be used as a tournament adjudicator.',
@@ -248,7 +249,7 @@ export const games: GameConfig[] = [
     navGroup: 'classic',
     region: 'sichuan',
     players: 4,
-    featured: true,
+    featured: false,
     content: {
       intro: 'Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.',
       howToPlay: [
@@ -284,7 +285,7 @@ export const games: GameConfig[] = [
     navGroup: 'classic',
     region: 'taiwan',
     players: 4,
-    featured: true,
+    featured: false,
     content: {
       intro: 'Mahjong Hub Taiwan Mahjong is a relaxed 16-tile version: a 144-tile wall with Flowers and Seasons, five melds plus a pair to win, additive Tai scoring, and a 0-Tai minimum for beginner-friendly play.',
       howToPlay: [
@@ -318,7 +319,7 @@ export const games: GameConfig[] = [
     navGroup: 'classic',
     region: 'america',
     players: 4,
-    featured: true,
+    featured: false,
     content: {
       intro: 'Mahjong Hub American Mahjong is an original practice-card game inspired by NMJL-style flow: 152 tiles, Charleston, Flowers, Jokers, exposed groups and exact card-pattern wins. It does not reproduce a current NMJL annual card.',
       howToPlay: [

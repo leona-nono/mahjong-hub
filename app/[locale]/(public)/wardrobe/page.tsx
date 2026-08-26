@@ -10,16 +10,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'wardrobe' });
+  const t = await getTranslations({ locale, namespace: 'seo' });
+  const tw = await getTranslations({ locale, namespace: 'wardrobe' });
   const site = await getSiteSettings();
-  return pageMeta({
-    locale,
-    path: '/wardrobe',
-    title: t('title'),
-    description: t('subtitle'),
-    ogImage: site.ogImage,
-    siteName: brandName(site)
-  });
+  const title =
+    locale === 'en' ? t('wardrobeTitle') : `${tw('title')} | ${brandName(site)}`;
+  return {
+    ...pageMeta({
+      locale,
+      path: '/wardrobe',
+      title,
+      description: tw('subtitle'),
+      ogImage: site.ogImage,
+      siteName: brandName(site)
+    }),
+    title: { absolute: title }
+  };
 }
 
 export default async function WardrobePage({

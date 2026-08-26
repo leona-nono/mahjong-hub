@@ -29,7 +29,8 @@ export async function POST(req: NextRequest) {
     const result = await mergeGuestIntoUser(userId, {
       inventory,
       daily: b.daily,
-      progress: b.progress
+      progress: b.progress,
+      points: typeof b.points === 'number' ? b.points : Number(b.points) || 0
     });
     return NextResponse.json(result);
   } catch (err) {

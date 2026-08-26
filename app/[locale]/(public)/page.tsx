@@ -1,16 +1,12 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
-  getMergedFeaturedGames,
   getMergedGames,
-  getMergedLocalizedGames,
-  getMergedNativeGames
+  getMergedLocalizedGames
 } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import FeaturedGroup from '@/components/FeaturedGroup';
-import GameCategoryRow from '@/components/GameCategoryRow';
-import DailyChallengeCard from '@/components/DailyChallengeCard';
-import DailyCheckIn from '@/components/DailyCheckIn';
-import type { GameCategory, GameConfig } from '@/data/games';
+import HomeHero from '@/components/HomeHero';
+import type { GameConfig } from '@/data/games';
 import { homeSeo } from '@/lib/home-seo';
 import { homeJsonLd } from '@/lib/home-jsonld';
 import { brandName, getSiteSettings } from '@/lib/site-settings';
@@ -19,6 +15,20 @@ import type { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 
 export const revalidate = 86_400;
+
+/** Live classic tables featured above the fold. */
+const LIVE_CLASSIC_SLUGS = [
+  'hong-kong-mahjong',
+  'riichi-mahjong',
+  'chinese-official-mahjong'
+] as const;
+
+/** Playable but not first-screen — keep off the primary Featured strip. */
+const COMING_RULESET_SLUGS = [
+  'sichuan-mahjong',
+  'taiwan-mahjong',
+  'american-mahjong'
+] as const;
 
 export async function generateMetadata({
   params
@@ -42,8 +52,11 @@ export async function generateMetadata({
   };
 }
 
-function byCategory(games: GameConfig[], category: GameCategory) {
-  return games.filter((g) => g.category === category);
+function pickBySlug(games: GameConfig[], slugs: readonly string[]) {
+  const index = new Map(slugs.map((slug, order) => [slug, order]));
+  return games
+    .filter((g) => index.has(g.slug))
+    .sort((a, b) => (index.get(a.slug) ?? 99) - (index.get(b.slug) ?? 99));
 }
 
 export default async function HomePage({
@@ -55,18 +68,11 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const t = await getTranslations('home');
-  const tp = await getTranslations('portal');
   const site = await getSiteSettings();
   const home = await homeSeo(locale);
-  const featured = getMergedLocalizedGames(await getMergedFeaturedGames(), locale);
-  const native = getMergedLocalizedGames(await getMergedNativeGames(), locale);
   const all = getMergedLocalizedGames(await getMergedGames(), locale);
-
-  // English CMS may override H1; other locales always use translated heroTitle.
-  const heroTitle =
-    locale === 'en' ? site.homeH1 || t('heroTitle') : t('heroTitle');
-  const heroSubtitle =
-    locale === 'en' ? site.homeSubtitle || t('heroSubtitle') : t('heroSubtitle');
+  const liveClassic = pickBySlug(all, LIVE_CLASSIC_SLUGS);
+  const comingRulesets = pickBySlug(all, COMING_RULESET_SLUGS);
 
   const faqPage = {
     '@context': 'https://schema.org',
@@ -131,10 +137,6 @@ export default async function HomePage({
     faq: locale === 'en' ? faqPage : undefined
   });
 
-  const featuredPack = [...native, ...featured]
-    .filter((g, i, arr) => arr.findIndex((x) => x.slug === g.slug) === i)
-    .slice(0, 5);
-
   return (
     <div className="mx-auto max-w-[1400px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
       <script
@@ -142,67 +144,38 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <HomeHero />
+
+      <FeaturedGroup title={t('featuredClassic')} href="/games/classic" games={liveClassic} />
+
+      {comingRulesets.length > 0 && (
+        <details className="rounded-2xl border border-dashed border-portal-border bg-portal-panel/40 p-4">
+          <summary className="cursor-pointer font-display text-base font-semibold text-portal-muted">
+            {t('moreRulesets')}
+          </summary>
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {comingRulesets.map((g) => (
+              <GameCard key={g.slug} game={g} size="sm" />
+            ))}
+          </div>
+        </details>
+      )}
+
+      <section className="rounded-2xl border border-portal-border bg-portal-panel/70 p-5 sm:flex sm:items-center sm:justify-between sm:gap-6">
         <div>
-          <h1 className="font-display text-2xl font-semibold tracking-tight text-portal-text sm:text-3xl">
-            {heroTitle}
-          </h1>
-          <p className="mt-1 max-w-2xl text-sm text-portal-muted">{heroSubtitle}</p>
-        </div>
-      </header>
-
-      <div className="grid gap-4 lg:grid-cols-[1fr_240px]">
-        <DailyChallengeCard />
-        <DailyCheckIn compact />
-      </div>
-
-      <FeaturedGroup title={t('featuredTitle')} href="/games" games={featuredPack} />
-
-      <section className="rounded-2xl border border-portal-border bg-portal-panel/70 p-5 shadow-portal sm:flex sm:items-center sm:justify-between sm:gap-6">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[.18em] text-portal-accent">{tp('connect')}</p>
-          <h2 className="mt-1 font-display text-xl font-semibold text-portal-text">{t('seasonalTitle')}</h2>
+          <h2 className="font-display text-xl font-semibold text-portal-text">{t('seasonalTitle')}</h2>
           <p className="mt-1 max-w-2xl text-sm text-portal-muted">{t('seasonalBody')}</p>
         </div>
-        <Link href="/wardrobe" className="mt-4 inline-flex shrink-0 rounded-xl bg-portal-accent px-4 py-2.5 text-sm font-bold text-slate-950 hover:brightness-110 sm:mt-0">{t('openWardrobe')}</Link>
-      </section>
-
-      <GameCategoryRow
-        title={tp('solitaire')}
-        href="/games/solitaire"
-        games={byCategory(all, 'solitaire').slice(0, 12)}
-      />
-      <GameCategoryRow
-        title={tp('classic')}
-        href="/games/classic"
-        games={byCategory(all, 'four-player').slice(0, 12)}
-      />
-      <GameCategoryRow
-        title={tp('connect')}
-        href="/games"
-        games={byCategory(all, 'connect').slice(0, 12)}
-      />
-      <GameCategoryRow
-        title={tp('tileMatch')}
-        href="/games"
-        games={byCategory(all, 'tile-match').slice(0, 12)}
-      />
-
-      <section>
-        <h2 className="mb-3 font-display text-lg font-semibold text-portal-text sm:text-xl">
-          {t('collectionTitle')}
-        </h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {all.map((g) => (
-            <GameCard key={g.slug} game={g} />
-          ))}
-        </div>
+        <Link
+          href="/wardrobe"
+          className="mt-4 inline-flex shrink-0 rounded-xl bg-portal-accent px-4 py-2.5 text-sm font-bold text-slate-950 hover:brightness-110 sm:mt-0"
+        >
+          {t('openWardrobe')}
+        </Link>
       </section>
 
       <details className="rounded-xl border border-portal-border bg-portal-panel/60 p-4 text-sm text-portal-muted">
-        <summary className="cursor-pointer font-semibold text-portal-text">
-          FAQ
-        </summary>
+        <summary className="cursor-pointer font-semibold text-portal-text">FAQ</summary>
         <p className="mt-2">{t('heroSubtitle')}</p>
       </details>
     </div>

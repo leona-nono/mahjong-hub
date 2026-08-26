@@ -25,13 +25,26 @@
     "regionSichuan": "四川麻雀"
   },
   "home": {
-    "heroTitle": "無料麻雀ゲーム",
-    "heroSubtitle": "ソリティア・連結・クラシック——すぐ遊べる、インストール不要。",
+    "heroTitle": "無料オンライン麻雀ゲーム",
+    "heroSubtitle": "ダウンロード不要ですぐ遊べる",
     "playButton": "今すぐ遊ぶ",
     "featuredTitle": "おすすめ",
     "collectionTitle": "すべてのゲーム",
     "originalTitle": "オリジナル",
-    "originalSubtitle": "自社開発の四人麻雀と連結。無料・インストール不要。"
+    "originalSubtitle": "自社開発の四人麻雀と連結。無料・インストール不要。",
+    "brandLine": "Mahjong Hub · レインボー麻雀",
+    "playSolitaire": "麻雀ソリティアをプレイ",
+    "instantPlay": "ダウンロード不要ですぐ遊べる",
+    "entryConnect": "コネクト",
+    "entryClassic": "四人麻雀",
+    "entryTileMatch": "タイルマッチ",
+    "signInEmail": "メールでログイン",
+    "playAsGuest": "ゲストでプレイ",
+    "welcomeBack": "おかえりなさい、{name}",
+    "pointsBalance": "{n} pts",
+    "dailyCheckInLine": "デイリーチェックイン: +{n} pts",
+    "moreRulesets": "2026年にさらにルールを追加",
+    "featuredClassic": "クラシック卓"
   },
   "game": {
     "play": "プレイ",
@@ -44,7 +57,8 @@
     "howToPlay": "遊び方",
     "tips": "戦術のヒント",
     "faq": "よくある質問",
-    "comingSoon": "近日公開"
+    "comingSoon": "近日公開",
+    "savePointsPrompt": "メールでログインして {n} ポイントを保存"
   },
   "collection": {
     "title": "麻雀消除ゲームコレクション",
@@ -481,8 +495,9 @@
     "coachRiskHigh": "高リスク：他家が {tile} を晒しています。"
   },
   "seo": {
-    "homeTitle": "無料オンライン麻雀 · 今すぐプレイ",
-    "homeDescription": "麻雀ソリティア、コネクト、本格四人麻雀を無料で。ブラウザですぐ遊べてダウンロード不要。デイリーチャレンジ対応。"
+    "homeTitle": "無料オンライン麻雀 | Mahjong Hub",
+    "homeDescription": "麻雀ソリティア、コネクト、本格四人麻雀を無料で。ブラウザですぐ遊べてダウンロード不要。デイリーチャレンジ対応。",
+    "wardrobeTitle": "牌背＆卓スキン | Mahjong Hub"
   },
   "notFound": {
     "title": "ページが見つかりません",

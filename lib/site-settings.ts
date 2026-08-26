@@ -28,9 +28,8 @@ export const DEFAULT_PUBLIC_SITE_SETTINGS: PublicSiteSettings = {
   defaultLocale: 'en',
   ogImage: '/og-default.png',
   titleTemplate: '{page} | {brand}',
-  homeH1: 'Play free mahjong games',
-  homeSubtitle:
-    'Solitaire, connect, and classic tile games — instant play, no download.',
+  homeH1: 'Free Mahjong Games Online',
+  homeSubtitle: 'Mahjong Hub · Rainbow Mahjong Games',
   gameTitleTemplate: '{game} - Free Online | {brand}',
   gameDescriptionTemplate:
     'Play {game} free online at {brand}. Instant play in your browser — no download required. {summary}',

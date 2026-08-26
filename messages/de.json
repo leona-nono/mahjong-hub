@@ -52,8 +52,8 @@
     }
   },
   "home": {
-    "heroTitle": "Spiele Mahjong und entspannende Kachelspiele",
-    "heroSubtitle": "Eine ruhige Sammlung aus Mahjong Solitaire, Connect und Kachel-Match-Spielen. Kein Login, einfach spielen.",
+    "heroTitle": "Kostenlose Mahjong-Spiele online",
+    "heroSubtitle": "Sofort spielen, ohne Download",
     "playButton": "Jetzt spielen",
     "featuredTitle": "Empfohlene Spiele",
     "collectionTitle": "Entfernen- und Match-Spiele",
@@ -63,7 +63,20 @@
     "seasonalBody": "Eine kleine, kostenlose Sammlung von Tischstimmungen und limitierten Steinrückseiten. Keine Münzen, keine Käufe.",
     "seasonalJade": "Jadetisch",
     "seasonalLunar": "Mondfest",
-    "seasonalBack": "Mondtor-Steinrückseite"
+    "seasonalBack": "Mondtor-Steinrückseite",
+    "brandLine": "Mahjong Hub · Rainbow Mahjong Spiele",
+    "playSolitaire": "Mahjong Solitaire spielen",
+    "instantPlay": "Sofort spielen, ohne Download",
+    "entryConnect": "Connect",
+    "entryClassic": "4-Spieler-Mahjong",
+    "entryTileMatch": "Tile Match",
+    "signInEmail": "Mit E-Mail anmelden",
+    "playAsGuest": "Als Gast spielen",
+    "welcomeBack": "Willkommen zurück, {name}",
+    "pointsBalance": "{n} Pkt.",
+    "dailyCheckInLine": "Täglicher Check-in: +{n} Pkt.",
+    "moreRulesets": "Weitere Regelwerke 2026",
+    "featuredClassic": "Klassische Tische"
   },
   "game": {
     "play": "Spielen",
@@ -74,7 +87,8 @@
     "about": "Über dieses Spiel",
     "howToPlay": "So spielst du",
     "tips": "Strategietipps",
-    "faq": "Häufige Fragen"
+    "faq": "Häufige Fragen",
+    "savePointsPrompt": "Melden Sie sich per E-Mail an, um {n} Punkte zu speichern"
   },
   "collection": {
     "title": "Mahjong-Entfernungssammlung",
@@ -175,8 +189,9 @@
     "rescue": "Restliche Steine neu austeilen"
   },
   "seo": {
-    "homeTitle": "Mahjong online · Kostenlos spielen",
-    "homeDescription": "Spiele kostenlos Mahjong Solitaire, Connect und klassisches Viererspieler-Mahjong. Sofort im Browser — ohne Download."
+    "homeTitle": "Kostenlose Mahjong-Spiele online | Mahjong Hub",
+    "homeDescription": "Spiele kostenlos Mahjong Solitaire, Connect und klassisches Viererspieler-Mahjong. Sofort im Browser — ohne Download.",
+    "wardrobeTitle": "Kartenrücken & Tischskins | Mahjong Hub"
   },
   "notFound": {
     "title": "Seite nicht gefunden",

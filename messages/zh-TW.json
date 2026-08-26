@@ -25,13 +25,26 @@
     "regionSichuan": "四川麻將"
   },
   "home": {
-    "heroTitle": "免費麻將遊戲",
-    "heroSubtitle": "消除、連連看與經典麻將——打開即玩，無需下載。",
+    "heroTitle": "免費線上麻將遊戲",
+    "heroSubtitle": "即開即玩，無需下載",
     "playButton": "立即遊玩",
     "featuredTitle": "精選推薦",
     "collectionTitle": "全部遊戲",
     "originalTitle": "自研遊戲",
-    "originalSubtitle": "自研四人麻將與連連看。免費，無需下載。"
+    "originalSubtitle": "自研四人麻將與連連看。免費，無需下載。",
+    "brandLine": "Mahjong Hub · 彩虹麻將合集",
+    "playSolitaire": "玩麻將消除",
+    "instantPlay": "即開即玩，無需下載",
+    "entryConnect": "連連看",
+    "entryClassic": "四人麻將",
+    "entryTileMatch": "對對碰",
+    "signInEmail": "信箱登入",
+    "playAsGuest": "訪客遊玩",
+    "welcomeBack": "歡迎回來，{name}",
+    "pointsBalance": "{n} 積分",
+    "dailyCheckInLine": "每日簽到：+{n} 積分",
+    "moreRulesets": "更多玩法 2026 陸續上線",
+    "featuredClassic": "經典四人桌"
   },
   "game": {
     "play": "開始遊戲",
@@ -44,7 +57,8 @@
     "howToPlay": "玩法說明",
     "tips": "策略要點",
     "faq": "常見問題",
-    "comingSoon": "敬請期待"
+    "comingSoon": "敬請期待",
+    "savePointsPrompt": "信箱登入以保存你的 {n} 積分"
   },
   "collection": {
     "title": "麻將消除遊戲合集",
@@ -481,8 +495,9 @@
     "coachRiskHigh": "公開風險高：對手已亮出 {tile}。"
   },
   "seo": {
-    "homeTitle": "免費線上麻將 · 打開即玩",
-    "homeDescription": "免費線上玩麻將消消樂、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。"
+    "homeTitle": "免費線上麻將 | Mahjong Hub",
+    "homeDescription": "免費線上玩麻將消消樂、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。",
+    "wardrobeTitle": "牌背與桌布外觀 | Mahjong Hub"
   },
   "notFound": {
     "title": "頁面不存在",
