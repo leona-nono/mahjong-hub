@@ -9,6 +9,15 @@ import {
   type GameCategory,
   type GameConfig
 } from '@/data/games';
+import {
+  getNativeSeoRow,
+  mergeNativeContent,
+  rowToPayload
+} from '@/lib/native-seo';
+import {
+  isNativeSeoLocale,
+  type NativeSeoLocale
+} from '@/lib/native-seo-locales';
 
 /**
  * DB overlay on top of the static game catalogue.
@@ -158,44 +167,66 @@ export async function getMergedGame(
 
 /**
  * Merged game with locale-aware copy. Static i18n (`games.i18n.ts`) provides
- * translated title/description/content; CMS FAQs for the requested locale
- * (when present) override the FAQ section.
+ * translated title/description/content; NativeGameSeo CMS overlays native
+ * page SEO/body; GameFaq rows can still override FAQ for iframe games.
  */
 export async function getMergedLocalizedGame(
   slug: string,
   locale: string
 ): Promise<GameConfig | undefined> {
   const game = await getMergedGame(slug);
-  if (!game || locale === 'en') return game;
+  if (!game) return undefined;
 
-  // Reuse the static localization machinery on the merged base.
-  const localized = getLocalizedGame(slug, locale);
-  if (!localized) return game;
-
-  const result: GameConfig = {
-    ...game,
-    title:
-      staticGameBySlug.get(slug)?.title === game.title ? localized.title : game.title,
-    description:
-      staticGameBySlug.get(slug)?.description === game.description
-        ? localized.description
-        : game.description,
-    content: localized.content
-  };
-
-  try {
-    const dbFaqs = await prisma.gameFaq.findMany({
-      where: { game: { slug }, locale },
-      orderBy: { sortOrder: 'asc' }
-    });
-    if (dbFaqs.length && result.content) {
-      result.content = {
-        ...result.content,
-        faq: dbFaqs.map((f) => ({ question: f.question, answer: f.answer }))
+  let result: GameConfig;
+  if (locale === 'en') {
+    result = { ...game };
+  } else {
+    const localized = getLocalizedGame(slug, locale);
+    if (!localized) {
+      result = { ...game };
+    } else {
+      result = {
+        ...game,
+        title:
+          staticGameBySlug.get(slug)?.title === game.title
+            ? localized.title
+            : game.title,
+        description:
+          staticGameBySlug.get(slug)?.description === game.description
+            ? localized.description
+            : game.description,
+        content: localized.content
       };
     }
-  } catch {
-    // Static localization already applied — FAQ overlay is best-effort.
+  }
+
+  if (game.gameType === 'native' && isNativeSeoLocale(locale)) {
+    const row = await getNativeSeoRow(slug, locale as NativeSeoLocale);
+    if (row) {
+      const cms = rowToPayload(row);
+      if (cms.title.trim()) result.title = cms.title.trim();
+      if (cms.description.trim()) result.description = cms.description.trim();
+      if (cms.seoTitle.trim()) result.seoTitle = cms.seoTitle.trim();
+      if (cms.seoDescription.trim()) {
+        result.seoDescription = cms.seoDescription.trim();
+      }
+      result.content = mergeNativeContent(result.content, cms);
+    }
+  } else {
+    try {
+      const dbFaqs = await prisma.gameFaq.findMany({
+        where: { game: { slug }, locale },
+        orderBy: { sortOrder: 'asc' }
+      });
+      if (dbFaqs.length && result.content) {
+        result.content = {
+          ...result.content,
+          faq: dbFaqs.map((f) => ({ question: f.question, answer: f.answer }))
+        };
+      }
+    } catch {
+      // Static localization already applied — FAQ overlay is best-effort.
+    }
   }
 
   return result;

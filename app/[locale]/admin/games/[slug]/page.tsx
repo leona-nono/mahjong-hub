@@ -1,5 +1,5 @@
 import { Link } from '@/i18n/navigation';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
 import { isDbConnected } from '@/lib/db-health';
@@ -8,11 +8,17 @@ import GameEditorForm from '@/components/admin/GameEditorForm';
 
 export const dynamic = 'force-dynamic';
 
-async function getEditorData(slug: string) {
+async function getEditorData(slug: string, locale: string) {
   const staticGame = getGame(slug);
 
-  // Use a real connectivity probe so the warning banner is accurate even
-  // when the DB is reachable but this particular game is still static-only.
+  // Native games are managed under /admin/native-seo — not iframe ops.
+  if (staticGame?.gameType === 'native') {
+    redirect(`/${locale}/admin/native-seo/${slug}`);
+  }
+  if (staticGame && staticGame.gameType !== 'iframe') {
+    redirect(`/${locale}/admin/games`);
+  }
+
   const dbConnected = await isDbConnected();
   let dbGame: Game | null = null;
   if (dbConnected) {
@@ -23,11 +29,8 @@ async function getEditorData(slug: string) {
     }
   }
 
-  // CMS-only games (no static entry) are editable too — refuse only when the
-  // game exists nowhere.
   if (!staticGame && !dbGame) notFound();
 
-  // Prefer DB row when available; fall back to static
   const initial = dbGame
     ? {
         slug: dbGame.slug,
@@ -68,10 +71,10 @@ async function getEditorData(slug: string) {
 export default async function GameEditorPage({
   params
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
-  const { initial, dbConnected, dbId } = await getEditorData(slug);
+  const { locale, slug } = await params;
+  const { initial, dbConnected, dbId } = await getEditorData(slug, locale);
 
   return (
     <div>

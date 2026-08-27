@@ -88,7 +88,12 @@ export default async function AdminDashboard() {
         <QuickLink
           href="/admin/games"
           title="🎮 游戏管理"
-          desc="查看、新增、编辑游戏，管理 iframe 链接与分类"
+          desc="仅非自研 iframe / CMS 游戏：链接、分类、推荐位"
+        />
+        <QuickLink
+          href="/admin/native-seo"
+          title="📝 自研游戏 SEO"
+          desc="自研页标题/简介/玩法/FAQ/SEO，多语言切换查缺"
         />
         <QuickLink
           href="/admin/beginners"

@@ -17,6 +17,14 @@ export default function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(`/${routing.defaultLocale}`, req.url), 308);
   }
 
+  // Admin pages live under /[locale]/admin. Visiting /admin/... would bind
+  // [locale]="admin" and 404. Send unprefixed URLs to the default locale.
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    const url = req.nextUrl.clone();
+    url.pathname = `/${routing.defaultLocale}${pathname}`;
+    return NextResponse.redirect(url);
+  }
+
   // The local desktop proxy can loop when next-intl rewrites a dev URL to the
   // AUTH_URL host. The locale is already present in /en, /zh, etc., so skip
   // that rewrite during development; production keeps the normal middleware.

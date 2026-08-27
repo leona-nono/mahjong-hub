@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import '@/app/globals.css';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import { Link } from '@/i18n/navigation';
 
 // 后台布局：嵌套在 app/[locale]/layout.tsx 之下，因此【不能】再渲染
 // <html>/<body>（根布局已提供）。这里只输出后台外壳（侧边栏 + 顶栏 + 内容区），
@@ -15,13 +16,14 @@ export const metadata = {
 // 任何人都能直接访问（边缘 middleware 的重定向对缓存页面不可靠）。
 export const dynamic = 'force-dynamic';
 
-const NAV_ITEMS = (locale: string) => [
-  { label: '概览', href: `/${locale}/admin`, icon: '📊' },
-  { label: '游戏管理', href: `/${locale}/admin/games`, icon: '🎮' },
-  { label: '新手指南', href: `/${locale}/admin/beginners`, icon: '📘' },
-  { label: '站点设置', href: `/${locale}/admin/settings`, icon: '⚙️' },
-  { label: 'i18n 文案', href: `/${locale}/admin/settings/i18n`, icon: '🌐' }
-];
+const NAV_ITEMS = [
+  { label: '概览', href: '/admin', icon: '📊' },
+  { label: '游戏管理', href: '/admin/games', icon: '🎮' },
+  { label: '自研 SEO', href: '/admin/native-seo', icon: '📝' },
+  { label: '新手指南', href: '/admin/beginners', icon: '📘' },
+  { label: '站点设置', href: '/admin/settings', icon: '⚙️' },
+  { label: 'i18n 文案', href: '/admin/settings/i18n', icon: '🌐' }
+] as const;
 
 export default async function AdminLayout({
   children,
@@ -55,8 +57,6 @@ export default async function AdminLayout({
     redirect(`/${locale}?auth=forbidden`);
   }
 
-  const items = NAV_ITEMS(locale);
-
   return (
     <div className="admin-shell flex min-h-screen bg-gray-50 text-black">
       {/* Sidebar */}
@@ -65,15 +65,15 @@ export default async function AdminLayout({
           🀄️ Mahjong Hub
         </div>
         <nav className="mt-2 space-y-1 px-3">
-          {items.map((item) => (
-            <a
+          {NAV_ITEMS.map((item) => (
+            <Link
               key={item.href}
               href={item.href}
               className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-300 transition hover:bg-gray-800 hover:text-white"
             >
               <span>{item.icon}</span>
               <span>{item.label}</span>
-            </a>
+            </Link>
           ))}
         </nav>
       </aside>
@@ -81,8 +81,11 @@ export default async function AdminLayout({
       {/* Main content */}
       <div className="flex flex-1 flex-col">
         {/* Top bar */}
-        <header className="flex h-14 items-center justify-end border-b bg-white px-6 shadow-sm">
-          <span className="text-sm text-gray-500">运营后台</span>
+        <header className="flex h-14 items-center justify-between gap-4 border-b bg-white px-6 shadow-sm">
+          <p className="truncate text-xs text-gray-400">
+            游戏管理 = 非自研 · 自研 SEO = 页面内容 / 多语检测
+          </p>
+          <span className="shrink-0 text-sm text-gray-500">运营后台</span>
         </header>
 
         {/* Page content */}

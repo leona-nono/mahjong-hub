@@ -282,6 +282,24 @@ model MessageI18n {
   @@index([locale])
 }
 
+/// CMS overlay for native (in-house) game page SEO + structured content per locale.
+model NativeGameSeo {
+  slug           String
+  locale         String // en | zh | zh-TW | ja | ko
+  title          String?
+  description    String?  @db.Text
+  seoTitle       String?
+  seoDescription String?
+  intro          String?  @db.Text
+  howToPlay      Json?    @db.JsonB // string[]
+  tips           Json?    @db.JsonB // string[]
+  faq            Json?    @db.JsonB // { question, answer }[]
+  updatedAt      DateTime @updatedAt
+
+  @@id([slug, locale])
+  @@index([locale])
+}
+
 /// Beginner / Mahjong for Beginners guides. CMS overlay on top of static blog posts.
 model Guide {
   id           String   @id @default(cuid())

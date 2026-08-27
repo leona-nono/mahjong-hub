@@ -100,6 +100,18 @@ const nextConfig = {
         permanent: true
       },
       {
+        // Admin lives under /[locale]/admin. Bare /admin would 404
+        // ([locale] = "admin").
+        source: '/admin',
+        destination: '/en/admin',
+        permanent: false
+      },
+      {
+        source: '/admin/:path*',
+        destination: '/en/admin/:path*',
+        permanent: false
+      },
+      {
         source: '/privacy-policy',
         destination: '/en/privacy',
         permanent: true
