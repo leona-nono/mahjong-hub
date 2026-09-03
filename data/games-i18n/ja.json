@@ -1,0 +1,362 @@
+{
+  "hong-kong-mahjong": {
+    "title": "香港麻雀",
+    "description": "三人の対戦相手と本格的な四人麻雀を。香港スタイルの計算、無料、ダウンロード不要。",
+    "content": {
+      "intro": "香港スタイルは日本以外で最も広く遊ばれている四人麻雀のルールで、最初に学ぶのに最も簡単です。四組の面子と一組の雀頭を作り、最低三飜で和了できます。この卓では三人のコンピューター対戦相手、オプションの聴牌ヒント、そして和了した手の点数内訳を提供します。",
+      "howToPlay": [
+        "各プレイヤーは13枚の牌を持って始めます。自分の番では1枚引いて1枚切るので、手牌は常に13枚です。",
+        "和了形は四組の面子と一組の雀頭です。面子は同じ牌3枚か、同種の連続した3枚です。",
+        "他のプレイヤーが切った牌を鳴くことができます：ポン（刻子）、チー（順子、左隣のみ）、カン（4枚すべて）。",
+        "鳴くと手牌が開き、いくつかの役が消えます。本当に手が進む時だけ鳴きましょう。",
+        "ツモまたはロンで和了できますが、最低三飜を満たす必要があります。"
+      ],
+      "tips": [
+        "孤立した字牌は早めに切る。対子にしにくく、手の中で最も融通がききません。",
+        "個々の牌ではなく聴牌までの距離を見る。2枚残りは中盤の普通の位置、1枚残りになると慎重に打ちます。",
+        "一色の手は各部分の合計をはるかに上回る価値があります。7〜8枚同じ種類を配られたら、早めに染めると得です。",
+        "他の席を見る。3人とも同じ種類を切っていたら、あなたの欲しい牌はまだ残っている可能性が高いです。"
+      ],
+      "features": [
+        "本格香港スタイル、136枚——萬子・筒子・索子・風牌・三元牌のみ。",
+        "カジュアルモードは飜制限なしで完成形を練習；標準モードは伝統の三飜縛り。",
+        "三人のAIが妥当な打牌をし、本物の四人テンポを練習できる。",
+        "任意のテンパイヒントと和了後の飜内訳で、ルールブックなしでも点数を学べる。",
+        "デスクトップとモバイルのブラウザで完結——タップ／クリックで打牌・鳴き・和了。"
+      ],
+      "supportedDevices": "香港麻雀は Windows・macOS・Linux・Android・iOS の最新ブラウザで動作し、ダウンロード不要です。スマホ／タブレットは横向きが最も見やすく、縦向きでも手牌をスクロールできます。Chrome・Safari・Firefox・Edge 対応——鳴きと精算のアニメーションが滑らかな最新版を推奨します。",
+      "faq": [
+        {
+          "question": "何かをダウンロードする必要がありますか？",
+          "answer": "いいえ。ゲームは完全にブラウザ上で動作し、デスクトップでもモバイルでも、何もインストールする必要はありません。"
+        },
+        {
+          "question": "これは本物の麻雀ですか、それとも牌合わせゲームですか？",
+          "answer": "これは引く・切る・鳴く・点数のある本物の四人麻雀です。西洋の多くのサイトで「マージャン」と呼ばれる牌合わせゲームは麻雀ソリティアであり、別のゲームです。"
+        },
+        {
+          "question": "「最低三飜」とはどういう意味ですか？",
+          "answer": "香港ルールでは、和了を宣言するには手が最低三飜の価値を持つ必要があります。技術的に完成していても三飜未満の手は和了できず、手を良くするために打ち続けます。"
+        },
+        {
+          "question": "実際のお金がかかる賭け事はありますか？",
+          "answer": "いいえ。賭け、購入できる通貨、現金賞品は一切ありません。点数は自分の進行状況を記録するだけです。"
+        }
+      ]
+    }
+  },
+  "riichi-mahjong": {
+    "title": "日本麻雀",
+    "description": "三人の対戦相手と日本式立直麻雀を。現代競技麻雀の基礎となるルール。",
+    "content": {
+      "intro": "立直は日本麻雀の中心となるルールです。聴牌時にリーチを宣言でき、和了すると一飜加算されます。役の制限、ドラ、振聴など、戦略性の高いルールが詰まっています。この卓では三人のコンピューター対戦相手、聴牌ヒント、得点内訳を提供します。",
+      "howToPlay": [
+        "基本の流れは四人麻雀と同じです：牌を引き、切って、四組の面子と一組の雀頭を作ります。",
+        "立直では手牌を門前で保つことが重要です。鳴くと多くの役が閉ざされます。",
+        "和了には最低一つの役が必要なので、単に完成した手でも必ずしも和了できません。",
+        "七対子と国士無双は特殊な和了形で、どちらも完全な門前手が必要です。"
+      ],
+      "tips": [
+        "門前の手は香港ルールよりもはるかに高得点です。リーチに直行する時以外は鳴きを我慢しましょう。",
+        "断幺九は定番の役です：幺九牌も字牌もなし。ほとんどどんな配牌からでも狙えます。",
+        "初めから4つ以上の対子があれば、七対子が4面子を組むより早く聴牌できることが多いです。",
+        "終盤、他の席が切り止めた牌を見てください。そこが彼らの待ちであることが多いです。"
+      ],
+      "features": [
+        "世界リーチ選手権2025ベースライン——赤なし、頭ハネロン、開始30,000点。",
+        "フル役縛り、ドラ表示、14枚の王牌で競技フローに近い体験。",
+        "リーチ宣言は1,000点棒付き。ツモ・ロン対応、順番優先。",
+        "テンパイヒントがシャンテンを追跡し、枚数当てなしで学べる。",
+        "東場・南場。親の和了や流局で連荘あり。"
+      ],
+      "supportedDevices": "立直麻雀はデスクトップ・ノート・タブレット・スマホのブラウザで遊べ、アプリ不要です。モバイル横向きは他家の捨て牌と手牌を同時に見やすい構成です。Windows・macOS・Linux・Android・iOS の現行 Chrome・Safari・Firefox・Edge に対応します。",
+      "faq": [
+        {
+          "question": "立直と中国麻雀はどう違いますか？",
+          "answer": "立直は和了に役を要求し、門前の手をより高く評価し、点数表も異なります。引く・切るの基本は同じなので、移行は簡単です。"
+        },
+        {
+          "question": "ここで立直を学べますか？",
+          "answer": "流れ、鳴き、一般的な役に慣れるのに良い場所です。聴牌ヒントが完成までの距離を示し、初心者にとって最も有用な情報です。"
+        }
+      ]
+    }
+  },
+  "chinese-official-mahjong": {
+    "title": "中国麻雀（国標）",
+    "description": "中国式競技麻雀（MCR）——国際大会ルール。和了には最低八飜が必要。",
+    "content": {
+      "intro": "中国式競技麻雀（MCR）は国際大会で使われるルールです。和了には最低八飜が必要で、最初に完成した手で勝つよりも、本当に構造のある手を作ることを要求されます。この3つのルールの中で最も要求が高いものです。",
+      "howToPlay": [
+        "標準的な四人麻雀：牌を引き、切り、四組の面子と一組の雀頭を作ります。",
+        "和了には最低八飜の価値が必要です。役のない単純な手は対象外です。",
+        "飜は役から来ます——一色、対々和、三元牌・風牌の刻子など——そして積み重なります。",
+        "最低点が高いため、弱い手を鳴いて急ぐのは通常損な計画です。"
+      ],
+      "tips": [
+        "最初の数手で方向を決めましょう。一色手と対々和は八飜をクリアする最も確実な方法です。",
+        "三元牌と自風の刻子は一手損しても取る価値があります。他のほとんどの役と組み合わさるからです。",
+        "完成まで一枚足りないが六飜しかない手はまだ手ではありません。改善し続けましょう。"
+      ],
+      "features": [
+        "144枚の中国公式（MCR）練習卓。花牌・季節の補充フロー付き。",
+        "八飜縛りで競技判定を早く学べる。",
+        "四人の摸打対AI。標準のチー・ポン・カン対応。",
+        "練習用スコアは初期役サブセット。81要素の完全表は構築中。",
+        "完成しても八飜未満のとき、画面で明確にフィードバック。"
+      ],
+      "supportedDevices": "中国公式麻雀は Windows・macOS・Linux・Android・iOS のブラウザで完結します。デスクトップ／タブレットは花補充と点数表示が読みやすく、スマホはどちら向きでも可。マルチ対局の性能のため最新の Chrome・Safari・Firefox・Edge を推奨します。",
+      "faq": [
+        {
+          "question": "完成したのに和了できないのはなぜ？",
+          "answer": "中国式競技麻雀は最低八飜を要求します。完成しても八飜未満なら和了できず、プレイは続きます。"
+        },
+        {
+          "question": "ここでの計算は完全ですか？",
+          "answer": "公式の全役表ではなく一般的な役を網羅しています。学習とカジュアルプレイ向けで、大会の判定用ではありません。"
+        }
+      ]
+    }
+  },
+  "sichuan-mahjong": {
+    "title": "四川麻雀",
+    "description": "四川麻雀（血戦）：缺門を決め、三枚交換し、和了後も続行するルール。",
+    "content": {
+      "intro": "Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.",
+      "howToPlay": [
+        "The 108-tile wall uses only Characters, Dots and Bamboo. Winds, Dragons, Flowers and Seasons are not used.",
+        "Before normal play, select three tiles from one suit for Exchange Three; the table passes them in the direction chosen for that hand.",
+        "Choose one forbidden suit. You must discard every tile of that suit before you are allowed to win.",
+        "Draw and discard normally. Chow is not allowed; Pung and Kong are allowed under the table claim order.",
+        "Make four melds and a pair, or an approved special hand such as Seven Pairs, then win by self-draw or a legal discard.",
+        "A winner stops drawing, but the hand continues for the remaining players. End-of-hand settlement includes ready-hand check, flower-pig penalty and Kong refund."
+      ],
+      "tips": [
+        "Choose the forbidden suit from the suit you can clear most quickly, not merely from its lowest tiles.",
+        "Exchange Three should remove three tiles from one coherent weak suit so you do not create three unrelated dead tiles.",
+        "Because Chow is unavailable, pairs and connected shapes are more valuable than in Chow-enabled variants.",
+        "After another player wins, reassess risk: staying ready matters for the end-of-hand check, but avoid becoming flower pig.",
+        "Track Kong exposure and settlement. A high-value Kong is not automatically safe if it opens a dangerous draw."
+      ],
+      "features": [
+        "成都血戦ベース——108枚、三枚交換と個人の缺門。",
+        "チーなし：ポンとカンのみ。四川の速い卓テンポでAI三人と対戦。",
+        "血戦フロー：初和了後も続行。終局の聴牌チェックと罰則。",
+        "各局開始前に三枚交換と缺門をインタラクティブに選択。",
+        "ツモ・放銃対応。七対子と標準四面子形をサポート。"
+      ],
+      "supportedDevices": "四川麻雀はデスクトップ・ノート・タブレット・スマホの最新ブラウザで動作し、インストール不要です。横向きが交換と缺門操作に最適です。Windows・macOS・Linux・Android・iOS の Chrome・Safari・Firefox・Edge に対応します。",
+      "faq": [
+        {
+          "question": "Why can I not win while I still hold my forbidden suit?",
+          "answer": "The forbidden-suit rule is a core Chengdu Blood Battle condition. Clear every tile of your chosen suit before a win may be declared."
+        },
+        {
+          "question": "Why does the game continue after someone wins?",
+          "answer": "Blood Battle to the End permits remaining players to continue. This can create several winners or penalties within one hand."
+        }
+      ]
+    }
+  },
+  "taiwan-mahjong": {
+    "title": "台湾麻雀",
+    "description": "台湾麻雀（16枚）：花牌の補花と台数による計算。",
+    "content": {
+      "intro": "Mahjong Hub の台湾麻雀は、144枚・花牌補充・5面子1雀頭を使う初心者向け16枚ルールです。台数は加算し、0台でも和了できます。",
+      "howToPlay": [
+        "Use all 144 tiles. Each non-dealer starts with 16 tiles; East starts with 17 and makes the first discard.",
+        "Reveal every Flower or Season immediately and draw a replacement. It remains outside your 16-tile hand and adds Tai when applicable.",
+        "On your turn draw one tile and discard one. You may Chow from the left player, or Pung and Kong according to the claim order.",
+        "Win with five melds and one pair, for a 17-tile hand. Self-draw and discard wins are both supported.",
+        "Tai patterns add together for settlement. This Mahjong Hub beginner baseline allows a complete 0-Tai hand to win."
+      ],
+      "tips": [
+        "With 16 concealed tiles, retain several connected shapes early instead of committing to one wait too quickly.",
+        "Flowers add value but do not repair a weak main hand; build the five-meld structure first.",
+        "Kongs are more frequent in Taiwan Mahjong. Consider both the replacement draw and the information you reveal.",
+        "Use 0-Tai mode to learn tempo; once comfortable, chase Tai only when it does not reduce your live waits.",
+        "Check whether your Flower matches your seat, as seat Flowers can add an extra scoring bonus."
+      ],
+      "features": [
+        "16枚台湾手——五面子＋雀頭、花牌入り144枚の山。",
+        "花牌は即時補充。台ボーナスと座席花の加点オプション。",
+        "チー・ポン・カン。和了ごとに加算台で精算。",
+        "初心者向け0台最低。テンポを学んでから高台を狙う。",
+        "四人卓対AI。ツモとロン対応。"
+      ],
+      "supportedDevices": "台湾麻雀は Windows・macOS・Linux・Android・iOS のブラウザで遊べます。タブレット／デスクトップは16枚の大きな手が読みやすく、スマホは縦・横どちらでも可。反応の良いタップと花補充アニメのため現行 Chrome・Safari・Firefox・Edge を推奨します。",
+      "faq": [
+        {
+          "question": "Why do I hold 16 tiles instead of 13?",
+          "answer": "Taiwan Mahjong uses five melds plus one pair. Players normally hold 16 tiles and win after drawing or claiming the 17th."
+        },
+        {
+          "question": "Can a 0-Tai hand win here?",
+          "answer": "Yes. Mahjong Hub uses a relaxed 0-Tai baseline. Other Taiwan tables may require a minimum Tai, so this is shown clearly in the game settings."
+        }
+      ]
+    }
+  },
+  "american-mahjong": {
+    "title": "アメリカ麻雀",
+    "description": "アメリカ麻雀：チャールストン、ジョーカー、花牌と年次カードの役。",
+    "content": {
+      "intro": "Mahjong Hub American Mahjong is an original practice-card game inspired by NMJL-style flow: 152 tiles, Charleston, Flowers, Jokers, exposed groups and exact card-pattern wins. It does not reproduce a current NMJL annual card.",
+      "howToPlay": [
+        "Use a 152-tile set with standard tiles, eight Flowers and eight Jokers. Every player takes 13 tiles; East takes 14 and discards first.",
+        "Read the original practice card, then complete Charleston: pass three tiles right, across and left. A second Charleston and courtesy pass are table options.",
+        "Draw and discard while steering toward one exact line on the practice card, not a general four-meld-and-a-pair shape.",
+        "Expose legal Pungs, Kongs or larger groups when the selected card line permits it. Concealed card lines may not be exposed before the final win.",
+        "Use a Joker only in a group of three or more; never use it as a single or pair. On your turn, a natural tile may exchange for a Joker in an opponent exposure.",
+        "Declare Mah Jongg only when all 14 tiles exactly match one legal original practice-card line."
+      ],
+      "tips": [
+        "Before Charleston, keep two or three compatible card lines open rather than committing to a single rare line.",
+        "Pass tiles that do not support any of your likely card categories, but never pass a Joker.",
+        "Do not expose a group merely because you can: exposure signals your target and may make your hand impossible to pivot.",
+        "Treat Jokers as group accelerators, not universal wildcards; you still need natural tiles for singles and pairs.",
+        "Use opponent exposures to decide which natural tiles are safe to discard and when a Joker exchange is valuable."
+      ],
+      "features": [
+        "152枚のアメリカ式セット。花牌・ジョーカー・NMJL風チャールストン。",
+        "Mahjong Hubオリジナル練習カード——汎用面子ではなく正確な役形で和了。",
+        "合法ジョーカー組、自分の番の交換、カード行に紐づく露出ルール。",
+        "任意の第2チャールストンと礼儀渡しで卓練習に近い体験。",
+        "四人ブラウザ卓。ガイド付きチャールストンと役形検証。"
+      ],
+      "supportedDevices": "アメリカ麻雀はデスクトップとモバイルのブラウザで完結し、アプリ不要です。広い画面は練習カードと露出を同時に読みやすく、スマホは横向きで卓全体を表示できます。Windows・macOS・Linux・Android・iOS の Chrome・Safari・Firefox・Edge に対応します。",
+      "faq": [
+        {
+          "question": "Is this the official NMJL yearly card?",
+          "answer": "No. This game uses Mahjong Hub original practice cards. A licensed NMJL-card integration would be a separate future product."
+        },
+        {
+          "question": "Can a Joker be used in a pair?",
+          "answer": "No. In this rules baseline, Jokers are legal only in groups of three or more, never in singles or pairs."
+        }
+      ]
+    }
+  },
+  "mahjong-connect-classic": {
+    "title": "麻雀コネクト",
+    "description": "最大2回曲がる道で同じ麻雀牌をつなぐ。3サイズの盤面、ヒント、リラックスモードは時間制限なし。",
+    "content": {
+      "intro": "マージャンコネクト（オネット）は麻雀牌を使った線つなぎのパズルです。最大2回曲がる道で同じ牌のペアをつなぎ、盤面を全て消します。リラックスモードは時間制限なしで、ゆっくり遊べます。",
+      "howToPlay": [
+        "同じ絵柄の牌を2枚タップまたはクリックします。",
+        "最大2回曲がる空き道でつなげれば消せます。盤の外側の縁を通ることもできます。",
+        "全ての牌を消すと勝利です。連続マッチでストリークボーナスが付きます。",
+        "動かせるペアがなくなると自動でシャッフルされるので、行き詰まることはありません。"
+      ],
+      "tips": [
+        "最初に端から消しましょう。外側の牌は経路が最も多く、消えると中央が開きます。",
+        "隣り合う同じ牌は常に消せますが、それらを消すことが別の道を開く唯一の方法かもしれないので、先に見てから取りましょう。",
+        "ヒントボタンは数点かかりますが、時間制モードではほぼ常にその価値があります。"
+      ],
+      "features": [
+        "本格麻雀牌面の定番オネットつなぎ消し。",
+        "コンパクトからフルグリッドまで3サイズの盤面。",
+        "タイマーなしリラックスモードと、ストリーク得点の時間制。",
+        "消せるペアがないと自動シャッフル——行き詰まりなし。",
+        "ヒントとストリークボーナスで長時間プレイにも対応。"
+      ],
+      "supportedDevices": "麻雀コネクトはデスクトップ・タブレット・スマホの最新ブラウザで動作し、インストール不要です。モバイルのタップとデスクトップのクリックは同じ盤面で使えます。Windows・macOS・Linux・Android・iOS の Chrome・Safari・Firefox・Edge 対応。中型スマホの縦向きでも標準盤が収まりやすいです。",
+      "faq": [
+        {
+          "question": "麻雀ソリティアとはどう違いますか？",
+          "answer": "ソリティアは牌を重ねて置き、片側が空いた牌だけを消します。コネクトは平らに置き、道でペアをつなぎます。パズルは違いますが、牌は同じです。"
+        },
+        {
+          "question": "道の「曲がり」とは何ですか？",
+          "answer": "方向を変えるたびに1回です。直線は0回、L字は1回、Z字やU字は2回です。3回以上はできません。"
+        }
+      ]
+    }
+  },
+  "mahjong-solitaire-classic": {
+    "title": "麻雀ソリティアクラシック",
+    "description": "定番の重ね消しパズル。亀とピラミッドの配置、解けることが保証されたディール、ヒントとアンドゥ。",
+    "content": {
+      "intro": "麻雀ソリティアは麻雀牌を使った定番の一人用パズルです。空いている牌——上に何も載っておらず、少なくとも一辺が開いている牌——を同じ絵柄でペアにして盤面を全て消します。ここでは全ディールが解けることが保証されているので、必ず解消方法があります。定番の2種類（亀とピラミッド）に加え、ヒント、アンドゥ、行き詰まった時のシャッフルがあります。",
+      "howToPlay": [
+        "同じ絵柄の牌を2枚タップしてマッチさせます。マッチできるのは空いている牌だけです：上に何も載っておらず、同じ層で少なくとも一辺が開いています。",
+        "上の牌は真下の牌を覆うので、上から下へと消していきます。最上層は常に操作可能で、消すほど下の層が開きます。",
+        "全ての牌を消すと勝利です。亀は盤面に広い甲羅を広げ、ピラミッドは5つの中央寄りの三角形を端から内側に向かって剥がしていきます。",
+        "全てのディールは解けることが保証されているので、必ず解法があります。詰まったらヒント、慌てたマッチはアンドゥ、残りはシャッフルできます。",
+        "タイマーもスコアのプレッシャーもありません——時間をかけて楽しめます。"
+      ],
+      "tips": [
+        "最初に外側を処理しましょう。層の外縁の牌は片側が空いているので、周囲を消すと中央が開きます。",
+        "明らかなペアを取る前に、それが何を解放するかを見てください。隣り合う同じ牌は簡単にマッチしますが、それらを消すことが高い山を解く唯一の方法かもしれません。",
+        "ピラミッドの層を活用しましょう：端の牌は最初から使え、頂点の牌はその層に達した時だけ触れます。",
+        "マッチがなくなったら再開ではなくシャッフルを——残りの牌が新しい解ける配置で再配されます。"
+      ],
+      "features": [
+        "重ね消しの麻雀ソリティア。亀とピラミッド配置。",
+        "全ディールは逆生成で解ける保証——必ずクリア可能。",
+        "空き牌マッチ規則。操作可能なペアを視覚ハイライト。",
+        "ヒント・アンドゥ・シャッフルで、再開せず再考できる。",
+        "デイリーチャレンジ、キャンペーン、タイマーなしリラックス。"
+      ],
+      "supportedDevices": "麻雀ソリティアクラシックは Windows・macOS・Linux・Android・iOS のブラウザで動作し、ダウンロード不要です。デスクトップ／タブレットは全層を表示しやすく、スマホは高い亀の山を自然にスクロールできます。Chrome・Safari・Firefox・Edge 対応——ゲスト進行は端末に保存されます。",
+      "faq": [
+        {
+          "question": "麻雀コネクトとはどう違いますか？",
+          "answer": "コネクトは牌を平らに置き、道でペアをつなぎます。ソリティアは牌を重ね、片側が空いて上に何もない牌をマッチさせます。パズルは違いますが、牌は同じです。"
+        },
+        {
+          "question": "「空いている」とはどういう意味ですか？",
+          "answer": "上に直接何も載っておらず、同じレベルの左右どちらかが空いていれば空いています。層の外縁の牌は外側が常に空いています。"
+        },
+        {
+          "question": "全てのゲームが解けることを保証されていますか？",
+          "answer": "はい。ディールは逆から作られます——空いている2枚を選び、取り除き、マッチを記録する——ので、どの配置にも論理的に見つけられる解き方が存在します。"
+        },
+        {
+          "question": "実際のお金がかかる賭け事はありますか？",
+          "answer": "いいえ。賭け、購入できる通貨、現金賞品のない純粋なパズルです。"
+        }
+      ]
+    }
+  },
+  "mahjong-connect": {
+    "title": "麻雀コネクトライト",
+    "description": "道でつながる空いた麻雀牌をペアで消すリラックスできるコネクトゲーム。"
+  },
+  "mahjong-classic": {
+    "title": "クラシック麻雀",
+    "description": "定番の麻雀ソリティア。開いた牌のペアを消して盤面をクリア。"
+  },
+  "mahjong-solitaire": {
+    "title": "麻雀ソリティア",
+    "description": "美しい麻雀の配置。自分のペースでタイルを消して塔をクリア。"
+  },
+  "mahjong-3d": {
+    "title": "麻雀3D",
+    "description": "奥行きのある3Dの麻雀消し。落ち着いた虹色のパレット。"
+  },
+  "onet-connect-classic": {
+    "title": "オネットクラシック",
+    "description": "定番のオネット。最大2回曲がる線で同じ牌をつなぐ。"
+  },
+  "bee-connect": {
+    "title": "ビーコネクト",
+    "description": "かわいい蜂をテーマにしたコネクト。小さな牌をつないでハニカム盤面をクリア。"
+  },
+  "aloha-mahjong": {
+    "title": "アロハ麻雀",
+    "description": "トロピカルな雰囲気の麻雀消し。明るくてのんびりした気分。"
+  },
+  "8x8-match-tiles": {
+    "title": "8x8 マッチタイル",
+    "description": "コンパクトな8x8タイルマッチ。同じタイルをつないでハイスコアを狙う。"
+  },
+  "tile-guru": {
+    "title": "タイルグル",
+    "description": "禅のようなタイルマッチパズル。落ち着いた配置で同じタイルを見つけてつなぐ。"
+  },
+  "tile-journey": {
+    "title": "タイルジャーニー",
+    "description": "タイルマッチのレベルを巡る旅。つなぎ方を計画して各ボードをクリア。"
+  }
+}

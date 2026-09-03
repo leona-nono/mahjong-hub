@@ -16,13 +16,13 @@ import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
 import MarkdownContent from '@/components/MarkdownContent';
 import { pageMeta } from '@/lib/seo';
+import { UI_LOCALES } from '@/lib/locales';
 import { getGameFeatureMarkdown } from '@/lib/game-features';
 import { brandName, formatGameMetadata, getSiteSettings } from '@/lib/site-settings';
 import { utcDateString } from '@/lib/points-rules';
 import { dailyLevelId } from '@/lib/mahjong-solitaire/progress-rules';
 
 const SITE = 'https://mahjonggame.org';
-const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
 
 const LOCALE_TO_LANGUAGE: Record<string, string> = {
   en: 'en-US',
@@ -41,7 +41,7 @@ export const revalidate = 86_400;
 export async function generateStaticParams() {
   const games = await getMergedGames();
   return games.flatMap((g) =>
-    LOCALES.map((locale) => ({ locale, slug: g.slug }))
+    UI_LOCALES.map((locale) => ({ locale, slug: g.slug }))
   );
 }
 

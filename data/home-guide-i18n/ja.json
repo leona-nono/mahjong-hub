@@ -1,0 +1,106 @@
+{
+  "eyebrow": "遊ぶ · 学ぶ · 休む",
+  "title": "なぜオンラインで麻雀を遊ぶのか——あなたに合うのはどれ？",
+  "intro": "麻雀は数分で頭をリセットしやすい遊びのひとつであり、きちんと学ぶと満足感も大きいゲームです。人が戻ってくる理由と、気分に合う遊び方を見つける近道を紹介します。",
+  "sections": [
+    {
+      "heading": "プレイヤーが続けたくなる理由",
+      "bullets": [
+        {
+          "strong": "本当の休憩で、時間の浪費ではない。",
+          "text": " ダウンロード不要、アカウント不要——卓を開いて頭をすっきり。→ ",
+          "link": {
+            "label": "ゲームホールを見る",
+            "href": "/games"
+          }
+        },
+        {
+          "strong": "気分ごとに遊び方がある。",
+          "text": " 純粋に落ち着きたい？ソリティアで牌合わせ。実力勝負？ボットとの四人卓へ。→ ",
+          "links": [
+            {
+              "label": "麻雀ソリティア",
+              "href": "/games/solitaire"
+            },
+            {
+              "label": "四人麻雀",
+              "href": "/games/classic"
+            }
+          ]
+        },
+        {
+          "strong": "本当に上達できる。",
+          "text": " 初心者ガイドが牌・ルール・和了を平易な言葉で案内——専門用語の壁はありません。→ ",
+          "link": {
+            "label": "麻雀とは？",
+            "href": "/blog/what-is-mahjong"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "10秒でゲームを選ぶ",
+      "choices": [
+        {
+          "prompt": "「5分しかない。ただリラックスしたい。」",
+          "answerStrong": "麻雀ソリティア",
+          "answerText": " —— 空いている牌を合わせて盤面を消す。タイマーなし。→ ",
+          "link": {
+            "label": "ソリティアを遊ぶ",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "prompt": "「クラシックな四人麻雀がしたい。」",
+          "answerStrong": "四人麻雀",
+          "answerText": " —— 香港・立直・国標など、AIとの対局。→ ",
+          "link": {
+            "label": "卓に座る",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "prompt": "「完全な初心者で、どこから始めればいいか分からない。」",
+          "answerSegments": [
+            {
+              "text": "まず "
+            },
+            {
+              "text": "麻雀とは？",
+              "href": "/blog/what-is-mahjong"
+            },
+            {
+              "text": "、次に "
+            },
+            {
+              "text": "麻雀の種類",
+              "href": "/blog/types-of-mahjong-games"
+            },
+            {
+              "text": " で自分のスタイルを見つけましょう。"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "closing": [
+    {
+      "text": "まだルール選びで迷うなら、"
+    },
+    {
+      "text": "アメリカ麻雀 vs 中国麻雀",
+      "href": "/blog/american-vs-chinese-mahjong"
+    },
+    {
+      "text": " か "
+    },
+    {
+      "text": "オンラインで麻雀を遊ぶ方法",
+      "href": "/blog/how-to-play-mahjong-online"
+    },
+    {
+      "text": " をどうぞ——どちらも無料、登録不要。"
+    }
+  ]
+}

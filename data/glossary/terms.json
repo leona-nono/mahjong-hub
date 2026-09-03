@@ -1,0 +1,534 @@
+{
+  "mahjong_tile": {
+    "source": "Mahjong Tile",
+    "type": "term",
+    "i18n": {
+      "zh": "麻将牌",
+      "zh-TW": "麻將牌",
+      "ja": "麻雀牌",
+      "ko": "마작 패",
+      "es": "Ficha de Mahjong",
+      "fr": "Tuile de Mahjong",
+      "de": "Mahjong-Stein",
+      "pt-BR": "Peça de Mahjong"
+    }
+  },
+  "character_tiles": {
+    "source": "Character Tiles",
+    "type": "term",
+    "i18n": {
+      "zh": "万子",
+      "zh-TW": "萬子",
+      "ja": "萬子",
+      "ko": "만자패",
+      "es": "Fichas de carácter",
+      "fr": "Tuiles de caractère",
+      "de": "Zeichensteine",
+      "pt-BR": "Peças de caractere"
+    }
+  },
+  "bamboo_tiles": {
+    "source": "Bamboo Tiles",
+    "type": "term",
+    "i18n": {
+      "zh": "条子",
+      "zh-TW": "索子",
+      "ja": "索子",
+      "ko": "삭자패",
+      "es": "Fichas de bambú",
+      "fr": "Tuiles de bambou",
+      "de": "Bambussteine",
+      "pt-BR": "Peças de bambu"
+    }
+  },
+  "dot_tiles": {
+    "source": "Dot Tiles",
+    "type": "term",
+    "i18n": {
+      "zh": "筒子",
+      "zh-TW": "筒子",
+      "ja": "筒子",
+      "ko": "통자패",
+      "es": "Fichas de punto",
+      "fr": "Tuiles de point",
+      "de": "Punktsteine",
+      "pt-BR": "Peças de ponto"
+    }
+  },
+  "wind_tiles": {
+    "source": "Wind Tiles",
+    "type": "term",
+    "i18n": {
+      "zh": "风牌",
+      "zh-TW": "風牌",
+      "ja": "風牌",
+      "ko": "풍패",
+      "es": "Fichas de viento",
+      "fr": "Tuiles de vent",
+      "de": "Windsteine",
+      "pt-BR": "Peças de vento"
+    }
+  },
+  "dragon_tiles": {
+    "source": "Dragon Tiles",
+    "type": "term",
+    "i18n": {
+      "zh": "箭牌",
+      "zh-TW": "箭牌",
+      "ja": "三元牌",
+      "ko": "용패",
+      "es": "Fichas de dragón",
+      "fr": "Tuiles de dragon",
+      "de": "Drachensteine",
+      "pt-BR": "Peças de dragão"
+    }
+  },
+  "honor_tiles": {
+    "source": "Honor Tiles",
+    "type": "term",
+    "i18n": {
+      "zh": "字牌",
+      "zh-TW": "字牌",
+      "ja": "字牌",
+      "ko": "자패",
+      "es": "Fichas de honor",
+      "fr": "Tuiles d'honneur",
+      "de": "Ehrensteine",
+      "pt-BR": "Peças de honra"
+    }
+  },
+  "number_tiles": {
+    "source": "Number Tiles",
+    "type": "term",
+    "i18n": {
+      "zh": "序数牌",
+      "zh-TW": "序數牌",
+      "ja": "数牌",
+      "ko": "수패",
+      "es": "Fichas numéricas",
+      "fr": "Tuiles numériques",
+      "de": "Zahlensteine",
+      "pt-BR": "Peças numéricas"
+    }
+  },
+  "player_hand": {
+    "source": "Player Hand",
+    "type": "term",
+    "i18n": {
+      "zh": "手牌",
+      "zh-TW": "手牌",
+      "ja": "手牌",
+      "ko": "손패",
+      "es": "Mano del jugador",
+      "fr": "Main du joueur",
+      "de": "Spielerhand",
+      "pt-BR": "Mão do jogador"
+    }
+  },
+  "tile_wall": {
+    "source": "Tile Wall",
+    "type": "term",
+    "i18n": {
+      "zh": "牌墙",
+      "zh-TW": "牌牆",
+      "ja": "牌山",
+      "ko": "패산",
+      "es": "Muro de fichas",
+      "fr": "Mur de tuiles",
+      "de": "Steinmauer",
+      "pt-BR": "Parede de peças"
+    }
+  },
+  "draw_tile": {
+    "source": "Draw a Tile",
+    "type": "term",
+    "i18n": {
+      "zh": "摸牌",
+      "zh-TW": "摸牌",
+      "ja": "ツモ",
+      "ko": "쯔모",
+      "es": "Robar una ficha",
+      "fr": "Piocher une tuile",
+      "de": "Einen Stein ziehen",
+      "pt-BR": "Comprar uma peça"
+    }
+  },
+  "discard_tile": {
+    "source": "Discard a Tile",
+    "type": "term",
+    "i18n": {
+      "zh": "打牌",
+      "zh-TW": "打牌",
+      "ja": "打牌",
+      "ko": "패 버리기",
+      "es": "Descartar una ficha",
+      "fr": "Jeter une tuile",
+      "de": "Einen Stein abwerfen",
+      "pt-BR": "Descartar uma peça"
+    }
+  },
+  "chow": {
+    "source": "Chow",
+    "type": "term",
+    "i18n": {
+      "zh": "吃",
+      "zh-TW": "吃",
+      "ja": "チー",
+      "ko": "치",
+      "es": "Chow",
+      "fr": "Chow",
+      "de": "Chow",
+      "pt-BR": "Chow"
+    }
+  },
+  "pong": {
+    "source": "Pong",
+    "type": "term",
+    "i18n": {
+      "zh": "碰",
+      "zh-TW": "碰",
+      "ja": "ポン",
+      "ko": "퐁",
+      "es": "Pong",
+      "fr": "Pong",
+      "de": "Pong",
+      "pt-BR": "Pong"
+    }
+  },
+  "kong": {
+    "source": "Kong",
+    "type": "term",
+    "i18n": {
+      "zh": "杠",
+      "zh-TW": "槓",
+      "ja": "カン",
+      "ko": "캉",
+      "es": "Kong",
+      "fr": "Kong",
+      "de": "Kong",
+      "pt-BR": "Kong"
+    }
+  },
+  "waiting_hand": {
+    "source": "Waiting Hand",
+    "type": "term",
+    "i18n": {
+      "zh": "听牌",
+      "zh-TW": "聽牌",
+      "ja": "テンパイ",
+      "ko": "텐파이",
+      "es": "Mano en espera",
+      "fr": "Main en attente",
+      "de": "Wartehand",
+      "pt-BR": "Mão em espera"
+    }
+  },
+  "win_hand": {
+    "source": "Win / Complete Hand",
+    "type": "term",
+    "i18n": {
+      "zh": "胡牌",
+      "zh-TW": "胡牌",
+      "ja": "和了",
+      "ko": "화료",
+      "es": "Victoria",
+      "fr": "Victoire",
+      "de": "Gewinn",
+      "pt-BR": "Vitória"
+    }
+  },
+  "all_pungs_hand": {
+    "source": "All Pungs Hand",
+    "type": "term",
+    "i18n": {
+      "zh": "对对胡",
+      "zh-TW": "碰碰胡",
+      "ja": "対々和",
+      "ko": "대대화",
+      "es": "Mano de todos los pongs",
+      "fr": "Main de tous les pongs",
+      "de": "Alle-Pong-Hand",
+      "pt-BR": "Mão de todos os pongs"
+    }
+  },
+  "pure_one_suit": {
+    "source": "Pure One Suit",
+    "type": "term",
+    "i18n": {
+      "zh": "清一色",
+      "zh-TW": "清一色",
+      "ja": "清一色",
+      "ko": "청일색",
+      "es": "Un solo palo puro",
+      "fr": "Couleur pure",
+      "de": "Reine Einzelfarbe",
+      "pt-BR": "Naipe puro"
+    }
+  },
+  "mixed_one_suit": {
+    "source": "Mixed One Suit",
+    "type": "term",
+    "i18n": {
+      "zh": "混一色",
+      "zh-TW": "混一色",
+      "ja": "混一色",
+      "ko": "혼일색",
+      "es": "Un solo palo mixto",
+      "fr": "Couleur mixte",
+      "de": "Gemischte Einzelfarbe",
+      "pt-BR": "Naipe misto"
+    }
+  },
+  "seven_pairs": {
+    "source": "Seven Pairs",
+    "type": "term",
+    "i18n": {
+      "zh": "七对",
+      "zh-TW": "七對子",
+      "ja": "七対子",
+      "ko": "치토이츠",
+      "es": "Siete pares",
+      "fr": "Sept paires",
+      "de": "Sieben Paare",
+      "pt-BR": "Sete pares"
+    }
+  },
+  "four_triplets": {
+    "source": "Four Concealed Triplets",
+    "type": "term",
+    "i18n": {
+      "zh": "四暗刻",
+      "zh-TW": "四暗刻",
+      "ja": "四暗刻",
+      "ko": "사암각",
+      "es": "Cuatro triples ocultos",
+      "fr": "Quatre triplets cachés",
+      "de": "Vier verdeckte Drillinge",
+      "pt-BR": "Quatro triplas ocultas"
+    }
+  },
+  "all_simple_tiles": {
+    "source": "All Simple Tiles",
+    "type": "term",
+    "i18n": {
+      "zh": "断幺九",
+      "zh-TW": "斷么九",
+      "ja": "断幺九",
+      "ko": "탕야오",
+      "es": "Sin fichas terminales",
+      "fr": "Sans tuiles terminales",
+      "de": "Keine Endsteine",
+      "pt-BR": "Sem peças terminais"
+    }
+  },
+  "kong_bloom_win": {
+    "source": "Kong Bloom Win",
+    "type": "term",
+    "i18n": {
+      "zh": "杠上开花",
+      "zh-TW": "槓上開花",
+      "ja": "嶺上開花",
+      "ko": "영상개화",
+      "es": "Victoria tras Kong",
+      "fr": "Victoire après Kong",
+      "de": "Sieg nach Kong-Zug",
+      "pt-BR": "Vitória após Kong"
+    }
+  },
+  "last_tile_win": {
+    "source": "Last Tile Win",
+    "type": "term",
+    "i18n": {
+      "zh": "海底捞月",
+      "zh-TW": "海底撈月",
+      "ja": "海底摸月",
+      "ko": "해저월",
+      "es": "Victoria con última ficha",
+      "fr": "Victoire avec dernière tuile",
+      "de": "Sieg mit letztem Stein",
+      "pt-BR": "Vitória com a última peça"
+    }
+  },
+  "all_sequences_hand": {
+    "source": "All Sequences Hand",
+    "type": "term",
+    "i18n": {
+      "zh": "平和",
+      "zh-TW": "平和",
+      "ja": "平和",
+      "ko": "핑후",
+      "es": "Mano de secuencias",
+      "fr": "Main de séquences",
+      "de": "Folgenhand",
+      "pt-BR": "Mão de sequências"
+    }
+  },
+  "single_tile_wait": {
+    "source": "Single Tile Wait",
+    "type": "term",
+    "i18n": {
+      "zh": "单钓",
+      "zh-TW": "單釣",
+      "ja": "単騎待ち",
+      "ko": "단기 대기",
+      "es": "Espera de una ficha",
+      "fr": "Attente d'une tuile",
+      "de": "Einzelstein-Wartezug",
+      "pt-BR": "Espera de uma peça"
+    }
+  },
+  "self_draw_win": {
+    "source": "Self-Draw Win",
+    "type": "term",
+    "i18n": {
+      "zh": "自摸",
+      "zh-TW": "自摸",
+      "ja": "ツモ和了",
+      "ko": "쯔모",
+      "es": "Victoria por robo propio",
+      "fr": "Victoire par pioche",
+      "de": "Sieg durch eigenen Zug",
+      "pt-BR": "Vitória por compra própria"
+    }
+  },
+  "deal_in_win": {
+    "source": "Deal-In Win",
+    "type": "term",
+    "i18n": {
+      "zh": "点炮",
+      "zh-TW": "放銃",
+      "ja": "ロン",
+      "ko": "론",
+      "es": "Victoria por descarte ajeno",
+      "fr": "Victoire sur jet adverse",
+      "de": "Sieg durch fremden Abwurf",
+      "pt-BR": "Vitória por descarte alheio"
+    }
+  },
+  "rob_kong_win": {
+    "source": "Rob the Kong Win",
+    "type": "term",
+    "i18n": {
+      "zh": "抢杠胡",
+      "zh-TW": "搶槓胡",
+      "ja": "槍槓",
+      "ko": "창캉",
+      "es": "Ganar robando un Kong",
+      "fr": "Gagner en volant un Kong",
+      "de": "Kong erobern und gewinnen",
+      "pt-BR": "Ganhar roubando um Kong"
+    }
+  },
+  "exposed_kong": {
+    "source": "Exposed Kong",
+    "type": "term",
+    "i18n": {
+      "zh": "明杠",
+      "zh-TW": "明槓",
+      "ja": "明カン",
+      "ko": "명캉",
+      "es": "Kong expuesto",
+      "fr": "Kong exposé",
+      "de": "Offener Kong",
+      "pt-BR": "Kong exposto"
+    }
+  },
+  "concealed_kong": {
+    "source": "Concealed Kong",
+    "type": "term",
+    "i18n": {
+      "zh": "暗杠",
+      "zh-TW": "暗槓",
+      "ja": "暗カン",
+      "ko": "암캉",
+      "es": "Kong oculto",
+      "fr": "Kong caché",
+      "de": "Verdeckter Kong",
+      "pt-BR": "Kong oculto"
+    }
+  },
+  "easy_learn_play": {
+    "source": "Easy to learn and play for all players",
+    "type": "text",
+    "i18n": {
+      "zh": "上手简单、容易玩",
+      "zh-TW": "上手簡單、容易玩",
+      "ja": "初心者でも簡単に学びプレイできる",
+      "ko": "모든 플레이어가 쉽게 배우고 플레이 가능",
+      "es": "Fácil de aprender y jugar para todos",
+      "fr": "Facile à apprendre et à jouer pour tous",
+      "de": "Einfach zu lernen und zu spielen für alle",
+      "pt-BR": "Fácil de aprender e jogar para todos"
+    }
+  },
+  "beginner_friendly": {
+    "source": "Beginner-friendly gameplay and rules",
+    "type": "text",
+    "i18n": {
+      "zh": "新手快速入门",
+      "zh-TW": "新手快速入門",
+      "ja": "初心者向けのルールとプレイ",
+      "ko": "초보자 친화적인 규칙과 플레이",
+      "es": "Reglas amigables para principiantes",
+      "fr": "Règles adaptées aux débutants",
+      "de": "Anfängerfreundliche Regeln",
+      "pt-BR": "Regras amigáveis para iniciantes"
+    }
+  },
+  "casual_relaxing_gameplay": {
+    "source": "Casual and relaxing gameplay for daily entertainment",
+    "type": "text",
+    "i18n": {
+      "zh": "玩法自由、休闲解压",
+      "zh-TW": "玩法自由、休閒解壓",
+      "ja": "カジュアルでリラックスできる日常娯楽",
+      "ko": "일상 오락을 위한 캐주얼하고 편안한 플레이",
+      "es": "Jugabilidad casual y relajante",
+      "fr": "Gameplay décontracté et relaxant",
+      "de": "Zwangloses und entspannendes Gameplay",
+      "pt-BR": "Jogabilidade casual e relaxante"
+    }
+  },
+  "improve_winning_chance": {
+    "source": "Master basic strategies to improve your winning chances",
+    "type": "text",
+    "i18n": {
+      "zh": "掌握技巧更容易胡牌",
+      "zh-TW": "掌握技巧更容易胡牌",
+      "ja": "基本戦略を習得すると勝率が向上します",
+      "ko": "기본 전략을 익히면 승률이 높아집니다",
+      "es": "Domina estrategias básicas para ganar más",
+      "fr": "Maîtrisez les stratégies de base pour gagner plus",
+      "de": "Grundstrategien meistern, um öfter zu gewinnen",
+      "pt-BR": "Domine estratégias básicas para vencer mais"
+    }
+  },
+  "multiplayer_real_time_game": {
+    "source": "Multiplayer real-time mahjong match",
+    "type": "text",
+    "i18n": {
+      "zh": "多人对局、实时游玩",
+      "zh-TW": "多人對局、即時遊玩",
+      "ja": "リアルタイム多人数麻雀対局",
+      "ko": "실시간 다인 마작 대국",
+      "es": "Partida de mahjong multijugador en tiempo real",
+      "fr": "Match de mahjong multijoueur en temps réel",
+      "de": "Echtzeit-Mahjong für mehrere Spieler",
+      "pt-BR": "Partida de mahjong multijogador em tempo real"
+    }
+  },
+  "clear_simple_rules": {
+    "source": "Straightforward and clear game rules",
+    "type": "text",
+    "i18n": {
+      "zh": "规则简单易懂",
+      "zh-TW": "規則簡單易懂",
+      "ja": "シンプルで分かりやすいゲームルール",
+      "ko": "간단하고 명확한 게임 규칙",
+      "es": "Reglas de juego sencillas y claras",
+      "fr": "Règles de jeu simples et claires",
+      "de": "Einfache und klare Spielregeln",
+      "pt-BR": "Regras de jogo simples e claras"
+    }
+  }
+}

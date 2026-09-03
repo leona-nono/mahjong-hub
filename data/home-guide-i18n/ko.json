@@ -1,0 +1,106 @@
+{
+  "eyebrow": "플레이 · 학습 · 휴식",
+  "title": "왜 온라인으로 마작을 할까——나에게 맞는 게임은?",
+  "intro": "마작은 몇 분 만에 머리를 비우기 쉬운 놀이이자, 제대로 배우면 만족감도 큰 게임입니다. 사람들이 다시 찾는 이유와, 기분에 맞는 플레이를 고르는 빠른 방법을 소개합니다.",
+  "sections": [
+    {
+      "heading": "플레이어가 머무르는 이유",
+      "bullets": [
+        {
+          "strong": "진짜 휴식이지, 시간 낭비가 아닙니다.",
+          "text": " 다운로드 없이, 계정 없이——보드를 열고 머리를 비우세요. → ",
+          "link": {
+            "label": "게임홀 둘러보기",
+            "href": "/games"
+          }
+        },
+        {
+          "strong": "기분마다 맞는 버전이 있습니다.",
+          "text": " 순수하게 쉬고 싶다면? 솔리테어로 타일 맞추기. 실력 대결이라면? 봇과 4인 테이블. → ",
+          "links": [
+            {
+              "label": "마작 솔리테어",
+              "href": "/games/solitaire"
+            },
+            {
+              "label": "4인 마작",
+              "href": "/games/classic"
+            }
+          ]
+        },
+        {
+          "strong": "정말로 실력이 늘 수 있습니다.",
+          "text": " 초보자 가이드가 패·규칙·화료를 쉬운 말로 안내합니다——전문 용어 장벽이 없습니다. → ",
+          "link": {
+            "label": "마작이란?",
+            "href": "/blog/what-is-mahjong"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "10초 만에 게임 고르기",
+      "choices": [
+        {
+          "prompt": "「5분뿐이고 그냥 쉬고 싶어요.」",
+          "answerStrong": "마작 솔리테어",
+          "answerText": " —— 열린 타일을 맞춰 보드를 지웁니다. 타이머 없음. → ",
+          "link": {
+            "label": "솔리테어 플레이",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "prompt": "「클래식 4인 마작을 하고 싶어요.」",
+          "answerStrong": "4인 마작",
+          "answerText": " —— 홍콩·리치·국표 등, AI와 대국. → ",
+          "link": {
+            "label": "테이블에 앉기",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "prompt": "「완전 초보인데 어디서 시작할지 모르겠어요.」",
+          "answerSegments": [
+            {
+              "text": "먼저 "
+            },
+            {
+              "text": "마작이란?",
+              "href": "/blog/what-is-mahjong"
+            },
+            {
+              "text": ", 그다음 "
+            },
+            {
+              "text": "마작 종류",
+              "href": "/blog/types-of-mahjong-games"
+            },
+            {
+              "text": "로 스타일을 찾아보세요."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "closing": [
+    {
+      "text": "아직 룰을 고르는 중이라면 "
+    },
+    {
+      "text": "미국 vs 중국 마작",
+      "href": "/blog/american-vs-chinese-mahjong"
+    },
+    {
+      "text": " 또는 "
+    },
+    {
+      "text": "온라인으로 마작하는 법",
+      "href": "/blog/how-to-play-mahjong-online"
+    },
+    {
+      "text": "을 읽어보세요——둘 다 무료, 가입 불필요."
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "title": "Mahjong Hub 소개",
+  "intro": "Mahjong Hub는 무료 온라인 마작 게임홀입니다. 목적은 하나——마작을 쉽게 즐기고 쉽게 배우게 하는 것. 5분의 여유든 5년의 경험이든 상관없습니다. 다운로드 없이, 계정 없이도 시작할 수 있고, 실제 돈 압박도 없이 게임만 있습니다.",
+  "metaDescription": "Mahjong Hub는 마작 솔리테어와 4인 테이블, 초보자를 위한 쉬운 가이드를 갖춘 무료·무설치 온라인 게임홀입니다. 우리는 누구이고 여기서 무엇을 찾을 수 있는지 소개합니다.",
+  "sections": [
+    {
+      "heading": "우리는 누구인가",
+      "paragraphs": [
+        [
+          {
+            "text": "우리는 마작을 좋아하는 작은 팀입니다. 친구를 ‘한 판 하기’, ‘규칙 확인’, ‘패 알아보기’를 위해 세 사이트로 계속 보냈기에, 세 가지를 한곳에서 할 수 있는 곳을 만들었습니다. Mahjong Hub는 편안한 타일 맞추기와 클래식 4인 마작, 그리고 규칙서 전문 용어가 아니라 쉬운 말로 쓴 초보자 가이드를 모았습니다."
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "여기서 찾을 수 있는 것",
+      "bullets": [
+        {
+          "label": "마작 솔리테어",
+          "text": " —— 타이머 없는 차분한 타일 맞추기. → ",
+          "link": {
+            "label": "솔리테어 플레이",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "label": "4인 마작",
+          "text": " —— AI와의 진짜 대국. 홍콩·리치·국표·미국·대만·쓰촨 룰 지원. → ",
+          "link": {
+            "label": "테이블에 앉기",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "label": "초보자 가이드",
+          "segments": [
+            {
+              "text": " —— "
+            },
+            {
+              "text": "마작이란?",
+              "href": "/blog/what-is-mahjong"
+            },
+            {
+              "text": "부터 "
+            },
+            {
+              "text": "마작 종류",
+              "href": "/blog/types-of-mahjong-games"
+            },
+            {
+              "text": "까지, 자신의 속도로 패·선언·화료를 배울 수 있습니다. → "
+            },
+            {
+              "text": "블로그 보기",
+              "href": "/blog"
+            }
+          ]
+        },
+        {
+          "label": "전체 게임홀",
+          "text": " —— 모든 보드와 퍼즐을 한곳에. → ",
+          "link": {
+            "label": "게임홀 열기",
+            "href": "/games"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "이런 분께",
+      "paragraphs": [
+        [
+          {
+            "text": "마작이 처음이고 어디서 시작할지 모르겠다면 "
+          },
+          {
+            "text": "온라인으로 마작하는 법",
+            "href": "/blog/how-to-play-mahjong-online"
+          },
+          {
+            "text": "부터 보세요. 이미 알고 룰을 고르는 중이라면 "
+          },
+          {
+            "text": "미국 vs 중국 마작",
+            "href": "/blog/american-vs-chinese-mahjong"
+          },
+          {
+            "text": "으로 차이를 빠르게 확인할 수 있습니다. 실물 세트를 고민 중이라면 "
+          },
+          {
+            "text": "초보자용 마작 세트",
+            "href": "/blog/best-mahjong-sets-for-beginners"
+          },
+          {
+            "text": "와 "
+          },
+          {
+            "text": "마작 구매처",
+            "href": "/blog/where-to-buy-mahjong-set"
+          },
+          {
+            "text": " 가이드도 도움이 됩니다."
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "왜 무료인가",
+      "paragraphs": [
+        [
+          {
+            "text": "Mahjong Hub는 무료로 플레이할 수 있습니다. 운영은 광고로 유지하며 페이월이 아닙니다——실제 돈 도박도 전혀 없습니다. 여기는 게임홀이지 카지노가 아니기 때문입니다. 점수와 진행은 브라우저에 남으며, 공유 여부는 여러분이 결정합니다."
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "시작하기",
+      "paragraphs": [
+        [
+          {
+            "text": "기분만 고르면 됩니다. 약속은 필요 없어요:"
+          }
+        ]
+      ],
+      "bullets": [
+        {
+          "label": "조용히 쉬고 싶다면?",
+          "text": " → ",
+          "link": {
+            "label": "마작 솔리테어",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "label": "본격 4인 대국을 원한다면?",
+          "text": " → ",
+          "link": {
+            "label": "4인 마작",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "label": "먼저 배우고 싶다면?",
+          "text": " → ",
+          "link": {
+            "label": "초보자를 위한 마작",
+            "href": "/blog"
+          }
+        }
+      ],
+      "afterBullets": [
+        [
+          {
+            "text": "그게 전부입니다. 보드를 열고 플레이하세요."
+          }
+        ]
+      ]
+    }
+  ]
+}

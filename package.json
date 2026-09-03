@@ -13,6 +13,8 @@
     "assets:tiles": "node scripts/generate-mahjong-tile-webp.mjs",
     "assets:solitaire": "node scripts/generate-solitaire-tile-placeholders.mjs",
     "catalog:solitaire": "npx tsx scripts/build-solitaire-catalog.ts",
+    "validate:blog-i18n": "npx tsx scripts/validate-blog-i18n-json.ts",
+    "validate:content-i18n": "npx tsx scripts/validate-content-i18n.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {

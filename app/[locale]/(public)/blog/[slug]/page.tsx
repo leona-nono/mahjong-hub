@@ -4,19 +4,19 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import MarkdownContent from '@/components/MarkdownContent';
 import { pageMeta } from '@/lib/seo';
+import { UI_LOCALES } from '@/lib/locales';
 import { getBlogPosts } from '@/data/blog';
 import { getPublicGuide, localizeStaticGuide } from '@/lib/guides';
 import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
-const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
 
 export const revalidate = 86_400;
 
 export function generateStaticParams() {
   const posts = getBlogPosts();
   return posts.flatMap((post) =>
-    LOCALES.map((locale) => ({ locale, slug: post.slug }))
+    UI_LOCALES.map((locale) => ({ locale, slug: post.slug }))
   );
 }
 

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { routing } from '@/i18n/routing';
+import { INDEXABLE_LOCALES } from '@/lib/locales';
 import { games } from '@/data/games';
 import { getBlogPosts } from '@/data/blog';
 
@@ -10,6 +10,9 @@ const BASE = 'https://mahjonggame.org';
  * Hitting the DB here previously made /sitemap.xml a serverless function
  * (and 500 when Neon was slow). Admin CMS overlay is not required for
  * crawlers; native slugs live in `data/games.ts` / `data/blog.ts`.
+ *
+ * Only INDEXABLE_LOCALES are emitted so European UI locales (English body
+ * fallback) are not presented as duplicate indexed URLs.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
@@ -23,15 +26,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const alternatesFor = (path: string) => {
     const languages = Object.fromEntries(
-      routing.locales.map((locale) => [locale, `${BASE}/${locale}${path}`])
+      INDEXABLE_LOCALES.map((locale) => [locale, `${BASE}/${locale}${path}`])
     );
-    // x-default points at the default locale so undefined/region-agnostic
+    // x-default points at English so undefined/region-agnostic
     // visitors (and crawlers without a language hint) land on English.
-    languages['x-default'] = `${BASE}/${routing.defaultLocale}${path}`;
+    languages['x-default'] = `${BASE}/en${path}`;
     return languages;
   };
 
-  for (const locale of routing.locales) {
+  for (const locale of INDEXABLE_LOCALES) {
     entries.push({
       url: `${BASE}/${locale}`,
       lastModified,

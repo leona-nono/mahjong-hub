@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { INDEXABLE_LOCALES, isIndexableLocale, ogLocale } from '@/lib/locales';
 
 export const SITE_BASE_URL = 'https://mahjonggame.org';
 
@@ -27,7 +28,7 @@ export function socialShareMeta(opts: {
       title: opts.title,
       description: opts.description,
       siteName: opts.siteName,
-      locale: opts.locale,
+      locale: ogLocale(opts.locale),
       images: [
         {
           url: image,
@@ -46,24 +47,26 @@ export function socialShareMeta(opts: {
   };
 }
 
-// Homepage-level hreflang alternates (locale roots). Used only as the fallback
-// in the public layout — individual public pages build their own per-path
-// alternates via `alternatesFor` so the hreflang tags point at the equivalent
-// page in each locale rather than the locale root. Must include x-default
-// (falls back to English) so language-agnostic crawlers land on a sensible
-// version. Keep in sync with the locales in i18n/routing.ts.
-export const LANGUAGE_ALTERNATES = {
-  en: `${SITE_BASE_URL}/en`,
-  zh: `${SITE_BASE_URL}/zh`,
-  'zh-TW': `${SITE_BASE_URL}/zh-TW`,
-  ja: `${SITE_BASE_URL}/ja`,
-  ko: `${SITE_BASE_URL}/ko`,
-  es: `${SITE_BASE_URL}/es`,
-  'pt-BR': `${SITE_BASE_URL}/pt-BR`,
-  fr: `${SITE_BASE_URL}/fr`,
-  de: `${SITE_BASE_URL}/de`,
-  'x-default': `${SITE_BASE_URL}/en`
-} as const;
+/** Build hreflang map for indexable locales only (+ x-default → English). */
+function indexableLanguageMap(path = ''): Record<string, string> {
+  const languages: Record<string, string> = {};
+  for (const locale of INDEXABLE_LOCALES) {
+    languages[locale] = `${SITE_BASE_URL}/${locale}${path}`;
+  }
+  languages['x-default'] = `${SITE_BASE_URL}/en${path}`;
+  return languages;
+}
+
+// Homepage-level hreflang alternates (locale roots). Only indexable locales —
+// European UI locales stay switchable but are excluded until long-form copy exists.
+export const LANGUAGE_ALTERNATES = indexableLanguageMap('') as {
+  en: string;
+  zh: string;
+  'zh-TW': string;
+  ja: string;
+  ko: string;
+  'x-default': string;
+};
 
 // Self-referencing canonical plus per-locale hreflang alternates for a public
 // page. `path` is the route after the locale, e.g. '' (home), '/games',
@@ -76,24 +79,14 @@ export function alternatesFor(
 ): NonNullable<Metadata['alternates']> {
   return {
     canonical: `${SITE_BASE_URL}/${locale}${path}`,
-    languages: {
-      en: `${SITE_BASE_URL}/en${path}`,
-      zh: `${SITE_BASE_URL}/zh${path}`,
-      'zh-TW': `${SITE_BASE_URL}/zh-TW${path}`,
-      ja: `${SITE_BASE_URL}/ja${path}`,
-      ko: `${SITE_BASE_URL}/ko${path}`,
-      es: `${SITE_BASE_URL}/es${path}`,
-      'pt-BR': `${SITE_BASE_URL}/pt-BR${path}`,
-      fr: `${SITE_BASE_URL}/fr${path}`,
-      de: `${SITE_BASE_URL}/de${path}`,
-      'x-default': `${SITE_BASE_URL}/en${path}`
-    }
+    languages: indexableLanguageMap(path)
   };
 }
 
 /**
  * Full public-page metadata: self-canonical, full hreflang (+ x-default),
  * and complete Open Graph / Twitter cards (title, description, image, url).
+ * Non-indexable locales (es/fr/de/pt-BR) get robots noindex until translated.
  */
 export function pageMeta(opts: {
   locale: string;
@@ -117,12 +110,17 @@ export function pageMeta(opts: {
   if (opts.type && share.openGraph) {
     share.openGraph = { ...share.openGraph, type: opts.type };
   }
+  const robots =
+    opts.robots ??
+    (isIndexableLocale(opts.locale)
+      ? undefined
+      : { index: false, follow: true });
   return {
     title: { absolute: opts.title },
     description: opts.description,
     alternates: alternatesFor(opts.locale, opts.path),
     ...share,
-    ...(opts.robots ? { robots: opts.robots } : {}),
+    ...(robots ? { robots } : {}),
     ...(opts.keywords ? { keywords: opts.keywords } : {})
   };
 }

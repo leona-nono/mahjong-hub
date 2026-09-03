@@ -3,7 +3,7 @@ import type { BlogPost } from './blog';
 /**
  * Cornerstone SEO articles (10) — traffic drivers published under /blog/.
  * English full content here; title/description translations live in
- * data/blog.i18n.ts. Each article ends with a "Play Now" CTA back to the
+ * data/blog-i18n/{locale}.json. Each article ends with a "Play Now" CTA back to the
  * game pages (content earns search traffic, game pages keep users and ads).
  */
 export const cornerstonePosts: BlogPost[] = [

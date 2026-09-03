@@ -1,0 +1,106 @@
+{
+  "eyebrow": "玩 · 學 · 放鬆",
+  "title": "為什麼線上玩麻將——哪一款適合你？",
+  "intro": "麻將是幾分鐘清空頭腦最輕鬆的方式之一，也是真正學會之後最有成就感的遊戲之一。下面說明人們為什麼會回來，以及如何快速找到符合當下心情的玩法。",
+  "sections": [
+    {
+      "heading": "玩家為什麼願意留下",
+      "bullets": [
+        {
+          "strong": "真正的休息，不是時間黑洞。",
+          "text": " 無需下載、無需註冊——打開一副牌，清空一下腦子。→ ",
+          "link": {
+            "label": "瀏覽遊戲廳",
+            "href": "/games"
+          }
+        },
+        {
+          "strong": "每種心情都有對應玩法。",
+          "text": " 想純放鬆？接龍配對。想拼技術？坐上四人牌桌對戰電腦。→ ",
+          "links": [
+            {
+              "label": "麻將接龍",
+              "href": "/games/solitaire"
+            },
+            {
+              "label": "四人麻將",
+              "href": "/games/classic"
+            }
+          ]
+        },
+        {
+          "strong": "真的能變強。",
+          "text": " 新手指南用大白話講清認牌、規則與胡牌——沒有術語牆。→ ",
+          "link": {
+            "label": "什麼是麻將？",
+            "href": "/blog/what-is-mahjong"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "十秒選好你的遊戲",
+      "choices": [
+        {
+          "prompt": "「我只有五分鐘，只想放鬆一下。」",
+          "answerStrong": "麻將接龍",
+          "answerText": " —— 匹配空閒牌、清盤，無計時。→ ",
+          "link": {
+            "label": "玩接龍",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "prompt": "「我想打經典四人麻將。」",
+          "answerStrong": "四人麻將",
+          "answerText": " —— 香港、立直、國標等規則，對戰 AI。→ ",
+          "link": {
+            "label": "坐上牌桌",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "prompt": "「我是純新手，不知從哪開始。」",
+          "answerSegments": [
+            {
+              "text": "先看 "
+            },
+            {
+              "text": "什麼是麻將？",
+              "href": "/blog/what-is-mahjong"
+            },
+            {
+              "text": "，再看 "
+            },
+            {
+              "text": "麻將玩法類型",
+              "href": "/blog/types-of-mahjong-games"
+            },
+            {
+              "text": "，找到適合自己的風格。"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "closing": [
+    {
+      "text": "還在選規則？讀一讀 "
+    },
+    {
+      "text": "美式 vs 中式麻將",
+      "href": "/blog/american-vs-chinese-mahjong"
+    },
+    {
+      "text": " 或 "
+    },
+    {
+      "text": "如何線上玩麻將",
+      "href": "/blog/how-to-play-mahjong-online"
+    },
+    {
+      "text": " —— 免費，無需註冊。"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { absoluteUrl, SITE_BASE_URL } from '@/lib/seo';
+import { INDEXABLE_LOCALES } from '@/lib/locales';
 import { brandName, type PublicSiteSettings } from '@/lib/site-settings';
 
 /**
@@ -63,7 +64,7 @@ export function homeJsonLd(opts: {
     name: opts.site.siteTitle,
     description,
     url: SITE_BASE_URL,
-    inLanguage: ['en', 'zh', 'zh-TW', 'ja', 'ko', 'es', 'pt-BR', 'fr', 'de'],
+    inLanguage: [...INDEXABLE_LOCALES],
     publisher: { '@id': `${SITE_BASE_URL}/#organization` }
   };
 

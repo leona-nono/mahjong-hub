@@ -1,0 +1,163 @@
+{
+  "title": "关于 Mahjong Hub",
+  "intro": "Mahjong Hub 是一个免费在线麻将游戏厅，只做一件事：让麻将既好玩又好学——不管你只有五分钟，还是已经打了五年。无需下载、无需注册即可开玩，没有真钱压力，只有游戏本身。",
+  "metaDescription": "Mahjong Hub 是免费、免下载的在线麻将游戏厅，提供接龙与四人牌桌，以及通俗易懂的新手指南。了解我们是谁、这里有什么。",
+  "sections": [
+    {
+      "heading": "我们是谁",
+      "paragraphs": [
+        [
+          {
+            "text": "我们是一小群麻将爱好者。以前总要把朋友分别打发到三个网站：一个打牌、一个查规则、一个认牌。于是我们做了一个能同时搞定这三件事的地方。Mahjong Hub 汇集轻松的配对消除与经典四人麻将，以及用大白话写成的新手指南——不是规则书里的术语堆砌，而是我们希望当初有人这样讲给我们听的那种说明。"
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "这里有什么",
+      "bullets": [
+        {
+          "label": "麻将接龙",
+          "text": " —— 无计时的冷静配对，想放松时来一局。→ ",
+          "link": {
+            "label": "玩接龙",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "label": "四人麻将",
+          "text": " —— 与 AI 对弈的真麻将，涵盖香港、立直、国标、美式、台湾与四川规则。→ ",
+          "link": {
+            "label": "坐上牌桌",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "label": "新手指南",
+          "segments": [
+            {
+              "text": " —— 从 "
+            },
+            {
+              "text": "什么是麻将？",
+              "href": "/blog/what-is-mahjong"
+            },
+            {
+              "text": " 到 "
+            },
+            {
+              "text": "麻将玩法类型",
+              "href": "/blog/types-of-mahjong-games"
+            },
+            {
+              "text": "，按自己的节奏学认牌、叫牌与胡牌。→ "
+            },
+            {
+              "text": "浏览博客",
+              "href": "/blog"
+            }
+          ]
+        },
+        {
+          "label": "完整游戏厅",
+          "text": " —— 所有牌桌与谜题集中在一处。→ ",
+          "link": {
+            "label": "打开游戏厅",
+            "href": "/games"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "适合谁",
+      "paragraphs": [
+        [
+          {
+            "text": "刚接触麻将、不知从哪开始？先看 "
+          },
+          {
+            "text": "如何在线玩麻将",
+            "href": "/blog/how-to-play-mahjong-online"
+          },
+          {
+            "text": "，再往下走。已经会打、在选规则？ "
+          },
+          {
+            "text": "美式 vs 中式麻将",
+            "href": "/blog/american-vs-chinese-mahjong"
+          },
+          {
+            "text": " 能快速讲清差别。想买实体牌？我们的 "
+          },
+          {
+            "text": "新手麻将套装推荐",
+            "href": "/blog/best-mahjong-sets-for-beginners"
+          },
+          {
+            "text": " 与 "
+          },
+          {
+            "text": "哪里买麻将",
+            "href": "/blog/where-to-buy-mahjong-set"
+          },
+          {
+            "text": " 指南也帮得上忙。"
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "为什么免费",
+      "paragraphs": [
+        [
+          {
+            "text": "Mahjong Hub 免费游玩。我们靠广告维持运营，而不是付费墙——也绝没有真钱赌博，因为这里是游戏厅，不是赌场。分数与进度保存在你的浏览器里，分享与否由你决定。"
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "开始玩",
+      "paragraphs": [
+        [
+          {
+            "text": "选一种心情，不必先做承诺："
+          }
+        ]
+      ],
+      "bullets": [
+        {
+          "label": "想安静休息？",
+          "text": " → ",
+          "link": {
+            "label": "麻将接龙",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "label": "想打完整四人局？",
+          "text": " → ",
+          "link": {
+            "label": "四人麻将",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "label": "想先学习？",
+          "text": " → ",
+          "link": {
+            "label": "麻将入门",
+            "href": "/blog"
+          }
+        }
+      ],
+      "afterBullets": [
+        [
+          {
+            "text": "就这样。打开一副牌，开始玩吧。"
+          }
+        ]
+      ]
+    }
+  ]
+}

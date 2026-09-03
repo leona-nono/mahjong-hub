@@ -1,11 +1,17 @@
 /**
- * 5-language overrides for the SEO blog.
+ * Blog locale overrides — loaded from JSON under data/blog-i18n/.
  *
- * English base lives in data/blog.ts; getLocalizedBlogPost() merges these and
- * falls back to English for any missing key, so partial translations are safe.
- * Body sections + FAQ can be added progressively under `sections`/`faq`.
+ * English base: data/blog.ts + data/blog.cornerstone.ts
+ * Other locales: edit data/blog-i18n/{zh,zh-TW,ja,ko}.json (one file per locale).
+ * Each slug entry must include title, description, sections[], faq[] matching
+ * the English section count and body paragraph counts.
  */
-import type { BlogSection, BlogFaq } from './blog';
+import type { BlogFaq, BlogSection } from './blog';
+import ja from './blog-i18n/ja.json';
+import ko from './blog-i18n/ko.json';
+import zh from './blog-i18n/zh.json';
+import zhTW from './blog-i18n/zh-TW.json';
+import type { BlogLocaleJson } from './blog-i18n/types';
 
 export type LocaleCode = 'en' | 'zh' | 'zh-TW' | 'ja' | 'ko';
 
@@ -16,139 +22,38 @@ export interface BlogI18n {
   faq?: Partial<Record<LocaleCode, BlogFaq[]>>;
 }
 
-export const BLOG_I18N: Record<string, BlogI18n> = {
-  'what-is-mahjong': {
-    title: {
-      zh: '什么是麻将？完整新手指南',
-      'zh-TW': '什麼是麻將？完整新手指南',
-      ja: '麻雀とは？初心者のための完全ガイド',
-      ko: '마작이란 무엇인가? 초보자 완전 가이드'
-    },
-    description: {
-      zh: '麻将是一款四人牌类游戏，讲究技巧、策略与运气。了解麻将是什么、牌如何组成、世界各地的主要玩法，以及它和网上常见的配对消除游戏有何不同。',
-      'zh-TW': '麻將是一款四人牌類遊戲，講究技巧、策略與運氣。了解麻將是什麼、牌如何組成、世界各地的主要玩法，以及它和網上常見的配對消除遊戲有何不同。',
-      ja: '麻雀は四人で遊ぶ牌を使ったゲームで、技術・戦略・運が絡みます。麻雀とは何か、牌の構成、世界各地の主要ルール、そしてオンラインでよく見かける牌合わせゲームとの違いを解説します。',
-      ko: '마작은 네 명이 즐기는 타일 게임으로 기술, 전략, 운이 함께 작용합니다. 마작이 무엇인지, 타일 구성, 세계 주요 룰, 그리고 온라인에서 흔히 보는 타일 맞추기 게임과의 차이를 알아보세요.'
-    }
-  },
-  'how-to-play-mahjong': {
-    title: {
-      zh: '如何打麻将：新手分步指南',
-      'zh-TW': '如何打麻將：新手分步指南',
-      ja: '麻雀の遊び方：初心者向けステップガイド',
-      ko: '마작 하는 법: 초보자 단계별 가이드'
-    },
-    description: {
-      zh: '从零开始学打麻将：牌、砌墙、摸牌打牌、碰吃杠、以及胡牌——用简单易懂的方式讲解。',
-      'zh-TW': '從零開始學打麻將：牌、砌牆、摸牌打牌、碰吃槓、以及胡牌——用簡單易懂的方式講解。',
-      ja: '麻雀をゼロから学ぶ：牌、壁の構築、引く・切る、ポン・チー・カン、そして和了までを分かりやすく解説。',
-      ko: '마작을 처음부터 배워요: 타일, 벽 쌓기, 뽑고 버리기, 퐁·치·캉, 그리고 화료까지 쉽게 설명합니다.'
-    }
-  },
-  'how-to-win-mahjong': {
-    title: {
-      zh: '如何赢麻将：新手策略',
-      'zh-TW': '如何贏麻將：新手策略',
-      ja: '麻雀で勝つ方法：初心者向け戦略',
-      ko: '마작에서 이기는 법: 초보자 전략'
-    },
-    description: {
-      zh: '实用的麻将新手策略：尽早确定方向、先打孤张字牌、读牌河、不要过度叫牌、更快听牌。',
-      'zh-TW': '實用的麻將新手策略：盡早確定方向、先打孤張字牌、讀牌河、不要過度叫牌、更快聽牌。',
-      ja: '実践的な麻雀初心者戦略：早めに方向を決め、孤立した字牌を切り、捨て牌を読み、鳴きすぎず、より早く聴牌する。',
-      ko: '실용적인 마작 초보자 전략: 일찍 방향을 정하고, 외로운 자패를 버리고, 버림패를 읽고, 선언을 줄이고, 더 빨리 텐파이에 도달하세요.'
-    }
-  },
-
-  // ── 10 cornerstone articles ──────────────────────────────────────────────
-  'mahjong-rules-beginners-complete-guide': {
-    title: { zh: '麻将规则完全指南：新手入门', 'zh-TW': '麻將規則完全指南：新手入門', ja: '麻雀のルール完全ガイド：初心者向け', ko: '마작 규칙 완전 가이드: 초보자 입문' },
-    description: {
-      zh: '面向新手的中文麻将规则完整指南。认识牌、砌墙、摸牌打牌、碰吃杠、胡牌与计分，并用通俗语言对比各主流玩法。',
-      'zh-TW': '面向新手的麻將規則完整指南。認識牌、砌牆、摸牌打牌、碰吃槓、胡牌與計分，並用通俗語言對比各主流玩法。',
-      ja: '初心者向けの麻雀ルール完全ガイド。牌、壁、引く・切る、鳴き、和了と計算を解説し、主要なルールをわかりやすく比較します。',
-      ko: '초보자용 마작 규칙 완전 가이드. 타일, 벽, 뽑고 버리기, 선언, 화료와 점수를 설명하고 주요 룰을 쉽게 비교합니다.'
-    }
-  },
-  'mahjong-tiles-meaning-guide': {
-    title: { zh: '麻将牌含义全解：认识每一张牌', 'zh-TW': '麻將牌含義全解：認識每一張牌', ja: '麻雀牌の意味完全ガイド：すべての牌を理解する', ko: '마작 패 의미 완전 가이드: 모든 타일 이해하기' },
-    description: {
-      zh: '144 张麻将牌都有什么含义？筒、条、万、风、箭、花牌逐一解读，符号背后的含义一次讲清。',
-      'zh-TW': '144 張麻將牌都有什麼含義？筒、條、萬、風、箭、花牌逐一解讀，符號背後的含義一次講清。',
-      ja: '144枚の麻雀牌の意味とは？筒・索・万・風・三元牌・花牌を一つずつ解説し、記号の意味をまとめて説明します。',
-      ko: '144장의 마작 패는 무슨 의미일까요? 통, 바, 만, 바람패, 삼원패, 꽃패를 하나씩 설명합니다.'
-    }
-  },
-  'american-vs-chinese-mahjong': {
-    title: { zh: '美式麻将 vs 中国麻将：核心区别详解', 'zh-TW': '美式麻將 vs 中國麻將：核心區別詳解', ja: 'アメリカ麻雀 vs 中国麻雀：主な違いを解説', ko: '미국 마작 vs 중국 마작: 핵심 차이점' },
-    description: {
-      zh: '美式麻将与中国麻将其实是两种不同的游戏。比较百搭牌、年度牌卡、计分与牌数，看看哪种更适合你。',
-      'zh-TW': '美式麻將與中國麻將其實是兩種不同的遊戲。比較百搭牌、年度牌卡、計分與牌數，看看哪種更適合你。',
-      ja: 'アメリカ麻雀と中国麻雀は実際には別のゲームです。ジョーカー、年次カード、計算、牌数を比較して、どちらが自分に合うか確認しましょう。',
-      ko: '미국 마작과 중국 마작은 사실 다른 게임입니다. 조커, 연간 카드, 점수, 타일 수를 비교해 어느 쪽이 자신에게 맞는지 확인하세요.'
-    }
-  },
-  'how-to-play-mahjong-online': {
-    title: { zh: '如何在网上打麻将：浏览器免费玩', 'zh-TW': '如何在網上打麻將：瀏覽器免費玩', ja: 'オンラインで麻雀を遊ぶ方法：ブラウザで無料', ko: '온라인으로 마작 하는 법: 브라우저에서 무료' },
-    description: {
-      zh: '免费在线打麻将——无需下载、无需安装。了解在哪里玩、线上规则如何运作，以及与机器人和真人对战的基本礼仪。',
-      'zh-TW': '免費線上打麻將——無需下載、無需安裝。了解在哪裡玩、線上規則如何運作，以及與機器人和真人對戰的基本禮儀。',
-      ja: 'オンラインで無料麻雀——ダウンロード不要、インストール不要。どこで遊べるか、オンラインのルール、ボットや人との対戦マナーを解説します。',
-      ko: '온라인 무료 마작——다운로드·설치 불필요. 어디서 플레이할지, 온라인 규칙, 봇·사람과의 예절을 설명합니다.'
-    }
-  },
-  'best-mahjong-sets-for-beginners': {
-    title: { zh: '2026 年最适合新手的麻将套装', 'zh-TW': '2026 年最適合新手的麻將套裝', ja: '2026年版 初心者に最適な麻雀セット', ko: '2026년 초보자에게 가장 좋은 마작 세트' },
-    description: {
-      zh: '第一副麻将怎么选：牌面尺寸、材质、便携盒与配件。实用的购买建议，让你一次选对。',
-      'zh-TW': '第一副麻將怎麼選：牌面尺寸、材質、便攜盒與配件。實用的購買建議，讓你一次選對。',
-      ja: '最初の麻雀セットの選び方：牌のサイズ、素材、ケースと付属品。後悔しないための実践的な購入アドバイス。',
-      ko: '첫 마작 세트 고르는 법: 타일 크기, 재질, 케이스와 액세서리. 실용적인 구매 조언을 드립니다.'
-    }
-  },
-  'mahjong-scoring-system-explained': {
-    title: { zh: '麻将计分系统详解：番、翻与点数', 'zh-TW': '麻將計分系統詳解：番、翻與點數', ja: '麻雀の点数計算を解説：飜と点数', ko: '마작 점수 시스템 설명: 판(팬)과 점수' },
-    description: {
-      zh: '麻将计分到底怎么算？香港的番、日本的翻、国标的分——常见牌型与手牌价值一次讲透。',
-      'zh-TW': '麻將計分到底怎麼算？香港的番、日本的翻、國標的分——常見牌型與手牌價值一次講透。',
-      ja: '麻雀の点数計算とは？香港の飜、日本の飜、MCRの点数——一般的な役と手の価値を分かりやすく解説。',
-      ko: '마작 점수는 어떻게 계산할까요? 홍콩의 판, 일본의 한, MCR의 점수——흔한 역과 패의 가치를 쉽게 설명합니다.'
-    }
-  },
-  'types-of-mahjong-games': {
-    title: { zh: '麻将玩法大全：每一种麻将风格', 'zh-TW': '麻將玩法大全：每一種麻將風格', ja: '麻雀の種類大全：すべてのスタイル', ko: '마작 종류 완전 정리: 모든 스타일' },
-    description: {
-      zh: '从香港麻将、日本立直到美式、台湾与四川麻将——对比主流麻将类型，找到最适合你的那一种。',
-      'zh-TW': '從香港麻將、日本立直到美式、台灣與四川麻將——對比主流麻將類型，找到最適合你的那一種。',
-      ja: '香港麻雀、日本リーチからアメリカ、台湾、四川まで——主要な麻雀の種類を比較して、自分に合うものを見つけましょう。',
-      ko: '홍콩 마작, 일본 리치부터 미국, 대만, 쓰촨까지——주요 마작 종류를 비교해 자신에게 맞는 것을 찾으세요.'
-    }
-  },
-  'mahjong-etiquette-tips': {
-    title: { zh: '麻将礼仪：牌桌上的不成文规则', 'zh-TW': '麻將禮儀：牌桌上的不成文規則', ja: '麻雀のマナー：卓上の暗黙のルール', ko: '마작 예절: 테이블의 암묵적 규칙' },
-    description: {
-      zh: '了解麻将礼仪——如何拿牌、何时叫牌、读懂牌局节奏，以及让牌桌保持友好的社交规则。',
-      'zh-TW': '了解麻將禮儀——如何拿牌、何時叫牌、讀懂牌局節奏，以及讓牌桌保持友好的社交規則。',
-      ja: '麻雀のマナーを学ぶ——牌の扱い方、いつ鳴くか、流れを読むこと、そして卓を和やかに保つ社交のルール。',
-      ko: '마작 예절을 배워요——패 다루는 법, 언제 선언할지, 흐름 읽기, 그리고 테이블을 즐겁게 유지하는 규칙.'
-    }
-  },
-  'where-to-buy-mahjong-set': {
-    title: { zh: '在哪里买麻将套装：在线购买指南', 'zh-TW': '在哪裡買麻將套裝：線上購買指南', ja: '麻雀セットを買う場所：オンライン購入ガイド', ko: '마작 세트 구매처: 온라인 구매 가이드' },
-    description: {
-      zh: '在网上哪里能买到麻将套装：哪些店铺有货、如何判断质量、价格区间，以及第一次购买要避开什么。',
-      'zh-TW': '在網上哪裡能買到麻將套裝：哪些店鋪有貨、如何判斷質量、價格區間，以及第一次購買要避開什麼。',
-      ja: '麻雀セットをオンラインで買う場所：どの店舗にあるか、品質の見分け方、価格帯、そして初回購入で避けるべきこと。',
-      ko: '온라인에서 마작 세트를 사는 곳: 어느 매장에 있는지, 품질 판단법, 가격대, 첫 구매 시 피할 것.'
-    }
-  },
-  'mahjong-history-cultural-guide': {
-    title: { zh: '麻将的历史：从晚清中国走向世界', 'zh-TW': '麻將的歷史：從晚清中國走向世界', ja: '麻雀の歴史：清朝中国から世界へ', ko: '마작의 역사: 청나라 중국에서 세계로' },
-    description: {
-      zh: '麻将的迷人历史——19 世纪中国的起源、1920 年代的西方热潮、在日本与美国的再创造，以及它今天的地位。',
-      'zh-TW': '麻將的迷人歷史——19 世紀中國的起源、1920 年代的西方熱潮、在日本與美國的再創造，以及它今天的地位。',
-      ja: '麻雀の魅力的な歴史——19世紀中国での誕生、1920年代の西洋ブーム、日本とアメリカでの再発明、そして現在の地位。',
-      ko: '마작의 매혹적인 역사——19세기 중국의 기원, 1920년대 서구 열풍, 일본·미국에서의 재창조, 그리고 오늘날의 위상.'
-    }
-  }
+const LOCALE_FILES: Record<Exclude<LocaleCode, 'en'>, BlogLocaleJson> = {
+  zh: zh as BlogLocaleJson,
+  'zh-TW': zhTW as BlogLocaleJson,
+  ja: ja as BlogLocaleJson,
+  ko: ko as BlogLocaleJson
 };
+
+const LOCALES = ['zh', 'zh-TW', 'ja', 'ko'] as const satisfies readonly Exclude<
+  LocaleCode,
+  'en'
+>[];
+
+function buildBlogI18n(): Record<string, BlogI18n> {
+  const slugs = Object.keys(LOCALE_FILES.zh);
+  const out: Record<string, BlogI18n> = {};
+
+  for (const slug of slugs) {
+    const entry: BlogI18n = { title: {}, description: {}, sections: {}, faq: {} };
+    for (const locale of LOCALES) {
+      const post = LOCALE_FILES[locale][slug];
+      if (!post) {
+        throw new Error(`Missing slug "${slug}" in data/blog-i18n/${locale}.json`);
+      }
+      entry.title![locale] = post.title;
+      entry.description![locale] = post.description;
+      entry.sections![locale] = post.sections;
+      entry.faq![locale] = post.faq;
+    }
+    out[slug] = entry;
+  }
+
+  return out;
+}
+
+export const BLOG_I18N: Record<string, BlogI18n> = buildBlogI18n();

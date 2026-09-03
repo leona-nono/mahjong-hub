@@ -1,0 +1,362 @@
+{
+  "hong-kong-mahjong": {
+    "title": "香港麻將",
+    "description": "與三位對手玩真正的四人麻將。香港老章計分，免費，無需下載。",
+    "content": {
+      "intro": "香港老章是日本以外最廣為流行的四人麻將玩法，也是最容易上手的一種。你只需湊出四組搭子加一對將牌，並至少有番三番即可胡牌。本桌提供三位電腦對手、可選聽牌提示，以及每把胡牌分數的明細。",
+      "howToPlay": [
+        "每位玩家起手十三張牌。輪到你時摸一張、打一張，保持手牌十三張。",
+        "胡牌型為四組搭子加一對將牌。搭子可以是三張相同的牌，也可以是同花色三張連續的牌。",
+        "當別的玩家打出你需要的牌時，可以叫牌：碰（三張相同）、吃（順子，只能吃上家的牌）、槓（全部四張）。",
+        "叫牌會使手牌亮開，從而損失部分番型。只在確實能推進手牌時才叫牌。",
+        "自摸或別家放銃均可胡牌，但必須滿足三番的最低要求。"
+      ],
+      "tips": [
+        "盡早打出孤張字牌。它們最難成對，也是手牌中最不靈活的牌。",
+        "多關注距離聽牌還有多遠，而不是盯著一兩張牌看。離聽兩張是常見的中局位置；離聽一張時就要開始謹慎了。",
+        "清一色手牌的價值遠超其各部分之和。起手就拿到七八張同花色的牌，盡早朝清一色做通常是划算的。",
+        "注意其他三家。三人都打同一花色的牌，說明你要的牌多半還在牌山裡。"
+      ],
+      "features": [
+        "正宗香港老章規則，136 張牌——僅萬、筒、索、風、箭。",
+        "休閒模式可練習成型手牌、無番門檻；標準模式執行傳統三番起胡。",
+        "三位 AI 對手具備合理棄牌邏輯，便於練習真實四人節奏。",
+        "可選聽牌提示與胡牌後番數明細，無需翻開規則書也能學計分。",
+        "桌面與手機瀏覽器完整遊玩——點擊或輕觸即可打牌、叫牌與胡牌。"
+      ],
+      "supportedDevices": "香港麻將可在 Windows、macOS、Linux、Android 與 iOS 的現代瀏覽器中執行，無需下載。手機或平板橫向牌面最寬；直向亦可，手牌可捲動。支援 Chrome、Safari、Firefox 與 Edge——請使用較新版本，以保證叫牌與結算動畫流暢。",
+      "faq": [
+        {
+          "question": "需要下載任何東西嗎？",
+          "answer": "不需要。遊戲完全在瀏覽器中執行，桌面端和行動端都可以玩，無需安裝。"
+        },
+        {
+          "question": "這是真麻將還是配對消除遊戲？",
+          "answer": "這是真正的四人麻將，包括摸牌、打牌、吃碰槓和計分。大多數西方網站上被稱為「麻將」的配對消除遊戲其實是麻將接龍，是完全不同的遊戲。"
+        },
+        {
+          "question": "「三番最低要求」是什麼意思？",
+          "answer": "香港規則要求胡牌前手牌至少值三番。技術上已經成型但分數不足的手牌不能胡，所以你要繼續打牌改進它。"
+        },
+        {
+          "question": "有沒有真錢賭博？",
+          "answer": "沒有。不存在下注、可購買的貨幣或任何現金獎勵。分數只記錄你自己的進度。"
+        }
+      ]
+    }
+  },
+  "riichi-mahjong": {
+    "title": "日本麻將",
+    "description": "與三位對手打日式立直麻將——現代競技麻將背後的規則。",
+    "content": {
+      "intro": "立直是日式麻將的核心——聽牌後可以宣告立直，一旦和牌可加一番。日麻還有役種限制、寶牌與振聽等規則，讓每一局都充滿策略。本桌提供三位電腦對手、聽牌提示與得分明細。",
+      "howToPlay": [
+        "核心流程與任何四人麻將相同：摸一張、打一張，湊出四組搭子加一對將牌。",
+        "立直高度重視保持手牌門前（不鳴牌）。從別家叫牌會讓許多役種失效。",
+        "胡牌至少需要一個役種，所以僅僅成型的手牌並不總是可以胡。",
+        "七對子和國士無雙是兩種特殊胡牌形，兩者都要求手牌完全門前。"
+      ],
+      "tips": [
+        "在立直規則下，門清手牌遠比香港規則得分高。除非叫牌能直接聽牌，否則盡量不叫。",
+        "斷么九是最常用的役：沒有么九牌、沒有字牌。幾乎任何起手牌都能做成。",
+        "起手就有四對以上時，七對子往往比強行湊四組搭子更快聽牌。",
+        "牌局後期，注意其他三家不再打出的牌。那通常就是他們的聽牌張。"
+      ],
+      "features": [
+        "以世界立直錦標賽 2025 為基線——無紅寶牌、頭跳榮和、起家 30,000 點。",
+        "完整役種門檻、寶牌指示與 14 張王牌區，貼近競技流程。",
+        "立直宣告附 1,000 點棒，支援自摸與榮和，並按順序優先。",
+        "聽牌提示追蹤向聽數，不必猜牌數也能學聽牌。",
+        "東場與南場，莊家和牌或荒牌流局可連莊。"
+      ],
+      "supportedDevices": "立直麻將可在桌面、筆電、平板與手機瀏覽器中遊玩，無需安裝應用程式。手機橫向便於同時閱讀對手棄牌與自己的手牌。支援 Windows、macOS、Linux、Android 與 iOS 上的現行 Chrome、Safari、Firefox 與 Edge。",
+      "faq": [
+        {
+          "question": "立直和國標麻將有什麼不同？",
+          "answer": "立直要求胡牌前必須有一個役種，更看重門清手牌，且計分表不同。摸打核心相同，所以兩者很容易互相遷移。"
+        },
+        {
+          "question": "這是學立直的好地方嗎？",
+          "answer": "這裡是熟悉流程、叫牌和常見役的好地方。聽牌提示會顯示你離成型還有多遠，這是新手能看到的最有用的資訊。"
+        }
+      ]
+    }
+  },
+  "chinese-official-mahjong": {
+    "title": "中國麻將（國標）",
+    "description": "國標麻將（MCR）——國際競賽規則，胡牌至少八番。",
+    "content": {
+      "intro": "國標麻將，即中國麻將競賽規則，是國際賽事使用的規則。它要求至少八番才能胡牌，迫使你構建真正有結構的牌型，而不是搶第一個成型的手牌——這也是三種規則中最考驗功力的。",
+      "howToPlay": [
+        "標準的四人麻將：摸牌、打牌，湊出四組搭子加一對將牌。",
+        "胡牌前手牌至少值八番。沒有番型的簡單手牌不能胡。",
+        "番來自各種牌型——清一色、碰碰胡、箭牌和風牌刻子等——它們可以疊加。",
+        "由於門檻很高，靠叫牌湊一副弱牌通常不是好主意。"
+      ],
+      "tips": [
+        "開局幾手就選定方向。清一色和碰碰胡是湊夠八番最可靠的途徑。",
+        "箭牌和門風刻子值得吃，即使損失一手牌，因為它們能搭配幾乎所有其他牌型。",
+        "差一張就成型但只值六番的手牌還不算完成。繼續改進它。"
+      ],
+      "features": [
+        "144 張國標（MCR）訓練桌，含花季牌翻開補牌流程。",
+        "八分起和門檻，儘早熟悉競賽級判定。",
+        "四人摸打對戰 AI，支援標準吃碰槓。",
+        "訓練計分覆蓋首批番型子集，完整 81 項表仍在建設中。",
+        "成型但未滿八分時，介面給出清晰回饋。"
+      ],
+      "supportedDevices": "國標麻將完全在瀏覽器中執行，支援 Windows、macOS、Linux、Android 與 iOS。桌面與平板最易閱讀補花與計分回饋；手機任意方向均可。請使用較新的 Chrome、Safari、Firefox 或 Edge，以獲得多人對局時的最佳效能。",
+      "faq": [
+        {
+          "question": "為什麼手牌成型了卻不能胡？",
+          "answer": "國標要求最低八番。如果成型的手牌分數不足，不能宣布胡牌，遊戲繼續。"
+        },
+        {
+          "question": "這裡的計分完整嗎？",
+          "answer": "它涵蓋常見番型，而非完整的官方番種表。它面向學習和娛樂，不是賽事裁判用。"
+        }
+      ]
+    }
+  },
+  "sichuan-mahjong": {
+    "title": "四川麻將",
+    "description": "血流成河的四川麻將：定缺一門、換三張，胡牌後繼續戰鬥。",
+    "content": {
+      "intro": "Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.",
+      "howToPlay": [
+        "The 108-tile wall uses only Characters, Dots and Bamboo. Winds, Dragons, Flowers and Seasons are not used.",
+        "Before normal play, select three tiles from one suit for Exchange Three; the table passes them in the direction chosen for that hand.",
+        "Choose one forbidden suit. You must discard every tile of that suit before you are allowed to win.",
+        "Draw and discard normally. Chow is not allowed; Pung and Kong are allowed under the table claim order.",
+        "Make four melds and a pair, or an approved special hand such as Seven Pairs, then win by self-draw or a legal discard.",
+        "A winner stops drawing, but the hand continues for the remaining players. End-of-hand settlement includes ready-hand check, flower-pig penalty and Kong refund."
+      ],
+      "tips": [
+        "Choose the forbidden suit from the suit you can clear most quickly, not merely from its lowest tiles.",
+        "Exchange Three should remove three tiles from one coherent weak suit so you do not create three unrelated dead tiles.",
+        "Because Chow is unavailable, pairs and connected shapes are more valuable than in Chow-enabled variants.",
+        "After another player wins, reassess risk: staying ready matters for the end-of-hand check, but avoid becoming flower pig.",
+        "Track Kong exposure and settlement. A high-value Kong is not automatically safe if it opens a dangerous draw."
+      ],
+      "features": [
+        "成都血戰到底基線——108 張牌、換三張與個人定缺。",
+        "不可吃：僅碰與槓，貼近四川快桌節奏，對戰三位 AI。",
+        "血戰流程：首胡後繼續，終局聽牌檢查與處罰。",
+        "每局開始前可互動換三張並選定缺一門。",
+        "支援自摸與放銃，含七對與標準四組面子形。"
+      ],
+      "supportedDevices": "四川麻將可在桌面、筆電、平板與手機的現代瀏覽器中執行，無需安裝。橫向最適合換三張與定缺控制項。支援 Windows、macOS、Linux、Android 與 iOS 上的 Chrome、Safari、Firefox 與 Edge。",
+      "faq": [
+        {
+          "question": "Why can I not win while I still hold my forbidden suit?",
+          "answer": "The forbidden-suit rule is a core Chengdu Blood Battle condition. Clear every tile of your chosen suit before a win may be declared."
+        },
+        {
+          "question": "Why does the game continue after someone wins?",
+          "answer": "Blood Battle to the End permits remaining players to continue. This can create several winners or penalties within one hand."
+        }
+      ]
+    }
+  },
+  "taiwan-mahjong": {
+    "title": "台灣麻將",
+    "description": "十六張台灣麻將：花牌補花、台數計分。",
+    "content": {
+      "intro": "Mahjong Hub 台灣麻將採用輕鬆的 16 張入門規則：144 張牌、花季即時補牌、五組面子加一對將牌，並採可累加台數與 0 台可胡。",
+      "howToPlay": [
+        "Use all 144 tiles. Each non-dealer starts with 16 tiles; East starts with 17 and makes the first discard.",
+        "Reveal every Flower or Season immediately and draw a replacement. It remains outside your 16-tile hand and adds Tai when applicable.",
+        "On your turn draw one tile and discard one. You may Chow from the left player, or Pung and Kong according to the claim order.",
+        "Win with five melds and one pair, for a 17-tile hand. Self-draw and discard wins are both supported.",
+        "Tai patterns add together for settlement. This Mahjong Hub beginner baseline allows a complete 0-Tai hand to win."
+      ],
+      "tips": [
+        "With 16 concealed tiles, retain several connected shapes early instead of committing to one wait too quickly.",
+        "Flowers add value but do not repair a weak main hand; build the five-meld structure first.",
+        "Kongs are more frequent in Taiwan Mahjong. Consider both the replacement draw and the information you reveal.",
+        "Use 0-Tai mode to learn tempo; once comfortable, chase Tai only when it does not reduce your live waits.",
+        "Check whether your Flower matches your seat, as seat Flowers can add an extra scoring bonus."
+      ],
+      "features": [
+        "十六張台灣手牌：五組面子加一對，144 張牌牆含花牌。",
+        "花牌即時補花，台數加成與座位花計分選項。",
+        "吃碰槓叫牌，每把可累加台數結算。",
+        "入門友善的 0 台最低，先學節奏再追高台。",
+        "四人桌對戰 AI，支援自摸與放銃。"
+      ],
+      "supportedDevices": "台灣麻將可在 Windows、macOS、Linux、Android 與 iOS 瀏覽器中遊玩。平板與桌面最易瀏覽十六張大手牌；手機直向或橫向均可。請使用現行 Chrome、Safari、Firefox 或 Edge，以獲得靈敏的點牌與流暢的補花動畫。",
+      "faq": [
+        {
+          "question": "Why do I hold 16 tiles instead of 13?",
+          "answer": "Taiwan Mahjong uses five melds plus one pair. Players normally hold 16 tiles and win after drawing or claiming the 17th."
+        },
+        {
+          "question": "Can a 0-Tai hand win here?",
+          "answer": "Yes. Mahjong Hub uses a relaxed 0-Tai baseline. Other Taiwan tables may require a minimum Tai, so this is shown clearly in the game settings."
+        }
+      ]
+    }
+  },
+  "american-mahjong": {
+    "title": "美國麻將",
+    "description": "美國麻將：查爾斯頓換牌、百搭牌、花牌與年度卡牌牌型。",
+    "content": {
+      "intro": "Mahjong Hub American Mahjong is an original practice-card game inspired by NMJL-style flow: 152 tiles, Charleston, Flowers, Jokers, exposed groups and exact card-pattern wins. It does not reproduce a current NMJL annual card.",
+      "howToPlay": [
+        "Use a 152-tile set with standard tiles, eight Flowers and eight Jokers. Every player takes 13 tiles; East takes 14 and discards first.",
+        "Read the original practice card, then complete Charleston: pass three tiles right, across and left. A second Charleston and courtesy pass are table options.",
+        "Draw and discard while steering toward one exact line on the practice card, not a general four-meld-and-a-pair shape.",
+        "Expose legal Pungs, Kongs or larger groups when the selected card line permits it. Concealed card lines may not be exposed before the final win.",
+        "Use a Joker only in a group of three or more; never use it as a single or pair. On your turn, a natural tile may exchange for a Joker in an opponent exposure.",
+        "Declare Mah Jongg only when all 14 tiles exactly match one legal original practice-card line."
+      ],
+      "tips": [
+        "Before Charleston, keep two or three compatible card lines open rather than committing to a single rare line.",
+        "Pass tiles that do not support any of your likely card categories, but never pass a Joker.",
+        "Do not expose a group merely because you can: exposure signals your target and may make your hand impossible to pivot.",
+        "Treat Jokers as group accelerators, not universal wildcards; you still need natural tiles for singles and pairs.",
+        "Use opponent exposures to decide which natural tiles are safe to discard and when a Joker exchange is valuable."
+      ],
+      "features": [
+        "152 張美式牌組，含花牌、百搭與 NMJL 風格查爾斯頓傳牌。",
+        "Mahjong Hub 原創練習牌型卡——精確牌型胡牌，而非泛用面子形。",
+        "合法百搭組、己輪換百搭，以及與卡線綁定的亮牌規則。",
+        "可選第二次查爾斯頓與禮貌傳牌，貼近桌面練習。",
+        "四人瀏覽器牌桌，引導式查爾斯頓與牌型校驗。"
+      ],
+      "supportedDevices": "美國麻將完全在桌面與手機瀏覽器中執行，無需下載應用程式。寬螢幕便於同時閱讀練習卡與亮牌；手機可橫向查看完整桌面。支援 Windows、macOS、Linux、Android 與 iOS 上的 Chrome、Safari、Firefox 與 Edge。",
+      "faq": [
+        {
+          "question": "Is this the official NMJL yearly card?",
+          "answer": "No. This game uses Mahjong Hub original practice cards. A licensed NMJL-card integration would be a separate future product."
+        },
+        {
+          "question": "Can a Joker be used in a pair?",
+          "answer": "No. In this rules baseline, Jokers are legal only in groups of three or more, never in singles or pairs."
+        }
+      ]
+    }
+  },
+  "mahjong-connect-classic": {
+    "title": "麻將連連看",
+    "description": "用最多兩次轉彎的路徑連接相同麻將牌。三種盤面大小、提示，休閒模式無計時。",
+    "content": {
+      "intro": "麻將連連看，又稱 Onet，是一種用麻將牌做的連線消除謎題。用最多兩次轉彎的路徑連接一對相同的牌，清空整個棋盤。休閒模式沒有計時，可以慢慢玩。",
+      "howToPlay": [
+        "點擊兩張相同的牌。",
+        "如果兩張牌可以用一條最多轉兩次彎的空路徑連接，就能消除。路徑可以繞棋盤外圈走。",
+        "消除全部牌即獲勝。連續消除會累積連擊加成。",
+        "沒有可消除的牌對時，棋盤會自動重洗，永遠不會卡住。"
+      ],
+      "tips": [
+        "先從邊緣下手。外側的牌可走的路徑最多，消除後會打開中間的區域。",
+        "相鄰的兩張相同牌總能消除——但消除它們可能是打通其他路徑的唯一辦法，所以先看清楚再下手。",
+        "提示按鈕會花掉幾點分數。在計時模式裡，這筆交易幾乎總是值得的。"
+      ],
+      "features": [
+        "經典 Onet 連線消除，配以正宗麻將牌面。",
+        "三種盤面大小：從緊湊到全盤挑戰。",
+        "無計時休閒模式，以及可累積連擊分的計時模式。",
+        "無可消牌對時自動重洗——棋盤不會死局。",
+        "提示系統與連擊加成，適合更長工作階段。"
+      ],
+      "supportedDevices": "麻將連連看可在桌面、平板與手機的現代瀏覽器中執行，無需安裝。手機觸控與桌面點擊使用同一盤面。支援 Windows、macOS、Linux、Android 與 iOS 上的 Chrome、Safari、Firefox 與 Edge；中等尺寸手機直向即可舒適放置預設盤面。",
+      "faq": [
+        {
+          "question": "這和麻將接龍有什麼不同？",
+          "answer": "接龍把牌堆疊成層，只能消除一側空閒的牌。連連看把牌平鋪，要求用路徑連接一對牌。謎題不同，牌相同。"
+        },
+        {
+          "question": "路徑裡「轉彎」怎麼算？",
+          "answer": "每次改變方向算一次。直線不轉彎，L 形一次，Z 形或 U 形兩次。三次及以上不允許。"
+        }
+      ]
+    }
+  },
+  "mahjong-solitaire-classic": {
+    "title": "經典麻將接龍",
+    "description": "經典分層配對消除。烏龜與金字塔牌型、保證可解的牌局、提示與復原。",
+    "content": {
+      "intro": "麻將接龍是一款用麻將牌做的經典單人配對消除謎題。匹配兩張空閒的牌——頂部沒有壓牌且至少一側敞開——來清空整個牌面。這裡的每一局都是保證可解的，所以一定存在完整的清除方案。包含兩種經典牌型——烏龜和金字塔——外加提示、復原，以及卡住時重洗。",
+      "howToPlay": [
+        "點擊兩張相同的牌進行匹配。只有空閒的牌才能匹配：頂部沒有壓牌，且同層至少一側是敞開的。",
+        "上層牌會壓住下層牌，所以要自上而下地清除。頂層始終可操作；下層會隨著清除而打開。",
+        "清空所有牌即獲勝。烏龜陣在盤面上鋪開寬大的殼；金字塔則堆疊五個居中的三角形，從邊緣向中心剝離。",
+        "每局都是保證可解的，所以一定存在解法。卡住時用提示、復原倉促的匹配，或重洗剩餘牌。",
+        "沒有計時器也沒有分數壓力——想玩多久都行。"
+      ],
+      "tips": [
+        "先處理外圍。一層外邊緣的牌天然有一側敞開，清除周邊會打開中間。",
+        "在拿走明顯的一對之前，先看看它會釋放什麼。兩張相鄰的相同牌容易匹配，但清除它們可能是解開高層堆的唯一辦法。",
+        "善用金字塔的層級：它的邊緣牌一開始就能操作，只有到達對應層才能碰到塔尖牌。",
+        "如果沒有可匹配的牌，重洗而不是重開——剩餘牌會以新的可解排列重新發牌。"
+      ],
+      "features": [
+        "分層麻將接龍，含烏龜與金字塔牌型。",
+        "每局逆向產生、保證可解——一定存在完整清除方案。",
+        "空閒牌匹配規則，可玩牌對有視覺高亮。",
+        "提示、復原與重洗，不必重開也能再看一眼。",
+        "每日挑戰、關卡戰役與無計時休閒模式。"
+      ],
+      "supportedDevices": "經典麻將接龍可在 Windows、macOS、Linux、Android 與 iOS 瀏覽器中執行，無需下載。桌面與平板可展示完整分層佈局；手機在更高的烏龜堆上自然捲動。支援 Chrome、Safari、Firefox 與 Edge——訪客進度保存在本機。",
+      "faq": [
+        {
+          "question": "這和麻將連連看有什麼不同？",
+          "answer": "連連看把牌平鋪，要求用路徑連接一對牌。接龍把牌堆成層，匹配一側空閒且頂部無壓的牌。謎題不同，牌相同。"
+        },
+        {
+          "question": "這裡的「空閒」是什麼意思？",
+          "answer": "一張牌空閒是指頂部沒有直接壓著任何牌，且同一層左右鄰居至少有一個是空的。一層的邊緣牌外側始終是空閒的。"
+        },
+        {
+          "question": "每局都保證可解嗎？",
+          "answer": "是的。牌局是逆向構建的——遊戲反覆挑選兩張空閒的牌、移除並記錄匹配——所以每個牌面都有已知的解法路徑，你可以用心找到它。"
+        },
+        {
+          "question": "有沒有真錢賭博？",
+          "answer": "沒有。這是純謎題，沒有下注、可購買的貨幣或任何現金獎勵。"
+        }
+      ]
+    }
+  },
+  "mahjong-connect": {
+    "title": "麻將連連看精簡版",
+    "description": "匹配由路徑相連的免費麻將牌。一款輕鬆的連連看消除遊戲。"
+  },
+  "mahjong-classic": {
+    "title": "經典麻將",
+    "description": "經典麻將接龍。匹配敞開的牌對，清空棋盤。"
+  },
+  "mahjong-solitaire": {
+    "title": "麻將接龍",
+    "description": "美麗的麻將塔牌型。按自己的節奏匹配並清除高塔。"
+  },
+  "mahjong-3d": {
+    "title": "麻將 3D",
+    "description": "三維麻將消除，帶景深和寧靜的彩虹色調。"
+  },
+  "onet-connect-classic": {
+    "title": "Onet 連連看經典",
+    "description": "經典 Onet 連線遊戲。用最多兩次轉彎的線連接相同牌。"
+  },
+  "bee-connect": {
+    "title": "蜜蜂連連看",
+    "description": "可愛的蜜蜂主題連連看。連接小牌塊，清空蜂巢棋盤。"
+  },
+  "aloha-mahjong": {
+    "title": "阿羅哈麻將",
+    "description": "充滿熱帶風情的麻將消除，陽光明媚、慵懶自在。"
+  },
+  "8x8-match-tiles": {
+    "title": "8x8 匹配磚塊",
+    "description": "緊湊的 8x8 磚塊匹配謎題。連接相同磚塊，衝擊高分。"
+  },
+  "tile-guru": {
+    "title": "磚塊大師",
+    "description": "禪意磚塊匹配謎題。在寧靜的佈局中尋找並連接匹配的磚塊。"
+  },
+  "tile-journey": {
+    "title": "磚塊之旅",
+    "description": "穿越磚塊匹配關卡的旅程。規劃你的連接，清空每一關。"
+  }
+}

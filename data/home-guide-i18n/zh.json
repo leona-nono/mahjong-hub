@@ -1,0 +1,106 @@
+{
+  "eyebrow": "玩 · 学 · 放松",
+  "title": "为什么在线玩麻将——哪一款适合你？",
+  "intro": "麻将是几分钟清空头脑最轻松的方式之一，也是真正学会之后最有成就感的游戏之一。下面说明人们为什么会回来，以及如何快速找到符合当下心情的玩法。",
+  "sections": [
+    {
+      "heading": "玩家为什么愿意留下",
+      "bullets": [
+        {
+          "strong": "真正的休息，不是时间黑洞。",
+          "text": " 无需下载、无需注册——打开一副牌，清空一下脑子。→ ",
+          "link": {
+            "label": "浏览游戏厅",
+            "href": "/games"
+          }
+        },
+        {
+          "strong": "每种心情都有对应玩法。",
+          "text": " 想纯放松？接龙配对。想拼技术？坐上四人牌桌对战电脑。→ ",
+          "links": [
+            {
+              "label": "麻将接龙",
+              "href": "/games/solitaire"
+            },
+            {
+              "label": "四人麻将",
+              "href": "/games/classic"
+            }
+          ]
+        },
+        {
+          "strong": "真的能变强。",
+          "text": " 新手指南用大白话讲清认牌、规则与胡牌——没有术语墙。→ ",
+          "link": {
+            "label": "什么是麻将？",
+            "href": "/blog/what-is-mahjong"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "十秒选好你的游戏",
+      "choices": [
+        {
+          "prompt": "「我只有五分钟，只想放松一下。」",
+          "answerStrong": "麻将接龙",
+          "answerText": " —— 匹配空闲牌、清盘，无计时。→ ",
+          "link": {
+            "label": "玩接龙",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "prompt": "「我想打经典四人麻将。」",
+          "answerStrong": "四人麻将",
+          "answerText": " —— 香港、立直、国标等规则，对战 AI。→ ",
+          "link": {
+            "label": "坐上牌桌",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "prompt": "「我是纯新手，不知从哪开始。」",
+          "answerSegments": [
+            {
+              "text": "先看 "
+            },
+            {
+              "text": "什么是麻将？",
+              "href": "/blog/what-is-mahjong"
+            },
+            {
+              "text": "，再看 "
+            },
+            {
+              "text": "麻将玩法类型",
+              "href": "/blog/types-of-mahjong-games"
+            },
+            {
+              "text": "，找到适合自己的风格。"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "closing": [
+    {
+      "text": "还在选规则？读一读 "
+    },
+    {
+      "text": "美式 vs 中式麻将",
+      "href": "/blog/american-vs-chinese-mahjong"
+    },
+    {
+      "text": " 或 "
+    },
+    {
+      "text": "如何在线玩麻将",
+      "href": "/blog/how-to-play-mahjong-online"
+    },
+    {
+      "text": " —— 免费，无需注册。"
+    }
+  ]
+}
