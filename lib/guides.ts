@@ -150,6 +150,24 @@ export function localizeStaticGuide(slug: string, locale: string): PublicGuide |
   return fromStatic(post, 0);
 }
 
+/**
+ * Resolve the guide shown on a public blog page.
+ *
+ * CMS guide rows are English-only today. Prefer `data/blog-i18n` for non-English
+ * locales whenever a static translation exists — otherwise CMS wins and the body
+ * stays English while chrome/UI look translated.
+ */
+export function resolvePublicGuide(
+  slug: string,
+  locale: string,
+  cms: PublicGuide | undefined
+): PublicGuide | undefined {
+  const localized = localizeStaticGuide(slug, locale);
+  if (locale !== 'en' && localized) return localized;
+  if (cms?.source === 'cms') return cms;
+  return localized ?? cms;
+}
+
 export interface AdminGuideRow {
   slug: string;
   title: string;

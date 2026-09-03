@@ -6,7 +6,7 @@ import MarkdownContent from '@/components/MarkdownContent';
 import { pageMeta } from '@/lib/seo';
 import { UI_LOCALES } from '@/lib/locales';
 import { getBlogPosts } from '@/data/blog';
-import { getPublicGuide, localizeStaticGuide } from '@/lib/guides';
+import { getPublicGuide, resolvePublicGuide } from '@/lib/guides';
 import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
@@ -27,7 +27,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params;
   const cms = await getPublicGuide(slug);
-  const post = cms?.source === 'cms' ? cms : localizeStaticGuide(slug, locale) ?? cms;
+  const post = resolvePublicGuide(slug, locale, cms);
   if (!post) return {};
   const site = await getSiteSettings();
   return pageMeta({
@@ -37,8 +37,7 @@ export async function generateMetadata({
     description: post.description,
     ogImage: post.cover || site.ogImage,
     siteName: brandName(site),
-    type: 'article',
-    robots: { index: true, follow: true }
+    type: 'article'
   });
 }
 
@@ -51,7 +50,7 @@ export default async function BlogPostPage({
   setRequestLocale(locale);
 
   const cms = await getPublicGuide(slug);
-  const post = cms?.source === 'cms' ? cms : localizeStaticGuide(slug, locale) ?? cms;
+  const post = resolvePublicGuide(slug, locale, cms);
   if (!post) notFound();
 
   const t = await getTranslations('game');
