@@ -118,7 +118,7 @@ export function pageMeta(opts: {
     share.openGraph = { ...share.openGraph, type: opts.type };
   }
   return {
-    title: opts.title,
+    title: { absolute: opts.title },
     description: opts.description,
     alternates: alternatesFor(opts.locale, opts.path),
     ...share,

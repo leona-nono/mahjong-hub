@@ -42,6 +42,10 @@ export interface GameContent {
   howToPlay: string[];
   /** Strategy notes — the part that earns dwell time and links. */
   tips: string[];
+  /** Product highlights — five bullets for SEO body depth. */
+  features?: string[];
+  /** Browser / device compatibility paragraph. */
+  supportedDevices?: string;
   faq: GameFaq[];
 }
 
@@ -143,7 +147,16 @@ export const games: GameConfig[] = [
           answer:
             'No. There is no wagering, no purchasable currency and no cash prize of any kind. Scores track your own progress only.'
         }
-      ]
+      ],
+      features: [
+        'Authentic Hong Kong Old Style rules with 136 tiles — Characters, Dots, Bamboo, Winds and Dragons only.',
+        'Casual mode for learning complete hands without a faan gate; Standard mode enforces the traditional three-faan minimum.',
+        'Three AI opponents with sensible discard logic so you can practice real four-player tempo.',
+        'Optional readiness hint and post-hand faan breakdown help you learn scoring without a rulebook open.',
+        'Full browser play on desktop and mobile — tap or click to discard, call tiles and declare wins.'
+      ],
+      supportedDevices:
+        'Hong Kong Mahjong runs in any modern browser on Windows, macOS, Linux, Android and iOS with no download. Landscape on a phone or tablet gives the widest tile view; portrait still works with scrollable hands. Chrome, Safari, Firefox and Edge are supported — use an updated browser for smooth animations during calls and settlement.'
     }
   },
   {
@@ -190,7 +203,16 @@ export const games: GameConfig[] = [
           answer:
             'It is a good place to get comfortable with the flow, the calls and the common patterns. The readiness hint shows how far you are from a complete hand, which is the single most useful thing for a new player to see.'
         }
-      ]
+      ],
+      features: [
+        'World Riichi Championship 2025 baseline — no red fives, head-bump Ron and 30,000-point start.',
+        'Full yaku gate, Dora indicators and a 14-tile dead wall for authentic competitive flow.',
+        'Riichi declaration with 1,000-point stick, Tsumo and Ron wins with turn-order priority.',
+        'Readiness hint tracks shanten so you can learn tenpai without guessing tile counts.',
+        'East and South rounds with dealer continuation on dealer wins and exhaustive draws.'
+      ],
+      supportedDevices:
+        'Riichi Mahjong plays in your browser on desktop, laptop, tablet and phone without installing an app. Mobile landscape is recommended for reading opponent discards and your hand together. Supported browsers include current Chrome, Safari, Firefox and Edge on Windows, macOS, Linux, Android and iOS.'
     }
   },
   {
@@ -232,7 +254,16 @@ export const games: GameConfig[] = [
           answer:
             'No. This training version implements the 144-tile and Flower replacement flow plus an initial scoring subset. The complete official 81-element table and its exclusions are still being implemented.'
         }
-      ]
+      ],
+      features: [
+        '144-tile Chinese Official (MCR) training table with Flower and Season replacement flow.',
+        'Eight-point minimum win gate teaches competition-ready adjudication early.',
+        'Four-player draw-and-discard against AI with standard meld calls.',
+        'Training scorer covers an initial pattern subset while the full 81-element table is built.',
+        'Clear on-screen feedback when a complete hand is below the eight-point threshold.'
+      ],
+      supportedDevices:
+        'Chinese Official Mahjong runs entirely in the browser on Windows, macOS, Linux, Android and iOS. Desktop and tablet screens make Flower replacement and scoring feedback easiest to read; phones work in either orientation. Use an up-to-date Chrome, Safari, Firefox or Edge for the best performance during multi-player turns.'
     }
   },
 
@@ -270,7 +301,16 @@ export const games: GameConfig[] = [
       faq: [
         { question: 'Why can I not win while I still hold my forbidden suit?', answer: 'The forbidden-suit rule is a core Chengdu Blood Battle condition. Clear every tile of your chosen suit before a win may be declared.' },
         { question: 'Why does the game continue after someone wins?', answer: 'Blood Battle to the End permits remaining players to continue. This can create several winners or penalties within one hand.' }
-      ]
+      ],
+      features: [
+        'Chengdu Blood Battle baseline — 108 tiles, Exchange Three and a personal forbidden suit.',
+        'No Chow: Pung and Kong only, matching fast Sichuan table tempo against three AI seats.',
+        'Blood Battle flow continues after the first win with end-of-hand ready check and penalties.',
+        'Interactive Exchange Three and forbidden-suit picker before each hand begins.',
+        'Self-draw and discard wins with Seven Pairs and standard four-meld shapes supported.'
+      ],
+      supportedDevices:
+        'Sichuan Mahjong runs in modern browsers on desktop, laptop, tablet and phone without an install. Landscape mobile view fits the exchange and forbidden-suit controls best. Chrome, Safari, Firefox and Edge on Windows, macOS, Linux, Android and iOS are all supported.'
     }
   },
   {
@@ -305,7 +345,16 @@ export const games: GameConfig[] = [
       faq: [
         { question: 'Why do I hold 16 tiles instead of 13?', answer: 'Taiwan Mahjong uses five melds plus one pair. Players normally hold 16 tiles and win after drawing or claiming the 17th.' },
         { question: 'Can a 0-Tai hand win here?', answer: 'Yes. Mahjong Hub uses a relaxed 0-Tai baseline. Other Taiwan tables may require a minimum Tai, so this is shown clearly in the game settings.' }
-      ]
+      ],
+      features: [
+        '16-tile Taiwanese hands with five melds plus a pair and 144-tile wall including Flowers.',
+        'Immediate Flower replacement with Tai bonuses and seat-Flower scoring options.',
+        'Chow, Pung and Kong calls with additive Tai settlement on every win.',
+        'Beginner-friendly 0-Tai minimum so you can learn tempo before chasing high-Tai patterns.',
+        'Four-player table against AI with self-draw and discard wins.'
+      ],
+      supportedDevices:
+        'Taiwan Mahjong plays in the browser on Windows, macOS, Linux, Android and iOS. Tablets and desktops make the larger 16-tile hand easiest to scan; phones work in portrait or landscape. Use current Chrome, Safari, Firefox or Edge for responsive tile taps and smooth Flower replacement animations.'
     }
   },
   {
@@ -340,7 +389,16 @@ export const games: GameConfig[] = [
       faq: [
         { question: 'Is this the official NMJL yearly card?', answer: 'No. This game uses Mahjong Hub original practice cards. A licensed NMJL-card integration would be a separate future product.' },
         { question: 'Can a Joker be used in a pair?', answer: 'No. In this rules baseline, Jokers are legal only in groups of three or more, never in singles or pairs.' }
-      ]
+      ],
+      features: [
+        '152-tile American-style set with Flowers, Jokers and NMJL-inspired Charleston passes.',
+        'Original Mahjong Hub practice cards — exact pattern wins, not generic meld shapes.',
+        'Legal Joker groups, Joker exchange on your turn and exposure rules tied to the card line.',
+        'Optional second Charleston and courtesy pass for table-style practice sessions.',
+        'Four-player browser table with guided Charleston and card-pattern validation.'
+      ],
+      supportedDevices:
+        'American Mahjong runs entirely in the browser on desktop and mobile without downloading an app. A wide screen helps read the practice card and exposures together; phones rotate to landscape for the full table layout. Supported on Chrome, Safari, Firefox and Edge across Windows, macOS, Linux, Android and iOS.'
     }
   },
   {
@@ -380,7 +438,16 @@ export const games: GameConfig[] = [
           answer:
             'Every change of direction. A straight line has no turns, an L shape has one, and a Z or U shape has two. Three or more is not allowed.'
         }
-      ]
+      ],
+      features: [
+        'Classic Onet-style link matching with authentic mahjong tile faces.',
+        'Three board sizes from compact to full-grid challenges.',
+        'Relaxed mode with no timer plus timed boards for streak scoring.',
+        'Automatic reshuffle when no pair is playable — boards never dead-end.',
+        'Hint system and streak bonus for longer sessions.'
+      ],
+      supportedDevices:
+        'Mahjong Connect runs in any modern browser on desktop, tablet and phone with no install. Touch taps on mobile and click-to-match on desktop both work on the same board. Chrome, Safari, Firefox and Edge on Windows, macOS, Linux, Android and iOS are supported; a mid-size phone screen fits the default board comfortably in portrait.'
     }
   },
 
@@ -434,7 +501,16 @@ export const games: GameConfig[] = [
           answer:
             'No. This is a pure puzzle with no wagering, no purchasable currency and no cash prize of any kind.'
         }
-      ]
+      ],
+      features: [
+        'Layered mahjong solitaire with turtle and pyramid layouts.',
+        'Every deal is reverse-generated solvable — a full clear is always possible.',
+        'Free-tile matching rules with visual highlight for playable pairs.',
+        'Hints, undo and reshuffle tools when you want a second look without restarting.',
+        'Daily challenge, campaign levels and a no-timer relaxed mode.'
+      ],
+      supportedDevices:
+        'Mahjong Solitaire Classic runs in the browser on Windows, macOS, Linux, Android and iOS without a download. Desktop and tablet screens show the full layered layout; phones scroll naturally over taller turtle stacks. Chrome, Safari, Firefox and Edge are supported — guest progress saves locally on your device.'
     }
   },
 
@@ -597,6 +673,8 @@ export function getLocalizedGame(
           intro: ci.intro ?? game.content.intro,
           howToPlay: ci.howToPlay ?? game.content.howToPlay,
           tips: ci.tips ?? game.content.tips,
+          features: ci.features ?? game.content.features,
+          supportedDevices: ci.supportedDevices ?? game.content.supportedDevices,
           faq: ci.faq ?? game.content.faq
         }
       : game.content;

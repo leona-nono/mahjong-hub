@@ -10,7 +10,7 @@ import {
   getMergedRelatedGames
 } from '@/lib/games-db';
 import IframeSection from '@/components/IframeSection';
-import NativeGameMount from '@/components/games/NativeGameMount';
+import NativeGameLazy from '@/components/games/NativeGameLazy';
 import CatalogGameCard from '@/components/CatalogGameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
@@ -23,6 +23,18 @@ import { dailyLevelId } from '@/lib/mahjong-solitaire/progress-rules';
 
 const SITE = 'https://mahjonggame.org';
 const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
+
+const LOCALE_TO_LANGUAGE: Record<string, string> = {
+  en: 'en-US',
+  zh: 'zh-CN',
+  'zh-TW': 'zh-TW',
+  ja: 'ja',
+  ko: 'ko',
+  es: 'es',
+  'pt-BR': 'pt-BR',
+  fr: 'fr',
+  de: 'de'
+};
 
 export const revalidate = 86_400;
 
@@ -106,14 +118,15 @@ export default async function GamePage({
       name: game.title,
       description: game.description,
       url: `${SITE}/${locale}/games/${slug}`,
-      genre: 'Puzzle',
+      inLanguage: LOCALE_TO_LANGUAGE[locale] ?? locale,
+      genre: game.category === 'four-player' ? 'BoardGame' : 'Puzzle',
       gamePlatform: ['Web Browser', 'Mobile Web'],
       playMode: game.players && game.players > 1 ? 'MultiPlayer' : 'SinglePlayer',
       numberOfPlayers: {
         '@type': 'QuantitativeValue',
         value: game.players ?? 1
       },
-      applicationCategory: 'Game',
+      applicationCategory: 'GameApplication',
       operatingSystem: 'Any',
       offers: {
         '@type': 'Offer',
@@ -124,9 +137,7 @@ export default async function GamePage({
     });
   }
 
-  // A coming-soon ruleset is not playable yet, so it gets no VideoGame entity,
-  // but its rules FAQ is real content on an indexable page.
-  if ((isNative || isComingSoon) && content?.faq?.length) {
+  if (content?.faq?.length) {
     jsonLd.push({
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
@@ -141,7 +152,7 @@ export default async function GamePage({
   const stage = isComingSoon ? (
     <ComingSoonGame game={game} />
   ) : isNative && game.native ? (
-    <NativeGameMount
+    <NativeGameLazy
       native={game.native}
       ruleset={game.ruleset}
       regionalRuleset={game.regionalRuleset}
@@ -181,7 +192,7 @@ export default async function GamePage({
           >
             {game.title}
           </h1>
-          {isNative && content && !isHongKong && (
+          {content && !isHongKong && (
             <p className="mt-1 max-w-3xl text-sm text-portal-muted line-clamp-2">
               {content.intro}
             </p>
@@ -212,7 +223,7 @@ export default async function GamePage({
         </aside>
       </div>
 
-      {(game.screenshots?.length || cmsMarkdown || (isNative && content)) && (
+      {(game.screenshots?.length || cmsMarkdown || content) && (
         <div className="mt-8 space-y-3">
           {game.screenshots?.length ? (
             <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
@@ -240,7 +251,7 @@ export default async function GamePage({
             </section>
           ) : null}
 
-          {isNative && content ? (
+          {content ? (
             <>
           <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
             <h2 className="font-semibold text-portal-text">{t('howToPlay')}</h2>
@@ -250,6 +261,24 @@ export default async function GamePage({
               ))}
             </ol>
           </section>
+          {content.features?.length ? (
+            <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
+              <h2 className="font-semibold text-portal-text">{t('features')}</h2>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-portal-muted">
+                {content.features.map((item) => (
+                  <li key={item.slice(0, 48)}>{item}</li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+          {content.supportedDevices ? (
+            <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
+              <h2 className="font-semibold text-portal-text">{t('supportedDevices')}</h2>
+              <p className="mt-3 text-sm leading-relaxed text-portal-muted">
+                {content.supportedDevices}
+              </p>
+            </section>
+          ) : null}
           <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
             <h2 className="font-semibold text-portal-text">{t('tips')}</h2>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-portal-muted">

@@ -6,8 +6,7 @@ import {
 } from '@/lib/games-db';
 import GameCard from '@/components/GameCard';
 import HomeCategoryCards from '@/components/HomeCategoryCards';
-import { pageMeta } from '@/lib/seo';
-import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { hubPageMeta } from '@/lib/hub-seo';
 
 export const revalidate = 86_400;
 
@@ -19,15 +18,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'nav' });
   const th = await getTranslations({ locale, namespace: 'home' });
-  const site = await getSiteSettings();
-  const title = `${t('gameHall')} | ${brandName(site)}`;
-  return pageMeta({
+  return hubPageMeta({
     locale,
     path: '/games',
-    title,
-    description: th('seoBody'),
-    ogImage: site.ogImage,
-    siteName: brandName(site)
+    titleKey: 'gamesTitle',
+    pageLabel: t('gameHall'),
+    description: th('seoBody')
   });
 }
 

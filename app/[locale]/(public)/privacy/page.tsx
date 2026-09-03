@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { pageMeta } from '@/lib/seo';
+import { hubPageMeta } from '@/lib/hub-seo';
 import { LEGAL_UPDATED, getPrivacyDoc } from '@/data/legal';
-import { brandName, getSiteSettings } from '@/lib/site-settings';
 
 export async function generateMetadata({
   params
@@ -12,14 +11,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const doc = getPrivacyDoc(locale);
-  const site = await getSiteSettings();
-  return pageMeta({
+  return hubPageMeta({
     locale,
     path: '/privacy',
-    title: doc.title,
-    description: doc.intro,
-    ogImage: site.ogImage,
-    siteName: brandName(site)
+    titleKey: 'privacyTitle',
+    pageLabel: doc.title,
+    description: doc.intro
   });
 }
 

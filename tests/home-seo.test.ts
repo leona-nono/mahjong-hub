@@ -56,6 +56,7 @@ describe('homepage SEO consolidation', () => {
     expect(meta.alternates?.languages?.['x-default']).toBe(`${SITE_BASE_URL}/en/games`);
     expect(meta.alternates?.languages?.de).toBe(`${SITE_BASE_URL}/de/games`);
     expect(meta.openGraph?.url).toBe(`${SITE_BASE_URL}/fr/games`);
+    expect(meta.title).toEqual({ absolute: 'Jeux' });
     expect(meta.openGraph?.title).toBe('Jeux');
     expect(meta.twitter?.card).toBe('summary_large_image');
   });

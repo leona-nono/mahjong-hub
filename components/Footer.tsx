@@ -28,6 +28,9 @@ export default function Footer({ siteTitle }: { siteTitle: string }) {
           <Link href="/blog" className="hover:text-portal-accent">
             {tn('beginners')}
           </Link>
+          <Link href="/about" className="hover:text-portal-accent">
+            {tn('about')}
+          </Link>
           <Link href="/privacy" className="hover:text-portal-accent">
             {tc('privacy')}
           </Link>

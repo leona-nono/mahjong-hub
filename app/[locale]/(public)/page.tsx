@@ -69,6 +69,8 @@ export default async function HomePage({
 
       <HomeDailyChallenge dailyLevelId={todayLevel} />
 
+      <HomeSeoBlock locale={locale} />
+
       <HomeCategoryCards />
 
       <section aria-labelledby="home-game-wall">
@@ -87,7 +89,6 @@ export default async function HomePage({
         </div>
       </section>
 
-      <HomeSeoBlock />
     </div>
   );
 }
