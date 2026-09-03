@@ -54,10 +54,6 @@ export interface GameConfig {
   title: string;
   /** English short description (default; localized via page copy). */
   description: string;
-  /** Optional CMS SEO title override (meta only). */
-  seoTitle?: string;
-  /** Optional CMS SEO description override (meta only). */
-  seoDescription?: string;
   category: GameCategory;
   gameType: GameType;
   /** External embed URL (verified embeddable) — iframe games only. */

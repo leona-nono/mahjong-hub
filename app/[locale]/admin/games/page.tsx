@@ -4,8 +4,8 @@ import { prisma } from '@/lib/db';
 import { isDbConnected } from '@/lib/db-health';
 
 /**
- * 运营后台「游戏管理」仅管理非自研（iframe / CMS）游戏。
- * 自研 native 游戏的页面 SEO 请到「自研游戏 SEO」。
+ * Game list — shows all games in a table with search/filter.
+ * Can switch between DB and static data view.
  */
 
 const CATEGORY_LABELS: Record<GameCategory, string> = {
@@ -19,18 +19,12 @@ const CATEGORY_LABELS: Record<GameCategory, string> = {
 export const dynamic = 'force-dynamic';
 
 async function getGameList() {
-  const staticIframes = getGames().filter((g) => g.gameType === 'iframe');
-  const nativeSlugs = new Set(
-    getGames().filter((g) => g.gameType !== 'iframe').map((g) => g.slug)
-  );
+  const staticGames = getGames();
 
+  // Probe connectivity first; only attempt the query when DB is reachable so
+  // we never confuse "empty result" with "DB down" in the UI.
   const dbConnected = await isDbConnected();
-  let dbGames: {
-    slug: string;
-    title: string;
-    category: string | null;
-    isFeatured: boolean;
-  }[] = [];
+  let dbGames: { slug: string; title: string; category: string | null; isFeatured: boolean }[] = [];
   if (dbConnected) {
     try {
       dbGames = await prisma.game.findMany({
@@ -47,9 +41,11 @@ async function getGameList() {
     }
   }
 
-  const staticSlugs = new Set(staticIframes.map((g) => g.slug));
+  // Render the full catalogue: static games first (DB overlay shows as-is),
+  // then CMS-only games created in the back office appended with a badge.
+  const staticSlugs = new Set(staticGames.map((g) => g.slug));
   const displayGames = [
-    ...staticIframes.map((g) => ({
+    ...staticGames.map((g) => ({
       slug: g.slug,
       title: g.title,
       category: g.category,
@@ -57,7 +53,7 @@ async function getGameList() {
       source: 'static' as const
     })),
     ...dbGames
-      .filter((g) => !staticSlugs.has(g.slug) && !nativeSlugs.has(g.slug))
+      .filter((g) => !staticSlugs.has(g.slug))
       .map((g) => ({
         slug: g.slug,
         title: g.title,
@@ -75,30 +71,24 @@ export default async function AdminGamesPage() {
 
   return (
     <div>
+      {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">游戏管理</h1>
           <p className="mt-1 text-sm text-gray-500">
-            仅非自研（iframe / CMS）游戏 · 共 {displayGames.length} 个
+            共 {displayGames.length} 个游戏
             {dbConnected ? '（数据库已连接，可编辑）' : '（静态源，DB 连接后可编辑）'}
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/admin/native-seo"
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            自研 SEO →
-          </Link>
-          <Link
-            href="/admin/games/new"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-blue-700"
-          >
-            ＋ 新建游戏
-          </Link>
-        </div>
+        <Link
+          href="/admin/games/new"
+          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-blue-700"
+        >
+          ＋ 新建游戏
+        </Link>
       </div>
 
+      {/* Status banner */}
       {!dbConnected && (
         <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
           ⚠️ 数据库未连接。下方列表数据来自静态源，仅供预览。
@@ -107,6 +97,7 @@ export default async function AdminGamesPage() {
         </div>
       )}
 
+      {/* Table */}
       <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
         <table className="min-w-full text-sm">
           <thead className="border-b bg-gray-50 text-left text-xs font-semibold uppercase text-gray-500">

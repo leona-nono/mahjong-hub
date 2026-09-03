@@ -147,23 +147,9 @@ export function formatHomeMetadata(site: PublicSiteSettings): {
 
 export function formatGameMetadata(
   site: PublicSiteSettings,
-  game: {
-    title: string;
-    description: string;
-    seoTitle?: string;
-    seoDescription?: string;
-  }
+  game: { title: string; description: string }
 ): { title: string; description: string } {
   const brand = brandName(site);
-  if (game.seoTitle?.trim() || game.seoDescription?.trim()) {
-    return {
-      title: clipSeo(game.seoTitle?.trim() || game.title, 70),
-      description: clipSeo(
-        game.seoDescription?.trim() || game.description,
-        160
-      )
-    };
-  }
   return {
     title: clipSeo(
       applySeoTemplate(site.gameTitleTemplate, {

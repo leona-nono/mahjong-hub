@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
-import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
 import { revalidateGamePaths } from '@/lib/revalidate-games';
 import {
@@ -31,7 +30,7 @@ export async function GET() {
   return NextResponse.json({ games });
 }
 
-/** POST /api/admin/games — create a new iframe / CMS game. */
+/** POST /api/admin/games — create a new game. */
 export async function POST(req: NextRequest) {
   const guard = await requireAdmin();
   if (guard) return guard;
@@ -50,14 +49,6 @@ export async function POST(req: NextRequest) {
     validateBool('featured', featured) ??
     validateInt('sortOrder', sortOrder);
   if (v) return v;
-
-  const staticGame = getGame(slug);
-  if (staticGame && staticGame.gameType !== 'iframe') {
-    return NextResponse.json(
-      { error: '自研游戏请在「自研 SEO」中管理，不可在此创建' },
-      { status: 400 }
-    );
-  }
 
   const existing = await prisma.game.findUnique({ where: { slug } });
   if (existing) {

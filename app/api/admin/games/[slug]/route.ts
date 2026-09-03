@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-guard';
-import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
 import { revalidateGamePaths } from '@/lib/revalidate-games';
 import {
@@ -20,24 +19,11 @@ export const dynamic = 'force-dynamic';
 
 type Params = { params: Promise<{ slug: string }> };
 
-function rejectNative(slug: string) {
-  const staticGame = getGame(slug);
-  if (staticGame && staticGame.gameType !== 'iframe') {
-    return NextResponse.json(
-      { error: '自研游戏请在「自研 SEO」中管理' },
-      { status: 400 }
-    );
-  }
-  return null;
-}
-
 /** GET /api/admin/games/[slug] — fetch single game with FAQs/Features. */
 export async function GET(_req: NextRequest, { params }: Params) {
   const guard = await requireAdmin();
   if (guard) return guard;
   const { slug } = await params;
-  const blocked = rejectNative(slug);
-  if (blocked) return blocked;
 
   const game = await prisma.game.findUnique({
     where: { slug },
@@ -55,8 +41,6 @@ export async function PUT(req: NextRequest, { params }: Params) {
   const guard = await requireAdmin();
   if (guard) return guard;
   const { slug } = await params;
-  const blocked = rejectNative(slug);
-  if (blocked) return blocked;
   const body = await req.json();
 
   // Field-level validation — only validate fields the client sent.
@@ -115,8 +99,6 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
   const guard = await requireAdmin();
   if (guard) return guard;
   const { slug } = await params;
-  const blocked = rejectNative(slug);
-  if (blocked) return blocked;
 
   await prisma.game.delete({ where: { slug } });
   revalidateGamePaths(slug);

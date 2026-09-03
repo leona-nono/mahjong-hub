@@ -1,5 +1,5 @@
 import { Link } from '@/i18n/navigation';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { getGame } from '@/data/games';
 import { prisma } from '@/lib/db';
 import FaqEditor, { type FaqRow } from '@/components/admin/FaqEditor';
@@ -9,13 +9,10 @@ export const dynamic = 'force-dynamic';
 export default async function GameFaqsPage({
   params
 }: {
-  params: Promise<{ locale: string; slug: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { locale, slug } = await params;
+  const { slug } = await params;
   const staticGame = getGame(slug);
-  if (staticGame?.gameType === 'native') {
-    redirect(`/${locale}/admin/native-seo/${slug}`);
-  }
 
   let title = staticGame?.title ?? slug;
   let dbGameId: string | null = null;
