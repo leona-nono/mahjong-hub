@@ -18,7 +18,7 @@ const LOCALE_JSON: Record<(typeof LOCALES)[number], BlogLocaleJson> = {
 function sectionShape(sections: { body: string[]; tiles?: unknown }[]) {
   return sections.map((s) => ({
     bodyLen: s.body.length,
-    hasTiles: Boolean(s.tiles?.length)
+    hasTiles: Array.isArray(s.tiles) && s.tiles.length > 0
   }));
 }
 
