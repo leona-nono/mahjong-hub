@@ -36,3 +36,12 @@ describe('resolvePublicGuide', () => {
     expect(post?.title).toBeTruthy();
   });
 });
+
+describe('localized blog sections', () => {
+  it('exposes Chinese section headings from blog-i18n JSON', async () => {
+    const { getLocalizedBlogPost } = await import('@/data/blog');
+    const post = getLocalizedBlogPost('how-to-play-mahjong', 'zh');
+    expect(post?.sections[0]?.heading).toBe('你需要什么');
+    expect(post?.sections[0]?.body[0]).toContain('四名玩家');
+  });
+});
