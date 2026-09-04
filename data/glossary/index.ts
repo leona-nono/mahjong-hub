@@ -25,7 +25,11 @@ export const GLOSSARY_REQUIRED_LOCALES: GlossaryLocale[] = [
   'zh',
   'zh-TW',
   'ja',
-  'ko'
+  'ko',
+  'es',
+  'fr',
+  'de',
+  'pt-BR'
 ];
 
 /**

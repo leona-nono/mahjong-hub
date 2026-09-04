@@ -120,122 +120,18 @@
   },
   "sichuan-mahjong": {
     "title": "四川麻將",
-    "description": "血流成河的四川麻將：定缺一門、換三張，胡牌後繼續戰鬥。",
-    "content": {
-      "intro": "Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.",
-      "howToPlay": [
-        "The 108-tile wall uses only Characters, Dots and Bamboo. Winds, Dragons, Flowers and Seasons are not used.",
-        "Before normal play, select three tiles from one suit for Exchange Three; the table passes them in the direction chosen for that hand.",
-        "Choose one forbidden suit. You must discard every tile of that suit before you are allowed to win.",
-        "Draw and discard normally. Chow is not allowed; Pung and Kong are allowed under the table claim order.",
-        "Make four melds and a pair, or an approved special hand such as Seven Pairs, then win by self-draw or a legal discard.",
-        "A winner stops drawing, but the hand continues for the remaining players. End-of-hand settlement includes ready-hand check, flower-pig penalty and Kong refund."
-      ],
-      "tips": [
-        "Choose the forbidden suit from the suit you can clear most quickly, not merely from its lowest tiles.",
-        "Exchange Three should remove three tiles from one coherent weak suit so you do not create three unrelated dead tiles.",
-        "Because Chow is unavailable, pairs and connected shapes are more valuable than in Chow-enabled variants.",
-        "After another player wins, reassess risk: staying ready matters for the end-of-hand check, but avoid becoming flower pig.",
-        "Track Kong exposure and settlement. A high-value Kong is not automatically safe if it opens a dangerous draw."
-      ],
-      "features": [
-        "成都血戰到底基線——108 張牌、換三張與個人定缺。",
-        "不可吃：僅碰與槓，貼近四川快桌節奏，對戰三位 AI。",
-        "血戰流程：首胡後繼續，終局聽牌檢查與處罰。",
-        "每局開始前可互動換三張並選定缺一門。",
-        "支援自摸與放銃，含七對與標準四組面子形。"
-      ],
-      "supportedDevices": "四川麻將可在桌面、筆電、平板與手機的現代瀏覽器中執行，無需安裝。橫向最適合換三張與定缺控制項。支援 Windows、macOS、Linux、Android 與 iOS 上的 Chrome、Safari、Firefox 與 Edge。",
-      "faq": [
-        {
-          "question": "Why can I not win while I still hold my forbidden suit?",
-          "answer": "The forbidden-suit rule is a core Chengdu Blood Battle condition. Clear every tile of your chosen suit before a win may be declared."
-        },
-        {
-          "question": "Why does the game continue after someone wins?",
-          "answer": "Blood Battle to the End permits remaining players to continue. This can create several winners or penalties within one hand."
-        }
-      ]
-    }
+    "description": "血流成河的四川麻將：定缺一門、換三張，胡牌後繼續戰鬥。"
   },
   "taiwan-mahjong": {
     "title": "台灣麻將",
     "description": "十六張台灣麻將：花牌補花、台數計分。",
     "content": {
-      "intro": "Mahjong Hub 台灣麻將採用輕鬆的 16 張入門規則：144 張牌、花季即時補牌、五組面子加一對將牌，並採可累加台數與 0 台可胡。",
-      "howToPlay": [
-        "Use all 144 tiles. Each non-dealer starts with 16 tiles; East starts with 17 and makes the first discard.",
-        "Reveal every Flower or Season immediately and draw a replacement. It remains outside your 16-tile hand and adds Tai when applicable.",
-        "On your turn draw one tile and discard one. You may Chow from the left player, or Pung and Kong according to the claim order.",
-        "Win with five melds and one pair, for a 17-tile hand. Self-draw and discard wins are both supported.",
-        "Tai patterns add together for settlement. This Mahjong Hub beginner baseline allows a complete 0-Tai hand to win."
-      ],
-      "tips": [
-        "With 16 concealed tiles, retain several connected shapes early instead of committing to one wait too quickly.",
-        "Flowers add value but do not repair a weak main hand; build the five-meld structure first.",
-        "Kongs are more frequent in Taiwan Mahjong. Consider both the replacement draw and the information you reveal.",
-        "Use 0-Tai mode to learn tempo; once comfortable, chase Tai only when it does not reduce your live waits.",
-        "Check whether your Flower matches your seat, as seat Flowers can add an extra scoring bonus."
-      ],
-      "features": [
-        "十六張台灣手牌：五組面子加一對，144 張牌牆含花牌。",
-        "花牌即時補花，台數加成與座位花計分選項。",
-        "吃碰槓叫牌，每把可累加台數結算。",
-        "入門友善的 0 台最低，先學節奏再追高台。",
-        "四人桌對戰 AI，支援自摸與放銃。"
-      ],
-      "supportedDevices": "台灣麻將可在 Windows、macOS、Linux、Android 與 iOS 瀏覽器中遊玩。平板與桌面最易瀏覽十六張大手牌；手機直向或橫向均可。請使用現行 Chrome、Safari、Firefox 或 Edge，以獲得靈敏的點牌與流暢的補花動畫。",
-      "faq": [
-        {
-          "question": "Why do I hold 16 tiles instead of 13?",
-          "answer": "Taiwan Mahjong uses five melds plus one pair. Players normally hold 16 tiles and win after drawing or claiming the 17th."
-        },
-        {
-          "question": "Can a 0-Tai hand win here?",
-          "answer": "Yes. Mahjong Hub uses a relaxed 0-Tai baseline. Other Taiwan tables may require a minimum Tai, so this is shown clearly in the game settings."
-        }
-      ]
+      "intro": "Mahjong Hub 台灣麻將採用輕鬆的 16 張入門規則：144 張牌、花季即時補牌、五組面子加一對將牌，並採可累加台數與 0 台可胡。"
     }
   },
   "american-mahjong": {
     "title": "美國麻將",
-    "description": "美國麻將：查爾斯頓換牌、百搭牌、花牌與年度卡牌牌型。",
-    "content": {
-      "intro": "Mahjong Hub American Mahjong is an original practice-card game inspired by NMJL-style flow: 152 tiles, Charleston, Flowers, Jokers, exposed groups and exact card-pattern wins. It does not reproduce a current NMJL annual card.",
-      "howToPlay": [
-        "Use a 152-tile set with standard tiles, eight Flowers and eight Jokers. Every player takes 13 tiles; East takes 14 and discards first.",
-        "Read the original practice card, then complete Charleston: pass three tiles right, across and left. A second Charleston and courtesy pass are table options.",
-        "Draw and discard while steering toward one exact line on the practice card, not a general four-meld-and-a-pair shape.",
-        "Expose legal Pungs, Kongs or larger groups when the selected card line permits it. Concealed card lines may not be exposed before the final win.",
-        "Use a Joker only in a group of three or more; never use it as a single or pair. On your turn, a natural tile may exchange for a Joker in an opponent exposure.",
-        "Declare Mah Jongg only when all 14 tiles exactly match one legal original practice-card line."
-      ],
-      "tips": [
-        "Before Charleston, keep two or three compatible card lines open rather than committing to a single rare line.",
-        "Pass tiles that do not support any of your likely card categories, but never pass a Joker.",
-        "Do not expose a group merely because you can: exposure signals your target and may make your hand impossible to pivot.",
-        "Treat Jokers as group accelerators, not universal wildcards; you still need natural tiles for singles and pairs.",
-        "Use opponent exposures to decide which natural tiles are safe to discard and when a Joker exchange is valuable."
-      ],
-      "features": [
-        "152 張美式牌組，含花牌、百搭與 NMJL 風格查爾斯頓傳牌。",
-        "Mahjong Hub 原創練習牌型卡——精確牌型胡牌，而非泛用面子形。",
-        "合法百搭組、己輪換百搭，以及與卡線綁定的亮牌規則。",
-        "可選第二次查爾斯頓與禮貌傳牌，貼近桌面練習。",
-        "四人瀏覽器牌桌，引導式查爾斯頓與牌型校驗。"
-      ],
-      "supportedDevices": "美國麻將完全在桌面與手機瀏覽器中執行，無需下載應用程式。寬螢幕便於同時閱讀練習卡與亮牌；手機可橫向查看完整桌面。支援 Windows、macOS、Linux、Android 與 iOS 上的 Chrome、Safari、Firefox 與 Edge。",
-      "faq": [
-        {
-          "question": "Is this the official NMJL yearly card?",
-          "answer": "No. This game uses Mahjong Hub original practice cards. A licensed NMJL-card integration would be a separate future product."
-        },
-        {
-          "question": "Can a Joker be used in a pair?",
-          "answer": "No. In this rules baseline, Jokers are legal only in groups of three or more, never in singles or pairs."
-        }
-      ]
-    }
+    "description": "美國麻將：查爾斯頓換牌、百搭牌、花牌與年度卡牌牌型。"
   },
   "mahjong-connect-classic": {
     "title": "麻將連連看",

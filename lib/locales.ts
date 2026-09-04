@@ -4,21 +4,43 @@ import { routing, type Locale } from '@/i18n/routing';
 export const UI_LOCALES = routing.locales;
 
 /**
- * Locales with dedicated long-form content (games, blog, about, home-guide).
- * European UI locales stay switchable but are not indexable until translated.
+ * Locales open to search indexing (hreflang + sitemap).
+ * Matches UI_LOCALES — every routed language has dedicated long-form copy.
  */
 export const INDEXABLE_LOCALES = [
   'en',
   'zh',
   'zh-TW',
   'ja',
-  'ko'
+  'ko',
+  'es',
+  'pt-BR',
+  'fr',
+  'de'
 ] as const satisfies readonly Locale[];
 
 export type IndexableLocale = (typeof INDEXABLE_LOCALES)[number];
 
+/** Non-English locales that ship long-form JSON (about / home-guide / games). */
+export const CONTENT_LOCALES = [
+  'zh',
+  'zh-TW',
+  'ja',
+  'ko',
+  'es',
+  'fr',
+  'de',
+  'pt-BR'
+] as const satisfies readonly Exclude<IndexableLocale, 'en'>[];
+
+export type ContentLocale = (typeof CONTENT_LOCALES)[number];
+
 export function isIndexableLocale(locale: string): locale is IndexableLocale {
   return (INDEXABLE_LOCALES as readonly string[]).includes(locale);
+}
+
+export function isContentLocale(locale: string): locale is ContentLocale {
+  return (CONTENT_LOCALES as readonly string[]).includes(locale);
 }
 
 /** Open Graph `locale` codes (underscore form). */

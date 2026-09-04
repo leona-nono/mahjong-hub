@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { INDEXABLE_LOCALES, isIndexableLocale, ogLocale } from '@/lib/locales';
+import { INDEXABLE_LOCALES, ogLocale } from '@/lib/locales';
 
 export const SITE_BASE_URL = 'https://mahjonggame.org';
 
@@ -47,7 +47,7 @@ export function socialShareMeta(opts: {
   };
 }
 
-/** Build hreflang map for indexable locales only (+ x-default → English). */
+/** Build hreflang map for all indexable locales (+ x-default → English). */
 function indexableLanguageMap(path = ''): Record<string, string> {
   const languages: Record<string, string> = {};
   for (const locale of INDEXABLE_LOCALES) {
@@ -57,16 +57,11 @@ function indexableLanguageMap(path = ''): Record<string, string> {
   return languages;
 }
 
-// Homepage-level hreflang alternates (locale roots). Only indexable locales —
-// European UI locales stay switchable but are excluded until long-form copy exists.
-export const LANGUAGE_ALTERNATES = indexableLanguageMap('') as {
-  en: string;
-  zh: string;
-  'zh-TW': string;
-  ja: string;
-  ko: string;
-  'x-default': string;
-};
+// Homepage-level hreflang alternates (locale roots) for every indexable locale.
+export const LANGUAGE_ALTERNATES = indexableLanguageMap('') as Record<
+  string,
+  string
+> & { 'x-default': string };
 
 // Self-referencing canonical plus per-locale hreflang alternates for a public
 // page. `path` is the route after the locale, e.g. '' (home), '/games',
@@ -86,7 +81,6 @@ export function alternatesFor(
 /**
  * Full public-page metadata: self-canonical, full hreflang (+ x-default),
  * and complete Open Graph / Twitter cards (title, description, image, url).
- * Non-indexable locales (es/fr/de/pt-BR) get robots noindex until translated.
  */
 export function pageMeta(opts: {
   locale: string;
@@ -110,17 +104,12 @@ export function pageMeta(opts: {
   if (opts.type && share.openGraph) {
     share.openGraph = { ...share.openGraph, type: opts.type };
   }
-  const robots =
-    opts.robots ??
-    (isIndexableLocale(opts.locale)
-      ? undefined
-      : { index: false, follow: true });
   return {
     title: { absolute: opts.title },
     description: opts.description,
     alternates: alternatesFor(opts.locale, opts.path),
     ...share,
-    ...(robots ? { robots } : {}),
+    ...(opts.robots ? { robots: opts.robots } : {}),
     ...(opts.keywords ? { keywords: opts.keywords } : {})
   };
 }

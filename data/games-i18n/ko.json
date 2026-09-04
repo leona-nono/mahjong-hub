@@ -120,122 +120,18 @@
   },
   "sichuan-mahjong": {
     "title": "쓰촨 마작",
-    "description": "쓰촨 피의 전투 마작: 결장 원색, 3장 교환, 화료 후에도 계속 플레이.",
-    "content": {
-      "intro": "Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.",
-      "howToPlay": [
-        "The 108-tile wall uses only Characters, Dots and Bamboo. Winds, Dragons, Flowers and Seasons are not used.",
-        "Before normal play, select three tiles from one suit for Exchange Three; the table passes them in the direction chosen for that hand.",
-        "Choose one forbidden suit. You must discard every tile of that suit before you are allowed to win.",
-        "Draw and discard normally. Chow is not allowed; Pung and Kong are allowed under the table claim order.",
-        "Make four melds and a pair, or an approved special hand such as Seven Pairs, then win by self-draw or a legal discard.",
-        "A winner stops drawing, but the hand continues for the remaining players. End-of-hand settlement includes ready-hand check, flower-pig penalty and Kong refund."
-      ],
-      "tips": [
-        "Choose the forbidden suit from the suit you can clear most quickly, not merely from its lowest tiles.",
-        "Exchange Three should remove three tiles from one coherent weak suit so you do not create three unrelated dead tiles.",
-        "Because Chow is unavailable, pairs and connected shapes are more valuable than in Chow-enabled variants.",
-        "After another player wins, reassess risk: staying ready matters for the end-of-hand check, but avoid becoming flower pig.",
-        "Track Kong exposure and settlement. A high-value Kong is not automatically safe if it opens a dangerous draw."
-      ],
-      "features": [
-        "청두 혈전 베이스라인——108장, 3장 교환과 개인 결장.",
-        "치 없음: 퐁·캉만. 빠른 쓰촨 템포로 AI 3명과 대국.",
-        "혈전 흐름: 첫 화료 후에도 계속. 종료 시 텐파이 검사와 벌칙.",
-        "매 국 시작 전 3장 교환과 결장을 인터랙티브하게 선택.",
-        "쯔모·방총 지원. 치토이츠와 표준 4멘츠 형태."
-      ],
-      "supportedDevices": "쓰촨 마작은 데스크톱·노트북·태블릿·휴대폰의 최신 브라우저에서 실행되며 설치가 필요 없습니다. 가로가 교환·결장 컨트롤에 가장 적합합니다. Windows, macOS, Linux, Android, iOS의 Chrome, Safari, Firefox, Edge를 지원합니다.",
-      "faq": [
-        {
-          "question": "Why can I not win while I still hold my forbidden suit?",
-          "answer": "The forbidden-suit rule is a core Chengdu Blood Battle condition. Clear every tile of your chosen suit before a win may be declared."
-        },
-        {
-          "question": "Why does the game continue after someone wins?",
-          "answer": "Blood Battle to the End permits remaining players to continue. This can create several winners or penalties within one hand."
-        }
-      ]
-    }
+    "description": "쓰촨 피의 전투 마작: 결장 원색, 3장 교환, 화료 후에도 계속 플레이."
   },
   "taiwan-mahjong": {
     "title": "대만 마작",
     "description": "대만 16장 마작: 꽃패 보충과 대수(타이) 점수.",
     "content": {
-      "intro": "Mahjong Hub 대만 마작은 144장, 꽃패 보충, 다섯 멘츠와 한 쌍을 사용하는 입문용 16장 규칙이며 0타이 화료를 허용합니다.",
-      "howToPlay": [
-        "Use all 144 tiles. Each non-dealer starts with 16 tiles; East starts with 17 and makes the first discard.",
-        "Reveal every Flower or Season immediately and draw a replacement. It remains outside your 16-tile hand and adds Tai when applicable.",
-        "On your turn draw one tile and discard one. You may Chow from the left player, or Pung and Kong according to the claim order.",
-        "Win with five melds and one pair, for a 17-tile hand. Self-draw and discard wins are both supported.",
-        "Tai patterns add together for settlement. This Mahjong Hub beginner baseline allows a complete 0-Tai hand to win."
-      ],
-      "tips": [
-        "With 16 concealed tiles, retain several connected shapes early instead of committing to one wait too quickly.",
-        "Flowers add value but do not repair a weak main hand; build the five-meld structure first.",
-        "Kongs are more frequent in Taiwan Mahjong. Consider both the replacement draw and the information you reveal.",
-        "Use 0-Tai mode to learn tempo; once comfortable, chase Tai only when it does not reduce your live waits.",
-        "Check whether your Flower matches your seat, as seat Flowers can add an extra scoring bonus."
-      ],
-      "features": [
-        "16장 대만 손패——다섯 멘츠+한 쌍, 꽃패 포함 144장 패산.",
-        "꽃패 즉시 보충. 타이 보너스와 자리 꽃 점수 옵션.",
-        "치·퐁·캉. 매 화료마다 가산 타이 정산.",
-        "입문용 0타이 최소. 템포를 익힌 뒤 높은 타이를 노림.",
-        "4인 테이블 AI 대국. 쯔모·론 지원."
-      ],
-      "supportedDevices": "대만 마작은 Windows, macOS, Linux, Android, iOS 브라우저에서 플레이할 수 있습니다. 태블릿·데스크톱이 16장 큰 손패를 보기 쉽고, 휴대폰은 세로·가로 모두 가능합니다. 반응성 좋은 탭과 꽃 보충 애니메이션을 위해 최신 Chrome, Safari, Firefox, Edge를 사용하세요.",
-      "faq": [
-        {
-          "question": "Why do I hold 16 tiles instead of 13?",
-          "answer": "Taiwan Mahjong uses five melds plus one pair. Players normally hold 16 tiles and win after drawing or claiming the 17th."
-        },
-        {
-          "question": "Can a 0-Tai hand win here?",
-          "answer": "Yes. Mahjong Hub uses a relaxed 0-Tai baseline. Other Taiwan tables may require a minimum Tai, so this is shown clearly in the game settings."
-        }
-      ]
+      "intro": "Mahjong Hub 대만 마작은 144장, 꽃패 보충, 다섯 멘츠와 한 쌍을 사용하는 입문용 16장 규칙이며 0타이 화료를 허용합니다."
     }
   },
   "american-mahjong": {
     "title": "미국 마작",
-    "description": "미국 마작: 찰스턴, 조커, 꽃패와 연간 카드 패턴.",
-    "content": {
-      "intro": "Mahjong Hub American Mahjong is an original practice-card game inspired by NMJL-style flow: 152 tiles, Charleston, Flowers, Jokers, exposed groups and exact card-pattern wins. It does not reproduce a current NMJL annual card.",
-      "howToPlay": [
-        "Use a 152-tile set with standard tiles, eight Flowers and eight Jokers. Every player takes 13 tiles; East takes 14 and discards first.",
-        "Read the original practice card, then complete Charleston: pass three tiles right, across and left. A second Charleston and courtesy pass are table options.",
-        "Draw and discard while steering toward one exact line on the practice card, not a general four-meld-and-a-pair shape.",
-        "Expose legal Pungs, Kongs or larger groups when the selected card line permits it. Concealed card lines may not be exposed before the final win.",
-        "Use a Joker only in a group of three or more; never use it as a single or pair. On your turn, a natural tile may exchange for a Joker in an opponent exposure.",
-        "Declare Mah Jongg only when all 14 tiles exactly match one legal original practice-card line."
-      ],
-      "tips": [
-        "Before Charleston, keep two or three compatible card lines open rather than committing to a single rare line.",
-        "Pass tiles that do not support any of your likely card categories, but never pass a Joker.",
-        "Do not expose a group merely because you can: exposure signals your target and may make your hand impossible to pivot.",
-        "Treat Jokers as group accelerators, not universal wildcards; you still need natural tiles for singles and pairs.",
-        "Use opponent exposures to decide which natural tiles are safe to discard and when a Joker exchange is valuable."
-      ],
-      "features": [
-        "152장 미국식 세트. 꽃패·조커·NMJL 스타일 찰스턴.",
-        "Mahjong Hub 오리지널 연습 카드——일반 멘츠가 아닌 정확한 패턴으로 화료.",
-        "합법 조커 그룹, 자기 턴 교환, 카드 라인에 묶인 노출 규칙.",
-        "선택적 두 번째 찰스턴과 예의 패스로 테이블 연습에 가깝게.",
-        "4인 브라우저 테이블. 가이드 찰스턴과 패턴 검증."
-      ],
-      "supportedDevices": "미국 마작은 데스크톱·모바일 브라우저에서 완전히 실행되며 앱 다운로드가 필요 없습니다. 넓은 화면이 연습 카드와 노출을 함께 보기 쉽고, 휴대폰은 가로로 전체 테이블을 볼 수 있습니다. Windows, macOS, Linux, Android, iOS의 Chrome, Safari, Firefox, Edge를 지원합니다.",
-      "faq": [
-        {
-          "question": "Is this the official NMJL yearly card?",
-          "answer": "No. This game uses Mahjong Hub original practice cards. A licensed NMJL-card integration would be a separate future product."
-        },
-        {
-          "question": "Can a Joker be used in a pair?",
-          "answer": "No. In this rules baseline, Jokers are legal only in groups of three or more, never in singles or pairs."
-        }
-      ]
-    }
+    "description": "미국 마작: 찰스턴, 조커, 꽃패와 연간 카드 패턴."
   },
   "mahjong-connect-classic": {
     "title": "마작 커넥트",

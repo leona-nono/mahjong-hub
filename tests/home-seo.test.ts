@@ -54,10 +54,12 @@ describe('homepage SEO consolidation', () => {
     });
     expect(meta.alternates?.canonical).toBe(`${SITE_BASE_URL}/fr/games`);
     expect(meta.alternates?.languages?.['x-default']).toBe(`${SITE_BASE_URL}/en/games`);
-    // European UI locales stay switchable but are excluded from hreflang until translated.
-    expect(meta.alternates?.languages?.de).toBeUndefined();
+    // All UI locales are indexable and appear in hreflang.
+    expect(meta.alternates?.languages?.de).toBe(`${SITE_BASE_URL}/de/games`);
+    expect(meta.alternates?.languages?.es).toBe(`${SITE_BASE_URL}/es/games`);
+    expect(meta.alternates?.languages?.['pt-BR']).toBe(`${SITE_BASE_URL}/pt-BR/games`);
     expect(meta.alternates?.languages?.zh).toBe(`${SITE_BASE_URL}/zh/games`);
-    expect(meta.robots).toEqual({ index: false, follow: true });
+    expect(meta.robots).toBeUndefined();
     expect(meta.openGraph?.url).toBe(`${SITE_BASE_URL}/fr/games`);
     expect(meta.openGraph?.locale).toBe('fr_FR');
     expect(meta.title).toEqual({ absolute: 'Jeux' });
@@ -74,6 +76,7 @@ describe('homepage SEO consolidation', () => {
     });
     expect(meta.robots).toBeUndefined();
     expect(meta.alternates?.languages?.ja).toBe(`${SITE_BASE_URL}/ja/about`);
+    expect(meta.alternates?.languages?.fr).toBe(`${SITE_BASE_URL}/fr/about`);
     expect(meta.openGraph?.locale).toBe('zh_CN');
   });
 

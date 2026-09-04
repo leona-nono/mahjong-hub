@@ -12,9 +12,11 @@
     "seed": "esbuild scripts/seed-games.ts --bundle --platform=node --format=cjs --external:@prisma/client --outfile=node_modules/.cache/seed-games.cjs && node --env-file-if-exists=.env.local --env-file-if-exists=.env node_modules/.cache/seed-games.cjs",
     "assets:tiles": "node scripts/generate-mahjong-tile-webp.mjs",
     "assets:solitaire": "node scripts/generate-solitaire-tile-placeholders.mjs",
+    "sync:cocos-connect": "node scripts/sync-cocos-connect.mjs",
     "catalog:solitaire": "npx tsx scripts/build-solitaire-catalog.ts",
     "validate:blog-i18n": "npx tsx scripts/validate-blog-i18n-json.ts",
     "validate:content-i18n": "npx tsx scripts/validate-content-i18n.ts",
+    "translate:content-i18n": "npx tsx scripts/i18n/translate-content-i18n.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {

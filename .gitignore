@@ -17,3 +17,6 @@ lib/generated/
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# Offline i18n translation memory (local DeepSeek cache — never runtime)
+.cache/

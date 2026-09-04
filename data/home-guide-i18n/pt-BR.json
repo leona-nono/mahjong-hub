@@ -1,0 +1,106 @@
+{
+  "eyebrow": "JOGAR · APRENDER · RELAXAR",
+  "title": "Por que jogar mahjong online — e qual jogo combina com você",
+  "intro": "O mahjong é uma das formas mais fáceis de limpar a mente por alguns minutos — e uma das mais gratificantes de aprender de verdade. Veja por que as pessoas voltam, e um jeito rápido de achar o jogo que combina com o seu humor.",
+  "sections": [
+    {
+      "heading": "Por que os jogadores ficam",
+      "bullets": [
+        {
+          "strong": "É uma pausa de verdade, não um ralo de tempo.",
+          "text": " Sem downloads, sem conta para começar — abra um tabuleiro e limpe a mente. → ",
+          "link": {
+            "label": "Explorar a Game Hall",
+            "href": "/games"
+          }
+        },
+        {
+          "strong": "Há uma versão para cada humor.",
+          "text": " Quer calma pura? Combine peças no solitaire. Quer um jogo de habilidade de verdade? Sente-se a uma mesa de quatro contra os bots. → ",
+          "links": [
+            {
+              "label": "Mahjong Solitaire",
+              "href": "/games/solitaire"
+            },
+            {
+              "label": "Mahjong 4 Player",
+              "href": "/games/classic"
+            }
+          ]
+        },
+        {
+          "strong": "Você pode de verdade melhorar.",
+          "text": " Nossos guias para iniciantes passam pelas peças, as regras e uma vitória em linguagem clara — sem muros de jargão. → ",
+          "link": {
+            "label": "What Is Mahjong?",
+            "href": "/blog/what-is-mahjong"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "Como escolher seu jogo em 10 segundos",
+      "choices": [
+        {
+          "prompt": "“Tenho 5 minutos e só quero desligar.”",
+          "answerStrong": "Mahjong Solitaire",
+          "answerText": " — combine peças livres e limpe o tabuleiro, sem cronômetro. → ",
+          "link": {
+            "label": "Jogar solitaire",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "prompt": "“Quero o jogo clássico de quatro jogadores.”",
+          "answerStrong": "Mahjong 4 Player",
+          "answerText": " — Hong Kong, Riichi, Chinese Official e mais, contra a IA. → ",
+          "link": {
+            "label": "Sentar à mesa",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "prompt": "“Sou iniciante absoluto e não sei por onde começar.”",
+          "answerSegments": [
+            {
+              "text": "Comece com "
+            },
+            {
+              "text": "What Is Mahjong?",
+              "href": "/blog/what-is-mahjong"
+            },
+            {
+              "text": ", depois "
+            },
+            {
+              "text": "Types of Mahjong Games",
+              "href": "/blog/types-of-mahjong-games"
+            },
+            {
+              "text": " para achar seu estilo."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "closing": [
+    {
+      "text": "Ainda decidindo qual regulamento combina com você? Leia "
+    },
+    {
+      "text": "American vs Chinese Mahjong",
+      "href": "/blog/american-vs-chinese-mahjong"
+    },
+    {
+      "text": " ou "
+    },
+    {
+      "text": "How to Play Mahjong Online",
+      "href": "/blog/how-to-play-mahjong-online"
+    },
+    {
+      "text": " — ambos grátis, sem cadastro."
+    }
+  ]
+}

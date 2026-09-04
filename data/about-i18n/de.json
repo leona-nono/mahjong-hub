@@ -1,0 +1,163 @@
+{
+  "title": "Über Mahjong Hub",
+  "intro": "Mahjong Hub ist eine kostenlose Online-Spielhalle mit einem einfachen Ziel: Mahjong soll leicht zu spielen und leicht zu lernen sein — ob Sie fünf Minuten oder fünf Jahre Erfahrung haben. Kein Download, kein Konto zum Starten, kein Druck mit echtem Geld — nur das Spiel.",
+  "metaDescription": "Mahjong Hub ist eine kostenlose Online-Spielhalle ohne Download für Mahjong-Solitaire und Vier-Spieler-Tische — plus verständliche Guides für Einsteiger. Wer wir sind und was Sie finden.",
+  "sections": [
+    {
+      "heading": "Wer wir sind",
+      "paragraphs": [
+        [
+          {
+            "text": "Wir sind ein kleines Team von Mahjong-Spielern, die Freunde immer wieder auf drei verschiedene Seiten schickten — nur um eine Runde zu spielen, eine Regel nachzuschlagen und die Steine zu erkennen. Also haben wir einen Ort gebaut, der alles drei kann. Mahjong Hub vereint entspanntes Stein-Matching und den klassischen Vier-Spieler-Tisch, mit Einsteiger-Guides so geschrieben, wie wir sie uns selbst gewünscht hätten — in klarer Sprache, nicht in Regelbuch-Jargon."
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "Was Sie hier finden",
+      "bullets": [
+        {
+          "label": "Mahjong Solitaire",
+          "text": " — ruhiges Stein-Matching ohne Timer, wenn Sie einfach abschalten wollen. → ",
+          "link": {
+            "label": "Solitaire spielen",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "label": "Mahjong 4 Player",
+          "text": " — das echte Spiel gegen die KI, mit Hong-Kong-, Riichi-, Chinese-Official-, American-, Taiwanese- und Sichuan-Regeln. → ",
+          "link": {
+            "label": "Am Tisch Platz nehmen",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "label": "Einsteiger-Guides",
+          "segments": [
+            {
+              "text": " — von "
+            },
+            {
+              "text": "What Is Mahjong?",
+              "href": "/blog/what-is-mahjong"
+            },
+            {
+              "text": " bis "
+            },
+            {
+              "text": "Types of Mahjong Games",
+              "href": "/blog/types-of-mahjong-games"
+            },
+            {
+              "text": ", damit Sie Steine, Ansagen und einen Gewinn in Ihrem Tempo lernen. → "
+            },
+            {
+              "text": "Blog durchstöbern",
+              "href": "/blog"
+            }
+          ]
+        },
+        {
+          "label": "Die gesamte Game Hall",
+          "text": " — alle Bretter und Puzzles an einem Ort. → ",
+          "link": {
+            "label": "Game Hall öffnen",
+            "href": "/games"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "Für wen es ist",
+      "paragraphs": [
+        [
+          {
+            "text": "Neu bei Mahjong und unsicher, wo Sie starten sollen? Beginnen Sie mit "
+          },
+          {
+            "text": "How to Play Mahjong Online",
+            "href": "/blog/how-to-play-mahjong-online"
+          },
+          {
+            "text": " und gehen Sie von dort weiter. Kennen Sie das Spiel schon und wählen einen Stil? "
+          },
+          {
+            "text": "American vs Chinese Mahjong",
+            "href": "/blog/american-vs-chinese-mahjong"
+          },
+          {
+            "text": " erklärt die Unterschiede schnell. Denken Sie an ein physisches Set? Unsere Guides zu "
+          },
+          {
+            "text": "best mahjong sets for beginners",
+            "href": "/blog/best-mahjong-sets-for-beginners"
+          },
+          {
+            "text": " und "
+          },
+          {
+            "text": "where to buy one",
+            "href": "/blog/where-to-buy-mahjong-set"
+          },
+          {
+            "text": " helfen weiter."
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "Wie wir kostenlos bleiben",
+      "paragraphs": [
+        [
+          {
+            "text": "Mahjong Hub ist kostenlos spielbar. Wir finanzieren uns über Anzeigen, nicht über Paywalls — und es gibt nie Glücksspiel mit echtem Geld, denn dies ist eine Spielhalle, kein Casino. Ihre Punkte und Ihr Fortschritt bleiben im Browser; Sie entscheiden, was Sie teilen."
+          }
+        ]
+      ]
+    },
+    {
+      "heading": "Loslegen",
+      "paragraphs": [
+        [
+          {
+            "text": "Wählen Sie eine Stimmung, keine Verpflichtung:"
+          }
+        ]
+      ],
+      "bullets": [
+        {
+          "label": "Lust auf eine ruhige Pause?",
+          "text": " → ",
+          "link": {
+            "label": "Mahjong Solitaire",
+            "href": "/games/solitaire"
+          }
+        },
+        {
+          "label": "Lust auf das volle Vier-Spieler-Match?",
+          "text": " → ",
+          "link": {
+            "label": "Mahjong 4 Player",
+            "href": "/games/classic"
+          }
+        },
+        {
+          "label": "Lieber zuerst lernen?",
+          "text": " → ",
+          "link": {
+            "label": "Mahjong for Beginners",
+            "href": "/blog"
+          }
+        }
+      ],
+      "afterBullets": [
+        [
+          {
+            "text": "Das war's. Öffnen Sie ein Brett und spielen Sie."
+          }
+        ]
+      ]
+    }
+  ]
+}

@@ -1,19 +1,26 @@
 import { describe, expect, it } from 'vitest';
-import { getGames } from '@/data/games';
-import { getLocalizedGame } from '@/data/games';
+import { getGames, getLocalizedGame } from '@/data/games';
 import { GAME_I18N } from '@/data/games.i18n';
+import de from '@/data/games-i18n/de.json';
+import es from '@/data/games-i18n/es.json';
+import fr from '@/data/games-i18n/fr.json';
 import ja from '@/data/games-i18n/ja.json';
 import ko from '@/data/games-i18n/ko.json';
+import ptBR from '@/data/games-i18n/pt-BR.json';
 import zh from '@/data/games-i18n/zh.json';
 import zhTW from '@/data/games-i18n/zh-TW.json';
 import type { GameLocaleJson } from '@/data/games-i18n/types';
+import { CONTENT_LOCALES } from '@/lib/locales';
 
-const LOCALES = ['zh', 'zh-TW', 'ja', 'ko'] as const;
-const LOCALE_JSON: Record<(typeof LOCALES)[number], GameLocaleJson> = {
+const LOCALE_JSON: Record<(typeof CONTENT_LOCALES)[number], GameLocaleJson> = {
   zh: zh as GameLocaleJson,
   'zh-TW': zhTW as GameLocaleJson,
   ja: ja as GameLocaleJson,
-  ko: ko as GameLocaleJson
+  ko: ko as GameLocaleJson,
+  es: es as GameLocaleJson,
+  fr: fr as GameLocaleJson,
+  de: de as GameLocaleJson,
+  'pt-BR': ptBR as GameLocaleJson
 };
 
 describe('games i18n', () => {
@@ -29,6 +36,10 @@ describe('games i18n', () => {
     expect(getLocalizedGame('mahjong-solitaire-classic', 'ja')?.title).toBe(
       '麻雀ソリティアクラシック'
     );
+    expect(getLocalizedGame('hong-kong-mahjong', 'es')?.title).toContain('Hong Kong');
+    expect(getLocalizedGame('hong-kong-mahjong', 'fr')?.title).not.toBe(
+      getGames().find((g) => g.slug === 'hong-kong-mahjong')?.title
+    );
   });
 
   it('localized content merges with English fallback for optional fields', () => {
@@ -39,9 +50,17 @@ describe('games i18n', () => {
     expect(game?.content?.howToPlay?.[0]).toContain('十三张牌');
   });
 
+  it('EU locales ship translated features for native rulesets', () => {
+    const esGame = getLocalizedGame('hong-kong-mahjong', 'es');
+    const en = getGames().find((g) => g.slug === 'hong-kong-mahjong');
+    expect(esGame?.content?.features?.[0]).toBeTruthy();
+    expect(esGame?.content?.features?.[0]).not.toBe(en?.content?.features?.[0]);
+    expect(esGame?.content?.supportedDevices).not.toBe(en?.content?.supportedDevices);
+  });
+
   it('locale JSON files contain title and description for every slug', () => {
     for (const slug of Object.keys(GAME_I18N)) {
-      for (const locale of LOCALES) {
+      for (const locale of CONTENT_LOCALES) {
         expect(LOCALE_JSON[locale][slug]?.title).toBeTruthy();
         expect(LOCALE_JSON[locale][slug]?.description).toBeTruthy();
       }

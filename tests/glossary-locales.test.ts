@@ -1,15 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import { term, GLOSSARY, glossaryKeys } from '@/data/glossary';
-import { INDEXABLE_LOCALES, isIndexableLocale, ogLocale } from '@/lib/locales';
+import {
+  CONTENT_LOCALES,
+  INDEXABLE_LOCALES,
+  isContentLocale,
+  isIndexableLocale,
+  ogLocale
+} from '@/lib/locales';
 
 describe('glossary', () => {
-  it('resolves locked terms for CJK locales', () => {
+  it('resolves locked terms for CJK and EU locales', () => {
     expect(term('waiting_hand', 'zh')).toBe('听牌');
     expect(term('waiting_hand', 'zh-TW')).toBe('聽牌');
     expect(term('waiting_hand', 'ja')).toBe('テンパイ');
     expect(term('waiting_hand', 'ko')).toBe('텐파이');
     expect(term('dragon_tiles', 'ja')).toBe('三元牌');
     expect(term('four_triplets', 'zh')).toBe('四暗刻');
+    expect(term('kong', 'es')).toBeTruthy();
+    expect(term('kong', 'fr')).toBeTruthy();
+    expect(term('kong', 'de')).toBeTruthy();
+    expect(term('kong', 'pt-BR')).toBeTruthy();
   });
 
   it('returns English source for en', () => {
@@ -27,11 +37,23 @@ describe('glossary', () => {
 });
 
 describe('locales indexability', () => {
-  it('marks only en + CJK as indexable', () => {
-    expect(INDEXABLE_LOCALES).toEqual(['en', 'zh', 'zh-TW', 'ja', 'ko']);
+  it('indexes all nine UI locales', () => {
+    expect([...INDEXABLE_LOCALES]).toEqual([
+      'en',
+      'zh',
+      'zh-TW',
+      'ja',
+      'ko',
+      'es',
+      'pt-BR',
+      'fr',
+      'de'
+    ]);
     expect(isIndexableLocale('zh')).toBe(true);
-    expect(isIndexableLocale('fr')).toBe(false);
-    expect(isIndexableLocale('pt-BR')).toBe(false);
+    expect(isIndexableLocale('fr')).toBe(true);
+    expect(isIndexableLocale('pt-BR')).toBe(true);
+    expect(isContentLocale('es')).toBe(true);
+    expect(CONTENT_LOCALES).toContain('de');
   });
 
   it('maps OG locale codes', () => {

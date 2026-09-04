@@ -2,16 +2,29 @@
  * Game locale overrides — loaded from JSON under data/games-i18n/.
  *
  * English base: data/games.ts. Non-English title/description/content live in
- * data/games-i18n/{zh,zh-TW,ja,ko}.json and are merged by getLocalizedGame().
+ * data/games-i18n/{zh,zh-TW,ja,ko,es,fr,de,pt-BR}.json and are merged by getLocalizedGame().
  */
 import type { GameContent } from './games';
 import type { GameLocaleJson } from './games-i18n/types';
+import de from './games-i18n/de.json';
+import es from './games-i18n/es.json';
+import fr from './games-i18n/fr.json';
 import ja from './games-i18n/ja.json';
 import ko from './games-i18n/ko.json';
+import ptBR from './games-i18n/pt-BR.json';
 import zh from './games-i18n/zh.json';
 import zhTW from './games-i18n/zh-TW.json';
 
-export type LocaleCode = 'en' | 'zh' | 'zh-TW' | 'ja' | 'ko';
+export type LocaleCode =
+  | 'en'
+  | 'zh'
+  | 'zh-TW'
+  | 'ja'
+  | 'ko'
+  | 'es'
+  | 'fr'
+  | 'de'
+  | 'pt-BR';
 
 export interface GameI18n {
   title?: Partial<Record<LocaleCode, string>>;
@@ -23,10 +36,23 @@ const LOCALE_FILES: Record<Exclude<LocaleCode, 'en'>, GameLocaleJson> = {
   zh: zh as GameLocaleJson,
   'zh-TW': zhTW as GameLocaleJson,
   ja: ja as GameLocaleJson,
-  ko: ko as GameLocaleJson
+  ko: ko as GameLocaleJson,
+  es: es as GameLocaleJson,
+  fr: fr as GameLocaleJson,
+  de: de as GameLocaleJson,
+  'pt-BR': ptBR as GameLocaleJson
 };
 
-const LOCALES = ['zh', 'zh-TW', 'ja', 'ko'] as const;
+const LOCALES = [
+  'zh',
+  'zh-TW',
+  'ja',
+  'ko',
+  'es',
+  'fr',
+  'de',
+  'pt-BR'
+] as const satisfies readonly Exclude<LocaleCode, 'en'>[];
 
 function buildGameI18n(): Record<string, GameI18n> {
   const out: Record<string, GameI18n> = {};

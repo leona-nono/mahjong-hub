@@ -120,122 +120,18 @@
   },
   "sichuan-mahjong": {
     "title": "四川麻雀",
-    "description": "四川麻雀（血戦）：缺門を決め、三枚交換し、和了後も続行するルール。",
-    "content": {
-      "intro": "Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.",
-      "howToPlay": [
-        "The 108-tile wall uses only Characters, Dots and Bamboo. Winds, Dragons, Flowers and Seasons are not used.",
-        "Before normal play, select three tiles from one suit for Exchange Three; the table passes them in the direction chosen for that hand.",
-        "Choose one forbidden suit. You must discard every tile of that suit before you are allowed to win.",
-        "Draw and discard normally. Chow is not allowed; Pung and Kong are allowed under the table claim order.",
-        "Make four melds and a pair, or an approved special hand such as Seven Pairs, then win by self-draw or a legal discard.",
-        "A winner stops drawing, but the hand continues for the remaining players. End-of-hand settlement includes ready-hand check, flower-pig penalty and Kong refund."
-      ],
-      "tips": [
-        "Choose the forbidden suit from the suit you can clear most quickly, not merely from its lowest tiles.",
-        "Exchange Three should remove three tiles from one coherent weak suit so you do not create three unrelated dead tiles.",
-        "Because Chow is unavailable, pairs and connected shapes are more valuable than in Chow-enabled variants.",
-        "After another player wins, reassess risk: staying ready matters for the end-of-hand check, but avoid becoming flower pig.",
-        "Track Kong exposure and settlement. A high-value Kong is not automatically safe if it opens a dangerous draw."
-      ],
-      "features": [
-        "成都血戦ベース——108枚、三枚交換と個人の缺門。",
-        "チーなし：ポンとカンのみ。四川の速い卓テンポでAI三人と対戦。",
-        "血戦フロー：初和了後も続行。終局の聴牌チェックと罰則。",
-        "各局開始前に三枚交換と缺門をインタラクティブに選択。",
-        "ツモ・放銃対応。七対子と標準四面子形をサポート。"
-      ],
-      "supportedDevices": "四川麻雀はデスクトップ・ノート・タブレット・スマホの最新ブラウザで動作し、インストール不要です。横向きが交換と缺門操作に最適です。Windows・macOS・Linux・Android・iOS の Chrome・Safari・Firefox・Edge に対応します。",
-      "faq": [
-        {
-          "question": "Why can I not win while I still hold my forbidden suit?",
-          "answer": "The forbidden-suit rule is a core Chengdu Blood Battle condition. Clear every tile of your chosen suit before a win may be declared."
-        },
-        {
-          "question": "Why does the game continue after someone wins?",
-          "answer": "Blood Battle to the End permits remaining players to continue. This can create several winners or penalties within one hand."
-        }
-      ]
-    }
+    "description": "四川麻雀（血戦）：缺門を決め、三枚交換し、和了後も続行するルール。"
   },
   "taiwan-mahjong": {
     "title": "台湾麻雀",
     "description": "台湾麻雀（16枚）：花牌の補花と台数による計算。",
     "content": {
-      "intro": "Mahjong Hub の台湾麻雀は、144枚・花牌補充・5面子1雀頭を使う初心者向け16枚ルールです。台数は加算し、0台でも和了できます。",
-      "howToPlay": [
-        "Use all 144 tiles. Each non-dealer starts with 16 tiles; East starts with 17 and makes the first discard.",
-        "Reveal every Flower or Season immediately and draw a replacement. It remains outside your 16-tile hand and adds Tai when applicable.",
-        "On your turn draw one tile and discard one. You may Chow from the left player, or Pung and Kong according to the claim order.",
-        "Win with five melds and one pair, for a 17-tile hand. Self-draw and discard wins are both supported.",
-        "Tai patterns add together for settlement. This Mahjong Hub beginner baseline allows a complete 0-Tai hand to win."
-      ],
-      "tips": [
-        "With 16 concealed tiles, retain several connected shapes early instead of committing to one wait too quickly.",
-        "Flowers add value but do not repair a weak main hand; build the five-meld structure first.",
-        "Kongs are more frequent in Taiwan Mahjong. Consider both the replacement draw and the information you reveal.",
-        "Use 0-Tai mode to learn tempo; once comfortable, chase Tai only when it does not reduce your live waits.",
-        "Check whether your Flower matches your seat, as seat Flowers can add an extra scoring bonus."
-      ],
-      "features": [
-        "16枚台湾手——五面子＋雀頭、花牌入り144枚の山。",
-        "花牌は即時補充。台ボーナスと座席花の加点オプション。",
-        "チー・ポン・カン。和了ごとに加算台で精算。",
-        "初心者向け0台最低。テンポを学んでから高台を狙う。",
-        "四人卓対AI。ツモとロン対応。"
-      ],
-      "supportedDevices": "台湾麻雀は Windows・macOS・Linux・Android・iOS のブラウザで遊べます。タブレット／デスクトップは16枚の大きな手が読みやすく、スマホは縦・横どちらでも可。反応の良いタップと花補充アニメのため現行 Chrome・Safari・Firefox・Edge を推奨します。",
-      "faq": [
-        {
-          "question": "Why do I hold 16 tiles instead of 13?",
-          "answer": "Taiwan Mahjong uses five melds plus one pair. Players normally hold 16 tiles and win after drawing or claiming the 17th."
-        },
-        {
-          "question": "Can a 0-Tai hand win here?",
-          "answer": "Yes. Mahjong Hub uses a relaxed 0-Tai baseline. Other Taiwan tables may require a minimum Tai, so this is shown clearly in the game settings."
-        }
-      ]
+      "intro": "Mahjong Hub の台湾麻雀は、144枚・花牌補充・5面子1雀頭を使う初心者向け16枚ルールです。台数は加算し、0台でも和了できます。"
     }
   },
   "american-mahjong": {
     "title": "アメリカ麻雀",
-    "description": "アメリカ麻雀：チャールストン、ジョーカー、花牌と年次カードの役。",
-    "content": {
-      "intro": "Mahjong Hub American Mahjong is an original practice-card game inspired by NMJL-style flow: 152 tiles, Charleston, Flowers, Jokers, exposed groups and exact card-pattern wins. It does not reproduce a current NMJL annual card.",
-      "howToPlay": [
-        "Use a 152-tile set with standard tiles, eight Flowers and eight Jokers. Every player takes 13 tiles; East takes 14 and discards first.",
-        "Read the original practice card, then complete Charleston: pass three tiles right, across and left. A second Charleston and courtesy pass are table options.",
-        "Draw and discard while steering toward one exact line on the practice card, not a general four-meld-and-a-pair shape.",
-        "Expose legal Pungs, Kongs or larger groups when the selected card line permits it. Concealed card lines may not be exposed before the final win.",
-        "Use a Joker only in a group of three or more; never use it as a single or pair. On your turn, a natural tile may exchange for a Joker in an opponent exposure.",
-        "Declare Mah Jongg only when all 14 tiles exactly match one legal original practice-card line."
-      ],
-      "tips": [
-        "Before Charleston, keep two or three compatible card lines open rather than committing to a single rare line.",
-        "Pass tiles that do not support any of your likely card categories, but never pass a Joker.",
-        "Do not expose a group merely because you can: exposure signals your target and may make your hand impossible to pivot.",
-        "Treat Jokers as group accelerators, not universal wildcards; you still need natural tiles for singles and pairs.",
-        "Use opponent exposures to decide which natural tiles are safe to discard and when a Joker exchange is valuable."
-      ],
-      "features": [
-        "152枚のアメリカ式セット。花牌・ジョーカー・NMJL風チャールストン。",
-        "Mahjong Hubオリジナル練習カード——汎用面子ではなく正確な役形で和了。",
-        "合法ジョーカー組、自分の番の交換、カード行に紐づく露出ルール。",
-        "任意の第2チャールストンと礼儀渡しで卓練習に近い体験。",
-        "四人ブラウザ卓。ガイド付きチャールストンと役形検証。"
-      ],
-      "supportedDevices": "アメリカ麻雀はデスクトップとモバイルのブラウザで完結し、アプリ不要です。広い画面は練習カードと露出を同時に読みやすく、スマホは横向きで卓全体を表示できます。Windows・macOS・Linux・Android・iOS の Chrome・Safari・Firefox・Edge に対応します。",
-      "faq": [
-        {
-          "question": "Is this the official NMJL yearly card?",
-          "answer": "No. This game uses Mahjong Hub original practice cards. A licensed NMJL-card integration would be a separate future product."
-        },
-        {
-          "question": "Can a Joker be used in a pair?",
-          "answer": "No. In this rules baseline, Jokers are legal only in groups of three or more, never in singles or pairs."
-        }
-      ]
-    }
+    "description": "アメリカ麻雀：チャールストン、ジョーカー、花牌と年次カードの役。"
   },
   "mahjong-connect-classic": {
     "title": "麻雀コネクト",

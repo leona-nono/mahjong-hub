@@ -1,0 +1,369 @@
+{
+  "hong-kong-mahjong": {
+    "title": "Hong-Kong-Mahjong",
+    "description": "Spielen Sie echtes Vier-Spieler-Mahjong gegen drei Gegner. Wertung im alten Hong-Kong-Stil, kostenlos, ohne Herunterladen.",
+    "content": {
+      "intro": "Hong-Kong-Mahjong auf Mahjong Hub ist ein Vier-Spieler-Produktregelwerk auf Basis des alten Hong-Kong-Stils. Es verwendet Zeichensteine, Punktsteine, Bambussteine, Windsteine und alle drei Drachen — Rot, Grün und Weiß; Blumen und Jahreszeiten sind bewusst ausgeschlossen. Bilden Sie vier Kombinationen und ein Paar, und wählen Sie den Casual-Modus für anfängerfreundliche einfache Hände oder den Standard-Modus mit dem traditionellen Minimum von drei Faan.",
+      "howToPlay": [
+        "Die 136-Stein-Produktmauer enthält Zeichensteine, Punktsteine, Bambussteine, Windsteine sowie die roten, grünen und weißen Drachen. Blumen und Jahreszeiten werden nicht verwendet.",
+        "Jeder Spieler beginnt mit 13 Steinen; Ost beginnt mit 14 und macht den ersten Abwurf. In späteren Zügen ziehen Sie einen Stein und werfen dann einen ab, sodass die Hand bei 13 bleibt.",
+        "Eine Gewinnhand besteht aus vier Kombinationen plus einem Paar. Eine Kombination sind entweder drei identische Steine oder drei aufeinanderfolgende Steine derselben Farbe.",
+        "Wenn ein anderer Spieler einen Stein abwirft, den Sie brauchen, dürfen Sie ihn beanspruchen: Pong für ein Triplett, Chow für eine Folge (nur vom Spieler zu Ihrer Linken) oder Kong für alle vier Exemplare.",
+        "Einen Stein zu beanspruchen öffnet Ihre Hand und kostet Sie einige Wertungsmuster. Nehmen Sie den Call nur, wenn er Ihr Spiel wirklich voranbringt.",
+        "Erklären Sie den Gewinn durch Sieg durch eigenen Zug oder Sieg durch fremden Abwurf. Der Casual-Modus akzeptiert jede vollständige Hand aus vier Kombinationen und einem Paar; der Standard-Modus verlangt mindestens drei Faan.",
+        "Nach der Abrechnung behält Ost den Geberplatz nach einem Gebergewinn oder einem Unentschieden; sonst wandert der Geber zum nächsten Sitz."
+      ],
+      "tips": [
+        "Werfen Sie isolierte Ehrensteine früh ab. Sie sind am schwersten zu paaren und das Unflexibelste in Ihrer Hand.",
+        "Verfolgen Sie die Distanz zur Wartehand, statt einzelne Steine anzustarren. Zwei entfernt ist eine normale Mittelspielposition; eine entfernt heißt vorsichtiger spielen.",
+        "Eine Reine-Einzelfarbe-Hand ist weit mehr wert als die Summe ihrer Teile. Bei sieben oder acht Steinen einer Farbe lohnt sich frühes Committen meist.",
+        "Beobachten Sie die anderen Sitze. Wenn drei Spieler dieselbe Farbe abwerfen, sind die Steine, die Sie brauchen, vermutlich noch im Spiel.",
+        "Im Standard-Modus prüfen Sie die Faan-Summe vor einem Call: Eine vollständige Form unter drei Faan ist kein legaler Gewinn."
+      ],
+      "features": [
+        "Authentische Regeln im alten Hong-Kong-Stil mit 136 Steinen — nur Zeichensteine, Punktsteine, Bambussteine, Windsteine und Drachensteine.",
+        "Casual-Modus zum Lernen vollständiger Hände ohne Faan-Schwelle; Standard-Modus mit dem traditionellen Minimum von drei Faan.",
+        "Drei KI-Gegner mit sinnvoller Abwurflogik, um echtes Vier-Spieler-Tempo zu üben.",
+        "Optionaler Wartehand-Hinweis und Faan-Aufschlüsselung nach der Hand, um Wertung ohne Regelbuch zu lernen.",
+        "Vollständiges Spiel im Webbrowser auf Computer und Mobilgerät — tippen oder klicken zum Abwerfen, Beanspruchen und Gewinnerklären."
+      ],
+      "supportedDevices": "Hong-Kong-Mahjong läuft in jedem modernen Webbrowser unter Windows, macOS, Linux, Android und iOS ohne Herunterladen. Querformat auf Telefon oder Tablet bietet die breiteste Steinsicht; Hochformat funktioniert mit verschiebbaren Händen. Chrome, Safari, Firefox und Edge werden unterstützt — nutzen Sie einen aktuellen Browser für flüssige Animationen bei Reklamationen und Abrechnung.",
+      "faq": [
+        {
+          "question": "Muss ich etwas herunterladen?",
+          "answer": "Nein. Das Spiel läuft vollständig im Webbrowser auf Computer und Mobilgerät, und es wird nichts installiert."
+        },
+        {
+          "question": "Ist das echtes Mahjong oder das Stein-Paarspiel?",
+          "answer": "Das ist echtes Vier-Spieler-Mahjong mit Ziehen, Abwerfen, Beanspruchen und Wertung. Das Paarspiel, das die meisten westlichen Sites „Mahjong“ nennen, ist Mahjong-Solitaire — ein anderes Spiel."
+        },
+        {
+          "question": "Was ist der Unterschied zwischen Casual- und Standard-Modus?",
+          "answer": "Der Casual-Modus lässt jede strukturell vollständige Hand gewinnen und vergibt eine ein-Faan-Chicken-Hand, wenn kein anderes Muster wertet. Der Hong-Kong-Standard-Modus verlangt mindestens drei Faan, daher muss eine vollständige niedriger bewertete Hand weitergespielt werden."
+        },
+        {
+          "question": "Gibt es Glücksspiel mit echtem Geld?",
+          "answer": "Nein. Es gibt weder Wetten noch kaufbare Währung noch Geldpreise. Punktestände tracken nur Ihren eigenen Fortschritt."
+        }
+      ]
+    }
+  },
+  "riichi-mahjong": {
+    "title": "Riichi-Mahjong",
+    "description": "Japanisches Riichi-Mahjong gegen drei Gegner. Das Regelwerk hinter der modernen Turnierszene.",
+    "content": {
+      "intro": "Dieser japanische Vier-Spieler-Riichi-Tisch folgt der freigegebenen World-Riichi-Championship-2025-Basis: keine roten Fünfen, ein Gewinner bei Head-Bump und Start mit 30.000 Punkten.",
+      "howToPlay": [
+        "Jeder Spieler beginnt mit 13 Steinen. Ziehen Sie einen und werfen Sie einen ab, mit dem Ziel von vier Kombinationen und einem Paar; Sieben Paare und Dreizehn Waisen sind ebenfalls gültige geschlossene Formen.",
+        "Eine vollständige Form reicht nicht: Die Hand braucht mindestens ein Yaku. Dora erhöht den Wert, ist aber allein kein Yaku.",
+        "Chow ist nur vom Spieler zu Ihrer Linken möglich. Pong, Kong und Ron dürfen von jedem Gegner beansprucht werden, vorbehaltlich der Claim-Priorität.",
+        "Halten Sie die Hand geschlossen und erreichen Sie die Wartehand, um Riichi zu erklären. Wählen Sie einen hervorgehobenen Abwurf und setzen Sie einen 1.000-Punkte-Stick.",
+        "Gewinnen Sie durch Tsumo auf dem eigenen Zug oder Ron auf einem Gegnerabwurf. Unter WRC-Head-Bump erhält nur der erste Gewinner in Zugreihenfolge den Ron.",
+        "Das Match läuft durch Ost- und Süd-Runden. In dieser Produktbasis behält ein Gebergewinn oder ein erschöpfendes Unentschieden den Geber; erschöpfende Unentschieden nutzen eine Noten-Zahlung von 3.000 Punkten.",
+        "Dieser Tisch verwendet 136 Steine, eine 14-Stein-Totmauer, Dora-Indikatoren und keine roten Fünfen."
+      ],
+      "tips": [
+        "Sichern Sie ein Yaku, bevor Sie Dora jagen: Bonussteine machen eine yaku-lose Hand nicht legal.",
+        "Vergleichen Sie Shanten und nützliche Steine vor jedem Abwurf; behalten Sie Formen mit mehr verbessernden Zügen.",
+        "Gegen Riichi beginnen Sie mit Genbutsu, dann nutzen Sie Suji und sichtbare Steinmauern zur Risikoreduktion.",
+        "Erklären Sie Riichi bewusst: vergleichen Sie Wartequalität, Handwert, verbleibende Steine und den Match-Stand.",
+        "Erzwingen Sie spät in der Hand keine Angriffe mit geringem Wert, wenn ein sichereres Fold Ihre Position schützt."
+      ],
+      "features": [
+        "World-Riichi-Championship-2025-Basis — keine roten Fünfen, Head-Bump-Ron und Start mit 30.000 Punkten.",
+        "Vollständige Yaku-Schwelle, Dora-Indikatoren und 14-Stein-Totmauer für authentischen Wettkampffluss.",
+        "Riichi-Erklärung mit 1.000-Punkte-Stick, Tsumo- und Ron-Gewinne mit Zugreihenfolge-Priorität.",
+        "Der Wartehand-Hinweis verfolgt Shanten, damit Sie die Wartehand lernen, ohne Steine zu zählen.",
+        "Ost- und Süd-Runden mit Geberfortsetzung bei Gebergewinnen und erschöpfenden Unentschieden."
+      ],
+      "supportedDevices": "Riichi-Mahjong spielt sich im Webbrowser auf Computer, Laptop, Tablet und Telefon ohne App-Installation. Querformat auf dem Mobilgerät wird empfohlen, um Gegnerabwürfe und Ihre Hand zusammen zu lesen. Unterstützte Browser: aktuelle Chrome, Safari, Firefox und Edge unter Windows, macOS, Linux, Android und iOS.",
+      "faq": [
+        {
+          "question": "Worin unterscheidet sich Riichi vom chinesischen Mahjong?",
+          "answer": "Riichi verlangt ein Wertungsmuster vor der Gewinnerklärung, bewertet geschlossene Hände höher und nutzt eine andere Wertungstabelle. Der Kern aus Ziehen und Abwerfen ist derselbe, daher fällt der Transfer leicht."
+        },
+        {
+          "question": "Ist das ein guter Ort, um Riichi zu lernen?",
+          "answer": "Es ist ein guter Ort, um Fluss, Claims und gängige Muster kennenzulernen. Der Wartehand-Hinweis zeigt, wie weit Sie von einer vollständigen Hand entfernt sind — die nützlichste Information für Neueinsteiger."
+        }
+      ]
+    }
+  },
+  "chinese-official-mahjong": {
+    "title": "Chinesisches Offizielles Mahjong",
+    "description": "Trainingstisch für chinesisches offizielles Mahjong (MCR) — 144 Steine, Blumenersatz und Acht-Punkte-Gewinnschwelle.",
+    "content": {
+      "intro": "Das ist unser Trainingstisch für chinesisches offizielles Mahjong (MCR). Er verwendet bereits 144 Steine, legt Blumen und Jahreszeiten offen und ersetzt sie, und erzwingt die Acht-Punkte-Gewinnschwelle. Der vollständige 81-Elemente-Wertungsscorer und seine Ausschlussregeln sind noch in Entwicklung — diese Seite darf nicht als Turnier-Schiedsrichter dienen.",
+      "howToPlay": [
+        "Standard-Vier-Spieler-Mahjong: ziehen, abwerfen und vier Kombinationen plus ein Paar bilden.",
+        "Legen Sie jede Blume oder Jahreszeit sofort im Blumenbereich offen und nehmen Sie einen Ersatz vom Ende der Steinmauer.",
+        "Eine Hand muss mindestens acht qualifizierende Punkte wert sein, bevor sie erklärt werden darf. Blumenpunkte erfüllen diese Schwelle allein nicht.",
+        "Der aktuelle Scorer deckt nur eine Trainingsmenge ab; nutzen Sie das Ergebnis, um den Zugfluss zu lernen, nicht um eine Wettbewerbswertung zu zertifizieren."
+      ],
+      "tips": [
+        "Behandeln Sie diesen Build als Übungstisch, während die offiziellen 81 Wertungselemente ergänzt werden.",
+        "Eine Hand einen Stein vor der Vollständigkeit, aber unter acht qualifizierenden Punkten, ist kein legaler Gewinn; verbessern Sie weiter ihre Wertungsstruktur.",
+        "Wenn der volle Scorer kommt, erklärt er einbezogene und ausgeschlossene Elemente, statt einfach jedes sichtbare Muster zu addieren."
+      ],
+      "features": [
+        "144-Stein-MCR-Trainingstisch mit Ersatzfluss für Blumen und Jahreszeiten.",
+        "Mindestschwelle von acht Punkten, um früh wettkampftaugliche Bewertung zu lehren.",
+        "Vier-Spieler-Ziehen und -Abwerfen gegen KI mit Standard-Kombinations-Ansprüchen.",
+        "Die Trainingswertung deckt eine erste Mustermenge ab, während die volle 81-Elemente-Tabelle gebaut wird.",
+        "Klares Feedback auf dem Bildschirm, wenn eine vollständige Hand unter der Acht-Punkte-Schwelle liegt."
+      ],
+      "supportedDevices": "Chinesisches Offizielles Mahjong läuft vollständig im Webbrowser unter Windows, macOS, Linux, Android und iOS. Computer und Tablet erleichtern das Lesen von Blumenersatz und Wertungsfeedback; Telefone funktionieren in beiden Orientierungen. Nutzen Sie aktuelles Chrome, Safari, Firefox oder Edge für beste Leistung bei Mehrspielerzügen.",
+      "faq": [
+        {
+          "question": "Warum kann ich bei einer vollständigen Hand keinen Gewinn erklären?",
+          "answer": "Chinesisches Offizielles verlangt mindestens acht Punkte. Wenn Ihre vollständige Hand weniger wertet, kann der Gewinn nicht erklärt werden und das Spiel geht weiter."
+        },
+        {
+          "question": "Ist die Wertung hier vollständig?",
+          "answer": "Nein. Diese Trainingsversion implementiert den 144-Stein- und Blumenersatzfluss plus eine erste Wertungsmenge. Die vollständige offizielle 81-Elemente-Tabelle und ihre Ausschlüsse werden noch umgesetzt."
+        }
+      ]
+    }
+  },
+  "sichuan-mahjong": {
+    "title": "Sichuan-Mahjong",
+    "description": "Sichuan-Blood-Battle-Mahjong mit Exchange Three, einer verbotenen Farbe und Fortsetzung nach dem ersten Gewinn.",
+    "content": {
+      "intro": "Sichuan-Mahjong auf Mahjong Hub folgt der Chengdu-Blood-Battle-to-the-End-Basis: nur drei Farben, Exchange Three, eine verbotene Farbe, kein Chow, und das Spiel läuft nach dem ersten Gewinn weiter.",
+      "howToPlay": [
+        "Die 108-Stein-Mauer verwendet nur Zeichensteine, Punktsteine und Bambussteine. Windsteine, Drachensteine, Blumen und Jahreszeiten werden nicht verwendet.",
+        "Vor dem normalen Spiel wählen Sie drei Steine einer Farbe für Exchange Three; der Tisch gibt sie in der für diese Hand gewählten Richtung weiter.",
+        "Wählen Sie eine verbotene Farbe. Sie müssen jeden Stein dieser Farbe abwerfen, bevor Sie gewinnen dürfen.",
+        "Ziehen und werfen Sie normal ab. Chow ist nicht erlaubt; Pong und Kong sind gemäß der Tisch-Claim-Reihenfolge erlaubt.",
+        "Bilden Sie vier Kombinationen und ein Paar oder eine genehmigte Sonderhand wie Sieben Paare, und gewinnen Sie durch Sieg durch eigenen Zug oder einen legalen Abwurf.",
+        "Ein Gewinner hört auf zu ziehen, aber die Hand geht für die übrigen weiter. Die Endabrechnung umfasst Wartehand-Prüfung, Flower-Pig-Strafe und Kong-Erstattung."
+      ],
+      "tips": [
+        "Wählen Sie die verbotene Farbe danach, welche Sie am schnellsten leeren können, nicht nur nach der niedrigsten Steinzahl.",
+        "Exchange Three sollte drei Steine einer zusammenhängenden schwachen Farbe entfernen, damit Sie keine drei unverbundenen toten Steine erzeugen.",
+        "Weil Chow fehlt, sind Paare und verbundene Formen wertvoller als in Varianten mit Chow.",
+        "Nach dem Gewinn eines anderen Spielers bewerten Sie das Risiko neu: Wartehand zu halten zählt für die Endprüfung, aber vermeiden Sie Flower Pig.",
+        "Verfolgen Sie Kong-Exposition und Abrechnung. Ein hochwertiger Kong ist nicht automatisch sicher, wenn er einen gefährlichen Zug öffnet."
+      ],
+      "features": [
+        "Chengdu-Blood-Battle-Basis — 108 Steine, Exchange Three und eine persönliche verbotene Farbe.",
+        "Kein Chow: nur Pong und Kong, im schnellen Sichuan-Tischtempo gegen drei KI-Sitze.",
+        "Blood-Battle-Fluss setzt nach dem ersten Gewinn fort, mit End-Wartehand-Prüfung und Strafen.",
+        "Interaktives Exchange Three und Auswahl der verbotenen Farbe vor jeder Hand.",
+        "Gewinne durch eigenen Zug und Abwurf, mit Sieben Paaren und Standardformen aus vier Kombinationen."
+      ],
+      "supportedDevices": "Sichuan-Mahjong läuft in modernen Webbrowsern auf Computer, Laptop, Tablet und Telefon ohne Installation. Querformat auf dem Mobilgerät passt am besten zu Tausch- und Verbotsfarben-Steuerung. Chrome, Safari, Firefox und Edge unter Windows, macOS, Linux, Android und iOS werden unterstützt.",
+      "faq": [
+        {
+          "question": "Warum kann ich nicht gewinnen, solange ich die verbotene Farbe halte?",
+          "answer": "Die Regel der verbotenen Farbe ist eine Kernbedingung des Chengdu Blood Battle. Leeren Sie jeden Stein der gewählten Farbe, bevor ein Gewinn erklärt werden darf."
+        },
+        {
+          "question": "Warum geht das Spiel nach einem Gewinn weiter?",
+          "answer": "Blood Battle to the End erlaubt den übrigen Spielern weiterzuspielen. So können mehrere Gewinner oder Strafen in einer Hand entstehen."
+        }
+      ]
+    }
+  },
+  "taiwan-mahjong": {
+    "title": "Taiwan-Mahjong",
+    "description": "Taiwanesisches 16-Stein-Mahjong mit Blumenersatz und Tai-basierter Wertung.",
+    "content": {
+      "intro": "Taiwan-Mahjong auf Mahjong Hub ist eine entspannte 16-Stein-Version: 144-Stein-Mauer mit Blumen und Jahreszeiten, fünf Kombinationen plus ein Paar zum Gewinnen, additive Tai-Wertung und ein 0-Tai-Minimum für Anfänger.",
+      "howToPlay": [
+        "Verwenden Sie alle 144 Steine. Jeder Nicht-Geber beginnt mit 16; Ost beginnt mit 17 und macht den ersten Abwurf.",
+        "Legen Sie jede Blume oder Jahreszeit sofort offen und ziehen Sie einen Ersatz. Sie bleibt außerhalb Ihrer 16-Stein-Hand und addiert Tai, wenn anwendbar.",
+        "An Ihrem Zug ziehen Sie einen Stein und werfen einen ab. Sie dürfen Chow vom linken Spieler oder Pong und Kong gemäß Claim-Reihenfolge.",
+        "Gewinnen Sie mit fünf Kombinationen und einem Paar — eine 17-Stein-Hand. Sieg durch eigenen Zug und Abwurfgewinne werden unterstützt.",
+        "Tai-Muster addieren sich bei der Abrechnung. Diese Mahjong-Hub-Anfängerbasis erlaubt einer vollständigen 0-Tai-Hand zu gewinnen."
+      ],
+      "tips": [
+        "Mit 16 verdeckten Steinen behalten Sie früh mehrere verbundene Formen, statt zu schnell eine einzige Warte festzulegen.",
+        "Blumen erhöhen den Wert, reparieren aber keine schwache Haupthand; bauen Sie zuerst die Fünf-Kombinations-Struktur.",
+        "Kong kommen im Taiwan-Mahjong häufiger vor. Wägen Sie Ersatzzug und die Information ab, die Sie preisgeben.",
+        "Nutzen Sie den 0-Tai-Modus, um Tempo zu lernen; wenn Sie sich wohlfühlen, jagen Sie Tai nur, wenn es Ihre lebendigen Warten nicht reduziert.",
+        "Prüfen Sie, ob Ihre Blume zu Ihrem Sitz passt — Sitzblumen können einen Extra-Bonus geben."
+      ],
+      "features": [
+        "Taiwanesische 16-Stein-Hände mit fünf Kombinationen plus Paar und 144-Stein-Mauer inklusive Blumen.",
+        "Sofortiger Blumenersatz mit Tai-Boni und Sitzblumen-Wertungsoptionen.",
+        "Chow-, Pong- und Kong-Ansprüche mit additiver Tai-Abrechnung bei jedem Gewinn.",
+        "Anfängerfreundliches 0-Tai-Minimum, um Tempo zu lernen, bevor hohe Tai-Muster gejagt werden.",
+        "Vier-Spieler-Tisch gegen KI mit Sieg durch eigenen Zug und Abwurfgewinnen."
+      ],
+      "supportedDevices": "Taiwan-Mahjong spielt sich im Webbrowser unter Windows, macOS, Linux, Android und iOS. Tablets und Computer erleichtern das Lesen der großen 16-Stein-Hand; Telefone funktionieren im Hoch- oder Querformat. Nutzen Sie aktuelles Chrome, Safari, Firefox oder Edge für reaktionsschnelle Tipps und flüssige Blumenersatz-Animationen.",
+      "faq": [
+        {
+          "question": "Warum habe ich 16 Steine statt 13?",
+          "answer": "Taiwan-Mahjong verwendet fünf Kombinationen plus ein Paar. Spieler halten normalerweise 16 Steine und gewinnen nach dem Ziehen oder Beanspruchen des 17."
+        },
+        {
+          "question": "Kann eine 0-Tai-Hand hier gewinnen?",
+          "answer": "Ja. Mahjong Hub verwendet eine entspannte 0-Tai-Basis. Andere taiwanesische Tische können ein Tai-Minimum verlangen — das wird klar in den Spieleinstellungen gezeigt."
+        }
+      ]
+    }
+  },
+  "american-mahjong": {
+    "title": "Amerikanisches Mahjong",
+    "description": "Amerikanisches Mahjong mit Charleston, Jokern, Blumen und kartenbasierten Gewinnmustern.",
+    "content": {
+      "intro": "Amerikanisches Mahjong auf Mahjong Hub ist ein originales Übungskartenspiel im NMJL-Stil-Fluss: 152 Steine, Charleston, Blumen, Joker, offene Gruppen und exakte Kartenmuster-Gewinne. Es reproduziert keine aktuelle jährliche NMJL-Karte.",
+      "howToPlay": [
+        "Verwenden Sie ein 152-Stein-Set mit Standardsteinen, acht Blumen und acht Jokern. Jeder Spieler nimmt 13 Steine; Ost nimmt 14 und wirft zuerst ab.",
+        "Lesen Sie die originale Übungskarte und absolvieren Sie Charleston: geben Sie drei Steine nach rechts, gegenüber und links weiter. Ein zweites Charleston und der Courtesy Pass sind Tischoptionen.",
+        "Ziehen und werfen Sie ab, während Sie auf eine exakte Zeile der Übungskarte steuern — nicht auf eine generische Form aus vier Kombinationen und einem Paar.",
+        "Legen Sie legale Pongs, Kongs oder größere Gruppen offen, wenn die gewählte Kartenzeile es erlaubt. Verdeckte Kartenzeilen dürfen vor dem Endgewinn nicht offengelegt werden.",
+        "Nutzen Sie einen Joker nur in einer Gruppe von drei oder mehr; nie als Einzelstein oder Paar. An Ihrem Zug darf ein natürlicher Stein einen Joker in einer Gegnerexposition tauschen.",
+        "Erklären Sie Mah Jongg nur, wenn alle 14 Steine exakt einer legalen Zeile der originalen Übungskarte entsprechen."
+      ],
+      "tips": [
+        "Vor Charleston halten Sie zwei oder drei kompatible Kartenzeilen offen, statt sich auf eine seltene Zeile festzulegen.",
+        "Geben Sie Steine weiter, die keine Ihrer wahrscheinlichen Kategorien stützen — aber nie einen Joker.",
+        "Legen Sie eine Gruppe nicht nur offen, weil Sie können: Exposition signalisiert Ihr Ziel und kann die Hand unpivotierbar machen.",
+        "Behandeln Sie Joker als Gruppenbeschleuniger, nicht als Universalkarten; Sie brauchen weiterhin natürliche Steine für Singles und Paare.",
+        "Nutzen Sie Gegnerexpositionen, um zu entscheiden, welche natürlichen Steine sicher abzuwerfen sind und wann ein Joker-Tausch lohnt."
+      ],
+      "features": [
+        "152-Stein-Set im amerikanischen Stil mit Blumen, Jokern und NMJL-inspirierten Charleston-Pässen.",
+        "Originale Mahjong-Hub-Übungskarten — exakte Mustergewinne, keine generischen Kombinationsformen.",
+        "Legale Joker-Gruppen, Joker-Tausch an Ihrem Zug und Expositionsregeln gebunden an die Kartenzeile.",
+        "Optionales zweites Charleston und Höflichkeitspass für übungstischartige Sitzungen.",
+        "Vier-Spieler-Tisch im Webbrowser mit geführtem Charleston und Kartenmuster-Validierung."
+      ],
+      "supportedDevices": "Amerikanisches Mahjong läuft vollständig im Webbrowser auf Computer und Mobilgerät ohne App-Installation. Ein breiter Bildschirm hilft, Übungskarte und Expositionen zusammen zu lesen; Telefone drehen ins Querformat für die volle Tischanordnung. Unterstützt auf Chrome, Safari, Firefox und Edge unter Windows, macOS, Linux, Android und iOS.",
+      "faq": [
+        {
+          "question": "Ist das die offizielle jährliche NMJL-Karte?",
+          "answer": "Nein. Dieses Spiel verwendet originale Übungskarten von Mahjong Hub. Eine lizenzierte NMJL-Kartenintegration wäre ein separates zukünftiges Produkt."
+        },
+        {
+          "question": "Kann ein Joker in einem Paar verwendet werden?",
+          "answer": "Nein. In dieser Regelbasis sind Joker nur in Gruppen von drei oder mehr legal, nie in Singles oder Paaren."
+        }
+      ]
+    }
+  },
+  "mahjong-connect-classic": {
+    "title": "Mahjong-Connect Klassik",
+    "description": "Verbinden Sie passende Steinpaare mit einem Pfad, der höchstens zweimal abbiegt. Drei Brettgrößen, Hinweise und keine Zeitbegrenzung im Entspannungsmodus.",
+    "content": {
+      "intro": "Mahjong Connect, auch als Onet bekannt, ist das Verbindungs-Paarpuzzle aus Mahjong-Steinen. Räumen Sie das ganze Brett, indem Sie identische Paare mit einem Pfad verbinden, der höchstens zweimal knickt. Der Entspannungsmodus hat keine Uhr, wenn Sie sich Zeit lassen möchten.",
+      "howToPlay": [
+        "Tippen oder klicken Sie zwei Steine mit demselben Motiv.",
+        "Das Paar verschwindet, wenn sie durch einen Pfad leeren Raums verbunden werden können, der höchstens zweimal abbiegt. Der Pfad darf den Außenrand des Bretts entlanglaufen.",
+        "Räumen Sie alle Steine, um zu gewinnen. Aufeinanderfolgende Treffer bauen einen Serienbonus auf.",
+        "Wenn kein Paar spielbar ist, mischt das Brett automatisch nach, sodass Sie nie feststecken."
+      ],
+      "tips": [
+        "Arbeiten Sie zuerst die Ränder. Außensteine haben die meisten Routen und öffnen die Mitte beim Räumen.",
+        "Zwei identische Steine nebeneinander sind immer spielbar — aber sie zu räumen kann der einzige Weg sein, anderswo einen Pfad zu öffnen; schauen Sie vor dem freien Match.",
+        "Der Hinweis-Button kostet ein paar Punkte. Auf zeitgesteuerten Brettern lohnt sich der Tausch fast immer."
+      ],
+      "features": [
+        "Klassisches Onet-Verbinden passender Steine mit authentischen Mahjong-Steingesichtern.",
+        "Drei Brettgrößen vom Kompaktformat bis zu Vollgitter-Herausforderungen.",
+        "Entspannungsmodus ohne Zeitbegrenzung plus zeitgesteuerte Bretter für Serienwertung.",
+        "Automatisches Nachmischen, wenn kein Paar spielbar ist — Bretter enden nie in einer Sackgasse.",
+        "Hinweissystem und Serienbonus für längere Sitzungen."
+      ],
+      "supportedDevices": "Mahjong Connect läuft in jedem modernen Webbrowser auf Computer, Tablet und Telefon ohne Installation. Tippen auf dem Mobilgerät und Klicken auf dem Computer funktionieren auf demselben Brett. Chrome, Safari, Firefox und Edge unter Windows, macOS, Linux, Android und iOS werden unterstützt; ein mittelgroßes Telefonbildschirm fasst das Standardbrett bequem im Hochformat.",
+      "faq": [
+        {
+          "question": "Worin unterscheidet sich das vom Mahjong-Solitaire?",
+          "answer": "Solitaire stapelt Steine in Schichten und Sie paaren Steine, die an einer Seite frei sind. Connect legt sie flach und verlangt, Paare mit einem Pfad zu verbinden. Anderes Puzzle, gleiche Steine."
+        },
+        {
+          "question": "Was zählt als Abbiegung im Pfad?",
+          "answer": "Jeder Richtungswechsel. Eine Gerade hat keine Abbiegungen, ein L hat eine, und ein Z oder U hat zwei. Drei oder mehr sind nicht erlaubt."
+        }
+      ]
+    }
+  },
+  "mahjong-solitaire-classic": {
+    "title": "Mahjong-Solitaire Klassik",
+    "description": "Das klassische geschichtete Stein-Paarpuzzle. Schildkröten- und Pyramidenlayouts, garantiert lösbare Geben, Hinweise und Rückgängig.",
+    "content": {
+      "intro": "Mahjong Solitaire ist das klassische Einzelspieler-Stein-Paarpuzzle aus Mahjong-Steinen. Räumen Sie das ganze Layout, indem Sie identische Steine paaren, die frei sind: nichts liegt darauf und mindestens eine Seite ist offen. Jede Gabe hier wird lösbar generiert, sodass eine vollständige Räumung immer existiert. Zwei klassische Formen sind enthalten — Schildkröte und Pyramide — plus Hinweise, Rückgängig und Nachmischen, wenn Sie sich festfahren.",
+      "howToPlay": [
+        "Tippen Sie zwei Steine mit demselben Motiv zum Paaren. Ein Stein darf nur gepaart werden, wenn er frei ist: nichts liegt darauf und er ist an mindestens einer Seite seiner eigenen Schicht offen.",
+        "Steine bedecken die direkt darunter, also räumen Sie einen Stapel von oben nach unten. Die oberste Schicht ist immer verfügbar; untere Schichten öffnen sich, während Sie fortschreiten.",
+        "Räumen Sie alle Steine, um zu gewinnen. Die Schildkröte spannt einen breiten Panzer; die Pyramide stapelt fünf zentrierte Dreiecke, die Sie von den Rändern nach innen abschälen.",
+        "Jede Gabe wird lösbar generiert, sodass eine Lösung immer existiert. Nutzen Sie Hinweise bei Blockade, machen Sie einen übereilten Match rückgängig oder mischen Sie nach, um die restlichen Steine neu zu geben.",
+        "Es gibt keinen Timer und keinen Punktdruck — nehmen Sie sich so viel Zeit, wie Sie möchten."
+      ],
+      "tips": [
+        "Arbeiten Sie zuerst außen. Ein Stein am äußeren Rand einer Schicht hat eine offene Seite gratis, also öffnet das Räumen des Perimeters die Mitte.",
+        "Bevor Sie ein offensichtliches Paar nehmen, schauen Sie, was es freigibt. Zwei benachbarte identische Steine sind ein leichter Match, aber sie zu räumen kann der einzige Weg sein, einen höheren Stapel zu lösen.",
+        "Nutzen Sie die Pyramidenebenen: ihre Randsteine sind von Anfang an spielbar, und der Spitzenstein ist erst erreichbar, wenn seine Schicht erreicht ist.",
+        "Wenn keine Matches mehr bleiben, mischen Sie nach statt neu zu starten — die restlichen Steine werden in einer frischen lösbaren Anordnung neu gegeben."
+      ],
+      "features": [
+        "Geschichtetes Mahjong-Solitaire mit Schildkröten- und Pyramidenanordnungen.",
+        "Jede Gabe ist rückwärts generiert und lösbar — eine vollständige Räumung ist immer möglich.",
+        "Frei-Stein-Paarregeln mit visueller Hervorhebung spielbarer Paare.",
+        "Hinweise, Rückgängig und Nachmischen, wenn Sie einen zweiten Blick ohne Neustart wollen.",
+        "Tägliche Herausforderung, Kampagnenlevel und Entspannungsmodus ohne Zeitbegrenzung."
+      ],
+      "supportedDevices": "Mahjong Solitaire Classic läuft im Webbrowser unter Windows, macOS, Linux, Android und iOS ohne Herunterladen. Computer und Tablet zeigen die volle geschichtete Anordnung; Telefone scrollen natürlich über höhere Schildkrötenstapel. Chrome, Safari, Firefox und Edge werden unterstützt — Gastfortschritt speichert lokal auf Ihrem Gerät.",
+      "faq": [
+        {
+          "question": "Worin unterscheidet sich das von Mahjong Connect?",
+          "answer": "Connect legt Steine flach und verlangt, passende Paare mit einem Pfad zu verbinden. Solitaire stapelt Steine in Schichten, und Sie paaren Steine, die an einer Seite frei und oben unbedeckt sind. Anderes Puzzle, gleiche Steine."
+        },
+        {
+          "question": "Was bedeutet „frei“ hier?",
+          "answer": "Ein Stein ist frei, wenn nichts direkt darauf liegt und mindestens einer seiner linken oder rechten Nachbarn auf derselben Ebene leer ist. Die äußeren Randsteine einer Schicht sind außen immer frei."
+        },
+        {
+          "question": "Ist jedes Spiel garantiert lösbar?",
+          "answer": "Ja. Gaben werden rückwärts gebaut — das Spiel wählt wiederholt zwei freie Steine, entfernt sie und speichert den Match —, sodass jedes Layout einen bekannten Lösungsweg hat, den Sie mit Überlegung finden können."
+        },
+        {
+          "question": "Gibt es Glücksspiel mit echtem Geld?",
+          "answer": "Nein. Das ist ein reines Puzzle ohne Wetten, ohne kaufbare Währung und ohne Geldpreise jeglicher Art."
+        }
+      ]
+    }
+  },
+  "mahjong-connect": {
+    "title": "Mahjong-Connect Light",
+    "description": "Paaren Sie freie Mahjong-Steinpaare, die durch einen Pfad verbunden sind. Ein entspannendes Connect-Eliminationsspiel."
+  },
+  "mahjong-classic": {
+    "title": "Klassisches Mahjong",
+    "description": "Das zeitlose Mahjong-Solitaire. Räumen Sie das Brett, indem Sie offene Steinpaare matchen."
+  },
+  "mahjong-solitaire": {
+    "title": "Mahjong-Solitär",
+    "description": "Ein schönes Solitaire-Layout aus Mahjong-Steinen. Paaren und räumen Sie den Turm in Ihrem Tempo."
+  },
+  "mahjong-3d": {
+    "title": "Mahjong in 3D",
+    "description": "Eine dreidimensionale Variante des Mahjong-Matchings mit Tiefe und ruhiger Regenbogenpalette."
+  },
+  "onet-connect-classic": {
+    "title": "Onet-Connect Klassik",
+    "description": "Das klassische Onet-Verbindungsspiel. Verbinden Sie identische Steine mit einer Linie von höchstens zwei Abbiegungen."
+  },
+  "bee-connect": {
+    "title": "Bienen-Connect",
+    "description": "Ein Connect mit Bienen-Thema. Verbinden Sie die kleinen Steine und räumen Sie das Wabenbrett."
+  },
+  "aloha-mahjong": {
+    "title": "Aloha-Mahjong",
+    "description": "Ein tropischer Twist am Mahjong-Matching mit sonniger, entspannter Stimmung."
+  },
+  "8x8-match-tiles": {
+    "title": "8×8 Match-Steine",
+    "description": "Ein kompaktes 8×8-Stein-Match-Puzzle. Verbinden Sie gleiche Steine und jagen Sie den Highscore."
+  },
+  "tile-guru": {
+    "title": "Stein-Guru",
+    "description": "Ein zen Stein-Match-Puzzle. Finden und verbinden Sie passende Steine in einem ruhigen Layout."
+  },
+  "tile-journey": {
+    "title": "Steinreise",
+    "description": "Eine Reise durch Stein-Match-Level. Planen Sie Ihre Verbindungen und räumen Sie jedes Brett."
+  }
+}

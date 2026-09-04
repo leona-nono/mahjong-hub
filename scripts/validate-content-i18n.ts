@@ -1,5 +1,7 @@
 /**
- * Validate about / home-guide / games CJK JSON and glossary completeness.
+ * Validate about / home-guide / games locale JSON and glossary completeness
+ * for every content locale (CJK + EU).
+ *
  * Run: npx tsx scripts/validate-content-i18n.ts
  */
 import { readFileSync } from 'node:fs';
@@ -10,9 +12,9 @@ import {
   type GlossaryLocale
 } from '../data/glossary';
 import { games } from '../data/games';
+import { CONTENT_LOCALES } from '../lib/locales';
 
 const ROOT = path.join(process.cwd(), 'data');
-const CJK = ['zh', 'zh-TW', 'ja', 'ko'] as const;
 
 let failures = 0;
 
@@ -71,7 +73,7 @@ for (const domain of ['about-i18n', 'home-guide-i18n'] as const) {
     sections?: unknown[];
     closing?: unknown[];
   };
-  for (const locale of CJK) {
+  for (const locale of CONTENT_LOCALES) {
     const doc = loadJson(`${domain}/${locale}.json`) as typeof en;
     assertNotEqualEn(domain, locale, doc, en);
     if (sectionShape(doc as never) !== sectionShape(en as never)) {
@@ -89,7 +91,7 @@ for (const domain of ['about-i18n', 'home-guide-i18n'] as const) {
 
 // ---------------------------------------------------------------- games ----
 const enBySlug = new Map(games.map((g) => [g.slug, g]));
-for (const locale of CJK) {
+for (const locale of CONTENT_LOCALES) {
   const file = loadJson(`games-i18n/${locale}.json`) as Record<
     string,
     {
@@ -98,6 +100,7 @@ for (const locale of CJK) {
       content?: {
         features?: string[];
         supportedDevices?: string;
+        intro?: string;
       };
     }
   >;
@@ -109,6 +112,12 @@ for (const locale of CJK) {
     }
     if (!entry.title?.trim() || !entry.description?.trim()) {
       fail(`games-i18n/${locale}/${slug}: missing title/description`);
+    }
+    if (entry.title === base.title) {
+      fail(`games-i18n/${locale}/${slug}: title still English`);
+    }
+    if (entry.description === base.description) {
+      fail(`games-i18n/${locale}/${slug}: description still English`);
     }
     const content = entry.content;
     const enContent = base.content;
@@ -127,6 +136,14 @@ for (const locale of CJK) {
     ) {
       fail(`games-i18n/${locale}/${slug}: supportedDevices still English`);
     }
+    // If a locale ships howToPlay, it must not be a byte-identical English dump.
+    if (
+      content.howToPlay &&
+      enContent.howToPlay &&
+      JSON.stringify(content.howToPlay) === JSON.stringify(enContent.howToPlay)
+    ) {
+      fail(`games-i18n/${locale}/${slug}: howToPlay still English`);
+    }
   }
 }
 
@@ -134,4 +151,4 @@ if (failures > 0) {
   console.error(`\n${failures} validation error(s).`);
   process.exit(1);
 }
-console.log('content i18n OK');
+console.log(`content i18n OK (${CONTENT_LOCALES.join(', ')})`);

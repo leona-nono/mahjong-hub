@@ -1,0 +1,369 @@
+{
+  "hong-kong-mahjong": {
+    "title": "Mahjong de Hong Kong",
+    "description": "Jogue mahjong real de quatro jogadores contra três rivais. Pontuação no estilo antigo de Hong Kong, grátis e sem baixar.",
+    "content": {
+      "intro": "O mahjong de Hong Kong no Mahjong Hub é um regulamento de produto para quatro jogadores baseado no estilo antigo de Hong Kong. Usa peças de caractere, peças de ponto, peças de bambu, peças de vento e os três dragões — vermelho, verde e branco; flores e estações ficam deliberadamente de fora. Forme quatro combinações e um par, e escolha o modo Casual para mãos simples amigáveis a iniciantes ou o modo Padrão com o mínimo tradicional de três faan.",
+      "howToPlay": [
+        "A parede de produto de 136 peças contém peças de caractere, peças de ponto, peças de bambu, peças de vento e os dragões vermelho, verde e branco. Flores e estações não são usadas.",
+        "Cada jogador começa com 13 peças; o Leste começa com 14 e faz o primeiro descarte. Nos turnos seguintes, compre uma peça e depois descarte uma, mantendo a mão em 13.",
+        "Uma mão vencedora são quatro combinações mais um par. Uma combinação é três peças idênticas ou três peças consecutivas do mesmo naipe.",
+        "Quando outro jogador descarta uma peça de que você precisa, você pode reclamá-la: Pong para um trio, Chow para uma sequência (somente do jogador à sua esquerda) ou Kong para as quatro cópias.",
+        "Reclamar uma peça abre sua mão e faz você perder alguns padrões de pontuação. Faça isso só quando realmente avançar seu jogo.",
+        "Declare vitória por compra própria ou por descarte alheio. O modo Casual aceita qualquer mão completa de quatro combinações e um par; o modo Padrão exige pelo menos três faan.",
+        "Após a liquidação, o Leste mantém a banca se o dealer ganhar ou houver empate; caso contrário, a banca passa ao próximo assento."
+      ],
+      "tips": [
+        "Descarte cedo as peças de honra isoladas. São as mais difíceis de emparelhar e o menos flexível da sua mão.",
+        "Acompanhe a distância até a mão em espera em vez de fixar peças soltas. Estar a duas é uma posição normal no meio do jogo; a uma, comece a jogar com cuidado.",
+        "Uma mão de naipe puro vale muito mais do que a soma das partes. Se receber sete ou oito peças do mesmo naipe, comprometer-se cedo costuma compensar.",
+        "Observe os outros assentos. Se três jogadores descartam o mesmo naipe, as peças de que você precisa provavelmente ainda estão vivas.",
+        "No modo Padrão, verifique o total de faan antes de reclamar: uma forma completa abaixo de três faan não é uma vitória legal."
+      ],
+      "features": [
+        "Regras autênticas do estilo antigo de Hong Kong com 136 peças — apenas peças de caractere, peças de ponto, peças de bambu, peças de vento e peças de dragão.",
+        "Modo Casual para aprender mãos completas sem limiar de faan; modo Padrão com o mínimo tradicional de três faan.",
+        "Três rivais de IA com lógica de descarte sensata para praticar o ritmo real de quatro jogadores.",
+        "Dica opcional de mão em espera e detalhamento de faan após a mão para aprender a pontuar sem abrir o regulamento.",
+        "Jogo completo no navegador em computador e celular — toque ou clique para descartar, reclamar peças e declarar vitória."
+      ],
+      "supportedDevices": "O mahjong de Hong Kong funciona em qualquer navegador moderno no Windows, macOS, Linux, Android e iOS sem baixar. O modo paisagem no telefone ou tablet oferece a visão de peças mais ampla; o retrato também funciona com mãos roláveis. Chrome, Safari, Firefox e Edge são suportados — use um navegador atualizado para animações fluidas em reclamações e liquidação.",
+      "faq": [
+        {
+          "question": "Preciso baixar algo?",
+          "answer": "Não. O jogo roda por completo no navegador em computador e celular, e nada é instalado."
+        },
+        {
+          "question": "É mahjong de verdade ou o jogo de combinar peças?",
+          "answer": "É mahjong real de quatro jogadores, com compra, descarte, reclamações e pontuação. O jogo de combinar que a maioria dos sites ocidentais chama de «mahjong» é o solitário de mahjong — um jogo diferente."
+        },
+        {
+          "question": "Qual é a diferença entre o modo Casual e o Padrão?",
+          "answer": "O modo Casual permite ganhar com qualquer mão estruturalmente completa e concede uma mão «chicken» de um faan quando nenhum outro padrão pontua. O modo Padrão de Hong Kong exige pelo menos três faan, então uma mão completa de pontuação menor deve continuar jogando."
+        },
+        {
+          "question": "Há apostas com dinheiro real?",
+          "answer": "Não. Não há apostas, moeda comprável nem prêmios em dinheiro. As pontuações só registram o seu próprio progresso."
+        }
+      ]
+    }
+  },
+  "riichi-mahjong": {
+    "title": "Mahjong Riichi",
+    "description": "Mahjong Riichi japonês contra três rivais. O regulamento por trás da cena competitiva moderna.",
+    "content": {
+      "intro": "Esta mesa japonesa de Riichi para quatro jogadores segue a base aprovada do World Riichi Championship 2025: sem cincos vermelhos, um único vencedor em colisão de cabeça e saída com 30.000 pontos.",
+      "howToPlay": [
+        "Cada jogador começa com 13 peças. Compre uma e descarte uma, visando quatro combinações e um par; Sete pares e Treze órfãos também são formas fechadas válidas.",
+        "Uma forma completa não basta: a mão precisa de pelo menos um yaku. Dora adiciona valor, mas não é um yaku por si só.",
+        "Chow só está disponível a partir do jogador à sua esquerda. Pong, Kong e Ron podem ser reclamados de qualquer rival, conforme a prioridade de reclamação.",
+        "Mantenha a mão fechada e alcance a mão em espera para declarar Riichi. Escolha um descarte destacado e coloque uma barra de 1.000 pontos.",
+        "Ganhe por Tsumo com a própria compra ou por Ron com um descarte rival. Com a colisão de cabeça WRC, só o primeiro vencedor na ordem de turno recebe o Ron.",
+        "A partida percorre as rodadas Leste e Sul. Nesta base de produto, uma vitória do dealer ou um empate exaustivo mantém a banca; empates exaustivos usam um pagamento noten de 3.000 pontos.",
+        "Esta mesa usa 136 peças, uma parede morta de 14 peças, indicadores Dora e sem cincos vermelhos."
+      ],
+      "tips": [
+        "Garanta um yaku antes de perseguir Dora: peças de bônus não legalizam uma mão sem yaku.",
+        "Compare o shanten e as peças úteis antes de cada descarte; conserve formas com mais compras que melhorem a mão.",
+        "Diante de um Riichi, comece por genbutsu e depois use suji e a parede visível para reduzir o risco.",
+        "Declare Riichi com critério: compare a qualidade da espera, o valor da mão, as peças restantes e o placar.",
+        "Não force ataques de baixo valor no fim da mão quando um fold mais seguro protege sua posição."
+      ],
+      "features": [
+        "Base World Riichi Championship 2025 — sem cincos vermelhos, Ron por colisão de cabeça e saída com 30.000 pontos.",
+        "Limiar completo de yaku, indicadores Dora e parede morta de 14 peças para um fluxo competitivo autêntico.",
+        "Declaração de Riichi com barra de 1.000 pontos, vitórias Tsumo e Ron com prioridade por ordem de turno.",
+        "A dica de mão em espera acompanha o shanten para aprender a mão em espera sem adivinhar a contagem de peças.",
+        "Rodadas Leste e Sul com continuação do dealer em vitórias do dealer e empates exaustivos."
+      ],
+      "supportedDevices": "O mahjong Riichi joga-se no navegador em computador, notebook, tablet e telefone sem instalar um aplicativo. O modo paisagem no celular é recomendado para ler ao mesmo tempo os descartes rivais e a sua mão. Navegadores suportados: Chrome, Safari, Firefox e Edge atuais no Windows, macOS, Linux, Android e iOS.",
+      "faq": [
+        {
+          "question": "Em que o Riichi difere do mahjong chinês?",
+          "answer": "O Riichi exige um padrão de pontuação antes de declarar vitória, valoriza mais as mãos fechadas e usa uma tabela de pontuação diferente. O núcleo de comprar e descartar é o mesmo, então a transferência é fácil."
+        },
+        {
+          "question": "É um bom lugar para aprender Riichi?",
+          "answer": "É um bom lugar para se familiarizar com o fluxo, as reclamações e os padrões comuns. A dica de mão em espera mostra o quanto falta para uma mão completa — a informação mais útil para um jogador novo."
+        }
+      ]
+    }
+  },
+  "chinese-official-mahjong": {
+    "title": "Mahjong oficial chinês",
+    "description": "Mesa de treino de mahjong oficial chinês (MCR): 144 peças, substituição de flores e limiar de vitória de oito pontos.",
+    "content": {
+      "intro": "Esta é a nossa mesa de treino de mahjong oficial chinês (MCR). Já usa 144 peças, expõe e substitui flores e estações, e aplica o limiar de vitória de oito pontos. O marcador completo de 81 elementos de competição e suas regras de exclusão ainda estão em desenvolvimento, por isso esta página não deve ser usada como árbitro de torneio.",
+      "howToPlay": [
+        "Mahjong padrão de quatro jogadores: compre, descarte e forme quatro combinações mais um par.",
+        "Revele cada flor ou estação imediatamente na zona de flores e pegue um substituto do fim da parede de peças.",
+        "Uma mão deve valer pelo menos oito pontos válidos antes de poder ser declarada. Pontos de flor não cumprem esse limiar sozinhos.",
+        "O marcador atual cobre apenas um subconjunto de treino; use-o para aprender o fluxo de turnos, não para certificar uma pontuação de competição."
+      ],
+      "tips": [
+        "Trate esta versão como mesa de prática enquanto os 81 elementos oficiais de pontuação são adicionados.",
+        "Uma mão a uma peça de completar, mas abaixo de oito pontos válidos, não é uma vitória legal; continue melhorando sua estrutura de pontuação.",
+        "Quando o marcador completo chegar, explicará elementos incluídos e excluídos, em vez de simplesmente somar cada padrão visível."
+      ],
+      "features": [
+        "Mesa de treino MCR de 144 peças com fluxo de substituição de flores e estações.",
+        "Limiar mínimo de oito pontos para ensinar cedo a adjudicação de competição.",
+        "Compra e descarte a quatro jogadores contra IA com reclamações de combinação padrão.",
+        "O marcador de treino cobre um subconjunto inicial de padrões enquanto a tabela completa de 81 elementos é construída.",
+        "Feedback claro na tela quando uma mão completa está abaixo do limiar de oito pontos."
+      ],
+      "supportedDevices": "O mahjong oficial chinês funciona por completo no navegador no Windows, macOS, Linux, Android e iOS. Computador e tablet facilitam ler a substituição de flores e o feedback de pontuação; os telefones funcionam em qualquer orientação. Use Chrome, Safari, Firefox ou Edge atualizados para o melhor desempenho em turnos multijogador.",
+      "faq": [
+        {
+          "question": "Por que não posso declarar vitória com uma mão completa?",
+          "answer": "O oficial chinês exige um mínimo de oito pontos. Se a sua mão completa pontuar menos, a vitória não pode ser declarada e o jogo continua."
+        },
+        {
+          "question": "A pontuação aqui está completa?",
+          "answer": "Não. Esta versão de treino implementa o fluxo de 144 peças e substituição de flores mais um subconjunto inicial de pontuação. A tabela oficial completa de 81 elementos e suas exclusões ainda estão sendo implementadas."
+        }
+      ]
+    }
+  },
+  "sichuan-mahjong": {
+    "title": "Mahjong de Sichuan",
+    "description": "Mahjong Blood Battle de Sichuan com Exchange Three, um naipe proibido e jogo contínuo após a primeira vitória.",
+    "content": {
+      "intro": "O mahjong de Sichuan no Mahjong Hub segue a base Chengdu Blood Battle to the End: apenas três naipes, Exchange Three, um naipe proibido, sem Chow, e o jogo continua após a primeira vitória.",
+      "howToPlay": [
+        "A parede de 108 peças usa apenas peças de caractere, peças de ponto e peças de bambu. Peças de vento, peças de dragão, flores e estações não são usadas.",
+        "Antes do jogo normal, selecione três peças de um único naipe para Exchange Three; a mesa as passa na direção escolhida para aquela mão.",
+        "Escolha um naipe proibido. Você deve descartar todas as peças desse naipe antes de poder declarar vitória.",
+        "Compre e descarte normalmente. Chow não é permitido; Pong e Kong são, conforme a ordem de reclamação da mesa.",
+        "Forme quatro combinações e um par, ou uma mão especial aprovada como Sete pares, e ganhe por vitória por compra própria ou um descarte legal.",
+        "Um vencedor para de comprar, mas a mão continua para os demais. A liquidação final inclui verificação de mão em espera, penalidade flower-pig e reembolso de Kong."
+      ],
+      "tips": [
+        "Escolha o naipe proibido pelo que você puder esvaziar mais rápido, não só pelo menor número de peças.",
+        "O Exchange Three deve remover três peças de um naipe fraco coerente para não criar três peças mortas sem relação.",
+        "Como Chow não está disponível, pares e formas conectadas valem mais do que em variantes com Chow.",
+        "Após a vitória de outro jogador, reavalie o risco: manter a mão em espera importa para a verificação final, mas evite tornar-se flower pig.",
+        "Acompanhe a exposição de Kong e a liquidação. Um Kong de alto valor não é automaticamente seguro se abrir uma compra perigosa."
+      ],
+      "features": [
+        "Base Chengdu Blood Battle — 108 peças, Exchange Three e um naipe proibido pessoal.",
+        "Sem Chow: apenas Pong e Kong, no ritmo rápido de mesa sichuanesa contra três assentos de IA.",
+        "O fluxo Blood Battle continua após a primeira vitória, com verificação final de mão em espera e penalidades.",
+        "Exchange Three interativo e seletor de naipe proibido antes de cada mão.",
+        "Vitórias por compra própria e por descarte, com Sete pares e formas padrão de quatro combinações."
+      ],
+      "supportedDevices": "O mahjong de Sichuan funciona em navegadores modernos em computador, notebook, tablet e telefone sem instalação. A vista paisagem no celular encaixa melhor os controles de troca e naipe proibido. Chrome, Safari, Firefox e Edge no Windows, macOS, Linux, Android e iOS são suportados.",
+      "faq": [
+        {
+          "question": "Por que não posso ganhar se ainda tenho o naipe proibido?",
+          "answer": "A regra do naipe proibido é uma condição central do Blood Battle de Chengdu. Esvazie todas as peças do naipe escolhido antes de declarar vitória."
+        },
+        {
+          "question": "Por que o jogo continua depois que alguém ganha?",
+          "answer": "Blood Battle to the End permite que os jogadores restantes continuem. Assim podem surgir vários vencedores ou penalidades na mesma mão."
+        }
+      ]
+    }
+  },
+  "taiwan-mahjong": {
+    "title": "Mahjong de Taiwan",
+    "description": "Mahjong taiwanês de 16 peças com substituição de flores e pontuação baseada em Tai.",
+    "content": {
+      "intro": "O mahjong de Taiwan do Mahjong Hub é uma versão relaxada de 16 peças: parede de 144 com flores e estações, cinco combinações mais um par para ganhar, pontuação Tai aditiva e um mínimo de 0 Tai para iniciantes.",
+      "howToPlay": [
+        "Use as 144 peças. Cada não dealer começa com 16; o Leste começa com 17 e faz o primeiro descarte.",
+        "Revele cada flor ou estação imediatamente e compre um substituto. Ela fica fora da sua mão de 16 peças e soma Tai quando aplicável.",
+        "No seu turno, compre uma peça e descarte uma. Você pode fazer Chow do jogador à esquerda, ou Pong e Kong conforme a ordem de reclamação.",
+        "Ganhe com cinco combinações e um par — uma mão de 17 peças. Vitória por compra própria e por descarte são suportadas.",
+        "Os padrões Tai somam na liquidação. Esta base para iniciantes do Mahjong Hub permite ganhar com uma mão completa de 0 Tai."
+      ],
+      "tips": [
+        "Com 16 peças ocultas, conserve várias formas conectadas no início em vez de fixar uma única espera cedo demais.",
+        "As flores adicionam valor, mas não reparam uma mão principal fraca; construa primeiro a estrutura de cinco combinações.",
+        "Os Kong são mais frequentes no mahjong de Taiwan. Avalie a compra de substituição e a informação que você revela.",
+        "Use o modo 0 Tai para aprender o ritmo; quando se sentir à vontade, persiga Tai só se não reduzir suas esperas vivas.",
+        "Verifique se a sua flor corresponde ao seu assento: flores de assento podem somar um bônus extra."
+      ],
+      "features": [
+        "Mãos taiwanesas de 16 peças com cinco combinações mais um par e parede de 144 incluindo flores.",
+        "Substituição imediata de flores com bônus Tai e opções de pontuação por flor de assento.",
+        "Reclamações Chow, Pong e Kong com liquidação Tai aditiva em cada vitória.",
+        "Mínimo de 0 Tai amigável para iniciantes, para aprender o ritmo antes de perseguir padrões de alto Tai.",
+        "Mesa de quatro jogadores contra IA com vitórias por compra própria e por descarte."
+      ],
+      "supportedDevices": "O mahjong de Taiwan joga-se no navegador no Windows, macOS, Linux, Android e iOS. Tablets e desktops facilitam ler a mão grande de 16 peças; os telefones funcionam em retrato ou paisagem. Use Chrome, Safari, Firefox ou Edge atuais para toques responsivos e animações fluidas de substituição de flores.",
+      "faq": [
+        {
+          "question": "Por que tenho 16 peças em vez de 13?",
+          "answer": "O mahjong de Taiwan usa cinco combinações mais um par. Os jogadores costumam ter 16 peças e ganham após comprar ou reclamar a 17.ª."
+        },
+        {
+          "question": "Uma mão de 0 Tai pode ganhar aqui?",
+          "answer": "Sim. O Mahjong Hub usa uma base relaxada de 0 Tai. Outras mesas taiwanesas podem exigir um Tai mínimo, e isso aparece com clareza nas configurações do jogo."
+        }
+      ]
+    }
+  },
+  "american-mahjong": {
+    "title": "Mahjong americano",
+    "description": "Mahjong americano com Charleston, curingas, flores e padrões de vitória baseados em carta.",
+    "content": {
+      "intro": "O mahjong americano do Mahjong Hub é um jogo original de carta de prática inspirado no fluxo estilo NMJL: 152 peças, Charleston, flores, curingas, grupos expostos e vitórias por padrão exato de carta. Não reproduz uma carta anual NMJL vigente.",
+      "howToPlay": [
+        "Use um set de 152 peças com peças padrão, oito flores e oito curingas. Cada jogador pega 13 peças; o Leste pega 14 e descarta primeiro.",
+        "Leia a carta de prática original e complete o Charleston: passe três peças à direita, à frente e à esquerda. Um segundo Charleston e o passe de cortesia são opções de mesa.",
+        "Compre e descarte mirando uma linha exata da carta de prática, não uma forma genérica de quatro combinações e um par.",
+        "Exponha Pongs, Kongs ou grupos maiores legais quando a linha de carta escolhida permitir. Linhas ocultas da carta não podem ser expostas antes da vitória final.",
+        "Use um curinga só em um grupo de três ou mais; nunca como peça sola ou par. No seu turno, uma peça natural pode trocar um curinga em uma exposição rival.",
+        "Declare Mah Jongg somente quando as 14 peças corresponderem exatamente a uma linha legal da carta de prática original."
+      ],
+      "tips": [
+        "Antes do Charleston, mantenha abertas duas ou três linhas de carta compatíveis em vez de se comprometer com uma única linha rara.",
+        "Passe peças que não apoiem nenhuma das suas categorias prováveis de carta, mas nunca passe um curinga.",
+        "Não exponha um grupo só porque pode: a exposição sinaliza o seu alvo e pode tornar a mão impossível de pivotar.",
+        "Trate os curingas como aceleradores de grupo, não como curingas universais; você ainda precisa de peças naturais para singles e pares.",
+        "Use as exposições rivais para decidir quais peças naturais são seguras de descartar e quando vale uma troca de curinga."
+      ],
+      "features": [
+        "Set estilo americano de 152 peças com flores, curingas e passes Charleston inspirados em NMJL.",
+        "Cartas de prática originais do Mahjong Hub — vitórias por padrão exato, não formas genéricas de combinação.",
+        "Grupos legais com curinga, troca de curinga no seu turno e regras de exposição ligadas à linha de carta.",
+        "Segundo Charleston opcional e passe de cortesia para sessões de prática estilo mesa.",
+        "Mesa de quatro jogadores no navegador com Charleston guiado e validação de padrão de carta."
+      ],
+      "supportedDevices": "O mahjong americano funciona por completo no navegador em computador e celular sem baixar um aplicativo. Uma tela larga ajuda a ler ao mesmo tempo a carta de prática e as exposições; os telefones giram para paisagem para a disposição completa da mesa. Compatível com Chrome, Safari, Firefox e Edge no Windows, macOS, Linux, Android e iOS.",
+      "faq": [
+        {
+          "question": "É a carta anual oficial da NMJL?",
+          "answer": "Não. Este jogo usa cartas de prática originais do Mahjong Hub. Uma integração com carta NMJL licenciada seria um produto futuro separado."
+        },
+        {
+          "question": "Um curinga pode ser usado em um par?",
+          "answer": "Não. Nesta base de regras, curingas só são legais em grupos de três ou mais, nunca em singles nem pares."
+        }
+      ]
+    }
+  },
+  "mahjong-connect-classic": {
+    "title": "Mahjong Connect clássico",
+    "description": "Ligue pares de peças iguais com um caminho que vira no máximo duas vezes. Três tamanhos de tabuleiro, dicas e sem temporizador no modo relaxado.",
+    "content": {
+      "intro": "Mahjong Connect, também conhecido como Onet, é o puzzle de unir pares feito com peças de mahjong. Esvazie todo o tabuleiro unindo pares idênticos com um caminho que não dobre mais de duas vezes. O modo relaxado não tem relógio se preferir ir com calma.",
+      "howToPlay": [
+        "Toque ou clique em duas peças com a mesma face.",
+        "O par é removido se puderem ser unidos por um caminho de espaço vazio que vire no máximo duas vezes. O caminho pode percorrer a borda externa do tabuleiro.",
+        "Esvazie todas as peças para ganhar. Combinações consecutivas acumulam um bônus de sequência.",
+        "Se não houver nenhum par jogável, o tabuleiro reorganiza automaticamente para que você nunca fique preso."
+      ],
+      "tips": [
+        "Comece pelas bordas. Peças externas têm mais rotas disponíveis e abrem o centro ao serem removidas.",
+        "Duas peças idênticas juntas sempre são jogáveis — mas removê-las pode ser a única forma de abrir um caminho em outra área: olhe antes de pegar a combinação fácil.",
+        "O botão de dica custa alguns pontos. Em tabuleiros cronometrados, essa troca quase sempre vale a pena."
+      ],
+      "features": [
+        "Emparelhamento clássico estilo Onet com faces autênticas de peça de mahjong.",
+        "Três tamanhos de tabuleiro, do compacto aos desafios de grade completa.",
+        "Modo relaxado sem temporizador e tabuleiros cronometrados com pontuação por sequência.",
+        "Reorganização automática quando não há par jogável — os tabuleiros nunca chegam a um beco sem saída.",
+        "Sistema de dicas e bônus de sequência para sessões mais longas."
+      ],
+      "supportedDevices": "Mahjong Connect funciona em qualquer navegador moderno em computador, tablet e telefone sem instalação. Toques no celular e clique no computador funcionam no mesmo tabuleiro. Chrome, Safari, Firefox e Edge no Windows, macOS, Linux, Android e iOS são suportados; uma tela de telefone média acomoda confortavelmente o tabuleiro padrão em retrato.",
+      "faq": [
+        {
+          "question": "Em que difere do solitário de mahjong?",
+          "answer": "O solitário empilha peças em camadas e você emparelha peças livres de um lado. O Connect as dispõe em plano e pede para unir pares com um caminho. Puzzle diferente, mesmas peças."
+        },
+        {
+          "question": "O que conta como uma virada no caminho?",
+          "answer": "Cada mudança de direção. Uma linha reta não tem viradas, um L tem uma e um Z ou U tem duas. Três ou mais não são permitidos."
+        }
+      ]
+    }
+  },
+  "mahjong-solitaire-classic": {
+    "title": "Mahjong Solitaire clássico",
+    "description": "O clássico puzzle de combinar peças em camadas. Layouts tartaruga e pirâmide, partidas garantidas resolvíveis, dicas e desfazer.",
+    "content": {
+      "intro": "Mahjong Solitaire é o clássico puzzle individual de combinar peças de mahjong. Esvazie todo o layout emparelhando peças idênticas que estejam livres: nada em cima e pelo menos um lado aberto. Cada partida aqui é gerada resolvível, então sempre existe uma limpeza completa. Inclui duas formas clássicas — tartaruga e pirâmide — mais dicas, desfazer e reorganizar quando você se encurralar.",
+      "howToPlay": [
+        "Toque em duas peças com a mesma face para emparelhá-las. Uma peça só pode ser emparelhada quando está livre: nada em cima e aberta pelo menos de um lado na própria camada.",
+        "As peças cobrem as que estão logo abaixo, então limpe uma pilha de cima para baixo. A camada superior sempre está disponível; as inferiores abrem à medida que você avança.",
+        "Esvazie todas as peças para ganhar. A tartaruga espalha um casco largo; a pirâmide empilha cinco triângulos centrados que você descasca das bordas para o centro.",
+        "Cada partida é gerada resolvível, então sempre existe uma solução. Use dicas se estiver preso, desfaça um emparelhamento precipitado ou reorganize para redistribuir as peças restantes.",
+        "Não há temporizador nem pressão de pontuação — leve o tempo que quiser."
+      ],
+      "tips": [
+        "Trabalhe primeiro o exterior. Uma peça na borda externa de uma camada tem um lado aberto de graça, então limpar o perímetro abre o centro.",
+        "Antes de pegar um par óbvio, veja o que ele libera. Duas peças idênticas adjacentes são um emparelhamento fácil, mas removê-las pode ser a única forma de desbloquear uma pilha superior.",
+        "Aproveite os níveis da pirâmide: suas peças de borda são jogáveis desde o início, e o ápice só é alcançado ao chegar à sua camada.",
+        "Se ficar sem emparelhamentos, reorganize em vez de reiniciar — as peças restantes são redistribuídas em um novo arranjo resolvível."
+      ],
+      "features": [
+        "Solitário de mahjong em camadas com layouts tartaruga e pirâmide.",
+        "Cada partida é gerada de trás para frente e é resolvível — uma limpeza completa sempre é possível.",
+        "Regras de emparelhamento de peças livres com destaque visual de pares jogáveis.",
+        "Dicas, desfazer e reorganizar quando quiser uma segunda olhada sem reiniciar.",
+        "Desafio diário, níveis de campanha e modo relaxado sem temporizador."
+      ],
+      "supportedDevices": "Mahjong Solitaire Classic funciona no navegador no Windows, macOS, Linux, Android e iOS sem baixar. Computador e tablet mostram a disposição completa em camadas; os telefones rolam naturalmente pelas pilhas altas da tartaruga. Chrome, Safari, Firefox e Edge são suportados — o progresso de convidado salva localmente no seu dispositivo.",
+      "faq": [
+        {
+          "question": "Em que difere do Mahjong Connect?",
+          "answer": "O Connect dispõe as peças em plano e pede para unir pares correspondentes com um caminho. O solitário as empilha em camadas e você emparelha peças livres de um lado e sem nada em cima. Puzzle diferente, mesmas peças."
+        },
+        {
+          "question": "O que significa «livre» aqui?",
+          "answer": "Uma peça está livre quando nada repousa diretamente em cima e pelo menos um dos vizinhos esquerdo ou direito no mesmo nível está vazio. As peças da borda externa de uma camada estão sempre livres por fora."
+        },
+        {
+          "question": "Todas as partidas estão garantidas como resolvíveis?",
+          "answer": "Sim. As partidas são construídas de trás para frente — o jogo escolhe repetidamente duas peças livres, remove-as e registra o emparelhamento —, de modo que cada layout tem um caminho de solução conhecido que você pode encontrar com calma."
+        },
+        {
+          "question": "Há apostas com dinheiro real?",
+          "answer": "Não. É um puzzle puro, sem apostas, moeda comprável nem prêmios em dinheiro de nenhum tipo."
+        }
+      ]
+    }
+  },
+  "mahjong-connect": {
+    "title": "Mahjong Connect leve",
+    "description": "Emparelhe pares de peças de mahjong livres unidas por um caminho. Um jogo relaxante de eliminação estilo connect."
+  },
+  "mahjong-classic": {
+    "title": "Mahjong clássico",
+    "description": "O solitário de mahjong de sempre. Esvazie o tabuleiro emparelhando pares de peças abertas."
+  },
+  "mahjong-solitaire": {
+    "title": "Paciência de mahjong",
+    "description": "Um belo layout solitário de peças de mahjong. Emparelhe e limpe a torre no seu ritmo."
+  },
+  "mahjong-3d": {
+    "title": "Mahjong em 3D",
+    "description": "Uma versão tridimensional do emparelhamento de mahjong, com profundidade e uma paleta arco-íris serena."
+  },
+  "onet-connect-classic": {
+    "title": "Onet Connect clássico",
+    "description": "O clássico jogo de unir do Onet. Conecte peças idênticas com uma linha de no máximo duas viradas."
+  },
+  "bee-connect": {
+    "title": "Conecte abelhas",
+    "description": "Um connect com tema de abelhas. Una as pequenas peças e esvazie o tabuleiro de colmeia."
+  },
+  "aloha-mahjong": {
+    "title": "Mahjong Aloha",
+    "description": "Um giro tropical no emparelhamento de mahjong, com clima ensolarado e relaxado."
+  },
+  "8x8-match-tiles": {
+    "title": "Peças 8×8",
+    "description": "Um puzzle compacto 8×8 de emparelhar peças. Conecte iguais e persiga a pontuação alta."
+  },
+  "tile-guru": {
+    "title": "Guru das peças",
+    "description": "Um puzzle zen de emparelhar peças. Encontre e conecte peças iguais em um layout sossegado."
+  },
+  "tile-journey": {
+    "title": "Jornada das peças",
+    "description": "Uma jornada por níveis de emparelhar peças. Planeje suas conexões e esvazie cada tabuleiro."
+  }
+}
