@@ -7,14 +7,28 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { getBlogPosts } from '../data/blog';
 import type { BlogLocaleJson } from '../data/blog-i18n/types';
+import { CONTENT_LOCALES } from '../lib/locales';
 
-const LOCALES = ['zh', 'zh-TW', 'ja', 'ko'] as const;
+const LOCALES = CONTENT_LOCALES;
 
-function sectionShape(sections: { body: string[]; tiles?: unknown }[]) {
-  return sections.map((s) => ({
-    bodyLen: s.body.length,
-    hasTiles: Array.isArray(s.tiles) && s.tiles.length > 0
-  }));
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+/** Shape fingerprint that avoids `tiles?.length` on `unknown` under strict tsc. */
+function sectionShape(sections: unknown): string {
+  if (!Array.isArray(sections)) return '';
+  return sections
+    .map((section) => {
+      const record = asRecord(section);
+      const body = record && Array.isArray(record.body) ? record.body : [];
+      const tiles = record?.tiles;
+      const hasTiles = Array.isArray(tiles) && tiles.length > 0;
+      return `${body.length}:${hasTiles ? 1 : 0}`;
+    })
+    .join('|');
 }
 
 let failed = false;
@@ -38,7 +52,7 @@ for (const locale of LOCALES) {
       console.error(`[${locale}] ${post.slug}: faq count mismatch`);
       failed = true;
     }
-    if (sectionShape(entry.sections).join() !== sectionShape(post.sections).join()) {
+    if (sectionShape(entry.sections) !== sectionShape(post.sections)) {
       console.error(`[${locale}] ${post.slug}: section body/tiles shape mismatch`);
       failed = true;
     }

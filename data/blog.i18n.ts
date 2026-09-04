@@ -2,18 +2,31 @@
  * Blog locale overrides — loaded from JSON under data/blog-i18n/.
  *
  * English base: data/blog.ts + data/blog.cornerstone.ts
- * Other locales: edit data/blog-i18n/{zh,zh-TW,ja,ko}.json (one file per locale).
+ * Other locales: edit data/blog-i18n/{zh,zh-TW,ja,ko,es,fr,de,pt-BR}.json.
  * Each slug entry must include title, description, sections[], faq[] matching
  * the English section count and body paragraph counts.
  */
 import type { BlogFaq, BlogSection } from './blog';
+import de from './blog-i18n/de.json';
+import es from './blog-i18n/es.json';
+import fr from './blog-i18n/fr.json';
 import ja from './blog-i18n/ja.json';
 import ko from './blog-i18n/ko.json';
+import ptBR from './blog-i18n/pt-BR.json';
 import zh from './blog-i18n/zh.json';
 import zhTW from './blog-i18n/zh-TW.json';
 import type { BlogLocaleJson } from './blog-i18n/types';
 
-export type LocaleCode = 'en' | 'zh' | 'zh-TW' | 'ja' | 'ko';
+export type LocaleCode =
+  | 'en'
+  | 'zh'
+  | 'zh-TW'
+  | 'ja'
+  | 'ko'
+  | 'es'
+  | 'fr'
+  | 'de'
+  | 'pt-BR';
 
 export interface BlogI18n {
   title?: Partial<Record<LocaleCode, string>>;
@@ -26,13 +39,23 @@ const LOCALE_FILES: Record<Exclude<LocaleCode, 'en'>, BlogLocaleJson> = {
   zh: zh as BlogLocaleJson,
   'zh-TW': zhTW as BlogLocaleJson,
   ja: ja as BlogLocaleJson,
-  ko: ko as BlogLocaleJson
+  ko: ko as BlogLocaleJson,
+  es: es as BlogLocaleJson,
+  fr: fr as BlogLocaleJson,
+  de: de as BlogLocaleJson,
+  'pt-BR': ptBR as BlogLocaleJson
 };
 
-const LOCALES = ['zh', 'zh-TW', 'ja', 'ko'] as const satisfies readonly Exclude<
-  LocaleCode,
-  'en'
->[];
+const LOCALES = [
+  'zh',
+  'zh-TW',
+  'ja',
+  'ko',
+  'es',
+  'fr',
+  'de',
+  'pt-BR'
+] as const satisfies readonly Exclude<LocaleCode, 'en'>[];
 
 function buildBlogI18n(): Record<string, BlogI18n> {
   const slugs = Object.keys(LOCALE_FILES.zh);

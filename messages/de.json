@@ -9,7 +9,9 @@
     "wardrobe": "Designs",
     "about": "Über uns",
     "gameHall": "Game Hall",
-    "classic": "Mahjong 4 Player"
+    "classic": "Mahjong 4 Player",
+    "beginners": "Mahjong für Einsteiger",
+    "beginnersSubtitle": "Mahjong von Grund auf lernen — Regeln, Strategien und Guides in klarer Sprache."
   },
   "accessibility": {
     "highContrast": "Hohen Kontrast umschalten",
@@ -149,7 +151,12 @@
     "howToPlay": "So spielst du",
     "tips": "Strategietipps",
     "faq": "Häufige Fragen",
-    "savePointsPrompt": "Melden Sie sich per E-Mail an, um {n} Punkte zu speichern"
+    "savePointsPrompt": "Melden Sie sich per E-Mail an, um {n} Punkte zu speichern",
+    "minRead": "{n} Min. Lesezeit",
+    "playNow": "Jetzt spielen",
+    "beginnersCtaLead": "Bereit, es auszuprobieren?",
+    "beginnersCtaLink": "Eine echte Partie spielen",
+    "beginnersCtaTail": "gegen drei Computergegner."
   },
   "collection": {
     "title": "Mahjong-Entfernungssammlung",

@@ -1,14 +1,11 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import {
-  getMergedGames,
-  getMergedLocalizedGames
-} from '@/lib/games-db';
+import { getGames, getLocalizedGames } from '@/data/games';
 import GameCard from '@/components/GameCard';
 import HomeCategoryCards from '@/components/HomeCategoryCards';
 import { hubPageMeta } from '@/lib/hub-seo';
 
-export const revalidate = 86_400;
+export const dynamic = 'force-static';
 
 export async function generateMetadata({
   params
@@ -37,7 +34,7 @@ export default async function GamesHallPage({
   setRequestLocale(locale);
   const t = await getTranslations('nav');
   const th = await getTranslations('home');
-  const all = getMergedLocalizedGames(await getMergedGames(), locale);
+  const all = getLocalizedGames(getGames(), locale);
   const wall = all.filter((g) => g.gameType === 'iframe');
 
   return (

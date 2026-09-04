@@ -3,7 +3,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getBlogPosts, getLocalizedBlogPosts } from '@/data/blog';
 import { pageMeta } from '@/lib/seo';
-import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
+
+export const dynamic = 'force-static';
 
 export async function generateMetadata({
   params
@@ -12,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'nav' });
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
   return pageMeta({
     locale,
     path: '/games/beginners',

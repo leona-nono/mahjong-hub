@@ -1,6 +1,10 @@
 'use client';
 
-import { SessionProvider, useSession } from 'next-auth/react';
+import {
+  SessionProvider,
+  getSession,
+  useSession
+} from 'next-auth/react';
 import { useEffect, type ReactNode } from 'react';
 import { hasPendingCheckIn, setPendingCheckIn } from '@/lib/appearance';
 import { clearSessionUser, initAuth, syncSessionUser } from '@/lib/auth';
@@ -20,6 +24,34 @@ export interface EnabledAuthProviders {
   facebook: boolean;
   x: boolean;
   email: boolean;
+}
+
+function hasSessionCookie(): boolean {
+  if (typeof document === 'undefined') return false;
+  return /(?:^|;\s)(?:__Secure-)?(?:authjs|next-auth)\.session-token=/.test(
+    document.cookie
+  );
+}
+
+/**
+ * Skip the default SessionProvider mount fetch (every anonymous page view).
+ * Only probe /api/auth/session when a session cookie is already present.
+ */
+function SessionCookieBootstrap() {
+  const { update } = useSession();
+
+  useEffect(() => {
+    if (!hasSessionCookie()) return;
+    let cancelled = false;
+    void getSession().then((session) => {
+      if (!cancelled && session) void update(session);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [update]);
+
+  return null;
 }
 
 /** Mirrors Auth.js session into the client store and hydrates the points ledger. */
@@ -67,6 +99,7 @@ function Inner({
 
   return (
     <>
+      <SessionCookieBootstrap />
       <AuthSessionBridge />
       {children}
       <LoginModal enabledProviders={enabledProviders} />
@@ -82,7 +115,12 @@ export default function Providers({
   enabledProviders: EnabledAuthProviders;
 }) {
   return (
-    <SessionProvider refetchInterval={0} refetchOnWindowFocus={false}>
+    <SessionProvider
+      // Explicit null skips the automatic /api/auth/session fetch on mount.
+      session={null}
+      refetchInterval={0}
+      refetchOnWindowFocus={false}
+    >
       <Inner enabledProviders={enabledProviders}>{children}</Inner>
     </SessionProvider>
   );

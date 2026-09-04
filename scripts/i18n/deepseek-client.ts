@@ -121,7 +121,7 @@ export async function translateTree(
   keyHint = ''
 ): Promise<unknown> {
   if (typeof value === 'string') {
-    if (keyHint === 'href' || keyHint === 'suit' || value.startsWith('/')) {
+    if (keyHint === 'href' || keyHint === 'suit' || keyHint === 'wind' || keyHint === 'dragon' || keyHint === 'rank' || value.startsWith('/')) {
       return value;
     }
     // Keep pure separators / arrows

@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { clipSeo } from '@/lib/seo-templates';
-import { getSiteSettings } from '@/lib/site-settings';
+import { getPublicSiteSettings } from '@/lib/site-settings';
 
 /**
  * Locale-aware homepage title + description.
@@ -12,7 +12,7 @@ export async function homeSeo(locale: string): Promise<{
   description: string;
 }> {
   const t = await getTranslations({ locale, namespace: 'seo' });
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
 
   if (locale === 'en') {
     return {

@@ -1,21 +1,20 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
-  getMergedGames,
-  getMergedLocalizedGames
-} from '@/lib/games-db';
+  getGames,
+  getLocalizedGames
+} from '@/data/games';
 import GameCard from '@/components/GameCard';
 import HomeDailyChallenge from '@/components/HomeDailyChallenge';
 import HomeCategoryCards from '@/components/HomeCategoryCards';
 import HomeSeoBlock from '@/components/HomeSeoBlock';
 import { homeSeo } from '@/lib/home-seo';
 import { homeJsonLd } from '@/lib/home-jsonld';
-import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
 import { alternatesFor, socialShareMeta } from '@/lib/seo';
-import { utcDateString } from '@/lib/points-rules';
-import { dailyLevelId } from '@/lib/mahjong-solitaire/progress-rules';
 
-export const revalidate = 86_400;
+/** Pure SSG — no Prisma / ISR. Redeploy to refresh copy. */
+export const dynamic = 'force-static';
 
 export async function generateMetadata({
   params
@@ -23,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
   const home = await homeSeo(locale);
   return {
     title: { absolute: home.title },
@@ -48,11 +47,10 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const t = await getTranslations('home');
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
   const home = await homeSeo(locale);
-  const all = getMergedLocalizedGames(await getMergedGames(), locale);
+  const all = getLocalizedGames(getGames(), locale);
   const wall = all.filter((g) => g.gameType === 'iframe');
-  const todayLevel = dailyLevelId(utcDateString());
 
   const jsonLd = homeJsonLd({
     site,
@@ -67,7 +65,7 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <HomeDailyChallenge dailyLevelId={todayLevel} />
+      <HomeDailyChallenge />
 
       <HomeSeoBlock locale={locale} />
 

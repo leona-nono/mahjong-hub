@@ -1,0 +1,1154 @@
+{
+  "what-is-mahjong": {
+    "title": "Qu’est-ce que le mahjong ? Le guide complet pour débutants",
+    "description": "Le mahjong est un jeu de tuiles à quatre joueurs alliant habileté, stratégie et chance. Découvrez ce qu’est le mahjong, comment fonctionnent les tuiles, les principaux règlements dans le monde, et en quoi il diffère des jeux d’appariement en ligne.",
+    "sections": [
+      {
+        "heading": "Le mahjong est un jeu de tuiles à quatre joueurs",
+        "body": [
+          "Le mahjong (麻将) est un jeu de tuiles pour quatre joueurs qui mélange habileté, stratégie et un peu de chance. Chaque joueur commence avec treize tuiles et, à tour de rôle, pioche et défausse jusqu’à ce que quelqu’un complète une main gagnante — traditionnellement quatre combinaisons plus une paire.",
+          "Il est né en Chine au XIXe siècle, s’est répandu en Asie puis dans le monde, donnant naissance à des règlements régionaux distincts. Aujourd’hui, c’est l’un des jeux les plus pratiqués au monde, et il est entièrement gratuit en ligne sur des sites comme Mahjong Hub."
+        ]
+      },
+      {
+        "heading": "Les tuiles",
+        "body": [
+          "Un jeu standard de mahjong compte 144 tuiles : trois familles de tuiles numérotées, des tuiles d’honneur (vents et dragons), et des tuiles bonus (fleurs et saisons, utilisées dans certains règlements).",
+          "Les familles sont : caractères (万, dizaines), bambous (条) et cercles/points (筒), chacune numérotée de 1 à 9 avec quatre exemplaires de chaque tuile. Les honneurs sont les quatre vents (Est, Sud, Ouest, Nord) et les trois dragons (Rouge, Vert, Blanc)."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "L’objectif",
+        "body": [
+          "Le but est de constituer une main de quatre combinaisons et une paire. Une combinaison est soit un triplet (trois tuiles identiques), soit une suite (trois tuiles consécutives de la même famille). Une paire, ce sont deux tuiles identiques.",
+          "Selon le règlement, une main gagnante doit aussi atteindre un minimum de points (appelés faan, han ou points). C’est ce qui donne au mahjong sa profondeur : une main complète n’est pas toujours une main gagnante."
+        ]
+      },
+      {
+        "heading": "Les principales variantes",
+        "body": [
+          "Il existe de nombreuses façons de jouer au mahjong, et les règles varient selon les régions :",
+          "• Mahjong chinois (style Hong Kong) : le plus courant hors du Japon, avec un minimum de trois faan.",
+          "• Mahjong japonais Riichi : le règlement compétitif avec déclarations riichi, doras et un comptage strict.",
+          "• Chinois officiel (MCR) : le règlement de tournoi international avec un minimum de huit points.",
+          "• Mahjong américain : utilise des jokers, des fleurs et une carte de mains annuelle.",
+          "• Mahjong taïwanais : se joue avec seize tuiles au lieu de treize.",
+          "• Mahjong du Sichuan : variante rapide de « bataille sanglante » sans honneurs, avec poursuite du jeu après une victoire."
+        ]
+      },
+      {
+        "heading": "Mahjong solitaire vs mahjong à quatre joueurs",
+        "body": [
+          "De nombreux sites occidentaux appellent « mahjong » le puzzle solo d’appariement de tuiles — il s’agit en réalité du mahjong solitaire, un jeu complètement différent. Le solitaire demande d’associer des tuiles identiques dans une disposition en couches. Le vrai mahjong est un jeu compétitif avec pioche, défausse, annonces et comptage.",
+          "Les deux sont amusants et gratuits ici. Ce guide porte sur le jeu à quatre joueurs."
+        ]
+      },
+      {
+        "heading": "Le mahjong est-il un jeu d’argent ?",
+        "body": [
+          "Non. Le mahjong est un jeu d’habileté que l’on peut jouer pour le plaisir ou pour de l’argent, exactement comme le poker ou les échecs. Sur ce site, il est entièrement gratuit — pas de paris, pas de monnaie achetable, pas de gain en argent."
+        ]
+      },
+      {
+        "heading": "Comment commencer à jouer",
+        "body": [
+          "La meilleure façon d’apprendre, c’est de jouer. Commencez par notre table de mahjong Hong Kong (le règlement le plus facile pour débuter), ou lisez Comment jouer au mahjong pour un guide pas à pas. Une fois à l’aise, essayez le Riichi japonais ou le chinois officiel pour plus de profondeur."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Combien de tuiles y a-t-il dans un jeu de mahjong ?",
+        "answer": "Un jeu standard compte 144 tuiles : 108 tuiles numérotées (trois familles), 28 tuiles d’honneur (vents et dragons), et 8 tuiles bonus (fleurs et saisons). Certains règlements omettent les tuiles bonus."
+      },
+      {
+        "question": "Le mahjong est-il difficile à apprendre ?",
+        "answer": "Les règles de base sont simples : piocher une tuile, en défausser une, former quatre combinaisons et une paire. Le comptage prend un peu plus de temps, mais le règlement Hong Kong avec son minimum de trois faan est une entrée en douceur."
+      },
+      {
+        "question": "Faut-il de l’argent pour jouer au mahjong ?",
+        "answer": "Non. On peut jouer au mahjong pour le plaisir, sans argent. Nos tables sont entièrement gratuites et il n’y a aucun pari."
+      },
+      {
+        "question": "Puis-je jouer au mahjong seul ?",
+        "answer": "Le vrai mahjong demande quatre joueurs, mais en ligne vous pouvez affronter des adversaires ordinateur à tout moment. Le mahjong solitaire est un puzzle solo distinct si vous préférez jouer seul."
+      },
+      {
+        "question": "Quelle est la différence entre le mahjong et le mahjong solitaire ?",
+        "answer": "Le mahjong est un jeu compétitif à quatre joueurs avec pioche, défausse et comptage. Le mahjong solitaire est un puzzle solo où l’on associe des tuiles identiques dans une disposition en couches. Jeux différents, mêmes tuiles."
+      }
+    ]
+  },
+  "how-to-play-mahjong": {
+    "title": "Comment jouer au mahjong : guide pas à pas pour débutants",
+    "description": "Apprenez à jouer au mahjong depuis zéro : les tuiles, la construction du mur, la pioche et la défausse, les Pung et Chow, et comment déclarer une main gagnante — expliqué simplement avec des exemples.",
+    "sections": [
+      {
+        "heading": "Ce qu’il faut pour jouer",
+        "body": [
+          "Il faut quatre joueurs et un jeu de 144 tuiles. Chaque joueur s’assoit d’un côté de la table, appelé une place. Le donneur (Est) démarre la manche.",
+          "En ligne, l’ordinateur distribue, gère le mur et calcule les scores — vous n’avez qu’à vous concentrer sur la construction de votre main."
+        ]
+      },
+      {
+        "heading": "Construire le mur et distribuer",
+        "body": [
+          "Les tuiles sont mélangées face cachée et empilées par deux pour former un mur de 17 piles par côté. Chaque joueur construit un côté.",
+          "Le donneur lance les dés pour décider où casser le mur, puis chaque joueur reçoit 13 tuiles (le donneur en a 14 et défausse en premier). En ligne, tout cela se fait automatiquement."
+        ]
+      },
+      {
+        "heading": "Votre tour : piocher et défausser",
+        "body": [
+          "À votre tour, vous piochez une tuile du mur, regardez votre main, et défaussez une tuile face visible au centre. Vous gardez toujours treize tuiles en main.",
+          "Votre objectif pendant ce temps est de transformer votre main en quatre combinaisons plus une paire."
+        ]
+      },
+      {
+        "heading": "Annoncer les tuiles : Pung, Chow et Kong",
+        "body": [
+          "Quand un autre joueur défausse une tuile dont vous avez besoin, vous pouvez l’annoncer au lieu de piocher :",
+          "• Pung (碰) : prendre la défausse pour compléter un triplet de trois tuiles identiques.",
+          "• Chow (吃) : prendre la défausse pour compléter une suite (trois tuiles consécutives) — mais uniquement depuis le joueur à votre gauche.",
+          "• Kong (杠) : prendre la défausse pour compléter quatre tuiles identiques.",
+          "Annoncer ouvre votre main (exposée), ce qui peut réduire les figures auxquelles vous avez droit — n’annoncez donc que lorsque cela aide vraiment."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Gagner une main",
+        "body": [
+          "Une main gagnante, c’est quatre combinaisons plus une paire. Vous pouvez gagner par auto-pioche (tsumo) ou en prenant la défausse d’un autre joueur (ron).",
+          "La plupart des règlements exigent aussi un score minimum. Le style Hong Kong demande au moins trois faan, le chinois officiel huit points, et le Riichi japonais au moins un yaku. Nos tables indiquent votre distance à l’attente et expliquent comment chaque main gagnante a été marquée."
+        ]
+      },
+      {
+        "heading": "Les bases du comptage",
+        "body": [
+          "Les points viennent des figures construites dans votre main. Les plus courantes sont les couleurs unies (une seule famille), le tout-triplets, les combinaisons de dragons ou de vents, et la fameuse main à sept paires.",
+          "Les règlements valorisent les figures différemment. La règle la plus simple : plus votre main est structurée, plus elle vaut. Notre détail de score montre exactement d’où viennent vos points après chaque victoire."
+        ]
+      },
+      {
+        "heading": "Essayez maintenant",
+        "body": [
+          "Le moyen le plus rapide d’apprendre, c’est de jouer. Commencez par le mahjong Hong Kong — trois adversaires ordinateur, une aide d’attente optionnelle, et un détail de score complet sur chaque main."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Avec combien de tuiles commence-t-on ?",
+        "answer": "Chaque joueur commence avec 13 tuiles. Le donneur commence avec 14 et défausse en premier, ce qui ramène chaque main à 13 tuiles après la première défausse."
+      },
+      {
+        "question": "Quelle est la différence entre un Pung et un Kong ?",
+        "answer": "Un Pung, ce sont trois tuiles identiques ; un Kong, quatre tuiles identiques. Un Kong compte comme une combinaison plus une pioche supplémentaire depuis l’extrémité du mur."
+      },
+      {
+        "question": "Puis-je annoncer une défausse de n’importe quel joueur ?",
+        "answer": "Un Pung ou un Kong peut être pris sur la défausse de n’importe quel joueur. Un Chow (suite) ne peut être pris que sur le joueur à votre gauche, pour garder l’ordre des tours équitable."
+      },
+      {
+        "question": "Que signifie être « prêt » ou en tenpai ?",
+        "answer": "Vous êtes prêt (tenpai) lorsque votre main n’a besoin que d’une tuile de plus pour être complète. Être prêt signifie que vous pouvez gagner dès que la bonne tuile arrive."
+      },
+      {
+        "question": "Combien de points faut-il pour gagner ?",
+        "answer": "Cela dépend du règlement : Hong Kong demande trois faan, le Riichi japonais au moins un yaku, et le chinois officiel huit points. Nos tables rappellent le minimum et affichent le détail de votre score."
+      }
+    ]
+  },
+  "how-to-win-mahjong": {
+    "title": "Comment gagner au mahjong : stratégie pour nouveaux joueurs",
+    "description": "Stratégie mahjong concrète pour débutants : choisir tôt une direction de main, défausser les honneurs, lire la pile de défausse, éviter de trop annoncer, et atteindre l’attente plus vite. Battez plus souvent les bots avec ces conseils.",
+    "sections": [
+      {
+        "heading": "Choisissez une direction tôt",
+        "body": [
+          "Dans les premiers tours, regardez votre main et choisissez ce qu’elle veut devenir. Une main avec sept ou huit tuiles d’une même famille vise une couleur unie. Une main pleine de paires ou de triplets peut viser le tout-triplets. Une main sans aucun honneur est proche du tout-simples.",
+          "S’engager tôt transforme vos tuiles en plan plutôt qu’en défausses au hasard. C’est la plus grande différence entre les joueurs qui gagnent et ceux qui perdent."
+        ]
+      },
+      {
+        "heading": "Défaussez d’abord les honneurs isolés",
+        "body": [
+          "Les tuiles de vent et de dragon sont les plus difficiles à apparier. Un honneur isolé ne sert presque à rien pour une main de débutant : jetez-le tôt avant qu’il ne devienne un fardeau.",
+          "L’exception : si vous avez une paire ou un triplet d’un honneur utile (un dragon ou le vent de votre place), gardez-le — c’est une figure de score qui n’attend que d’arriver."
+        ]
+      },
+      {
+        "heading": "Lisez la pile de défausse",
+        "body": [
+          "Chaque défausse est une information. Si trois joueurs jettent des bambous, les bambous dont vous avez besoin sont probablement encore sûrs. Si tout le monde garde les caractères, ces tuiles sont thésaurisées et plus dures à obtenir.",
+          "Observer les défausses vous aide aussi à éviter de jeter une tuile qui compléterait la main d’un adversaire."
+        ]
+      },
+      {
+        "heading": "Ne trop annoncez pas",
+        "body": [
+          "Annoncer des tuiles ouvre votre main et ferme certaines figures de score. Dans la plupart des règlements, une main fermée vaut plus.",
+          "Une bonne règle pour débutants : n’annoncez que lorsque l’annonce vous place à une ou deux tuiles de l’attente. Sinon, continuez de piocher et gardez la main fermée."
+        ]
+      },
+      {
+        "heading": "Atteignez l’attente le plus vite possible",
+        "body": [
+          "Le joueur qui arrive en attente le premier gagne en général. Échangez les tuiles inutilisables contre celles qui pourraient servir, et gardez la forme de votre main flexible — une main qui peut gagner sur plusieurs tuiles différentes est plus forte qu’une main qui n’attend qu’une seule tuile.",
+          "Nos tables incluent une aide d’attente qui montre exactement à quelle distance vous êtes d’une main complète, ce qui vous entraîne à voir cette distance vous-même."
+        ]
+      },
+      {
+        "heading": "Connaissez les figures gagnantes courantes",
+        "body": [
+          "Ces figures apparaissent constamment et méritent d’être mémorisées :",
+          "• Tout-simples (断幺九) : pas de 1, de 9 ni d’honneurs. Accessible depuis presque n’importe quelle main.",
+          "• Couleur unie (清一色) : toutes les tuiles d’une seule famille. Vaut beaucoup de points.",
+          "• Tout-triplets (碰碰胡) : chaque combinaison est un triplet.",
+          "• Sept paires (七对子) : la forme gagnante alternative classique.",
+          "• Combinaisons de dragons (三元牌) : trois dragons marquent dans la plupart des règlements."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "white"
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          }
+        ]
+      },
+      {
+        "heading": "Jouez votre règlement, pas un jeu générique",
+        "body": [
+          "Hong Kong, Riichi et chinois officiel récompensent des choses différentes. Hong Kong valorise une main rapide et « bon marché » à trois faan. Le Riichi récompense les mains fermées et structurées, et offre le riichi lui-même. Le chinois officiel exige une vraie figure à huit points.",
+          "Choisissez un règlement et apprenez ses figures — passer trop tôt de l’un à l’autre est le moyen le plus rapide de se perdre."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Quel est le moyen le plus rapide d’atteindre le tenpai ?",
+        "answer": "Gardez votre main flexible et visez une figure fiable et bon marché. Le tout-simples est le plus rapide pour les débutants, car on peut le construire depuis presque n’importe quelle main de départ."
+      },
+      {
+        "question": "Dois-je annoncer des tuiles ou rester fermé ?",
+        "answer": "Pour les débutants, restez fermé sauf si une annonce vous met en attente. Les mains ouvertes marquent moins et donnent des informations."
+      },
+      {
+        "question": "Comment éviter de donner la tuile gagnante à un autre joueur ?",
+        "answer": "Regardez les défausses. En fin de main, évitez de jeter les tuiles que les autres joueurs ont collectées — surtout s’ils sont en attente."
+      },
+      {
+        "question": "Gagner, c’est de la chance ou de l’habileté ?",
+        "answer": "Une main isolée a sa part de chance, mais sur une session, l’habileté domine. La direction de main, la discipline de défausse et la connaissance des figures décident qui gagne le plus souvent."
+      },
+      {
+        "question": "Dans quel règlement de mahjong est-il le plus facile de gagner ?",
+        "answer": "Le mahjong Hong Kong a le minimum de score le plus bas (trois faan), donc c’est le plus indulgent pour les débutants. C’est le meilleur endroit pour apprendre les bons réflexes de victoire."
+      }
+    ]
+  },
+  "mahjong-rules-beginners-complete-guide": {
+    "title": "Règles du mahjong pour débutants : le guide complet",
+    "description": "Le guide complet et accessible des règles du mahjong. Apprenez les tuiles, le mur, les tours, les annonces, les mains gagnantes et le comptage — avec une comparaison des règlements en langage clair.",
+    "sections": [
+      {
+        "heading": "Les règles du mahjong en un paragraphe",
+        "body": [
+          "Quatre joueurs construisent des mains à partir de 144 tuiles. À chaque tour, vous piochez une tuile et en défaussez une, en cherchant à compléter quatre combinaisons plus une paire. Une combinaison est un triplet ou une suite. Quand votre main est complète et atteint le score minimum du règlement, vous déclarez la victoire. C’est tout le jeu — le reste n’est que du détail.",
+          "Ce guide détaille chaque élément de ce paragraphe pour qu’un joueur tout nouveau puisse s’asseoir et jouer."
+        ]
+      },
+      {
+        "heading": "Les tuiles",
+        "body": [
+          "Un jeu standard compte 144 tuiles : 108 tuiles numérotées, 28 honneurs et 8 tuiles bonus. Les tuiles numérotées viennent en trois familles — caractères (wàn), bambous (tiáo) et cercles (tóng) — chacune numérotée de 1 à 9 avec quatre exemplaires.",
+          "Les honneurs sont les quatre vents (Est, Sud, Ouest, Nord) et les trois dragons (Rouge, Vert, Blanc). Les tuiles bonus (fleurs et saisons) apparaissent dans certains règlements et donnent en général un petit bonus plutôt que de former des combinaisons."
+        ]
+      },
+      {
+        "heading": "Le mur et la distribution",
+        "body": [
+          "Toutes les tuiles sont mélangées face cachée et empilées en un mur de 17 piles par joueur. Le donneur (Est) lance deux dés pour choisir où casser le mur, puis distribue 13 tuiles à chaque joueur. Le donneur prend une 14e tuile et défausse en premier.",
+          "En ligne, le mur est construit et distribué automatiquement — vous ne gérez que votre main."
+        ]
+      },
+      {
+        "heading": "Votre tour",
+        "body": [
+          "À votre tour, piochez une tuile, étudiez votre main, et défaussez une tuile face visible. Vous tenez toujours 13 tuiles. La tuile défaussée reste au milieu pour que tout le monde la voie — et lise votre stratégie.",
+          "Le rythme pioche-et-défausse est le même dans tous les règlements, c’est pourquoi les compétences se transfèrent de l’un à l’autre."
+        ]
+      },
+      {
+        "heading": "Construire des combinaisons : Pung, Chow et Kong",
+        "body": [
+          "Quand un autre joueur défausse une tuile qui compléterait une combinaison dans votre main, vous pouvez l’annoncer au lieu de piocher :",
+          "• Pung — trois tuiles identiques. Annonçable depuis n’importe quel joueur.",
+          "• Chow — trois tuiles consécutives d’une même famille. Annonçable uniquement depuis le joueur à votre gauche.",
+          "• Kong — quatre tuiles identiques. L’annonce la plus puissante, qui vaut des tuiles bonus dans certains règlements.",
+          "Les annonces exposent votre main. Une main ouverte est plus faible dans la plupart des systèmes de score : les débutants devraient annoncer avec parcimonie."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Les mains gagnantes",
+        "body": [
+          "Une main gagnante, c’est quatre combinaisons plus une paire. Vous gagnez par auto-pioche (tsumo) ou en prenant la défausse d’un autre joueur (ron).",
+          "Les règlements exigent aussi un score minimum : trois faan en style Hong Kong, un yaku en Riichi japonais, huit points en chinois officiel. Une main complète sous le minimum n’est pas une main gagnante — vous continuez à l’améliorer."
+        ]
+      },
+      {
+        "heading": "Comparaison des principaux règlements",
+        "body": [
+          "• Mahjong Hong Kong — le point d’entrée le plus simple. Minimum de trois faan, comptage indulgent, le style le plus joué hors du Japon.",
+          "• Riichi japonais — standard compétitif. Les mains fermées et les déclarations riichi marquent plus ; exigences de yaku strictes.",
+          "• Chinois officiel (MCR) — règles de tournoi international. Un minimum de huit points exige une vraie structure de main.",
+          "• Américain / taïwanais / Sichuan — variantes régionales avec jokers, seize tuiles, ou sans honneurs du tout.",
+          "Commencez par Hong Kong. Quand vous gagnez de façon fiable, essayez le Riichi pour la profondeur ou le chinois officiel pour la structure."
+        ]
+      },
+      {
+        "heading": "Essayez gratuitement",
+        "body": [
+          "Lire les règles ne suffit pas — le moyen le plus rapide d’apprendre, c’est de jouer. Notre table Hong Kong vous fait jouer contre trois adversaires ordinateur avec une aide d’attente et un détail de score complet sur chaque main. C’est entièrement gratuit, dans votre navigateur, sans téléchargement."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Combien de temps faut-il pour apprendre les règles du mahjong ?",
+        "answer": "Vous pouvez apprendre le flux de base — piocher, défausser, former quatre combinaisons et une paire — en environ une heure. Le comptage et la stratégie prennent plus longtemps, mais le règlement Hong Kong est assez doux pour apprendre en jouant."
+      },
+      {
+        "question": "Faut-il être quatre pour jouer au mahjong ?",
+        "answer": "En personne, oui. En ligne, vous pouvez affronter des adversaires ordinateur à tout moment — nos tables placent toujours trois bots si vous jouez seul."
+      },
+      {
+        "question": "Quelle est la différence entre un Pung et un Chow ?",
+        "answer": "Un Pung, ce sont trois tuiles identiques et il peut être annoncé depuis n’importe quel joueur. Un Chow, ce sont trois tuiles consécutives d’une même famille et il ne peut être annoncé que depuis le joueur à votre gauche."
+      },
+      {
+        "question": "Est-il difficile de gagner au mahjong ?",
+        "answer": "Les règles sont simples ; bien gagner demande de la pratique. Choisir tôt une direction de main et ne pas trop annoncer sont les deux habitudes qui améliorent le plus vite les résultats."
+      }
+    ]
+  },
+  "mahjong-tiles-meaning-guide": {
+    "title": "Les tuiles de mahjong et leur signification : le guide complet",
+    "description": "Que signifient les tuiles de mahjong ? Un guide complet des 144 tuiles — familles, vents, dragons, fleurs et saisons — avec les symboles expliqués pour les débutants.",
+    "sections": [
+      {
+        "heading": "Les 144 tuiles en un coup d’œil",
+        "body": [
+          "Un jeu standard de mahjong contient 144 tuiles réparties en familles, honneurs et tuiles bonus. Chaque tuile apparaît quatre fois dans une famille (avec quelques exceptions pour fleurs et saisons), ce qui rend possibles les associations et les combinaisons.",
+          "Le tableau ci-dessous explique chaque groupe. Ensemble, ils donnent au jeu sa profondeur — vous suivez toujours ce qui est dans votre main, sur la table et encore dans le mur."
+        ]
+      },
+      {
+        "heading": "Les trois familles",
+        "body": [
+          "• Caractères (萬, wan) — la tuile montre un nombre de caractères chinois, de 1 à 9.",
+          "• Bambous (條, tiao) — la tuile montre d’un à neuf bâtons de bambou.",
+          "• Cercles (筒, tong) — la tuile montre d’une à neuf pièces ou points.",
+          "Chaque famille a quatre exemplaires de chaque numéro, soit 36 tuiles par famille et 108 tuiles numérotées au total. Une combinaison (suite) est trois numéros consécutifs dans la même famille : les familles comptent donc pour bien plus que l’apparence."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          }
+        ]
+      },
+      {
+        "heading": "Les vents",
+        "body": [
+          "Les quatre vents sont Est, Sud, Ouest et Nord. Ce sont des tuiles d’honneur — elles ne peuvent pas former de suites, seulement des triplets. Dans de nombreux règlements, un triplet de votre vent de place ou du vent de manche rapporte des points supplémentaires.",
+          "Le donneur est toujours Est, et les tours tournent par Sud, Ouest et Nord. Les tuiles de vent sont les seuls honneurs qui correspondent à quelque chose de visible à la table."
+        ]
+      },
+      {
+        "heading": "Les dragons",
+        "body": [
+          "Les trois dragons sont Rouge (中), Vert (發) et Blanc (白). Comme les vents, ils ne forment que des triplets, mais les triplets de dragons marquent dans presque tous les règlements — un triplet de dragon rouge est l’un des moyens les plus fiables d’atteindre un minimum de score.",
+          "Une main complète avec les trois triplets de dragons est une figure majeure dans la plupart des jeux."
+        ]
+      },
+      {
+        "heading": "Fleurs et saisons",
+        "body": [
+          "Les fleurs et saisons sont des tuiles bonus, utilisées dans certains règlements. Chaque joueur a une fleur et une saison ; piocher la sienne donne des points bonus et permet de piocher une tuile de remplacement depuis le mur.",
+          "Elles sont en général mises de côté immédiatement et ne font jamais partie d’une main gagnante."
+        ]
+      },
+      {
+        "heading": "Pourquoi la signification des tuiles compte",
+        "body": [
+          "Vous n’avez pas besoin de mémoriser les illustrations — les numéros et les familles portent toute l’information. Mais savoir ce que vaut chaque tuile (peut-elle faire une suite ? un triplet ? une figure de score ?) transforme la pioche au hasard en plan.",
+          "Une fois les tuiles familières, le reste du mahjong, c’est de la reconnaissance de figures et du timing."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Combien de tuiles de mahjong différentes y a-t-il ?",
+        "answer": "Il y a 34 tuiles distinctes (9 caractères, 9 bambous, 9 cercles, 4 vents, 3 dragons), et quatre exemplaires de la plupart, soit 144 tuiles. Les fleurs et saisons en ajoutent 8 dans les jeux qui les incluent."
+      },
+      {
+        "question": "Que représentent les trois familles ?",
+        "answer": "Caractères, bambous et cercles représentent différentes dénominations de monnaies dans l’origine historique chinoise du jeu. En jeu, ce ne sont que trois familles de 1 à 9."
+      },
+      {
+        "question": "Les honneurs peuvent-ils former des suites ?",
+        "answer": "Non. Les vents et dragons ne forment que des triplets, jamais des suites. C’est pourquoi les honneurs isolés sont en général défaussés tôt."
+      },
+      {
+        "question": "Quelle est la tuile la plus précieuse ?",
+        "answer": "Il n’y a pas une seule tuile la plus précieuse — la valeur dépend de votre main et du règlement. Les triplets de dragons, votre vent de place et les tuiles de famille rares comme le 1 et le 9 sont en général les plus utiles."
+      }
+    ]
+  },
+  "american-vs-chinese-mahjong": {
+    "title": "Mahjong américain vs chinois : les différences clés expliquées",
+    "description": "Le mahjong américain et le mahjong chinois sont des jeux très différents. Comparez jokers, cartes de mains, comptage et nombre de tuiles pour voir quel style vous convient.",
+    "sections": [
+      {
+        "heading": "Deux jeux qui partagent un nom",
+        "body": [
+          "Les deux jeux utilisent des tuiles de mahjong et se jouent à quatre, mais le mahjong américain et le chinois ont divergé dramatiquement après l’arrivée du mahjong en Occident dans les années 1920. Le jeu américain piloté par une carte ressemble davantage à une course de construction de main ; les styles chinois gardent la pureté pioche-et-défausse de l’original.",
+          "Voici ce qui diffère réellement, pour que vous choisissiez le style que vous aimerez."
+        ]
+      },
+      {
+        "heading": "La carte de mains vs les figures ouvertes",
+        "body": [
+          "La caractéristique du mahjong américain est la carte de mains annuelle, publiée chaque année par la National Mahjong League. Elle liste des dizaines de figures gagnantes exactes ; vous devez en construire une exactement pour gagner. Les figures changent chaque année, ce qui garde le jeu frais mais signifie que les règles ne sont pas toutes découvrables à partir des seules tuiles.",
+          "Le mahjong chinois utilise des figures de score fixes et universelles — couleurs unies, triplets, dragons — qui n’ont pas changé depuis un siècle. Les règles sont les mêmes que vous jouiez à Pékin ou en ligne."
+        ]
+      },
+      {
+        "heading": "Jokers et Charleston",
+        "body": [
+          "Le mahjong américain utilise des jokers qui peuvent remplacer n’importe quelle tuile, et un échange d’ouverture fixe appelé Charleston où les joueurs passent des tuiles à gauche, à droite et en face dans une séquence définie. Les deux ajoutent une phase d’échange qui n’existe pas en mahjong chinois.",
+          "Les styles chinois n’ont ni jokers ni passages — vous jouez strictement avec les tuiles qui vous sont distribuées."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          },
+          {
+            "suit": "wind",
+            "wind": "north"
+          }
+        ]
+      },
+      {
+        "heading": "Tuiles, tours et annonces",
+        "body": [
+          "Le mahjong américain inclut fleurs et saisons et a ses propres règles d’annonce. Le mahjong chinois (et ses variantes régionales) garde les annonces classiques Pung / Chow / Kong et la structure de tour pioche-défausse.",
+          "Le Riichi japonais et le chinois officiel ajoutent leurs propres particularités — déclarations riichi, minimum de huit points — mais ils appartiennent clairement à la même famille que le jeu chinois d’origine."
+        ]
+      },
+      {
+        "heading": "Lequel jouer ?",
+        "body": [
+          "Si vous voulez un jeu avec échanges, jokers et une méta annuelle, le mahjong américain est un excellent loisir social. Si vous voulez le jeu compétitif classique qui se transfère entre pays et tournois, le mahjong chinois — d’abord le style Hong Kong, puis Riichi ou chinois officiel — est le meilleur chemin.",
+          "Vous pouvez jouer au mahjong chinois en ligne gratuitement dès maintenant, et cela vous enseignera le jeu que le reste du monde pratique."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Le mahjong américain et chinois se jouent-ils avec les mêmes tuiles ?",
+        "answer": "Le jeu de tuiles est globalement le même, mais le mahjong américain s’appuie sur des jokers et la carte de mains annuelle, que le mahjong chinois n’utilise pas. Le déroulement du jeu diffère plus que les tuiles."
+      },
+      {
+        "question": "Lequel est plus facile à apprendre, américain ou chinois ?",
+        "answer": "Le mahjong chinois a des règles plus découvrables car les figures sont fixes et universelles. Le mahjong américain demande d’apprendre la carte de mains annuelle, qui change chaque année."
+      },
+      {
+        "question": "Faut-il la carte de mains annuelle pour jouer au mahjong américain ?",
+        "answer": "Oui — la carte définit les figures gagnantes de l’année. Sans elle, vous ne pouvez pas déclarer une victoire valide sous les règles américaines."
+      },
+      {
+        "question": "Puis-je jouer au mahjong chinois en ligne gratuitement ?",
+        "answer": "Oui. Notre table de mahjong Hong Kong est gratuite, dans le navigateur, et enseigne le jeu classique pioche-et-défausse contre des adversaires ordinateur."
+      }
+    ]
+  },
+  "how-to-play-mahjong-online": {
+    "title": "Comment jouer au mahjong en ligne : gratuit dans votre navigateur",
+    "description": "Jouez au mahjong en ligne gratuitement — sans téléchargement, sans installation. Apprenez où jouer, comment fonctionnent les règles en ligne, et l’étiquette face aux bots et aux inconnus.",
+    "sections": [
+      {
+        "heading": "Pourquoi jouer au mahjong en ligne",
+        "body": [
+          "Le mahjong en ligne retire la partie la plus dure du jeu pour les débutants : l’administration. L’ordinateur construit le mur, distribue les tuiles, gère les annonces et calcule les scores. Vous vous concentrez entièrement sur votre main.",
+          "C’est aussi le seul moyen pour la plupart des gens de jouer quand ils veulent — sans devoir réunir trois amis autour d’une table."
+        ]
+      },
+      {
+        "heading": "Ce dont vous avez besoin",
+        "body": [
+          "Juste un navigateur et une connexion internet. Rien à installer sur ordinateur ou mobile. Nos tables tournent dans le navigateur sur tout appareil moderne et fonctionnent au tactile ou à la souris.",
+          "Aucun compte n’est nécessaire pour commencer, et chaque partie est entièrement gratuite — pas de paris ni de monnaie achetable."
+        ]
+      },
+      {
+        "heading": "Comment fonctionne une partie en ligne",
+        "body": [
+          "Vous rejoignez une table et le jeu vous distribue 13 tuiles. À votre tour, vous cliquez pour piocher, puis cliquez une tuile pour défausser. Le jeu met en évidence les tuiles que vous pouvez annoncer et indique quand votre main peut gagner.",
+          "Une aide d’attente optionnelle montre à quelle distance votre main est d’une forme complète — l’outil le plus utile pour apprendre."
+        ],
+        "tiles": [
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          }
+        ]
+      },
+      {
+        "heading": "Bots vs adversaires humains",
+        "body": [
+          "Jouer contre des adversaires ordinateur est idéal pour apprendre : les bots jouent à un rythme régulier, ne stagnent jamais, et ne s’impatientent pas pendant que vous réfléchissez. Nos tables placent toujours trois bots, pour que vous puissiez jouer seul à tout moment.",
+          "Quand vous êtes prêt pour des adversaires humains, les mêmes compétences s’appliquent — les règles en ligne sont les mêmes qu’à la table."
+        ]
+      },
+      {
+        "heading": "Étiquette du mahjong en ligne",
+        "body": [
+          "Jouez votre tour rapidement. N’annoncez que lorsque vous voulez vraiment la tuile. Ne pressez pas les autres. Et en partie détendue, rappelez-vous que le but est le plaisir — personne ne gagne toutes les mains.",
+          "La règle qui compte le plus en ligne : restez engagé. Une table qui stagne est la seule vraie nuisance."
+        ]
+      },
+      {
+        "heading": "Commencez à jouer maintenant",
+        "body": [
+          "Prêt à essayer ? Notre table de mahjong Hong Kong vous fait jouer contre trois bots avec le comptage expliqué sur chaque main. C’est gratuit, instantané, et le moyen le plus rapide de passer des règles aux vraies parties."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Le mahjong en ligne est-il gratuit ?",
+        "answer": "Sur notre site, oui — entièrement gratuit, sans compte, sans paris, rien à télécharger. Vous pouvez jouer dans votre navigateur sur ordinateur ou mobile."
+      },
+      {
+        "question": "Faut-il connaître les règles avant de jouer en ligne ?",
+        "answer": "Connaître les bases aide, mais les tables en ligne gèrent les annonces et le comptage automatiquement. Vous pouvez apprendre en jouant, guidé par l’aide d’attente."
+      },
+      {
+        "question": "Puis-je jouer au mahjong en ligne seul ?",
+        "answer": "Oui. Nos tables placent toujours trois adversaires ordinateur, pour que vous puissiez jouer une partie complète à quatre tout seul à tout moment."
+      },
+      {
+        "question": "Jouer au mahjong en ligne, c’est la même chose qu’en personne ?",
+        "answer": "Les règles sont identiques. La seule différence, c’est que l’ordinateur gère la distribution, les annonces et le comptage — ce qui facilite en fait la concentration sur la stratégie."
+      }
+    ]
+  },
+  "best-mahjong-sets-for-beginners": {
+    "title": "Les meilleurs jeux de mahjong pour débutants en 2026",
+    "description": "Que chercher dans un premier jeu de mahjong : taille des tuiles, matériau, étuis de voyage et bons accessoires. Conseils d’achat pratiques pour commencer avec les bonnes tuiles.",
+    "sections": [
+      {
+        "heading": "Que chercher",
+        "body": [
+          "Un bon jeu pour débutants a besoin de trois choses : des tuiles lisibles, un total complet de 144 tuiles, et un étui qui survit aux parties. Tout le reste est une préférence.",
+          "La taille des tuiles compte le plus. Les tuiles standard mesurent 28–34 mm de face. Les plus grandes sont plus faciles à lire et à saisir, et valent l’espace de table supplémentaire si vous jouez occasionnellement."
+        ]
+      },
+      {
+        "heading": "Matériau des tuiles : bakélite, résine et plus",
+        "body": [
+          "Les jeux classiques sont en os-et-bambou, mais les jeux modernes utilisent résine, plastique ou mélamine. Les tuiles en résine de bonne qualité ont des faces peintes nettes qui ne s’effacent pas. Les tuiles en plastique bon marché peuvent s’ébrécher aux coins et se décolorer.",
+          "Pour un premier jeu, choisissez des tuiles en résine ou mélamine de couleur unie avec un dos givré — elles se mélangent bien et durent des années."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "heading": "Nombre et taille des tuiles",
+        "body": [
+          "Assurez-vous que le jeu a 144 tuiles. De nombreux jeux modernes incluent fleurs et saisons (8 tuiles bonus) en plus des 136 tuiles de base. Si vous prévoyez de jouer au mahjong américain, il vous faut aussi des jokers.",
+          "Un jeu de 144 tuiles couvre Hong Kong, Riichi et chinois officiel. Un jeu de 152 tuiles ajoute fleurs et saisons si votre règlement les utilise."
+        ]
+      },
+      {
+        "heading": "Étuis de voyage et de rangement",
+        "body": [
+          "Un étui ou un sac rigide protège les tuiles et garde la table rangée entre les parties. Cherchez un étui avec un séparateur pour chaque type de tuile — cela accélère dramatiquement la mise en place de la partie suivante.",
+          "Un tapis de jeu pliable est un accessoire intéressant : il empêche les tuiles de glisser et protège la surface de la table."
+        ]
+      },
+      {
+        "heading": "Accessoires recommandés",
+        "body": [
+          "Un gobelet à dés, des bâtonnets de score ou un carnet de score, et un poussoir de tuiles (rack) sont les extras habituels. Pour les débutants, les bâtonnets de score sont le moyen le plus clair de suivre les victoires.",
+          "Certains jeux incluent deux racks par joueur — pratique pour les débutants qui aiment ranger leur main."
+        ]
+      },
+      {
+        "heading": "Essayez avant d’acheter",
+        "body": [
+          "Pas encore sûr qu’un jeu physique soit fait pour vous ? Vous pouvez apprendre le jeu gratuitement en ligne contre des adversaires ordinateur — y compris le même règlement Hong Kong pour lequel la plupart des jeux physiques sont conçus — et acheter un jeu une fois accroché."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Combien de tuiles un jeu de mahjong pour débutant doit-il avoir ?",
+        "answer": "Achetez un jeu de 144 tuiles. Il couvre tous les styles standard, et la structure quatre-de-chaque-tuile est ce qui fait fonctionner le jeu."
+      },
+      {
+        "question": "Quelle est la meilleure taille de tuile pour débutants ?",
+        "answer": "Les tuiles de 34 mm sont les plus confortables pour les joueurs occasionnels. Elles sont plus grandes et plus faciles à lire que les tuiles de tournoi de 28 mm."
+      },
+      {
+        "question": "Les jeux de mahjong chers en valent-ils la peine ?",
+        "answer": "Pour un premier jeu, non. Un jeu en résine de milieu de gamme avec des faces nettes suffit. Améliorez une fois que vous savez que vous jouez souvent."
+      },
+      {
+        "question": "Ai-je besoin des fleurs et saisons ?",
+        "answer": "Seulement si votre règlement les utilise. Hong Kong et Riichi n’exigent pas les fleurs ; le chinois officiel et certaines variantes oui. Un jeu de 144 tuiles avec fleurs couvre le plus de terrain."
+      }
+    ]
+  },
+  "mahjong-scoring-system-explained": {
+    "title": "Système de score du mahjong expliqué : faan, han et points",
+    "description": "Comment fonctionne le comptage du mahjong selon les règlements : faan à Hong Kong, han en Riichi, points en chinois officiel. Les figures courantes et comment compter votre main.",
+    "sections": [
+      {
+        "heading": "Chaque règlement a un minimum",
+        "body": [
+          "Dans chaque règlement de mahjong, une main gagnante doit atteindre un score minimum avant de pouvoir être déclarée. Les noms diffèrent — faan à Hong Kong, han en Riichi, points en chinois officiel — mais l’idée est la même : une main doit contenir assez de structure pour compter comme une victoire.",
+          "Ce minimum empêche chaque main de devenir une course ennuyeuse vers la première forme complète."
+        ]
+      },
+      {
+        "heading": "La forme gagnante de base",
+        "body": [
+          "La base est toujours quatre combinaisons plus une paire. Les combinaisons peuvent être des triplets ou des suites. Par-dessus cette base, les figures ajoutent de la valeur :",
+          "• Couleur unie — toutes les tuiles d’une seule famille.",
+          "• Tout-triplets — chaque combinaison est un triplet.",
+          "• Tout-simples — pas de 1, de 9 ni d’honneurs.",
+          "• Triplets de dragons — trois dragons dans une main.",
+          "• Sept paires — une forme gagnante alternative dans la plupart des règlements."
+        ]
+      },
+      {
+        "heading": "Les faan Hong Kong",
+        "body": [
+          "Le style Hong Kong exige un minimum de trois faan. Figures courantes et leur valeur : une main couleur pure (3), tout-triplets (3), tout-simples (1), un triplet de dragon (1–3). Les mains se cumulent — une couleur unie avec un triplet de dragon vaut plus que l’une ou l’autre seule.",
+          "La table de score récompense les mains nettes et délibérées. Les mains bon marché sont fiables mais lentes ; les mains ambitieuses marquent gros mais se forment rarement."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          }
+        ]
+      },
+      {
+        "heading": "Han japonais et Riichi",
+        "body": [
+          "Le comptage Riichi ajoute des yaku (figures fixes) par-dessus les han. Le riichi lui-même est un yaku — le déclarer en tenpai ajoute un han et est la signature du règlement. Les mains fermées marquent bien plus, ce qui récompense la patience.",
+          "La position d’attente (tenpai) compte aussi en Riichi : vous pouvez déclarer riichi, ou rester silencieux et marquer autrement. Comprendre les han est la clé du choix."
+        ]
+      },
+      {
+        "heading": "Points du chinois officiel (MCR)",
+        "body": [
+          "Le chinois officiel utilise un minimum de huit points avec un vaste catalogue de figures valant de 1 à 88 points. Les mains couleur unie, tout-triplets et les figures les plus rares s’accumulent vite.",
+          "Le minimum élevé force une vraie structure — une main à sept paires ou une couleur unie est en général nécessaire, c’est pourquoi les joueurs MCR planifient leur main dès les premières tuiles."
+        ]
+      },
+      {
+        "heading": "Laissez la table compter pour vous",
+        "body": [
+          "Quand vous jouez en ligne, la table calcule votre score et explique exactement d’où vient chaque point après chaque victoire. C’est le moyen le plus rapide d’apprendre la table de score — vous voyez les figures que vous avez construites et ce qu’elles ont rapporté, main après main."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Quelle est la différence entre faan, han et points ?",
+        "answer": "C’est la même idée sous des noms différents : un score attaché aux figures d’une main gagnante. Hong Kong utilise les faan, Riichi les han, le chinois officiel les points."
+      },
+      {
+        "question": "Combien de points faut-il pour gagner au mahjong ?",
+        "answer": "Hong Kong demande trois faan, le Riichi japonais au moins un yaku, et le chinois officiel huit points. Chaque règlement définit son propre minimum."
+      },
+      {
+        "question": "Quel est le moyen le plus facile d’apprendre le comptage du mahjong ?",
+        "answer": "Jouez en ligne où la table calcule et explique chaque score. Voir le détail après chaque victoire enseigne les figures bien plus vite que mémoriser une table."
+      },
+      {
+        "question": "Quelles figures marquent le plus ?",
+        "answer": "Les mains rares et structurées marquent le plus : mains couleur pure (unie), tout-triplets, et formes spéciales comme sept paires ou treize orphelins sont parmi les figures de plus haute valeur."
+      }
+    ]
+  },
+  "types-of-mahjong-games": {
+    "title": "Types de jeux de mahjong : chaque style expliqué",
+    "description": "De Hong Kong et Riichi à l’américain, taïwanais et Sichuan — comparez les principaux types de jeux de mahjong et trouvez le style qui vous convient.",
+    "sections": [
+      {
+        "heading": "Un nom, beaucoup de jeux",
+        "body": [
+          "Le mahjong s’est divisé en jeux régionaux distincts en se répandant depuis la Chine. Ils partagent les tuiles et le cœur pioche-et-défausse, mais le comptage, les annonces et même le nombre de tuiles diffèrent. Choisir un style est un vrai choix — voici la carte."
+        ]
+      },
+      {
+        "heading": "Mahjong Hong Kong",
+        "body": [
+          "Le style le plus joué hors du Japon et le meilleur point d’entrée pour débutants. Minimum de trois faan, comptage simple, parties rapides. Si vous ne voulez apprendre qu’un style d’abord, que ce soit celui-ci."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "Mahjong japonais Riichi",
+        "body": [
+          "Le standard compétitif. Déclarations riichi, yaku stricts, bonus de main fermée et cinq rouges. Plus profond et plus lent que le style Hong Kong — les échecs du mahjong, qui récompensent l’étude et la patience."
+        ]
+      },
+      {
+        "heading": "Chinois officiel (MCR)",
+        "body": [
+          "Le règlement de tournoi international avec un minimum de huit points et un énorme catalogue de figures. Exigeant et structuré ; une main doit mériter sa victoire. Populaire dans les communautés sinophones et les compétitions."
+        ]
+      },
+      {
+        "heading": "Mahjong américain",
+        "body": [
+          "Utilise des jokers, des fleurs, le passage Charleston et une carte de mains annuelle publiée par la National Mahjong League. Social et piloté par la carte — les règles changent chaque année. Une expérience très différente des styles asiatiques."
+        ]
+      },
+      {
+        "heading": "Mahjong taïwanais",
+        "body": [
+          "Se joue avec seize tuiles au lieu de treize, donc vous construisez cinq combinaisons et une paire. Le remplacement des fleurs et le comptage basé sur les tài ajoutent une profondeur inhabituelle. Une bonne étape suivante après avoir maîtrisé le jeu à treize tuiles."
+        ]
+      },
+      {
+        "heading": "Mahjong du Sichuan",
+        "body": [
+          "Une variante rapide de « bataille sanglante » sans honneurs, avec une famille obligatoirement à écarter, et poursuite du jeu après chaque victoire. Les parties sont rapides et agressives — idéal pour les joueurs occasionnels qui aiment le rythme."
+        ]
+      },
+      {
+        "heading": "Mahjong solitaire",
+        "body": [
+          "Pas du mahjong du tout — un puzzle solo d’appariement de tuiles où l’on vide une disposition en couches en associant des tuiles identiques. Excellent pour se détendre, mais ne partage rien avec le jeu à quatre joueurs sauf les tuiles."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Quel est le type de mahjong le plus populaire ?",
+        "answer": "Le style Hong Kong est le plus joué hors du Japon, et le Riichi japonais domine le jeu compétitif. En Chine, le Sichuan et le chinois officiel sont populaires."
+      },
+      {
+        "question": "Quel style de mahjong est le plus facile pour débutants ?",
+        "answer": "Le mahjong Hong Kong. Son minimum de trois faan et son comptage indulgent en font le point d’entrée le plus doux avant de passer au Riichi ou au chinois officiel."
+      },
+      {
+        "question": "Toutes les variantes de mahjong se jouent-elles à quatre ?",
+        "answer": "Oui, le jeu à quatre joueurs est le standard. Le mahjong solitaire est l’exception — c’est un puzzle solo, pas une variante de mahjong."
+      },
+      {
+        "question": "Faut-il des tuiles différentes pour différents types de mahjong ?",
+        "answer": "Un jeu standard de 144 tuiles couvre Hong Kong, Riichi et chinois officiel. Le mahjong américain a besoin de jokers ; le taïwanais et le Sichuan ont leurs propres conventions."
+      }
+    ]
+  },
+  "mahjong-etiquette-tips": {
+    "title": "Étiquette du mahjong : les règles non écrites de la table",
+    "description": "Apprenez l’étiquette du mahjong — comment manipuler les tuiles, quand annoncer, lire le flux, et les règles sociales qui gardent la table amicale.",
+    "sections": [
+      {
+        "heading": "L’étiquette, c’est ce qui rend le jeu jouable",
+        "body": [
+          "Le mahjong est un jeu social. Les règles non écrites existent pour que tout le monde puisse lire la table, réfléchir en paix et profiter de la session. La plupart sont simples : respectez l’ordre des tours, gardez vos tuiles pour vous, et ne pressez jamais un autre joueur."
+        ]
+      },
+      {
+        "heading": "Manipulez les tuiles avec soin",
+        "body": [
+          "Piochez et défaussez une tuile à la fois. Ne balayez pas les tuiles sur la table, et ne réarrangez jamais les défausses d’un autre joueur. En ligne, cela se traduit par : jouez votre tour sans faire traîner la partie — un joueur lent mais régulier vaut mieux qu’un joueur rapide et négligent."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "heading": "Annoncez avec conviction, pas par habitude",
+        "body": [
+          "Annoncer une tuile révèle votre main à la table. L’étiquette (et la bonne stratégie) dit de n’annoncer que lorsque la tuile aide vraiment. Annoncer et défausser sans cesse des tuiles faibles se lit comme de l’inexpérience et donne à la table des informations gratuites."
+        ]
+      },
+      {
+        "heading": "Lisez le flux, pas seulement les tuiles",
+        "body": [
+          "Observez le rythme des défausses. Un joueur qui pause avant de défausser décide — en général près d’une victoire. Respectez la tension d’une fin de partie et réfléchissez avant de jeter une tuile dangereuse."
+        ]
+      },
+      {
+        "heading": "Gagner et perdre avec élégance",
+        "body": [
+          "Victoires et défaites font partie d’une session. Remerciez le joueur qui donne une tuile gagnante, et ne vous attardez pas sur un mauvais coup. En partie amicale, le but est la session, pas le score."
+        ]
+      },
+      {
+        "heading": "Étiquette en ligne",
+        "body": [
+          "En ligne, les mêmes règles s’appliquent : jouez vos tours rapidement, jouez honnêtement, et rappelez-vous que les bots sont patients mais pas les humains. Nos tables ne stagnent jamais et ne jugent jamais votre rythme — l’endroit idéal pour apprendre de bonnes habitudes."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Puis-je regarder les défausses des autres joueurs ?",
+        "answer": "Oui — la pile de défausse est une information publique dans tous les règlements. La lire n’est pas seulement autorisé, c’est attendu."
+      },
+      {
+        "question": "Est-ce impoli de prendre du temps à mon tour ?",
+        "answer": "Une pause raisonnable va bien, surtout en fin de main. Le problème d’étiquette, c’est de stagner ou de presser. La plupart des tables détendues sont détendues sur le rythme."
+      },
+      {
+        "question": "Dois-je annoncer mes appels à voix haute ?",
+        "answer": "Oui — annoncez clairement Pung, Chow ou Kong pour que la table puisse réagir. Les tables en ligne le font automatiquement pour vous."
+      },
+      {
+        "question": "Quelle est la règle d’étiquette la plus importante ?",
+        "answer": "Respectez le flux du jeu : jouez les tours dans l’ordre, gardez les défausses propres, et n’exposez jamais les tuiles d’un autre joueur ni les vôtres avant la fin de la main."
+      }
+    ]
+  },
+  "where-to-buy-mahjong-set": {
+    "title": "Où acheter un jeu de mahjong en ligne",
+    "description": "Où acheter un jeu de mahjong en ligne : ce que proposent les boutiques, comment vérifier la qualité, les gammes de prix, et quoi éviter pour votre premier jeu.",
+    "sections": [
+      {
+        "heading": "Ce que vous achetez vraiment",
+        "body": [
+          "Un jeu de mahjong, c’est des tuiles plus un étui. Au sein de cela, la qualité varie énormément — un jeu de 144 tuiles en résine peut coûter aussi peu que ¥100 ou jusqu’à ¥1 500+ pour un artisanat os-et-bambou. Pour votre premier jeu, le juste milieu est un jeu bien fait en résine ou mélamine."
+        ]
+      },
+      {
+        "heading": "Places de marché en ligne",
+        "body": [
+          "Les grandes places de marché en ligne proposent toutes des jeux de mahjong : places générales pour budget et milieu de gamme, et boutiques spécialisées pour les tuiles premium faites main. Filtrez par « 144 tuiles » et lisez les avis qui mentionnent la taille des tuiles et la qualité de la peinture.",
+          "Cherchez les annonces qui indiquent explicitement le nombre de tuiles. Beaucoup d’annonces budget vendent des jeux de 108 tuiles ou incomplets sans le dire."
+        ]
+      },
+      {
+        "heading": "Que vérifier dans les avis",
+        "body": [
+          "• L’étui tient-il les tuiles solidement ?",
+          "• Les faces sont-elles peintes ou imprimées ? Les faces imprimées peuvent s’effacer.",
+          "• La taille des tuiles est-elle indiquée et confortable ?",
+          "• Les dos correspondent-ils exactement ? Des dos dépareillés sont un défaut courant des jeux bon marché.",
+          "Les avis qui mentionnent ces quatre points sont ceux à croire."
+        ]
+      },
+      {
+        "heading": "Gammes de prix",
+        "body": [
+          "• ¥100–¥300 — jeux en plastique ou résine légère utilisables. Bien pour le jeu occasionnel.",
+          "• ¥300–¥800 — résine solide avec faces nettes et bon étui. Le juste milieu pour débutants.",
+          "• ¥800+ — jeux premium et vintage. Ne vaut le coup que si vous savez que vous jouez souvent.",
+          "Dépensez au milieu de gamme pour votre premier jeu et vous ne le regretterez pas."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          }
+        ]
+      },
+      {
+        "heading": "Essayez le jeu avant de vous engager",
+        "body": [
+          "Un jeu de mahjong est un achat que vous garderez des années — mais seulement si vous aimez le jeu. Jouez d’abord quelques mains gratuites en ligne, voyez si le rythme vous plaît, puis investissez dans des tuiles. Si vous décidez que vous adorez ça, la recommandation de jeu en ligne reste le bon point de départ."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Combien dépenser pour un premier jeu de mahjong ?",
+        "answer": "Prévoyez ¥300–¥800 pour un jeu en résine solide avec un bon étui. Les jeux budget sous ¥300 ont souvent des tuiles fines ou des faces imprimées qui s’usent vite."
+      },
+      {
+        "question": "Quel est un prix juste pour un jeu de mahjong de 144 tuiles ?",
+        "answer": "Un jeu fiable de 144 tuiles en résine avec étui coûte en général ¥300–¥600 sur les grandes places de marché. Les jeux premium os-et-bambou coûtent plusieurs fois plus."
+      },
+      {
+        "question": "Les jeux de mahjong bon marché valent-ils l’achat ?",
+        "answer": "Pour un jeu occasionnel, un jeu budget suffit. Vérifiez juste qu’il a 144 tuiles et consultez les avis pour les plaintes sur la peinture et l’appariement des dos."
+      },
+      {
+        "question": "Dois-je acheter un jeu de mahjong avant d’apprendre à jouer ?",
+        "answer": "Pas forcément. Vous pouvez apprendre le jeu gratuitement en ligne d’abord et acheter un jeu une fois sûr de l’aimer — alors l’achat est un investissement, pas un pari."
+      }
+    ]
+  },
+  "mahjong-history-cultural-guide": {
+    "title": "L’histoire du mahjong : de la Chine des Qing au monde entier",
+    "description": "L’histoire fascinante du mahjong — ses origines dans la Chine du XIXe siècle, la folie occidentale des années 1920, sa réinvention au Japon et en Amérique, et où il en est aujourd’hui.",
+    "sections": [
+      {
+        "heading": "Origines dans la Chine des Qing",
+        "body": [
+          "Le mahjong est apparu en Chine au milieu du XIXe siècle, très probablement autour de Shanghai ou Ningbo. Il a emprunté la logique des jeux de cartes chinois antérieurs et l’a traduite en tuiles — un format qui lui a permis de survivre à l’interdiction de nombreux jeux d’argent.",
+          "Dans les années 1890, il était un pilier des maisons de thé de Shanghai, se répandant vers l’extérieur le long des routes commerciales."
+        ]
+      },
+      {
+        "heading": "La folie occidentale des années 1920",
+        "body": [
+          "Le mahjong a atteint les États-Unis au début des années 1920 et est devenu un véritable phénomène social — la « folie du mahjong ». Des centaines de milliers de jeux ont été vendus, et les joueurs américains ont rapidement inventé leurs propres conventions, dont le Charleston et plus tard la carte de mains annuelle.",
+          "Le jeu chinois a aussi voyagé au Japon, où il a été affiné en le règlement Riichi qui domine aujourd’hui le jeu compétitif."
+        ]
+      },
+      {
+        "heading": "Réinvention régionale",
+        "body": [
+          "En se répandant, le mahjong est devenu de nombreux jeux. Le Japon a construit le Riichi avec ses yaku stricts et son comptage de main fermée. Taïwan a développé le jeu à seize tuiles. Le Sichuan a créé la variante rapide de « bataille sanglante ». L’Amérique a gardé le style piloté par la carte qui a divergé le plus de l’original.",
+          "Chaque version a gardé le cœur pioche-et-défausse mais a reconstruit le comptage et la stratégie autour du goût local."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          },
+          {
+            "suit": "wind",
+            "wind": "north"
+          }
+        ]
+      },
+      {
+        "heading": "Le mahjong compétitif aujourd’hui",
+        "body": [
+          "Le XXIe siècle a apporté le mahjong compétitif : ligues professionnelles Riichi, les Mahjong Competition Rules (MCR) pour le jeu international, et une scène en ligne mondiale. Le mahjong est aussi apparu dans des événements proches de l’esport et le streaming, touchant une nouvelle génération.",
+          "Aujourd’hui, le jeu se pratique sur presque tous les continents, dans des clubs, sur des plateformes en ligne et à la maison."
+        ]
+      },
+      {
+        "heading": "La signification culturelle du mahjong",
+        "body": [
+          "En Asie de l’Est, le mahjong est plus qu’un jeu — c’est un rituel social. Les familles se réunissent autour de la table pendant les fêtes, et le jeu est un lien commun entre les générations. En Occident, il a porté un autre poids, comme symbole de l’exotique devenu un loisir chéri.",
+          "Cette double vie — profondément traditionnelle et pourtant sans cesse adaptable — est exactement pourquoi le mahjong a survécu et s’est répandu."
+        ]
+      },
+      {
+        "heading": "Jouez l’histoire",
+        "body": [
+          "Vous pouvez jouer le même jeu classique qui a balayé Shanghai, le Japon et le monde — gratuitement, en ligne, contre trois adversaires ordinateur. Les tuiles que vous voyez sont les mêmes que les joueurs piochent depuis près de deux siècles."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Où le mahjong a-t-il été inventé ?",
+        "answer": "Le mahjong est né en Chine au milieu du XIXe siècle, très probablement autour de Shanghai ou Ningbo, à partir de jeux de cartes chinois antérieurs traduits en tuiles."
+      },
+      {
+        "question": "Pourquoi le mahjong est-il devenu populaire en Occident ?",
+        "answer": "La « folie du mahjong » des années 1920 l’a apporté aux États-Unis comme jeu social à la mode, et les joueurs occidentaux ont développé leurs propres variantes comme le Charleston et la carte de mains annuelle."
+      },
+      {
+        "question": "Le mahjong est-il le même jeu partout ?",
+        "answer": "Non. Les mahjong chinois, japonais, américain, taïwanais et du Sichuan sont des jeux distincts qui partagent un cœur de tuiles, de pioche et de défausse."
+      },
+      {
+        "question": "Quel âge a le mahjong ?",
+        "answer": "Environ 150 ans. Il est apparu dans la Chine du milieu du XIXe siècle et a été réinventé par chaque culture qui l’a adopté."
+      }
+    ]
+  }
+}

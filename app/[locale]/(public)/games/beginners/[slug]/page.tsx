@@ -4,14 +4,16 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getBlogPosts, getLocalizedBlogPost } from '@/data/blog';
 import { pageMeta } from '@/lib/seo';
-import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { UI_LOCALES } from '@/lib/locales';
+import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
-const LOCALES = ['en', 'zh', 'zh-TW', 'ja', 'ko'];
+
+export const dynamic = 'force-static';
 
 export function generateStaticParams() {
   return getBlogPosts().flatMap((post) =>
-    LOCALES.map((locale) => ({ locale, slug: post.slug }))
+    UI_LOCALES.map((locale) => ({ locale, slug: post.slug }))
   );
 }
 
@@ -23,7 +25,7 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const post = getLocalizedBlogPost(slug, locale);
   if (!post) return {};
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
 
   return pageMeta({
     locale,
@@ -96,7 +98,7 @@ export default async function BlogPostPage({
       <h1 className="mt-4 text-3xl font-black rainbow-text">{post.title}</h1>
       <p className="mt-3 text-gray-600">{post.description}</p>
       <p className="mt-2 text-xs font-medium uppercase tracking-wide text-gray-400">
-        {post.readMinutes} min read
+        {t('minRead', { n: post.readMinutes })}
       </p>
 
       <div className="mt-8 space-y-10">
@@ -132,11 +134,11 @@ export default async function BlogPostPage({
       ) : null}
 
       <p className="mt-12 rounded-2xl bg-white/70 p-5 text-sm text-gray-600">
-        Ready to put this into practice?{' '}
+        {t('beginnersCtaLead')}{' '}
         <Link href="/games/classic" className="font-semibold text-rainbow-pink hover:underline">
-          Play a real game
+          {t('beginnersCtaLink')}
         </Link>{' '}
-        against three computer opponents.
+        {t('beginnersCtaTail')}
       </p>
     </article>
   );

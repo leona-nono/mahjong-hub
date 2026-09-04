@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { pageMeta } from '@/lib/seo';
 import { clipSeo } from '@/lib/seo-templates';
-import { brandName, formatPageTitle, getSiteSettings } from '@/lib/site-settings';
+import { brandName, formatPageTitle, getPublicSiteSettings } from '@/lib/site-settings';
 
 type HubTitleKey = 'blogTitle' | 'gamesTitle' | 'privacyTitle' | 'aboutTitle';
 
@@ -14,7 +14,7 @@ export async function hubPageMeta(opts: {
   pageLabel: string;
   description: string;
 }): Promise<Metadata> {
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
   const ts = await getTranslations({ locale: opts.locale, namespace: 'seo' });
   const title =
     opts.locale === 'en'

@@ -171,7 +171,12 @@
     "startGame": "Start Game",
     "startBlurb": "Tap Start Game to load the board. The rules and tips below are always visible — no account required.",
     "comingSoon": "Coming Soon",
-    "savePointsPrompt": "Sign in with Email to save your {n} points"
+    "savePointsPrompt": "Sign in with Email to save your {n} points",
+    "minRead": "{n} min read",
+    "playNow": "Play Now",
+    "beginnersCtaLead": "Ready to put this into practice?",
+    "beginnersCtaLink": "Play a real game",
+    "beginnersCtaTail": "against three computer opponents."
   },
   "collection": {
     "title": "Mahjong Elimination Collection",

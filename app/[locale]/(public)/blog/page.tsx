@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { hubPageMeta } from '@/lib/hub-seo';
-import { getPublicGuides } from '@/lib/guides';
+import { getBlogPosts, getLocalizedBlogPosts } from '@/data/blog';
 
-export const revalidate = 86_400;
+export const dynamic = 'force-static';
 
 export async function generateMetadata({
   params
@@ -31,7 +31,7 @@ export default async function BlogPage({
   setRequestLocale(locale);
 
   const t = await getTranslations('nav');
-  const posts = await getPublicGuides();
+  const posts = getLocalizedBlogPosts(getBlogPosts(), locale);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -47,14 +47,6 @@ export default async function BlogPage({
             href={`/blog/${post.slug}`}
             className="block rounded-2xl border border-portal-border bg-portal-panel p-5 transition hover:border-portal-accent/40 hover:shadow-portal"
           >
-            {post.cover ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={post.cover}
-                alt=""
-                className="mb-3 aspect-[16/9] w-full rounded-lg object-cover"
-              />
-            ) : null}
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-semibold text-portal-text">{post.title}</h2>
               <span className="shrink-0 rounded-md bg-black/30 px-2 py-0.5 text-xs font-medium text-portal-muted">

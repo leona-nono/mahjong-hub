@@ -4,6 +4,8 @@ import { Link } from '@/i18n/navigation';
 import { hubPageMeta } from '@/lib/hub-seo';
 import { LEGAL_UPDATED, getPrivacyDoc } from '@/data/legal';
 
+export const dynamic = 'force-static';
+
 export async function generateMetadata({
   params
 }: {

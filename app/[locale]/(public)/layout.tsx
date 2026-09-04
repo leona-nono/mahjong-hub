@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { getSiteSettings } from '@/lib/site-settings';
+import { getPublicSiteSettings } from '@/lib/site-settings';
 
 /**
  * Do not set alternates here — Next replaces parent alternates wholesale when a
@@ -10,7 +10,7 @@ import { getSiteSettings } from '@/lib/site-settings';
  * Every public page must call pageMeta() / alternatesFor() itself.
  */
 export default async function PublicLayout({ children }: { children: ReactNode }) {
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
 
   return (
     <>

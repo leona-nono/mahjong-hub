@@ -5,7 +5,7 @@
   "description": "Rainbow-themed mahjong elimination game collection (clean-room replica, no 3rd-party source copied).",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "npm run validate:blog-i18n && npm run validate:content-i18n && prisma generate && next build",
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",

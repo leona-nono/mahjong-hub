@@ -1,14 +1,11 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import {
-  getMergedGamesByNavGroup,
-  getMergedLocalizedGames
-} from '@/lib/games-db';
+import { getGamesByNavGroup, getLocalizedGames } from '@/data/games';
 import CatalogGameCard from '@/components/CatalogGameCard';
 import { pageMeta } from '@/lib/seo';
-import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
 
-export const revalidate = 86_400;
+export const dynamic = 'force-static';
 
 const CLASSIC_ORDER = [
   'hong-kong-mahjong',
@@ -26,7 +23,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'nav' });
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
   const title = `${t('classic')} | ${brandName(site)}`;
   return pageMeta({
     locale,
@@ -46,10 +43,7 @@ export default async function ClassicCatalogPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('nav');
-  const list = getMergedLocalizedGames(
-    await getMergedGamesByNavGroup('classic'),
-    locale
-  );
+  const list = getLocalizedGames(getGamesByNavGroup('classic'), locale);
   const order = new Map<string, number>(CLASSIC_ORDER.map((slug, i) => [slug, i]));
   const games = [...list].sort(
     (a, b) => (order.get(a.slug) ?? 99) - (order.get(b.slug) ?? 99)

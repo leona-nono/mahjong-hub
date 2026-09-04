@@ -1,14 +1,11 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import {
-  getMergedGamesByNavGroup,
-  getMergedLocalizedGames
-} from '@/lib/games-db';
+import { getGamesByNavGroup, getLocalizedGames } from '@/data/games';
 import CatalogGameCard from '@/components/CatalogGameCard';
 import { pageMeta } from '@/lib/seo';
-import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
 
-export const revalidate = 86_400;
+export const dynamic = 'force-static';
 
 export async function generateMetadata({
   params
@@ -17,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'nav' });
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
   const title = `${t('solitaire')} | ${brandName(site)}`;
   return pageMeta({
     locale,
@@ -37,10 +34,7 @@ export default async function SolitaireCatalogPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('nav');
-  const games = getMergedLocalizedGames(
-    await getMergedGamesByNavGroup('solitaire'),
-    locale
-  );
+  const games = getLocalizedGames(getGamesByNavGroup('solitaire'), locale);
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8">

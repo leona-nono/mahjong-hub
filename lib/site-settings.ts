@@ -120,6 +120,32 @@ export async function getSiteSettings(): Promise<PublicSiteSettings> {
   return loadSiteSettings();
 }
 
+/**
+ * Build-time / public-page settings — no Prisma, no ISR cache.
+ * SEO HTML must stay fully static; admin CMS overlays stay on getSiteSettings().
+ * Optional env overrides for deploy-time branding without a DB round-trip.
+ */
+export function getPublicSiteSettings(): PublicSiteSettings {
+  return {
+    ...DEFAULT_PUBLIC_SITE_SETTINGS,
+    siteTitle:
+      process.env.NEXT_PUBLIC_SITE_TITLE?.trim() ||
+      DEFAULT_PUBLIC_SITE_SETTINGS.siteTitle,
+    siteDescription:
+      process.env.NEXT_PUBLIC_SITE_DESCRIPTION?.trim() ||
+      DEFAULT_PUBLIC_SITE_SETTINGS.siteDescription,
+    ogImage:
+      process.env.NEXT_PUBLIC_OG_IMAGE?.trim() ||
+      DEFAULT_PUBLIC_SITE_SETTINGS.ogImage,
+    ga:
+      process.env.NEXT_PUBLIC_GA_ID?.trim() ||
+      DEFAULT_PUBLIC_SITE_SETTINGS.ga,
+    gtm:
+      process.env.NEXT_PUBLIC_GTM_ID?.trim() ||
+      DEFAULT_PUBLIC_SITE_SETTINGS.gtm
+  };
+}
+
 export function brandName(site: PublicSiteSettings): string {
   return site.siteTitle.split('·')[0].trim() || site.siteTitle;
 }

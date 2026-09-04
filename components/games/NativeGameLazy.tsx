@@ -1,9 +1,12 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { NativeGameMountProps } from '@/components/games/NativeGameMount';
+import { utcDateString } from '@/lib/points-rules';
+import { dailyLevelId } from '@/lib/mahjong-solitaire/progress-rules';
 
 const NativeGameMount = dynamic(() => import('@/components/games/NativeGameMount'), {
   ssr: false,
@@ -14,10 +17,30 @@ const NativeGameMount = dynamic(() => import('@/components/games/NativeGameMount
   )
 });
 
-/** Tap-to-play gate — keeps heavy game engines out of the first JS payload. */
+/**
+ * Tap-to-play gate — keeps heavy game engines out of the first JS payload.
+ * `?play=daily` is read on the client so the RSC game page stays force-static.
+ */
 export default function NativeGameLazy(props: NativeGameMountProps) {
   const t = useTranslations('game');
-  const [started, setStarted] = useState(props.autoStart ?? false);
+  const searchParams = useSearchParams();
+  const playDaily =
+    props.native === 'mahjong-solitaire' && searchParams.get('play') === 'daily';
+
+  const resolved = useMemo(() => {
+    if (!playDaily) {
+      return {
+        defaultLevelId: props.defaultLevelId,
+        autoStart: props.autoStart ?? false
+      };
+    }
+    return {
+      defaultLevelId: dailyLevelId(utcDateString()),
+      autoStart: true
+    };
+  }, [playDaily, props.autoStart, props.defaultLevelId]);
+
+  const [started, setStarted] = useState(resolved.autoStart);
 
   if (!started) {
     return (
@@ -34,5 +57,11 @@ export default function NativeGameLazy(props: NativeGameMountProps) {
     );
   }
 
-  return <NativeGameMount {...props} />;
+  return (
+    <NativeGameMount
+      {...props}
+      defaultLevelId={resolved.defaultLevelId}
+      autoStart={resolved.autoStart}
+    />
+  );
 }

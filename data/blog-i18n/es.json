@@ -1,0 +1,1154 @@
+{
+  "what-is-mahjong": {
+    "title": "¿Qué es el mahjong? Guía completa para principiantes",
+    "description": "El mahjong es un juego de fichas para cuatro jugadores que combina habilidad, estrategia y suerte. Aprende qué es el mahjong, cómo funcionan las fichas, las principales reglas del mundo y en qué se diferencia de los juegos de emparejar fichas que has visto en internet.",
+    "sections": [
+      {
+        "heading": "El mahjong es un juego de fichas para cuatro jugadores",
+        "body": [
+          "El mahjong (麻将) es un juego de fichas para cuatro jugadores que combina habilidad, estrategia y un poco de suerte. Cada jugador empieza con trece fichas y, por turnos, roba y descarta hasta que alguien completa una mano ganadora: tradicionalmente cuatro combinaciones más una pareja.",
+          "Nació en China en el siglo XIX y se extendió por Asia y luego por el mundo, dando lugar a reglas regionales distintas. Hoy es uno de los juegos más jugados del planeta, y es totalmente gratis jugarlo en línea en sitios como este."
+        ]
+      },
+      {
+        "heading": "Las fichas",
+        "body": [
+          "Un set estándar de mahjong tiene 144 fichas: tres palos de fichas numeradas, fichas de honor (vientos y dragones) y fichas bonus (flores y estaciones, usadas en algunas reglas).",
+          "Los palos son: caracteres (万, decenas), bambú (条, cañas) y puntos (筒, círculos), cada uno numerado del 1 al 9 con cuatro copias de cada ficha. Los honores son los cuatro vientos (Este, Sur, Oeste, Norte) y tres dragones (Rojo, Verde, Blanco)."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "El objetivo",
+        "body": [
+          "El objetivo es formar una mano de cuatro combinaciones y una pareja. Una combinación es un triplete (tres fichas idénticas) o una secuencia (tres fichas consecutivas del mismo palo). Una pareja son dos fichas idénticas.",
+          "Según las reglas, una mano ganadora también necesita un mínimo de puntos (llamados faan, han o puntos). Ahí está la profundidad del mahjong: una mano completa no siempre es una mano ganadora."
+        ]
+      },
+      {
+        "heading": "Las variantes principales",
+        "body": [
+          "Hay muchas formas de jugar al mahjong y las reglas cambian según la región:",
+          "• Mahjong chino (estilo Hong Kong): el más común fuera de Japón, con un mínimo de tres faan.",
+          "• Mahjong japonés Riichi: el reglamento competitivo con declaraciones de riichi, doras y puntuación estricta.",
+          "• Chino oficial (MCR): el reglamento de torneos internacionales con un mínimo de ocho puntos.",
+          "• Mahjong americano: usa comodines (jokers), flores y una carta anual de manos.",
+          "• Mahjong taiwanés: se juega con dieciséis fichas en lugar de trece.",
+          "• Mahjong de Sichuan: una variante rápida de «batalla sangrienta» sin honores y con partida continua tras una victoria."
+        ]
+      },
+      {
+        "heading": "Mahjong solitario frente al mahjong de cuatro jugadores",
+        "body": [
+          "Muchos sitios occidentales llaman «mahjong» al puzzle de emparejar fichas para un jugador: en realidad es mahjong solitario, un juego totalmente distinto. El solitario te pide emparejar fichas idénticas en un diseño por capas. El mahjong de verdad es un juego competitivo de robar, descartar, cantar y puntuar.",
+          "Ambos son divertidos y ambos se pueden jugar gratis aquí. Esta guía trata del juego de cuatro jugadores."
+        ]
+      },
+      {
+        "heading": "¿El mahjong es un juego de apuestas?",
+        "body": [
+          "No. El mahjong es un juego de habilidad que se puede jugar por diversión o por dinero, exactamente como el póker o el ajedrez. En este sitio es totalmente gratis: no hay apuestas, ni moneda comprable ni premios en efectivo."
+        ]
+      },
+      {
+        "heading": "Cómo empezar a jugar",
+        "body": [
+          "La mejor forma de aprender es jugar. Empieza en nuestra mesa de Hong Kong Mahjong (el reglamento más fácil para empezar), o lee Cómo jugar al mahjong para una guía paso a paso. Cuando te sientas cómodo, prueba Japanese Riichi o Chinese Official para más profundidad."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Cuántas fichas hay en un set de mahjong?",
+        "answer": "Un set estándar tiene 144 fichas: 108 numeradas (tres palos), 28 de honor (vientos y dragones) y 8 bonus (flores y estaciones). Algunas reglas dejan fuera las fichas bonus."
+      },
+      {
+        "question": "¿Es difícil aprender a jugar al mahjong?",
+        "answer": "Las reglas básicas son sencillas: roba una ficha, descarta una ficha, forma cuatro combinaciones y una pareja. La puntuación lleva un poco más, pero el reglamento de Hong Kong con su mínimo de tres faan es una entrada suave."
+      },
+      {
+        "question": "¿Necesito dinero para jugar al mahjong?",
+        "answer": "No. El mahjong se puede jugar por diversión sin dinero. Nuestras mesas son totalmente gratis y no hay ningún tipo de apuesta."
+      },
+      {
+        "question": "¿Puedo jugar al mahjong solo?",
+        "answer": "El mahjong de verdad necesita cuatro jugadores, pero en línea puedes jugar contra rivales de ordenador cuando quieras. El mahjong solitario es un puzzle aparte para un jugador si prefieres jugar en solitario."
+      },
+      {
+        "question": "¿Cuál es la diferencia entre mahjong y mahjong solitario?",
+        "answer": "El mahjong es un juego competitivo de cuatro jugadores de robar, descartar y puntuar. El mahjong solitario es un puzzle para un jugador en el que emparejas fichas idénticas en un diseño por capas. Juegos distintos, mismas fichas."
+      }
+    ]
+  },
+  "how-to-play-mahjong": {
+    "title": "Cómo jugar al mahjong: guía paso a paso para principiantes",
+    "description": "Aprende a jugar al mahjong desde cero: las fichas, montar el muro, robar y descartar, formar pungs y chows, y declarar una mano ganadora — explicado de forma sencilla con ejemplos.",
+    "sections": [
+      {
+        "heading": "Qué necesitas para jugar",
+        "body": [
+          "Necesitas cuatro jugadores y un set de 144 fichas. Cada jugador se sienta en un lado de la mesa, llamado asiento. El repartidor (Este) inicia la ronda.",
+          "Cuando juegas en línea, el ordenador reparte, gestiona el muro y puntúa por ti: solo tienes que centrarte en construir tu mano."
+        ]
+      },
+      {
+        "heading": "Montar el muro y repartir",
+        "body": [
+          "Las fichas se barajan boca abajo y se apilan de dos en dos formando un muro de 17 pilas por lado. Cada jugador construye un lado.",
+          "El repartidor tira los dados para decidir dónde romper el muro; luego cada jugador recibe 13 fichas (el repartidor recibe 14 y descarta primero). En línea, todo esto ocurre automáticamente."
+        ]
+      },
+      {
+        "heading": "Tu turno: robar y descartar",
+        "body": [
+          "En tu turno robas una ficha del muro, miras tu mano y descartas una ficha boca arriba al centro. Siempre mantienes la mano en trece fichas.",
+          "Tu objetivo mientras haces esto es convertir tu mano en cuatro combinaciones más una pareja."
+        ]
+      },
+      {
+        "heading": "Cantar fichas: Pung, Chi y Kong",
+        "body": [
+          "Cuando otro jugador descarta una ficha que necesitas, puedes cantarla en lugar de robar:",
+          "• Pung (碰): toma el descarte para completar un triplete de tres fichas idénticas.",
+          "• Chi (吃): toma el descarte para completar una secuencia (tres fichas consecutivas), pero solo del jugador a tu izquierda.",
+          "• Kong (杠): toma el descarte para completar cuatro fichas idénticas.",
+          "Cantar deja tu mano abierta (expuesta), lo que puede reducir los patrones a los que puedes aspirar: solo canta cuando realmente te ayude."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Ganar una mano",
+        "body": [
+          "Una mano ganadora son cuatro combinaciones más una pareja. Puedes ganar por robo propio (tsumo) o reclamando el descarte de otro jugador (ron).",
+          "La mayoría de reglamentos también exigen una puntuación mínima. El estilo Hong Kong necesita al menos tres faan, el chino oficial ocho puntos y el japonés Riichi al menos un yaku. Nuestras mesas muestran tu distancia a estar listo y explican cómo se puntuó cada mano ganadora."
+        ]
+      },
+      {
+        "heading": "Básicos de la puntuación",
+        "body": [
+          "Los puntos vienen de patrones construidos en tu mano. Los más comunes son el color (todas del mismo palo), todos tripletes, combinaciones de dragón o viento, y el valioso siete pares.",
+          "Cada reglamento valora los patrones de forma distinta. La regla más simple: cuanto más estructurada esté tu mano, más vale. Nuestro desglose de puntuación muestra exactamente de dónde salen tus puntos tras cada victoria."
+        ]
+      },
+      {
+        "heading": "Pruébalo ahora",
+        "body": [
+          "La forma más rápida de aprender es jugar. Empieza con Hong Kong Mahjong: tres rivales de ordenador, una pista opcional de preparación y un desglose completo de puntuación en cada mano."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Con cuántas fichas empiezo?",
+        "answer": "Cada jugador empieza con 13 fichas. El repartidor empieza con 14 y descarta primero, de modo que cada mano queda en 13 fichas tras el primer descarte."
+      },
+      {
+        "question": "¿Cuál es la diferencia entre un pung y un kong?",
+        "answer": "Un pung son tres fichas idénticas; un kong son cuatro fichas idénticas. Un kong cuenta como una combinación más un robo extra del final del muro."
+      },
+      {
+        "question": "¿Puedo cantar un descarte de cualquier jugador?",
+        "answer": "Un pung o un kong se pueden reclamar del descarte de cualquier jugador. Un chi (secuencia) solo se puede reclamar del jugador a tu izquierda, para mantener justo el orden de turnos."
+      },
+      {
+        "question": "¿Qué significa estar «listo» o tenpai?",
+        "answer": "Estás listo (tenpai) cuando a tu mano solo le falta una ficha para estar completa. Estar listo significa que puedes ganar en cuanto llegue la ficha correcta."
+      },
+      {
+        "question": "¿Cuántos puntos necesito para ganar?",
+        "answer": "Depende del reglamento: Hong Kong necesita tres faan, Japanese Riichi al menos un yaku y el chino oficial ocho puntos. Nuestras mesas te recuerdan el mínimo y muestran el desglose de tu puntuación."
+      }
+    ]
+  },
+  "how-to-win-mahjong": {
+    "title": "Cómo ganar al mahjong: estrategia para jugadores nuevos",
+    "description": "Estrategia práctica de mahjong para principiantes: elige pronto la dirección de la mano, descarta honores, lee el montón de descartes, evita cantar en exceso y llega antes a estar listo. Gana más a menudo a los bots con estos consejos.",
+    "sections": [
+      {
+        "heading": "Elige una dirección pronto",
+        "body": [
+          "En los primeros turnos, mira tu mano y decide qué quiere ser. Una mano con siete u ocho fichas de un mismo palo apunta a un color. Una mano llena de parejas o tripletes puede perseguir todos tripletes. Una mano sin ningún honor está cerca de all-simples.",
+          "Comprometerte pronto convierte tus fichas en un plan en lugar de descartes al azar. Esa es la mayor diferencia entre quienes ganan y quienes pierden."
+        ]
+      },
+      {
+        "heading": "Descarta primero los honores sueltos",
+        "body": [
+          "Las fichas de viento y dragón son las más difíciles de emparejar. Un honor suelto casi no aporta nada a una mano de principiante, así que tíralo pronto antes de que se convierta en un lastre.",
+          "La excepción: si tienes una pareja o un triplete de un honor útil (como un dragón o el viento de tu asiento), guárdalo: es un patrón de puntuación a punto de formarse."
+        ]
+      },
+      {
+        "heading": "Lee el montón de descartes",
+        "body": [
+          "Cada descarte es información. Si tres jugadores tiran bambú, las fichas de bambú que necesitas probablemente siguen siendo seguras. Si todos guardan caracteres, esas fichas se acumulan y son más difíciles de conseguir.",
+          "Vigilar los descartes también te ayuda a no descartar una ficha que completaría la mano de un rival."
+        ]
+      },
+      {
+        "heading": "No cantes en exceso",
+        "body": [
+          "Cantar fichas deja tu mano abierta y cierra patrones de puntuación. En la mayoría de reglamentos, una mano cerrada vale más.",
+          "Una buena regla para principiantes: solo canta cuando el canto te deja a una o dos fichas de estar listo. Si no, sigue robando y mantén la mano cerrada."
+        ]
+      },
+      {
+        "heading": "Llega a estar listo lo antes posible",
+        "body": [
+          "Quien llega primero a estar listo suele ganar. Cambia fichas que no puedes usar por fichas que sí podrías usar, y mantén flexible la forma de tu mano: una mano que puede ganar con varias fichas distintas es más fuerte que una que espera una sola.",
+          "Nuestras mesas incluyen una pista de preparación que muestra exactamente cuánto te falta para una mano completa, lo que te entrena a ver esa distancia por ti mismo."
+        ]
+      },
+      {
+        "heading": "Conoce los patrones ganadores habituales",
+        "body": [
+          "Estos patrones aparecen constantemente y conviene memorizarlos:",
+          "• All-simples (断幺九): sin 1s, 9s ni honores. Alcanzable desde casi cualquier mano.",
+          "• Color / flush (清一色): todas las fichas de un mismo palo. Vale muchos puntos.",
+          "• Todos tripletes (碰碰胡): cada combinación es un triplete.",
+          "• Siete pares (七对子): la forma ganadora alternativa clásica.",
+          "• Combinaciones de dragón (三元牌): tres dragones puntúan en la mayoría de reglamentos."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "white"
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          }
+        ]
+      },
+      {
+        "heading": "Juega tu reglamento, no un juego genérico",
+        "body": [
+          "Hong Kong, Riichi y el chino oficial recompensan cosas distintas. Hong Kong valora una mano rápida y barata de tres faan. Riichi premia manos cerradas y estructuradas y ofrece el propio riichi. El chino oficial exige un patrón real de ocho puntos.",
+          "Elige un reglamento y aprende sus patrones: cambiar demasiado pronto entre ellos es la forma más rápida de confundirte."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Cuál es la forma más rápida de llegar a tenpai?",
+        "answer": "Mantén la mano flexible y apunta a un patrón barato y fiable. All-simples es el más rápido para principiantes porque se puede construir desde casi cualquier mano inicial."
+      },
+      {
+        "question": "¿Debo cantar fichas o permanecer cerrado?",
+        "answer": "Para principiantes, permanece cerrado salvo que un canto te lleve a estar listo. Las manos abiertas puntúan menos y dan información."
+      },
+      {
+        "question": "¿Cómo evito alimentar la mano de otro jugador?",
+        "answer": "Mira los descartes. Al final de la mano, evita descartar fichas que otros jugadores han estado acumulando, sobre todo si están listos."
+      },
+      {
+        "question": "¿Ganar depende de la suerte o de la habilidad?",
+        "answer": "En una sola mano hay suerte, pero a lo largo de una sesión domina la habilidad. La dirección de la mano, la disciplina al descartar y el conocimiento de patrones deciden quién gana más a menudo."
+      },
+      {
+        "question": "¿En qué reglamento de mahjong es más fácil ganar?",
+        "answer": "Hong Kong Mahjong tiene el mínimo de puntuación más bajo (tres faan), así que es el más indulgente para principiantes. Es el mejor lugar para aprender hábitos ganadores."
+      }
+    ]
+  },
+  "mahjong-rules-beginners-complete-guide": {
+    "title": "Reglas del mahjong para principiantes: la guía completa",
+    "description": "La guía completa y amigable de las reglas del mahjong para principiantes. Aprende las fichas, el muro, los turnos, los cantos, las manos ganadoras y la puntuación, con una comparación sencilla de reglamentos.",
+    "sections": [
+      {
+        "heading": "Las reglas del mahjong en un párrafo",
+        "body": [
+          "Cuatro jugadores construyen manos con 144 fichas. En cada turno robas una ficha y descartas una, intentando completar cuatro combinaciones más una pareja. Una combinación es un triplete o una secuencia. Cuando tu mano está completa y cumple el mínimo de puntuación del reglamento, declaras la victoria. Eso es todo el juego: el resto son detalles.",
+          "Esta guía recorre cada parte de ese párrafo para que un jugador totalmente nuevo pueda sentarse y jugar."
+        ]
+      },
+      {
+        "heading": "Las fichas",
+        "body": [
+          "Un set estándar tiene 144 fichas: 108 numeradas, 28 de honor y 8 bonus. Las fichas numeradas vienen en tres palos — caracteres (wàn), bambú (tiáo) y círculos (tóng) — cada uno del 1 al 9 con cuatro copias.",
+          "Los honores son los cuatro vientos (Este, Sur, Oeste, Norte) y tres dragones (Rojo, Verde, Blanco). Las fichas bonus (flores y estaciones) aparecen en algunas reglas y suelen dar un pequeño bonus en lugar de formar combinaciones."
+        ]
+      },
+      {
+        "heading": "El muro y el reparto",
+        "body": [
+          "Todas las fichas se barajan boca abajo y se apilan en un muro de 17 pilas por jugador. El repartidor (Este) tira dos dados para elegir dónde romper el muro y luego reparte 13 fichas a cada jugador. El repartidor toma una 14.ª ficha y descarta primero.",
+          "En línea, el muro se monta y se reparte automáticamente: tú solo gestionas tu mano."
+        ]
+      },
+      {
+        "heading": "Tu turno",
+        "body": [
+          "En tu turno, roba una ficha, estudia tu mano y descarta una ficha boca arriba. Siempre tienes 13 fichas. La ficha descartada queda en el centro para que todos la vean — y para que todos lean tu estrategia.",
+          "El ritmo de robar y descartar es el mismo en todos los reglamentos, por eso las habilidades se transfieren entre ellos."
+        ]
+      },
+      {
+        "heading": "Formar combinaciones: Pung, Chi y Kong",
+        "body": [
+          "Cuando otro jugador descarta una ficha que completaría una combinación en tu mano, puedes cantarla en lugar de robar:",
+          "• Pung — tres fichas idénticas. Se puede cantar de cualquier jugador.",
+          "• Chi — tres fichas consecutivas del mismo palo. Solo se puede cantar del jugador a tu izquierda.",
+          "• Kong — cuatro fichas idénticas. El canto más potente; en algunas reglas vale fichas extra.",
+          "Los cantos exponen tu mano. Una mano abierta es más débil en la mayoría de sistemas de puntuación, así que los principiantes deberían cantar con moderación."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Manos ganadoras",
+        "body": [
+          "Una mano ganadora son cuatro combinaciones más una pareja. Ganas por robo propio (tsumo) o tomando el descarte de otro jugador (ron).",
+          "Los reglamentos también exigen un mínimo de puntuación: tres faan en estilo Hong Kong, un yaku en Japanese Riichi, ocho puntos en chino oficial. Una mano completa por debajo del mínimo no es ganadora: sigues mejorándola."
+        ]
+      },
+      {
+        "heading": "Comparación de los reglamentos principales",
+        "body": [
+          "• Hong Kong Mahjong — el punto de entrada más fácil. Mínimo de tres faan, puntuación indulgente, el estilo más jugado fuera de Japón.",
+          "• Japanese Riichi — estándar competitivo. Las manos cerradas y las declaraciones de riichi puntúan más; requisitos estrictos de yaku.",
+          "• Chino oficial (MCR) — reglas de torneo internacional. Un mínimo de ocho puntos exige estructura real en la mano.",
+          "• Americano / taiwanés / Sichuan — variantes regionales con comodines, dieciséis fichas o sin honores.",
+          "Empieza con Hong Kong. Cuando ganes con fiabilidad, prueba Riichi para más profundidad o el chino oficial para más estructura."
+        ]
+      },
+      {
+        "heading": "Pruébalo gratis",
+        "body": [
+          "Leer reglas solo llega hasta cierto punto: la forma más rápida de aprender es jugar. Nuestra mesa de Hong Kong te sienta frente a tres rivales de ordenador con una pista de preparación y un desglose completo de puntuación en cada mano. Es totalmente gratis, en el navegador, sin descarga."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Cuánto se tarda en aprender las reglas del mahjong?",
+        "answer": "Puedes aprender el flujo básico — robar, descartar, formar cuatro combinaciones y una pareja — en aproximadamente una hora. La puntuación y la estrategia llevan más, pero el reglamento de Hong Kong es lo bastante suave como para aprender jugando."
+      },
+      {
+        "question": "¿Necesito cuatro personas para jugar al mahjong?",
+        "answer": "En persona, sí. En línea, puedes jugar contra rivales de ordenador cuando quieras: nuestras mesas siempre sientan tres bots si juegas solo."
+      },
+      {
+        "question": "¿Cuál es la diferencia entre un pung y un chi?",
+        "answer": "Un pung son tres fichas idénticas y se puede cantar de cualquier jugador. Un chi son tres fichas consecutivas del mismo palo y solo se puede cantar del jugador a tu izquierda."
+      },
+      {
+        "question": "¿Es difícil ganar al mahjong?",
+        "answer": "Las reglas son simples; ganar bien requiere práctica. Elegir pronto la dirección de la mano y no cantar en exceso son los dos hábitos que mejoran los resultados más rápido."
+      }
+    ]
+  },
+  "mahjong-tiles-meaning-guide": {
+    "title": "Fichas de mahjong y su significado: la guía completa",
+    "description": "¿Qué significan las fichas de mahjong? Guía completa de las 144 fichas — palos, vientos, dragones, flores y estaciones — con los símbolos explicados para principiantes.",
+    "sections": [
+      {
+        "heading": "Las 144 fichas de un vistazo",
+        "body": [
+          "Un set estándar de mahjong contiene 144 fichas divididas en palos, honores y fichas bonus. Cada ficha aparece cuatro veces en un palo (con algunas excepciones en flores y estaciones), por eso son posibles los emparejamientos y las combinaciones.",
+          "La tabla siguiente explica cada grupo. Juntos dan profundidad al juego: siempre estás siguiendo qué hay en tu mano, qué hay en la mesa y qué queda en el muro."
+        ]
+      },
+      {
+        "heading": "Los tres palos",
+        "body": [
+          "• Caracteres (萬, wan) — la ficha muestra un número en caracteres chinos, del 1 al 9.",
+          "• Bambú (條, tiao) — la ficha muestra de uno a nueve tallos de bambú.",
+          "• Círculos (筒, tong) — la ficha muestra de una a nueve monedas o puntos.",
+          "Cada palo tiene cuatro copias de cada número, lo que da 36 fichas por palo y 108 fichas numeradas en total. Una combinación (secuencia) son tres números consecutivos del mismo palo, así que los palos importan más allá de la estética."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          }
+        ]
+      },
+      {
+        "heading": "Los vientos",
+        "body": [
+          "Los cuatro vientos son Este, Sur, Oeste y Norte. Son fichas de honor: no pueden formar secuencias, solo tripletes. En muchos reglamentos, un triplete del viento de tu asiento o del viento de la ronda da puntos extra.",
+          "El repartidor siempre es Este, y los turnos rotan por Sur, Oeste y Norte. Las fichas de viento son los únicos honores que se corresponden con algo visible en la mesa."
+        ]
+      },
+      {
+        "heading": "Los dragones",
+        "body": [
+          "Los tres dragones son Rojo (中), Verde (發) y Blanco (白). Como los vientos, solo forman tripletes, pero los tripletes de dragón puntúan en casi todos los reglamentos: un triplete de dragón rojo es una de las formas más fiables de alcanzar el mínimo de puntuación.",
+          "Una mano completa con los tres tripletes de dragón es un patrón de puntuación mayor en la mayoría de juegos."
+        ]
+      },
+      {
+        "heading": "Flores y estaciones",
+        "body": [
+          "Las flores y las estaciones son fichas bonus, usadas en algunas reglas. Cada jugador tiene una flor y una estación; robar la tuya otorga puntos bonus y te permite robar una ficha de reemplazo del muro.",
+          "Suelen apartarse de inmediato y nunca forman parte de una mano ganadora."
+        ]
+      },
+      {
+        "heading": "Por qué importa el significado de las fichas",
+        "body": [
+          "No hace falta memorizar el dibujo: los números y los palos llevan toda la información. Pero saber para qué sirve cada ficha (¿puede hacer una secuencia? ¿un triplete? ¿un patrón de puntuación?) convierte el robo al azar en un plan.",
+          "Cuando las fichas te resulten familiares, el resto del mahjong es reconocimiento de patrones y timing."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Cuántas fichas de mahjong distintas hay?",
+        "answer": "Hay 34 fichas distintas (9 caracteres, 9 bambú, 9 círculos, 4 vientos, 3 dragones), y cuatro copias de la mayoría, lo que da 144 fichas. Flores y estaciones añaden 8 más en los sets que las incluyen."
+      },
+      {
+        "question": "¿Qué representan los tres palos?",
+        "answer": "Caracteres, bambú y círculos representan distintas denominaciones de monedas en el origen histórico chino del juego. En la partida son simplemente tres palos del 1 al 9."
+      },
+      {
+        "question": "¿Pueden los honores formar secuencias?",
+        "answer": "No. Vientos y dragones solo pueden formar tripletes, nunca secuencias. Por eso los honores sueltos suelen descartarse pronto."
+      },
+      {
+        "question": "¿Cuál es la ficha más valiosa?",
+        "answer": "No hay una sola ficha más valiosa: el valor depende de tu mano y del reglamento. Los tripletes de dragón, el viento de tu asiento y fichas raras de palo como el 1 y el 9 suelen ser las más útiles."
+      }
+    ]
+  },
+  "american-vs-chinese-mahjong": {
+    "title": "Mahjong americano vs chino: diferencias clave explicadas",
+    "description": "El mahjong americano y el chino son juegos muy distintos. Compara comodines, cartas de manos, puntuación y número de fichas para ver qué estilo te conviene.",
+    "sections": [
+      {
+        "heading": "Dos juegos que comparten nombre",
+        "body": [
+          "Ambos usan fichas de mahjong y se juegan entre cuatro personas, pero el americano y el chino divergieron mucho cuando el mahjong llegó a Occidente en los años 1920. El juego americano impulsado por cartas se parece más a una carrera por construir una mano; los estilos chinos conservan la pureza de robar y descartar del original.",
+          "Esto es lo que realmente cambia, para que elijas el estilo que disfrutarás."
+        ]
+      },
+      {
+        "heading": "La carta de manos frente a patrones abiertos",
+        "body": [
+          "La característica definitoria del mahjong americano es la carta anual de manos, publicada cada año por la National Mahjong League. Lista docenas de patrones ganadores exactos; debes construir uno de ellos exactamente para ganar. Los patrones cambian cada año, lo que mantiene el juego fresco pero significa que las reglas no se descubren solo con las fichas.",
+          "El mahjong chino usa patrones de puntuación fijos y universales — colores, tripletes, dragones — que no han cambiado en un siglo. Las reglas son las mismas tanto si juegas en Pekín como en línea."
+        ]
+      },
+      {
+        "heading": "Comodines y el Charleston",
+        "body": [
+          "El mahjong americano usa comodines (jokers) que pueden sustituir cualquier ficha, y un intercambio inicial fijo llamado Charleston en el que los jugadores pasan fichas a la izquierda, a la derecha y al frente en una secuencia fija. Ambas características añaden una fase de intercambio que no existe en el mahjong chino.",
+          "Los estilos chinos no tienen comodines ni pases: juegas estrictamente con las fichas que te repartieron."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          },
+          {
+            "suit": "wind",
+            "wind": "north"
+          }
+        ]
+      },
+      {
+        "heading": "Fichas, turnos y cantos",
+        "body": [
+          "El mahjong americano incluye flores y estaciones y tiene sus propias reglas de canto. El mahjong chino (y sus variantes regionales) mantiene los cantos clásicos de pung / chi / kong y la estructura de turno de robar y descartar.",
+          "Japanese Riichi y el chino oficial añaden sus propios giros — declaraciones de riichi, el mínimo de ocho puntos — pero pertenecen claramente a la misma familia que el juego chino original."
+        ]
+      },
+      {
+        "heading": "¿Cuál deberías jugar?",
+        "body": [
+          "Si quieres un juego con intercambio, comodines y un metajuego anual, el mahjong americano es un gran hobby social. Si quieres el juego competitivo clásico que se transfiere entre países y torneos, el mahjong chino — primero estilo Hong Kong, luego Riichi o chino oficial — es el mejor camino.",
+          "Puedes jugar mahjong chino en línea gratis ahora mismo y aprenderás el juego que juega el resto del mundo."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Se juega el mahjong americano y el chino con las mismas fichas?",
+        "answer": "El set de fichas es en gran medida el mismo, pero el mahjong americano depende de comodines y de la carta anual de manos, que el chino no usa. El gameplay difiere más que las fichas."
+      },
+      {
+        "question": "¿Cuál es más fácil de aprender, el americano o el chino?",
+        "answer": "El mahjong chino tiene reglas más descubribles porque los patrones son fijos y universales. El americano exige aprender la carta anual de manos, que cambia cada año."
+      },
+      {
+        "question": "¿Necesito la carta anual de manos para jugar mahjong americano?",
+        "answer": "Sí: la carta define los patrones ganadores de ese año. Sin ella no puedes declarar una victoria válida según las reglas americanas."
+      },
+      {
+        "question": "¿Puedo jugar mahjong chino en línea gratis?",
+        "answer": "Sí. Nuestra mesa de Hong Kong Mahjong es gratis, en el navegador, y enseña el juego clásico de robar y descartar contra rivales de ordenador."
+      }
+    ]
+  },
+  "how-to-play-mahjong-online": {
+    "title": "Cómo jugar al mahjong en línea: gratis en tu navegador",
+    "description": "Juega al mahjong en línea gratis — sin descarga ni instalación. Aprende dónde jugar, cómo funcionan las reglas en línea y la etiqueta al jugar contra bots y desconocidos.",
+    "sections": [
+      {
+        "heading": "Por qué jugar al mahjong en línea",
+        "body": [
+          "El mahjong en línea elimina la parte más difícil del juego para principiantes: la administración. El ordenador monta el muro, reparte las fichas, gestiona los cantos y calcula las puntuaciones. Tú te centras por completo en tu mano.",
+          "También es la única forma en que la mayoría de la gente puede jugar cuando quiere: no hace falta reunir a tres amigos alrededor de una mesa."
+        ]
+      },
+      {
+        "heading": "Qué necesitas",
+        "body": [
+          "Solo un navegador y conexión a internet. No hay nada que instalar en escritorio ni en móvil. Nuestras mesas funcionan en el navegador en cualquier dispositivo moderno y sirven con tacto o ratón.",
+          "No hace falta cuenta para empezar a jugar, y cada partida es totalmente gratis: no hay apuestas ni moneda comprable."
+        ]
+      },
+      {
+        "heading": "Cómo funciona una partida en línea",
+        "body": [
+          "Te unes a una mesa y el juego te reparte 13 fichas. En tu turno haces clic en una ficha para robar y luego en una ficha para descartar. El juego resalta las fichas que puedes cantar y muestra cuándo tu mano puede ganar.",
+          "Una pista opcional de preparación muestra cuánto le falta a tu mano para una forma completa, la herramienta más útil para aprender."
+        ],
+        "tiles": [
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          }
+        ]
+      },
+      {
+        "heading": "Bots frente a rivales humanos",
+        "body": [
+          "Jugar contra rivales de ordenador es ideal para aprender: los bots juegan a un ritmo constante, nunca se estancan y nunca se impacientan mientras piensas. Nuestras mesas siempre sientan tres bots, así que puedes jugar solo en cualquier momento.",
+          "Cuando estés listo para rivales humanos, se aplican las mismas habilidades: las reglas en línea son las mismas que en la mesa."
+        ]
+      },
+      {
+        "heading": "Etiqueta del mahjong en línea",
+        "body": [
+          "Haz tu turno con prontitud. Canta solo cuando de verdad quieras la ficha. No apresures a los demás. Y en partidas casuales, recuerda que el objetivo es divertirse: nadie gana todas las manos.",
+          "La regla que más importa en línea: mantente activo. Una mesa estancada es la única molestia real."
+        ]
+      },
+      {
+        "heading": "Empieza a jugar ahora",
+        "body": [
+          "¿Listo para probarlo? Nuestra mesa de Hong Kong Mahjong te sienta frente a tres bots con la puntuación explicada en cada mano. Es gratis, instantánea y la forma más rápida de pasar de las reglas a partidas reales."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿El mahjong en línea es gratis?",
+        "answer": "En nuestro sitio, sí: totalmente gratis, sin cuenta, sin apuestas y sin nada que descargar. Puedes jugar en el navegador en escritorio o móvil."
+      },
+      {
+        "question": "¿Necesito saber las reglas antes de jugar en línea?",
+        "answer": "Ayuda conocer lo básico, pero las mesas en línea gestionan cantos y puntuación automáticamente. Puedes aprender jugando, con la pista de preparación guiándote."
+      },
+      {
+        "question": "¿Puedo jugar al mahjong en línea solo?",
+        "answer": "Sí. Nuestras mesas siempre sientan tres rivales de ordenador, así que puedes jugar una partida completa de cuatro jugadores tú solo en cualquier momento."
+      },
+      {
+        "question": "¿Jugar al mahjong en línea es lo mismo que en persona?",
+        "answer": "Las reglas son idénticas. La única diferencia es que el ordenador gestiona el reparto, los cantos y la puntuación, lo que de hecho facilita centrarse en la estrategia."
+      }
+    ]
+  },
+  "best-mahjong-sets-for-beginners": {
+    "title": "Los mejores sets de mahjong para principiantes en 2026",
+    "description": "Qué buscar en tu primer set de mahjong: tamaño de ficha, material, estuches de viaje y los accesorios adecuados. Consejos prácticos de compra para empezar con las fichas correctas.",
+    "sections": [
+      {
+        "heading": "Qué buscar",
+        "body": [
+          "Un buen set para principiantes necesita tres cosas: fichas legibles, un recuento completo de 144 fichas y un estuche que aguante el uso. Todo lo demás es preferencia.",
+          "El tamaño de la ficha importa más. Las fichas estándar miden 28–34 mm de cara. Las más grandes se leen y se cogen mejor, y valen el espacio extra de mesa si juegas de forma casual."
+        ]
+      },
+      {
+        "heading": "Material de las fichas: baquelita, resina y más",
+        "body": [
+          "Los sets clásicos son de hueso y bambú, pero los modernos usan resina, plástico o melamina. Las fichas de resina de buena calidad tienen caras pintadas nítidas que no se desgastan. Las de plástico barato pueden astillarse en las esquinas y decolorarse.",
+          "Para un primer set, elige fichas de resina o melamina de color sólido con el dorso esmerilado: se barajan bien y duran años."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "heading": "Número y tamaño de fichas",
+        "body": [
+          "Asegúrate de que el set tenga 144 fichas. Muchos sets modernos incluyen flores y estaciones (8 fichas bonus) además de las 136 fichas núcleo. Si piensas jugar mahjong americano, también necesitas comodines.",
+          "Un set de 144 fichas cubre Hong Kong, Riichi y chino oficial. Un set de 152 añade flores y estaciones si tu reglamento las usa."
+        ]
+      },
+      {
+        "heading": "Estuches de viaje y almacenamiento",
+        "body": [
+          "Un estuche o bolsa rígida protege las fichas y mantiene la mesa ordenada entre partidas. Busca un estuche con separador para cada tipo de ficha: acelera mucho montar la siguiente partida.",
+          "Una esterilla plegable es un complemento que merece la pena: evita que las fichas se deslicen y protege la superficie de la mesa."
+        ]
+      },
+      {
+        "heading": "Accesorios recomendados",
+        "body": [
+          "Un cubilete de dados, bastones de puntuación o un bloc de puntos, y un empujador de fichas (rack) son los extras habituales. Para principiantes, los bastones de puntuación son la forma más clara de llevar la cuenta de las victorias.",
+          "Algunos sets incluyen dos racks por jugador: cómodo para principiantes a los que les gusta ordenar la mano."
+        ]
+      },
+      {
+        "heading": "Prueba antes de comprar",
+        "body": [
+          "¿No estás seguro de que un set físico te convenga aún? Puedes aprender el juego gratis en línea contra rivales de ordenador — incluido el mismo reglamento de Hong Kong para el que están pensados la mayoría de sets físicos — y comprar un set cuando ya estés enganchado."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Cuántas fichas debería tener un set de mahjong para principiantes?",
+        "answer": "Compra un set de 144 fichas. Cubre todos los estilos estándar, y la estructura de cuatro copias de cada ficha es lo que hace funcionar el juego."
+      },
+      {
+        "question": "¿Cuál es el mejor tamaño de ficha para principiantes?",
+        "answer": "Las fichas de 34 mm son las más cómodas para jugadores casuales. Son más grandes y fáciles de leer que las de 28 mm de torneo."
+      },
+      {
+        "question": "¿Merecen la pena los sets de mahjong caros?",
+        "answer": "Para un primer set, no. Un set sólido de resina a precio medio con caras nítidas basta. Mejora cuando sepas que juegas a menudo."
+      },
+      {
+        "question": "¿Necesito flores y estaciones?",
+        "answer": "Solo si tu reglamento las usa. Hong Kong y Riichi no exigen flores; el chino oficial y algunas variantes sí. Un set de 144 fichas con flores cubre el mayor terreno."
+      }
+    ]
+  },
+  "mahjong-scoring-system-explained": {
+    "title": "Sistema de puntuación del mahjong explicado: faan, han y puntos",
+    "description": "Cómo funciona la puntuación del mahjong según el reglamento: faan en Hong Kong, han en Riichi, puntos en chino oficial. Los patrones comunes y cómo contar tu mano.",
+    "sections": [
+      {
+        "heading": "Todo reglamento tiene un mínimo",
+        "body": [
+          "En todo reglamento de mahjong, una mano ganadora debe alcanzar un mínimo de puntuación antes de poder declararse. Los nombres cambian — faan en Hong Kong, han en Riichi, puntos en chino oficial — pero la idea es la misma: la mano debe tener suficiente estructura para contar como victoria.",
+          "Ese mínimo es lo que evita que cada mano sea una carrera aburrida hacia la primera forma completa."
+        ]
+      },
+      {
+        "heading": "La forma ganadora básica",
+        "body": [
+          "La base siempre son cuatro combinaciones más una pareja. Las combinaciones pueden ser tripletes o secuencias. Sobre esa base, los patrones añaden valor:",
+          "• Color / flush — todas las fichas de un mismo palo.",
+          "• Todos tripletes — cada combinación es un triplete.",
+          "• All-simples — sin 1s, 9s ni honores.",
+          "• Triplete de dragón — tres dragones en una mano.",
+          "• Siete pares — una forma ganadora alternativa en la mayoría de reglamentos."
+        ]
+      },
+      {
+        "heading": "Faan de Hong Kong",
+        "body": [
+          "El estilo Hong Kong exige un mínimo de tres faan. Patrones comunes y su valor: mano de un solo palo puro (3), todos tripletes (3), all-simples (1), un triplete de dragón (1–3). Las manos se acumulan: un color con un triplete de dragón vale más que cualquiera por separado.",
+          "La tabla de puntuación recompensa manos limpias y deliberadas. Las manos baratas son fiables pero lentas; las ambiciosas puntúan alto pero rara vez se juntan."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          }
+        ]
+      },
+      {
+        "heading": "Han japonés y Riichi",
+        "body": [
+          "La puntuación de Riichi añade yaku (patrones fijos) sobre los han. El propio riichi es un yaku: declararlo en tenpai añade un han y es la seña del reglamento. Las manos cerradas puntúan mucho más, lo que recompensa la paciencia.",
+          "La posición de estar listo (tenpai) también importa en Riichi: puedes declarar riichi o permanecer en silencio y puntuar de otra forma. Entender el han es la clave para elegir."
+        ]
+      },
+      {
+        "heading": "Puntos del chino oficial (MCR)",
+        "body": [
+          "El chino oficial usa un mínimo de ocho puntos con un gran catálogo de patrones de 1 a 88 puntos. Manos de color, todos tripletes y los patrones más raros se acumulan rápido.",
+          "El mínimo alto obliga a una estructura genuina: suele hacer falta una mano de siete pares o un color, por eso los jugadores de MCR planifican la mano desde las primeras fichas."
+        ]
+      },
+      {
+        "heading": "Deja que la mesa puntúe por ti",
+        "body": [
+          "Cuando juegas en línea, la mesa calcula tu puntuación y explica exactamente de dónde salió cada punto tras cada victoria. Es la forma más rápida de aprender la tabla de puntuación: ves los patrones que construiste y lo que valieron, mano tras mano."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Cuál es la diferencia entre faan, han y puntos?",
+        "answer": "Son la misma idea con nombres distintos: una puntuación asociada a patrones en una mano ganadora. Hong Kong usa faan, Riichi usa han y el chino oficial usa puntos."
+      },
+      {
+        "question": "¿Cuántos puntos necesito para ganar al mahjong?",
+        "answer": "Hong Kong necesita tres faan, Japanese Riichi al menos un yaku y el chino oficial ocho puntos. Cada reglamento define su propio mínimo."
+      },
+      {
+        "question": "¿Cuál es la forma más fácil de aprender la puntuación del mahjong?",
+        "answer": "Juega en línea donde la mesa calcula y explica cada puntuación. Ver el desglose tras cada victoria enseña los patrones mucho más rápido que memorizar una tabla."
+      },
+      {
+        "question": "¿Qué patrones puntúan más?",
+        "answer": "Las manos raras y estructuradas puntúan más: manos de un solo palo (flush), todos tripletes y formas especiales como siete pares o trece huérfanos están entre los patrones de mayor valor."
+      }
+    ]
+  },
+  "types-of-mahjong-games": {
+    "title": "Tipos de juegos de mahjong: cada estilo explicado",
+    "description": "De Hong Kong y Riichi a americano, taiwanés y Sichuan: compara los principales tipos de juegos de mahjong y encuentra el estilo que te encaja.",
+    "sections": [
+      {
+        "heading": "Un nombre, muchos juegos",
+        "body": [
+          "El mahjong se dividió en juegos regionales distintos al extenderse desde China. Comparten fichas y el núcleo de robar y descartar, pero la puntuación, los cantos e incluso el número de fichas cambian. Elegir un estilo es una decisión real: aquí tienes el mapa."
+        ]
+      },
+      {
+        "heading": "Hong Kong Mahjong",
+        "body": [
+          "El estilo más jugado fuera de Japón y el mejor punto de entrada para principiantes. Mínimo de tres faan, puntuación sencilla, partidas rápidas. Si quieres un solo estilo para aprender primero, que sea este."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "Japanese Riichi Mahjong",
+        "body": [
+          "El estándar competitivo. Declaraciones de riichi, yaku estrictos, bonificaciones por mano cerrada y cincos rojos. Más profundo y lento que el estilo Hong Kong: el ajedrez del mahjong, que recompensa el estudio y la paciencia."
+        ]
+      },
+      {
+        "heading": "Chino oficial (MCR)",
+        "body": [
+          "El reglamento de torneos internacionales con un mínimo de ocho puntos y un enorme catálogo de patrones. Exigente y estructurado; una mano debe ganarse la victoria. Popular en comunidades de habla china y en competiciones."
+        ]
+      },
+      {
+        "heading": "Mahjong americano",
+        "body": [
+          "Usa comodines, flores, el pase Charleston y una carta anual de manos publicada por la National Mahjong League. Social e impulsado por cartas: las reglas cambian cada año. Una experiencia muy distinta de los estilos asiáticos."
+        ]
+      },
+      {
+        "heading": "Mahjong taiwanés",
+        "body": [
+          "Se juega con dieciséis fichas en lugar de trece, así que formas cinco combinaciones y una pareja. El reemplazo de flores y la puntuación basada en tài añaden una profundidad inusual. Un buen siguiente paso tras dominar el juego de trece fichas."
+        ]
+      },
+      {
+        "heading": "Mahjong de Sichuan",
+        "body": [
+          "Una variante rápida de «batalla sangrienta» sin honores, con un palo anulado obligatorio y partida continua tras cada victoria. Las partidas son rápidas y agresivas: ideal para jugadores casuales a los que les gusta el ritmo."
+        ]
+      },
+      {
+        "heading": "Mahjong solitario",
+        "body": [
+          "No es mahjong en absoluto: un puzzle de emparejar fichas para un jugador en el que limpias un diseño por capas emparejando fichas idénticas. Genial para relajarse, pero no comparte nada con el juego de cuatro jugadores salvo las fichas."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Cuál es el tipo de mahjong más popular?",
+        "answer": "El estilo Hong Kong es el más jugado fuera de Japón, y Japanese Riichi domina el juego competitivo. En China son populares Sichuan y el chino oficial."
+      },
+      {
+        "question": "¿Qué estilo de mahjong es más fácil para principiantes?",
+        "answer": "Hong Kong Mahjong. Su mínimo de tres faan y su puntuación indulgente lo convierten en el punto de entrada más suave antes de pasar a Riichi o al chino oficial."
+      },
+      {
+        "question": "¿Todas las variantes de mahjong se juegan con cuatro jugadores?",
+        "answer": "Sí, el juego de cuatro jugadores es el estándar. El mahjong solitario es la excepción: es un puzzle para un jugador, no una variante de mahjong."
+      },
+      {
+        "question": "¿Necesito fichas distintas para distintos tipos de mahjong?",
+        "answer": "Un set estándar de 144 fichas cubre Hong Kong, Riichi y chino oficial. El mahjong americano necesita comodines; el taiwanés y el de Sichuan tienen sus propias convenciones."
+      }
+    ]
+  },
+  "mahjong-etiquette-tips": {
+    "title": "Etiqueta del mahjong: las reglas no escritas de la mesa",
+    "description": "Aprende la etiqueta del mahjong: cómo manejar las fichas, cuándo cantar, leer el ritmo y las normas sociales que mantienen la mesa amigable.",
+    "sections": [
+      {
+        "heading": "La etiqueta es lo que hace jugable el juego",
+        "body": [
+          "El mahjong es un juego social. Las reglas no escritas existen para que todos puedan leer la mesa, pensar en paz y disfrutar de la sesión. La mayoría son simples: respeta el orden de turnos, guarda tus fichas para ti y nunca apresures a otro jugador."
+        ]
+      },
+      {
+        "heading": "Maneja las fichas con cuidado",
+        "body": [
+          "Roba y descarta una ficha cada vez. No arrastres fichas por la mesa y nunca reordenes los descartes de otro jugador. En línea, esto se traduce en: haz tu turno sin alargar la partida; un jugador lento pero constante es mejor que uno rápido y desordenado."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "heading": "Canta con convicción, no por costumbre",
+        "body": [
+          "Cantar una ficha anuncia tu mano a la mesa. La etiqueta (y la buena estrategia) dice cantar solo cuando la ficha realmente ayuda. Cantar y descartar fichas débiles una y otra vez se lee como inexperiencia y da información gratis a la mesa."
+        ]
+      },
+      {
+        "heading": "Lee el ritmo, no solo las fichas",
+        "body": [
+          "Observa el ritmo de los descartes. Un jugador que se detiene antes de descartar está decidiendo: suele estar cerca de ganar. Respeta la tensión de una partida avanzada y piensa antes de descartar una ficha peligrosa."
+        ]
+      },
+      {
+        "heading": "Ganar y perder con elegancia",
+        "body": [
+          "Victorias y derrotas forman parte de una sesión. Agradece al jugador que alimenta una ficha ganadora y no te quedes en un mal golpe de suerte. En partidas amistosas el objetivo es la sesión, no la puntuación."
+        ]
+      },
+      {
+        "heading": "Etiqueta en línea",
+        "body": [
+          "En línea se aplican las mismas reglas: haz los turnos con prontitud, juega con honestidad y recuerda que los bots son pacientes pero los humanos no. Nuestras mesas nunca se estancan y nunca juzgan tu ritmo: el lugar ideal para aprender buenos hábitos."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Puedo mirar los descartes de otros jugadores?",
+        "answer": "Sí: el montón de descartes es información pública en todos los reglamentos. Leerlos no solo está permitido: se espera."
+      },
+      {
+        "question": "¿Es de mala educación tomarse tiempo en mi turno?",
+        "answer": "Una pausa razonable está bien, sobre todo al final de una mano. El problema de etiqueta es estancarse o apresurar. La mayoría de mesas casuales son relajadas con el ritmo."
+      },
+      {
+        "question": "¿Debo anunciar mis cantos?",
+        "answer": "Sí: anuncia pung, chi o kong con claridad para que la mesa pueda reaccionar. Las mesas en línea lo hacen automáticamente por ti."
+      },
+      {
+        "question": "¿Cuál es la regla de etiqueta más importante?",
+        "answer": "Respeta el flujo del juego: haz los turnos en orden, mantén los descartes limpios y nunca expongas las fichas de otro jugador ni las tuyas hasta que termine la mano."
+      }
+    ]
+  },
+  "where-to-buy-mahjong-set": {
+    "title": "Dónde comprar un set de mahjong en línea",
+    "description": "Dónde comprar un set de mahjong en línea: qué venden las tiendas, cómo comprobar la calidad, rangos de precio y qué evitar al comprar tu primer set.",
+    "sections": [
+      {
+        "heading": "Qué estás comprando realmente",
+        "body": [
+          "Un set de mahjong son fichas más un estuche. Dentro de eso, la calidad varía enormemente: un set de 144 fichas de resina puede costar desde ¥100 hasta ¥1.500+ por la artesanía de hueso y bambú. Para tu primer set, el punto dulce es un set bien hecho de resina o melamina."
+        ]
+      },
+      {
+        "heading": "Marketplaces en línea",
+        "body": [
+          "Los grandes marketplaces en línea tienen sets de mahjong: mercados generales para sets económicos y de gama media, y tiendas especializadas para fichas premium hechas a mano. Filtra por «144 tiles» y lee reseñas que mencionen el tamaño de la ficha y la calidad de la pintura.",
+          "Busca anuncios que indiquen el número de fichas de forma explícita. Muchos anuncios baratos venden sets de 108 fichas o incompletos sin decirlo."
+        ]
+      },
+      {
+        "heading": "Qué comprobar en las reseñas",
+        "body": [
+          "• ¿El estuche sujeta bien las fichas?",
+          "• ¿Las caras están pintadas o impresas? Las impresas se pueden desgastar.",
+          "• ¿Se indica el tamaño de la ficha y es cómodo?",
+          "• ¿Los dorsos coinciden exactamente? Los dorsos desiguales son un fallo habitual de sets baratos.",
+          "Las reseñas que mencionan estos cuatro puntos son las de fiar."
+        ]
+      },
+      {
+        "heading": "Rangos de precio",
+        "body": [
+          "• ¥100–¥300 — sets de plástico o resina ligera aceptables. Bien para juego casual.",
+          "• ¥300–¥800 — resina sólida con caras nítidas y un buen estuche. El punto dulce para principiantes.",
+          "• ¥800+ — sets premium y vintage. Solo merece la pena si sabes que juegas a menudo.",
+          "Gasta en el tramo medio para tu primer set y no te arrepentirás."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          }
+        ]
+      },
+      {
+        "heading": "Prueba el juego antes de comprometerte",
+        "body": [
+          "Un set de mahjong es una compra que conservarás años — pero solo si disfrutas el juego. Juega primero unas manos gratis en línea, comprueba si te gusta el ritmo y luego invierte en fichas. Si decides que te encanta, la recomendación de set en línea sigue siendo el lugar correcto para empezar."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Cuánto debería gastar en un primer set de mahjong?",
+        "answer": "Planifica ¥300–¥800 para un set sólido de resina con un buen estuche. Los sets económicos por debajo de ¥300 suelen tener fichas finas o caras impresas que se desgastan rápido."
+      },
+      {
+        "question": "¿Cuál es un precio justo por un set de mahjong de 144 fichas?",
+        "answer": "Un set fiable de 144 fichas de resina con estuche suele costar ¥300–¥600 en los marketplaces principales. Los sets premium de hueso y bambú cuestan varias veces más."
+      },
+      {
+        "question": "¿Merecen la pena los sets de mahjong baratos?",
+        "answer": "Para juego ocasional, un set económico está bien. Solo confirma que tenga 144 fichas y revisa las reseñas por quejas de pintura y dorsos que no coinciden."
+      },
+      {
+        "question": "¿Debería comprar un set de mahjong antes de aprender a jugar?",
+        "answer": "No necesariamente. Puedes aprender el juego gratis en línea primero y comprar un set cuando estés seguro de que te gusta: entonces la compra es una inversión, no una apuesta."
+      }
+    ]
+  },
+  "mahjong-history-cultural-guide": {
+    "title": "La historia del mahjong: de la China de la dinastía Qing al mundo",
+    "description": "La fascinante historia del mahjong: sus orígenes en la China del siglo XIX, la fiebre occidental de los años 1920, su reinvención en Japón y América, y dónde está hoy.",
+    "sections": [
+      {
+        "heading": "Orígenes en la China de la dinastía Qing",
+        "body": [
+          "El mahjong surgió en China a mediados del siglo XIX, muy probablemente alrededor de Shanghái o Ningbo. Tomó la lógica de juegos de cartas chinos anteriores y la tradujo a fichas: un formato que le permitió sobrevivir a la prohibición de muchos juegos de apuestas.",
+          "En la década de 1890 ya era un fijo de las casas de té de Shanghái, extendiéndose hacia fuera por las rutas comerciales."
+        ]
+      },
+      {
+        "heading": "La fiebre occidental de los años 1920",
+        "body": [
+          "El mahjong llegó a Estados Unidos a principios de los años 1920 y se convirtió en un auténtico fenómeno social: la «fiebre del mahjong». Se vendieron cientos de miles de sets, y los jugadores americanos inventaron pronto sus propias convenciones, incluido el Charleston y más tarde la carta anual de manos.",
+          "El juego chino también viajó a Japón, donde se refinó en el reglamento Riichi que hoy domina el juego competitivo."
+        ]
+      },
+      {
+        "heading": "Reinvención regional",
+        "body": [
+          "Al extenderse, el mahjong se convirtió en muchos juegos. Japón construyó Riichi con sus yaku estrictos y su puntuación de mano cerrada. Taiwán desarrolló el juego de dieciséis fichas. Sichuan creó la variante rápida de «batalla sangrienta». América conservó el estilo impulsado por cartas que más se alejó del original.",
+          "Cada versión mantuvo el núcleo de robar y descartar, pero reconstruyó la puntuación y la estrategia según el gusto local."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          },
+          {
+            "suit": "wind",
+            "wind": "north"
+          }
+        ]
+      },
+      {
+        "heading": "El mahjong competitivo hoy",
+        "body": [
+          "El siglo XXI trajo el mahjong competitivo: ligas profesionales de Riichi, las Mahjong Competition Rules (MCR) para el juego internacional y una escena en línea mundial. El mahjong también ha aparecido en eventos cercanos a los esports y en streaming, llegando a una nueva generación.",
+          "Hoy el juego se practica en casi todos los continentes, en clubes, plataformas en línea y en casa."
+        ]
+      },
+      {
+        "heading": "El significado cultural del mahjong",
+        "body": [
+          "En Asia oriental, el mahjong es más que un juego: es un ritual social. Las familias se reúnen alrededor de la mesa en las fiestas, y el juego es un vínculo común entre generaciones. En Occidente cargó con otro peso, como símbolo de lo exótico que se convirtió en un hobby querido.",
+          "Esa doble vida — profundamente tradicional y a la vez interminablemente adaptable — es exactamente por qué el mahjong sobrevivió y se extendió."
+        ]
+      },
+      {
+        "heading": "Juega la historia",
+        "body": [
+          "Puedes jugar el mismo juego clásico que conquistó Shanghái, Japón y el mundo: gratis, en línea, contra tres rivales de ordenador. Las fichas que ves son las mismas que los jugadores llevan robando desde hace casi dos siglos."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "¿Dónde se inventó el mahjong?",
+        "answer": "El mahjong se originó en China a mediados del siglo XIX, muy probablemente alrededor de Shanghái o Ningbo, a partir de juegos de cartas chinos anteriores traducidos a fichas."
+      },
+      {
+        "question": "¿Por qué se popularizó el mahjong en Occidente?",
+        "answer": "La «fiebre del mahjong» de los años 1920 lo llevó a EE. UU. como un juego social de moda, y los jugadores occidentales desarrollaron sus propias variantes como el Charleston y la carta anual de manos."
+      },
+      {
+        "question": "¿El mahjong es el mismo juego en todas partes?",
+        "answer": "No. El mahjong chino, japonés, americano, taiwanés y de Sichuan son juegos distintos que comparten un núcleo de fichas, robar y descartar."
+      },
+      {
+        "question": "¿Qué antigüedad tiene el mahjong?",
+        "answer": "Alrededor de 150 años. Surgió en la China de mediados del siglo XIX y ha sido reinventado por cada cultura que lo adoptó."
+      }
+    ]
+  }
+}

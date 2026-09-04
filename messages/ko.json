@@ -80,7 +80,12 @@
     "tips": "전략 팁",
     "faq": "자주 묻는 질문",
     "comingSoon": "곧 출시",
-    "savePointsPrompt": "이메일로 로그인하여 {n} 포인트 저장"
+    "savePointsPrompt": "이메일로 로그인하여 {n} 포인트 저장",
+    "minRead": "약 {n}분 분량",
+    "playNow": "지금 플레이",
+    "beginnersCtaLead": "실전으로 연습할 준비가 됐나요?",
+    "beginnersCtaLink": "진짜 대국 하기",
+    "beginnersCtaTail": "컴퓨터 상대 세 명과 대결하세요."
   },
   "collection": {
     "title": "마작 제거 게임 컬렉션",

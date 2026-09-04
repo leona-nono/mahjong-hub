@@ -66,4 +66,25 @@ describe('games i18n', () => {
       }
     }
   });
+
+  it('CJK native rulesets ship full non-English howToPlay (no EN body fallback)', () => {
+    const rulesets = [
+      'sichuan-mahjong',
+      'taiwan-mahjong',
+      'american-mahjong',
+      'hong-kong-mahjong',
+      'riichi-mahjong',
+      'chinese-official-mahjong'
+    ] as const;
+    for (const slug of rulesets) {
+      const en = getGames().find((g) => g.slug === slug);
+      expect(en?.content?.howToPlay?.[0]).toBeTruthy();
+      for (const locale of ['zh', 'zh-TW', 'ja', 'ko'] as const) {
+        const localized = getLocalizedGame(slug, locale);
+        expect(localized?.content?.howToPlay?.[0]).toBeTruthy();
+        expect(localized?.content?.howToPlay?.[0]).not.toBe(en?.content?.howToPlay?.[0]);
+        expect(localized?.content?.intro).not.toBe(en?.content?.intro);
+      }
+    }
+  });
 });

@@ -1,16 +1,16 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import MahjongSolitaire from '@/components/games/MahjongSolitaire';
+import { utcDateString } from '@/lib/points-rules';
+import { dailyLevelId } from '@/lib/mahjong-solitaire/progress-rules';
 
-/** Homepage daily board — playable in place with slim chrome. */
-export default function HomeDailyChallenge({
-  dailyLevelId
-}: {
-  dailyLevelId: string;
-}) {
+/** Homepage daily board — level id computed client-side so the home RSC stays static. */
+export default function HomeDailyChallenge() {
   const t = useTranslations('challenge');
+  const todayLevel = useMemo(() => dailyLevelId(utcDateString()), []);
 
   return (
     <section className="overflow-hidden rounded-3xl border border-portal-border bg-gradient-to-br from-teal-950/60 via-portal-panel to-portal-elevated shadow-portal">
@@ -32,11 +32,7 @@ export default function HomeDailyChallenge({
         </Link>
       </div>
       <div className="p-2 sm:p-3">
-        <MahjongSolitaire
-          defaultLevelId={dailyLevelId}
-          compact
-          autoStart
-        />
+        <MahjongSolitaire defaultLevelId={todayLevel} compact autoStart />
       </div>
     </section>
   );

@@ -5,6 +5,8 @@ import { hubPageMeta } from '@/lib/hub-seo';
 import { getAboutDoc } from '@/data/about';
 import { RichText } from '@/components/RichText';
 
+export const dynamic = 'force-static';
+
 export async function generateMetadata({
   params
 }: {

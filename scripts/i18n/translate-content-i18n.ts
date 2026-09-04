@@ -5,12 +5,14 @@
  *   npx tsx scripts/i18n/translate-content-i18n.ts --domain about --locales es,fr,de,pt-BR
  *   npx tsx scripts/i18n/translate-content-i18n.ts --domain home-guide --locales es,fr,de,pt-BR
  *   npx tsx scripts/i18n/translate-content-i18n.ts --domain games --locales fr,de,pt-BR
+ *   npx tsx scripts/i18n/translate-content-i18n.ts --domain blog --locales es,fr,de,pt-BR
  *   npx tsx scripts/i18n/translate-content-i18n.ts --domain games --locales de --dry-run
  *
  * Requires DEEPSEEK_API_KEY unless every string is already in .cache/i18n-memory.json.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { getBlogPosts } from '../../data/blog';
 import { games } from '../../data/games';
 import type { GlossaryLocale } from '../../data/glossary';
 import {
@@ -23,7 +25,7 @@ import {
 const ROOT = path.join(process.cwd(), 'data');
 const EU = ['es', 'fr', 'de', 'pt-BR'] as const satisfies readonly GlossaryLocale[];
 
-type Domain = 'about' | 'home-guide' | 'games';
+type Domain = 'about' | 'home-guide' | 'games' | 'blog';
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -72,15 +74,39 @@ function englishGamesCatalogue() {
   return out;
 }
 
+/** English blog catalogue shaped like data/blog-i18n/{locale}.json */
+function englishBlogCatalogue() {
+  const out: Record<string, unknown> = {};
+  for (const post of getBlogPosts()) {
+    out[post.slug] = {
+      title: post.title,
+      description: post.description,
+      sections: post.sections.map((section) => {
+        const entry: Record<string, unknown> = {
+          heading: section.heading,
+          body: section.body
+        };
+        if (section.tiles?.length) entry.tiles = section.tiles;
+        return entry;
+      }),
+      faq: post.faq
+    };
+  }
+  return out;
+}
+
+function outRelFor(domain: Domain, locale: string): string {
+  if (domain === 'games') return `games-i18n/${locale}.json`;
+  if (domain === 'blog') return `blog-i18n/${locale}.json`;
+  return `${domain}-i18n/${locale}.json`;
+}
+
 async function translateDomain(
   domain: Domain,
   locale: GlossaryLocale,
   opts: { dryRun: boolean; force: boolean; memory: ReturnType<typeof loadMemory>; apiKey?: string }
 ) {
-  const outRel =
-    domain === 'games'
-      ? `games-i18n/${locale}.json`
-      : `${domain}-i18n/${locale}.json`;
+  const outRel = outRelFor(domain, locale);
   const outPath = path.join(ROOT, outRel);
   if (existsSync(outPath) && !opts.force) {
     console.log(`Skip existing ${outRel} (pass --force to overwrite)`);
@@ -90,6 +116,8 @@ async function translateDomain(
   let source: unknown;
   if (domain === 'games') {
     source = englishGamesCatalogue();
+  } else if (domain === 'blog') {
+    source = englishBlogCatalogue();
   } else {
     source = JSON.parse(readFileSync(path.join(ROOT, `${domain}-i18n/en.json`), 'utf8'));
   }
@@ -106,7 +134,7 @@ async function translateDomain(
 
 async function main() {
   const { domain, locales, dryRun, force } = parseArgs();
-  if (!['about', 'home-guide', 'games'].includes(domain)) {
+  if (!['about', 'home-guide', 'games', 'blog'].includes(domain)) {
     throw new Error(`Unknown domain: ${domain}`);
   }
   const memory = loadMemory();

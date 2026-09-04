@@ -18,16 +18,9 @@ export async function getGameFeatureMarkdown(
       where: { gameId_locale: { gameId: game.id, locale: cmsLocale } },
       select: { content: true }
     });
+    // Do not fall back to English CMS copy for translated locales — that left
+    // CJK/EU game pages with English "About" bodies while chrome looked localized.
     if (feature?.content?.trim()) return feature.content;
-
-    if (cmsLocale !== 'en') {
-      const fallback = await prisma.gameFeature.findUnique({
-        where: { gameId_locale: { gameId: game.id, locale: 'en' } },
-        select: { content: true }
-      });
-      return fallback?.content?.trim() || null;
-    }
-
     return null;
   } catch {
     return null;

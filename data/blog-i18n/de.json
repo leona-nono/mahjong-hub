@@ -1,0 +1,1154 @@
+{
+  "what-is-mahjong": {
+    "title": "Was ist Mahjong? Der komplette Einsteiger-Leitfaden",
+    "description": "Mahjong ist ein Vier-Personen-Steinespiel aus Können, Strategie und Glück. Erfahren Sie, was Mahjong ist, wie die Steine funktionieren, welche Regelwerke es weltweit gibt und wie es sich von den Online-Paar-Spielen unterscheidet, die Sie vielleicht kennen.",
+    "sections": [
+      {
+        "heading": "Mahjong ist ein Vier-Personen-Steinespiel",
+        "body": [
+          "Mahjong (麻将) ist ein steinebasiertes Spiel für vier Personen, das Können, Strategie und ein wenig Glück verbindet. Jeder Spieler beginnt mit dreizehn Steinen und zieht und wirft abwechselnd ab, bis jemand eine Gewinnkombination vervollständigt — traditionell vier Kombinationen plus ein Paar.",
+          "Es entstand im China des 19. Jahrhunderts und verbreitete sich über Asien und dann weltweit, wodurch unterschiedliche regionale Regelwerke entstanden. Heute zählt es zu den meistgespielten Spielen der Welt und ist auf Seiten wie dieser völlig kostenlos online spielbar."
+        ]
+      },
+      {
+        "heading": "Die Steine",
+        "body": [
+          "Ein Standard-Mahjong-Set hat 144 Steine: drei Farben mit nummerierten Steinen, Ehrensteine (Winde und Drachen) sowie Bonussteine (Blumen und Jahreszeiten, die in manchen Regelwerken vorkommen).",
+          "Die Farben sind: Schriftzeichen (万), Bambus (条) und Kreise (筒), jeweils von 1 bis 9 mit vier Exemplaren jedes Steins. Die Ehrensteine sind die vier Winde (Ost, Süd, West, Nord) und drei Drachen (Rot, Grün, Weiß)."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "Das Ziel",
+        "body": [
+          "Das Ziel ist eine Hand aus vier Kombinationen und einem Paar. Eine Kombination ist entweder ein Triplett (drei gleiche Steine) oder eine Sequenz (drei aufeinanderfolgende Steine derselben Farbe). Ein Paar sind zwei gleiche Steine.",
+          "Je nach Regelwerk braucht eine Gewinnhand auch eine Mindestpunktzahl (genannt Faan, Han oder Punkte). Genau das gibt Mahjong seine Tiefe — eine vollständige Hand ist nicht immer eine Gewinnhand."
+        ]
+      },
+      {
+        "heading": "Die wichtigsten Varianten",
+        "body": [
+          "Es gibt viele Arten, Mahjong zu spielen, und die Regeln unterscheiden sich von Region zu Region:",
+          "• Chinesisches Mahjong (Hongkong-Stil): das außerhalb Japans häufigste Regelwerk mit einem Minimum von drei Faan.",
+          "• Japanisches Riichi-Mahjong: das Wettkampfregelwerk mit Riichi-Ansagen, Doras und strenger Wertung.",
+          "• Chinesisch Offiziell (MCR): das internationale Turnierregelwerk mit einem Acht-Punkte-Minimum.",
+          "• Amerikanisches Mahjong: verwendet Joker, Blumen und eine jährliche Handkarte.",
+          "• Taiwanesisches Mahjong: wird mit sechzehn statt dreizehn Steinen gespielt.",
+          "• Sichuan-Mahjong: eine schnelle „Blutige Schlacht“-Variante ohne Ehrensteine und mit Weiterspielen nach einem Gewinn."
+        ]
+      },
+      {
+        "heading": "Mahjong Solitaire vs. Vier-Personen-Mahjong",
+        "body": [
+          "Viele westliche Websites nennen das Einzelspieler-Paar-Puzzle „Mahjong“ — das ist eigentlich Mahjong Solitaire, ein völlig anderes Spiel. Beim Solitaire müssen Sie identische Steine in einem geschichteten Layout paaren. Echtes Mahjong ist ein Wettkampfspiel mit Ziehen, Ablegen, Rufen und Punkten.",
+          "Beide machen Spaß und beide sind hier kostenlos spielbar. Dieser Leitfaden handelt vom Vier-Personen-Spiel."
+        ]
+      },
+      {
+        "heading": "Ist Mahjong Glücksspiel?",
+        "body": [
+          "Nein. Mahjong ist ein Geschicklichkeitsspiel, das zum Spaß oder um Geld gespielt werden kann — genau wie Poker oder Schach. Auf dieser Seite ist es völlig kostenlos — es gibt keine Wetten, keine kaufbare Währung und keinen Geldpreis."
+        ]
+      },
+      {
+        "heading": "So starten Sie",
+        "body": [
+          "Der beste Weg zu lernen ist zu spielen. Beginnen Sie mit unserem Hongkong-Mahjong-Tisch (dem einfachsten Regelwerk zum Einstieg) oder lesen Sie „Mahjong spielen“ für eine Schritt-für-Schritt-Anleitung. Wenn Sie sich sicher fühlen, probieren Sie japanisches Riichi oder Chinesisch Offiziell für mehr Tiefe."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Wie viele Steine hat ein Mahjong-Set?",
+        "answer": "Ein Standard-Set hat 144 Steine: 108 nummerierte Steine (drei Farben), 28 Ehrensteine (Winde und Drachen) und 8 Bonussteine (Blumen und Jahreszeiten). Manche Regelwerke lassen die Bonussteine weg."
+      },
+      {
+        "question": "Ist Mahjong schwer zu lernen?",
+        "answer": "Die Kernregeln sind einfach: einen Stein ziehen, einen Stein ablegen, vier Kombinationen und ein Paar bauen. Die Wertung braucht etwas länger, aber das Hongkong-Regelwerk mit seinem Drei-Faan-Minimum ist ein sanfter Einstieg."
+      },
+      {
+        "question": "Brauche ich Geld, um Mahjong zu spielen?",
+        "answer": "Nein. Mahjong kann zum Spaß ohne Geld gespielt werden. Unsere Tische sind völlig kostenlos und es gibt keinerlei Wetten."
+      },
+      {
+        "question": "Kann ich Mahjong allein spielen?",
+        "answer": "Echtes Mahjong braucht vier Spieler, aber online können Sie jederzeit gegen Computergegner spielen. Mahjong Solitaire ist ein separates Einzelspieler-Puzzle, falls Sie Solo bevorzugen."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen Mahjong und Mahjong Solitaire?",
+        "answer": "Mahjong ist ein kompetitives Vier-Personen-Spiel aus Ziehen, Ablegen und Punkten. Mahjong Solitaire ist ein Einzelspieler-Puzzle, bei dem Sie identische Steine in einem geschichteten Layout paaren. Verschiedene Spiele, dieselben Steine."
+      }
+    ]
+  },
+  "how-to-play-mahjong": {
+    "title": "Mahjong spielen: Schritt-für-Schritt-Anleitung für Anfänger",
+    "description": "Lernen Sie Mahjong von Grund auf: die Steine, den Aufbau der Mauer, Ziehen und Ablegen, Pung und Chow bauen und eine Gewinnhand ansagen — einfach erklärt mit Beispielen.",
+    "sections": [
+      {
+        "heading": "Was Sie zum Spielen brauchen",
+        "body": [
+          "Sie brauchen vier Spieler und ein Set mit 144 Steinen. Jeder Spieler sitzt an einer Seite des Tisches, dem sogenannten Sitz. Der Geber (Ost) beginnt die Runde.",
+          "Wenn Sie online spielen, teilt der Computer aus, verwaltet die Mauer und wertet für Sie — Sie müssen sich nur auf den Aufbau Ihrer Hand konzentrieren."
+        ]
+      },
+      {
+        "heading": "Mauer aufbauen und austeilen",
+        "body": [
+          "Die Steine werden verdeckt gemischt und zweireihig zu einer Mauer aus 17 Stapeln pro Seite gestapelt. Jeder Spieler baut eine Seite.",
+          "Der Geber würfelt, um zu entscheiden, wo die Mauer gebrochen wird, dann erhält jeder Spieler 13 Steine (der Geber bekommt 14 und legt zuerst ab). Online geschieht das alles automatisch."
+        ]
+      },
+      {
+        "heading": "Ihr Zug: Ziehen und Ablegen",
+        "body": [
+          "An Ihrem Zug ziehen Sie einen Stein von der Mauer, betrachten Ihre Hand und legen einen Stein offen in die Mitte ab. Sie behalten Ihre Hand immer bei dreizehn Steinen.",
+          "Ihr Ziel dabei ist, Ihre Hand in vier Kombinationen plus ein Paar zu verwandeln."
+        ]
+      },
+      {
+        "heading": "Steine rufen: Pung, Chow und Kong",
+        "body": [
+          "Wenn ein anderer Spieler einen Stein ablegt, den Sie brauchen, dürfen Sie ihn rufen statt zu ziehen:",
+          "• Pung (碰): nehmen Sie den Abwurf, um ein Triplett aus drei gleichen Steinen zu vervollständigen.",
+          "• Chow (吃): nehmen Sie den Abwurf, um eine Sequenz (drei aufeinanderfolgende Steine) zu vervollständigen — aber nur vom Spieler links von Ihnen.",
+          "• Kong (杠): nehmen Sie den Abwurf, um vier gleiche Steine zu vervollständigen.",
+          "Rufen macht Ihre Hand offen (exponiert), was die Muster einschränken kann, für die Sie in Frage kommen — rufen Sie also nur, wenn es wirklich hilft."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Eine Hand gewinnen",
+        "body": [
+          "Eine Gewinnhand besteht aus vier Kombinationen plus einem Paar. Sie können durch Selbstziehen (Tsumo) oder durch Beanspruchen des Abwurfs eines anderen Spielers (Ron) gewinnen.",
+          "Die meisten Regelwerke verlangen auch eine Mindestpunktzahl. Hongkong-Stil braucht mindestens drei Faan, Chinesisch Offiziell acht Punkte und japanisches Riichi mindestens ein Yaku. Unsere Tische zeigen Ihren Abstand zur Bereitschaft und erklären, wie jede Gewinnhand gewertet wurde."
+        ]
+      },
+      {
+        "heading": "Wertung — die Grundlagen",
+        "body": [
+          "Punkte kommen aus Mustern in Ihrer Hand. Häufige sind Flushes (alles eine Farbe), Nur-Tripletts, Drachen- oder Wind-Kombinationen und die begehrten sieben Paare.",
+          "Unterschiedliche Regelwerke bewerten Muster verschieden. Die einfachste Regel: Je strukturierter Ihre Hand, desto mehr ist sie wert. Unsere Wertungsübersicht zeigt nach jedem Gewinn genau, woher Ihre Punkte kommen."
+        ]
+      },
+      {
+        "heading": "Jetzt ausprobieren",
+        "body": [
+          "Der schnellste Weg zu lernen ist zu spielen. Beginnen Sie mit Hongkong-Mahjong — drei Computergegner, ein optionaler Bereitschaftshinweis und eine vollständige Punkteaufschlüsselung bei jeder Hand."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Mit wie vielen Steinen beginne ich?",
+        "answer": "Jeder Spieler beginnt mit 13 Steinen. Der Geber beginnt mit 14 und legt zuerst ab, sodass jede Hand nach dem ersten Abwurf bei 13 Steinen bleibt."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen Pung und Kong?",
+        "answer": "Ein Pung sind drei gleiche Steine; ein Kong sind vier gleiche Steine. Ein Kong zählt als Kombination plus einem Extra-Zug vom Ende der Mauer."
+      },
+      {
+        "question": "Kann ich einen Abwurf von jedem Spieler rufen?",
+        "answer": "Ein Pung oder Kong kann vom Abwurf jedes Spielers beansprucht werden. Ein Chow (Sequenz) kann nur vom Spieler links von Ihnen beansprucht werden, damit die Zugreihenfolge fair bleibt."
+      },
+      {
+        "question": "Was bedeutet „bereit“ oder Tenpai?",
+        "answer": "Sie sind bereit (Tenpai), wenn Ihrer Hand nur noch ein Stein zur Vollständigkeit fehlt. Bereit sein bedeutet, dass Sie gewinnen können, sobald der richtige Stein kommt."
+      },
+      {
+        "question": "Wie viele Punkte brauche ich zum Gewinnen?",
+        "answer": "Das hängt vom Regelwerk ab: Hongkong braucht drei Faan, japanisches Riichi mindestens ein Yaku und Chinesisch Offiziell acht Punkte. Unsere Tische erinnern Sie an das Minimum und zeigen Ihre Punkteaufschlüsselung."
+      }
+    ]
+  },
+  "how-to-win-mahjong": {
+    "title": "Mahjong gewinnen: Strategie für neue Spieler",
+    "description": "Praktische Mahjong-Strategie für Anfänger: früh eine Handrichtung wählen, Ehrensteine ablegen, den Abwurfstapel lesen, nicht zu oft rufen und schneller bereit werden. Schlagen Sie die Bots öfter mit diesen Tipps.",
+    "sections": [
+      {
+        "heading": "Früh eine Richtung wählen",
+        "body": [
+          "In den ersten Zügen betrachten Sie Ihre Hand und entscheiden, was sie werden soll. Eine Hand mit sieben oder acht Steinen einer Farbe zielt auf einen Flush. Eine Hand voller Paare oder Tripletts kann Nur-Tripletts verfolgen. Eine Hand ganz ohne Ehrensteine ist nah an All-Simples.",
+          "Früh festzulegen verwandelt Ihre Steine in einen Plan statt zufälliger Abwürfe. Das ist der größte Unterschied zwischen gewinnenden und verlierenden Spielern."
+        ]
+      },
+      {
+        "heading": "Einzelne Ehrensteine zuerst ablegen",
+        "body": [
+          "Wind- und Drachensteine sind am schwersten zu paaren. Ein einzelner Ehrenstein bringt einer Anfängerhand fast nichts, also werfen Sie ihn früh ab, bevor er zur Belastung wird.",
+          "Die Ausnahme: Wenn Sie ein Paar oder Triplett eines nützlichen Ehrensteins haben (etwa einen Drachen oder Ihren Sitzwind), behalten Sie ihn — das ist ein wertendes Muster, das nur noch wartet."
+        ]
+      },
+      {
+        "heading": "Den Abwurfstapel lesen",
+        "body": [
+          "Jeder Abwurf ist Information. Wenn drei Spieler Bambus wegwerfen, sind die Bambus-Steine, die Sie brauchen, wahrscheinlich noch sicher. Wenn alle Schriftzeichen behalten, werden diese Steine gehortet und sind schwerer zu bekommen.",
+          "Die Abwürfe zu beobachten hilft auch, einen Stein zu vermeiden, der die Hand eines Gegners vervollständigen würde."
+        ]
+      },
+      {
+        "heading": "Nicht zu oft rufen",
+        "body": [
+          "Steine zu rufen macht Ihre Hand offen und schließt wertende Muster aus. In den meisten Regelwerken ist eine verdeckte Hand mehr wert.",
+          "Eine gute Regel für Anfänger: Rufen Sie nur, wenn der Ruf Sie einen oder zwei Steine von der Bereitschaft entfernt. Sonst weiterziehen und die Hand geschlossen halten."
+        ]
+      },
+      {
+        "heading": "So schnell wie möglich bereit werden",
+        "body": [
+          "Wer zuerst bereit wird, gewinnt meist. Tauschen Sie Steine, die Sie nicht nutzen können, gegen solche, die Sie nutzen könnten, und halten Sie die Form Ihrer Hand flexibel — eine Hand, die auf mehreren verschiedenen Steinen gewinnen kann, ist stärker als eine, die auf einen einzigen Stein wartet.",
+          "Unsere Tische haben einen Bereitschaftshinweis, der genau zeigt, wie weit Sie von einer vollständigen Hand entfernt sind — so trainieren Sie, den Abstand selbst zu erkennen."
+        ]
+      },
+      {
+        "heading": "Die häufigen Gewinnmuster kennen",
+        "body": [
+          "Diese Muster tauchen ständig auf und lohnen sich zum Merken:",
+          "• All-Simples (断幺九): keine 1er, 9er oder Ehrensteine. Erreichbar aus fast jeder Hand.",
+          "• Flush (清一色): alle Steine aus einer Farbe. Viele Punkte wert.",
+          "• Nur-Tripletts (碰碰胡): jede Kombination ist ein Triplett.",
+          "• Sieben Paare (七对子): die klassische alternative Gewinnform.",
+          "• Drachen-Kombinationen (三元牌): drei Drachen werten in den meisten Regelwerken."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "white"
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          }
+        ]
+      },
+      {
+        "heading": "Ihr Regelwerk spielen, nicht ein generisches Spiel",
+        "body": [
+          "Hongkong, Riichi und Chinesisch Offiziell belohnen unterschiedliche Dinge. Hongkong schätzt eine schnelle, günstige Drei-Faan-Hand. Riichi belohnt verdeckte, strukturierte Hände und bietet Riichi selbst. Chinesisch Offiziell verlangt ein echtes Acht-Punkte-Muster.",
+          "Wählen Sie ein Regelwerk und lernen Sie dessen Muster — zu früh zwischen ihnen zu wechseln ist der schnellste Weg, sich selbst zu verwirren."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Was ist der schnellste Weg zu Tenpai?",
+        "answer": "Halten Sie Ihre Hand flexibel und zielen Sie auf ein günstiges, zuverlässiges Muster. All-Simples ist für Anfänger am schnellsten, weil es aus fast jeder Starthand gebaut werden kann."
+      },
+      {
+        "question": "Soll ich Steine rufen oder verdeckt bleiben?",
+        "answer": "Für Anfänger: bleiben Sie verdeckt, außer ein Ruf bringt Sie zur Bereitschaft. Offene Hände werten weniger und verraten Informationen."
+      },
+      {
+        "question": "Wie vermeide ich, in die Hand eines anderen zu legen?",
+        "answer": "Beobachten Sie die Abwürfe. Spät in der Hand vermeiden Sie Steine, die andere Spieler gesammelt haben — besonders wenn sie bereit sind."
+      },
+      {
+        "question": "Geht Gewinnen um Glück oder Können?",
+        "answer": "Jede einzelne Hand hat Glück, aber über eine Sitzung dominiert Können. Handrichtung, Abwurfdisziplin und Musterkenntnis entscheiden, wer am häufigsten gewinnt."
+      },
+      {
+        "question": "In welchem Mahjong-Regelwerk gewinnt man am leichtesten?",
+        "answer": "Hongkong-Mahjong hat das niedrigste Wertungsminimum (drei Faan) und ist daher am nachsichtigsten für Anfänger. Es ist der beste Ort, um Gewinngewohnheiten zu lernen."
+      }
+    ]
+  },
+  "mahjong-rules-beginners-complete-guide": {
+    "title": "Mahjong-Regeln für Anfänger: Der komplette Leitfaden",
+    "description": "Der komplette einsteigerfreundliche Leitfaden zu den Mahjong-Regeln. Lernen Sie die Steine, die Mauer, Züge, Rufen, Gewinnhände und Wertung — mit einem Vergleich der Regelwerke in klarer Sprache.",
+    "sections": [
+      {
+        "heading": "Mahjong-Regeln in einem Absatz",
+        "body": [
+          "Vier Spieler bauen Hände aus 144 Steinen. Jeder Zug ziehen Sie einen Stein und legen einen ab, um vier Kombinationen plus ein Paar zu vervollständigen. Eine Kombination ist ein Triplett oder eine Sequenz. Wenn Ihre Hand vollständig ist und das Mindestpunktziel des Regelwerks erreicht, sagen Sie einen Gewinn an. Das ist das ganze Spiel — alles andere ist Detail.",
+          "Dieser Leitfaden geht jeden Teil dieses Absatzes durch, damit ein brandneuer Spieler sich hinsetzen und spielen kann."
+        ]
+      },
+      {
+        "heading": "Die Steine",
+        "body": [
+          "Ein Standard-Set hat 144 Steine: 108 nummerierte Steine, 28 Ehrensteine und 8 Bonussteine. Die nummerierten Steine kommen in drei Farben — Schriftzeichen (wàn), Bambus (tiáo) und Kreise (tóng) — jeweils von 1 bis 9 mit vier Exemplaren.",
+          "Die Ehrensteine sind die vier Winde (Ost, Süd, West, Nord) und drei Drachen (Rot, Grün, Weiß). Bonussteine (Blumen und Jahreszeiten) erscheinen in manchen Regelwerken und geben meist einen kleinen Bonus, statt Kombinationen zu bilden."
+        ]
+      },
+      {
+        "heading": "Die Mauer und das Austeilen",
+        "body": [
+          "Alle Steine werden verdeckt gemischt und zu einer Mauer aus 17 Stapeln pro Spieler gestapelt. Der Geber (Ost) würfelt mit zwei Würfeln, um zu wählen, wo die Mauer gebrochen wird, und teilt dann jedem Spieler 13 Steine aus. Der Geber nimmt einen 14. Stein und legt zuerst ab.",
+          "Online wird die Mauer für Sie automatisch gebaut und ausgeteilt — Sie verwalten nur Ihre Hand."
+        ]
+      },
+      {
+        "heading": "Ihr Zug",
+        "body": [
+          "An Ihrem Zug ziehen Sie einen Stein, studieren Ihre Hand und legen einen Stein offen ab. Sie halten immer 13 Steine. Der abgelegte Stein liegt in der Mitte, damit alle ihn sehen — und damit alle Ihre Strategie lesen können.",
+          "Der Rhythmus aus Ziehen und Ablegen ist in jedem Regelwerk gleich, weshalb Fähigkeiten sich übertragen."
+        ]
+      },
+      {
+        "heading": "Kombinationen bauen: Pung, Chow und Kong",
+        "body": [
+          "Wenn ein anderer Spieler einen Stein ablegt, der eine Kombination in Ihrer Hand vervollständigen würde, dürfen Sie ihn rufen statt zu ziehen:",
+          "• Pung — drei gleiche Steine. Rufbar von jedem Spieler.",
+          "• Chow — drei aufeinanderfolgende Steine einer Farbe. Rufbar nur vom Spieler links von Ihnen.",
+          "• Kong — vier gleiche Steine. Der mächtigste Ruf, in manchen Regelwerken mit Bonussteinen belohnt.",
+          "Rufe legen Ihre Hand offen. Eine offene Hand ist in den meisten Wertungssystemen schwächer, also sollten Anfänger sparsam rufen."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Gewinnhände",
+        "body": [
+          "Eine Gewinnhand besteht aus vier Kombinationen plus einem Paar. Sie gewinnen durch Selbstziehen (Tsumo) oder durch Nehmen des Abwurfs eines anderen Spielers (Ron).",
+          "Regelwerke verlangen auch eine Mindestpunktzahl: drei Faan im Hongkong-Stil, ein Yaku im japanischen Riichi, acht Punkte bei Chinesisch Offiziell. Eine vollständige Hand unter dem Minimum ist keine Gewinnhand — Sie verbessern sie weiter."
+        ]
+      },
+      {
+        "heading": "Die wichtigsten Regelwerke im Vergleich",
+        "body": [
+          "• Hongkong-Mahjong — der einfachste Einstieg. Drei-Faan-Minimum, nachsichtige Wertung, der außerhalb Japans am weitesten verbreitete Stil.",
+          "• Japanisches Riichi — Wettkampfstandard. Verdeckte Hände und Riichi-Ansagen werten höher; strenge Yaku-Anforderungen.",
+          "• Chinesisch Offiziell (MCR) — internationale Turnierregeln. Ein Acht-Punkte-Minimum verlangt echte Handstruktur.",
+          "• Amerikanisch / Taiwanesisch / Sichuan — regionale Varianten mit Jokern, sechzehn Steinen oder ganz ohne Ehrensteine.",
+          "Beginnen Sie mit Hongkong. Wenn Sie zuverlässig gewinnen können, probieren Sie Riichi für Tiefe oder Chinesisch Offiziell für Struktur."
+        ]
+      },
+      {
+        "heading": "Kostenlos ausprobieren",
+        "body": [
+          "Regeln lesen bringt nur so weit — der schnellste Weg zu lernen ist zu spielen. Unser Hongkong-Tisch setzt Sie gegen drei Computergegner mit Bereitschaftshinweis und vollständiger Punkteaufschlüsselung bei jeder Hand. Völlig kostenlos, im Browser, ohne Download."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Wie lange dauert es, die Mahjong-Regeln zu lernen?",
+        "answer": "Den grundlegenden Ablauf — ziehen, ablegen, vier Kombinationen und ein Paar bauen — können Sie in etwa einer Stunde lernen. Wertung und Strategie brauchen länger, aber das Hongkong-Regelwerk ist sanft genug, um beim Spielen zu lernen."
+      },
+      {
+        "question": "Brauche ich vier Personen, um Mahjong zu spielen?",
+        "answer": "Persönlich ja. Online können Sie jederzeit gegen Computergegner spielen — unsere Tische setzen immer drei Bots, wenn Sie allein spielen."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen Pung und Chow?",
+        "answer": "Ein Pung sind drei gleiche Steine und kann von jedem Spieler gerufen werden. Ein Chow sind drei aufeinanderfolgende Steine einer Farbe und kann nur vom Spieler links von Ihnen gerufen werden."
+      },
+      {
+        "question": "Ist Mahjong schwer zu gewinnen?",
+        "answer": "Die Regeln sind einfach; gut zu gewinnen braucht Übung. Früh eine Handrichtung zu wählen und nicht zu oft zu rufen sind die zwei Gewohnheiten, die Ergebnisse am schnellsten verbessern."
+      }
+    ]
+  },
+  "mahjong-tiles-meaning-guide": {
+    "title": "Mahjong-Steine und ihre Bedeutungen: Der komplette Leitfaden",
+    "description": "Was bedeuten Mahjong-Steine? Ein vollständiger Leitfaden zu den 144 Steinen — Farben, Winde, Drachen, Blumen und Jahreszeiten — mit erklärten Symbolen für Anfänger.",
+    "sections": [
+      {
+        "heading": "Die 144 Steine auf einen Blick",
+        "body": [
+          "Ein Standard-Mahjong-Set enthält 144 Steine, unterteilt in Farben, Ehrensteine und Bonussteine. Jeder Stein erscheint viermal in einer Farbe (mit wenigen Ausnahmen bei Blumen und Jahreszeiten), weshalb Paare und Kombinationen überhaupt möglich sind.",
+          "Die Übersicht unten erklärt jede Gruppe. Zusammen geben sie dem Spiel seine Tiefe — Sie verfolgen immer, was in Ihrer Hand, was auf dem Tisch und was noch in der Mauer ist."
+        ]
+      },
+      {
+        "heading": "Die drei Farben",
+        "body": [
+          "• Schriftzeichen (萬, wan) — der Stein zeigt eine Zahl chinesischer Schriftzeichen, 1 bis 9.",
+          "• Bambus (條, tiao) — der Stein zeigt ein bis neun Bambusstäbe.",
+          "• Kreise (筒, tong) — der Stein zeigt ein bis neun Münzen oder Punkte.",
+          "Jede Farbe hat vier Exemplare jeder Zahl, also 36 Steine pro Farbe und insgesamt 108 nummerierte Steine. Eine Kombination (Sequenz) sind drei aufeinanderfolgende Zahlen derselben Farbe — Farben zählen also für mehr als nur das Aussehen."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          }
+        ]
+      },
+      {
+        "heading": "Die Winde",
+        "body": [
+          "Die vier Winde sind Ost, Süd, West und Nord. Sie sind Ehrensteine — sie können keine Sequenzen bilden, nur Tripletts. In vielen Regelwerken wertet ein Triplett Ihres Sitzwinds oder des Rundenwinds Extra-Punkte.",
+          "Der Geber ist immer Ost, und die Züge rotieren durch Süd, West und Nord. Die Windsteine sind die einzigen Ehrensteine, die etwas Sichtbares am Tisch abbilden."
+        ]
+      },
+      {
+        "heading": "Die Drachen",
+        "body": [
+          "Die drei Drachen sind Rot (中), Grün (發) und Weiß (白). Wie Winde bilden sie nur Tripletts, aber Drachen-Tripletts werten in fast jedem Regelwerk — ein rotes Drachen-Triplett ist einer der zuverlässigsten Wege, ein Wertungsminimum zu erreichen.",
+          "Eine volle Hand mit allen drei Drachen-Tripletts ist in den meisten Spielen ein großes Wertungsmuster."
+        ]
+      },
+      {
+        "heading": "Blumen und Jahreszeiten",
+        "body": [
+          "Blumen und Jahreszeiten sind Bonussteine, die in manchen Regelwerken verwendet werden. Jeder Spieler hat eine Blume und eine Jahreszeit; das Ziehen der eigenen gibt Bonuspunkte und lässt Sie einen Ersatzstein von der Mauer ziehen.",
+          "Sie werden meist sofort beiseitegelegt und bilden nie Teil einer Gewinnhand."
+        ]
+      },
+      {
+        "heading": "Warum Steinbedeutungen wichtig sind",
+        "body": [
+          "Sie müssen die Artwork nicht auswendig lernen — Zahlen und Farben tragen alle Informationen. Aber zu wissen, was jeder Stein wert ist (kann er eine Sequenz bilden? ein Triplett? ein Wertungsmuster?), verwandelt zufälliges Ziehen in einen Plan.",
+          "Sobald die Steine vertraut sind, ist der Rest von Mahjong Mustererkennung und Timing."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Wie viele verschiedene Mahjong-Steine gibt es?",
+        "answer": "Es gibt 34 verschiedene Steine (9 Schriftzeichen, 9 Bambus, 9 Kreise, 4 Winde, 3 Drachen) und von den meisten vier Exemplare, also 144 Steine. Blumen und Jahreszeiten fügen in Sets, die sie enthalten, 8 weitere hinzu."
+      },
+      {
+        "question": "Was stellen die drei Farben dar?",
+        "answer": "Schriftzeichen, Bambus und Kreise stellen unterschiedliche Münznennungen im historischen chinesischen Ursprung des Spiels dar. Im Spiel sind sie einfach drei Farben von 1–9."
+      },
+      {
+        "question": "Können Ehrensteine Sequenzen bilden?",
+        "answer": "Nein. Winde und Drachen können nur Tripletts bilden, nie Sequenzen. Deshalb werden einzelne Ehrensteine meist früh abgelegt."
+      },
+      {
+        "question": "Was ist der wertvollste Stein?",
+        "answer": "Es gibt keinen einzigen wertvollsten Stein — der Wert hängt von Ihrer Hand und dem Regelwerk ab. Drachen-Tripletts, Ihr Sitzwind und seltene Farbsteine wie 1 und 9 sind im Allgemeinen am nützlichsten."
+      }
+    ]
+  },
+  "american-vs-chinese-mahjong": {
+    "title": "Amerikanisches vs. chinesisches Mahjong: Die wichtigsten Unterschiede",
+    "description": "Amerikanisches und chinesisches Mahjong sind sehr unterschiedliche Spiele. Vergleichen Sie Joker, Handkarten, Wertung und Steinzahlen, um zu sehen, welcher Stil zu Ihnen passt.",
+    "sections": [
+      {
+        "heading": "Zwei Spiele mit demselben Namen",
+        "body": [
+          "Beide Spiele verwenden Mahjong-Steine und beide werden von vier Personen gespielt, aber amerikanisches und chinesisches Mahjong divergierten dramatisch, nachdem Mahjong in den 1920er Jahren den Westen erreichte. Das kartengetriebene amerikanische Spiel wirkt eher wie ein Hand-Bau-Wettlauf; chinesische Stile bewahren die Reinheit aus Ziehen und Ablegen des Originals.",
+          "Hier ist, was sich wirklich unterscheidet, damit Sie den Stil wählen können, den Sie genießen werden."
+        ]
+      },
+      {
+        "heading": "Die Handkarte vs. offene Muster",
+        "body": [
+          "Das bestimmende Merkmal des amerikanischen Mahjong ist die jährliche Handkarte, die jedes Jahr von der National Mahjong League veröffentlicht wird. Sie listet Dutzende exakter Gewinnmuster; Sie müssen eines davon genau bauen, um zu gewinnen. Die Muster ändern sich jedes Jahr, was das Spiel frisch hält, aber bedeutet, dass die Regeln nicht allein aus den Steinen ableitbar sind.",
+          "Chinesisches Mahjong verwendet feste, universelle Wertungsmuster — Flushes, Tripletts, Drachen —, die sich ein Jahrhundert lang nicht geändert haben. Die Regeln sind dieselben, ob Sie in Peking oder online spielen."
+        ]
+      },
+      {
+        "heading": "Joker und der Charleston",
+        "body": [
+          "Amerikanisches Mahjong verwendet Joker, die für jeden Stein stehen können, und einen festen Eröffnungstausch namens Charleston, bei dem Spieler Steine links, rechts und quer in fester Reihenfolge weitergeben. Beide Merkmale fügen eine Tauschphase hinzu, die es im chinesischen Mahjong nicht gibt.",
+          "Chinesische Stile haben keine Joker und kein Weitergeben — Sie spielen streng mit den Steinen, die Sie ausgeteilt bekommen."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          },
+          {
+            "suit": "wind",
+            "wind": "north"
+          }
+        ]
+      },
+      {
+        "heading": "Steine, Züge und Rufen",
+        "body": [
+          "Amerikanisches Mahjong enthält Blumen und Jahreszeiten und hat eigene Rufregeln. Chinesisches Mahjong (und seine regionalen Varianten) behält die klassischen Pung-/Chow-/Kong-Rufe und die Zugstruktur aus Ziehen und Ablegen.",
+          "Japanisches Riichi und Chinesisch Offiziell fügen eigene Drehungen hinzu — Riichi-Ansagen, das Acht-Punkte-Minimum —, sind aber erkennbar dieselbe Familie wie das originale chinesische Spiel."
+        ]
+      },
+      {
+        "heading": "Welches sollten Sie spielen?",
+        "body": [
+          "Wenn Sie ein Spiel mit Tausch, Jokern und einem jährlichen Metagame wollen, ist amerikanisches Mahjong ein tolles soziales Hobby. Wenn Sie das klassische Wettkampfspiel wollen, das sich über Länder und Turniere überträgt, ist chinesisches Mahjong — zuerst Hongkong-Stil, dann Riichi oder Chinesisch Offiziell — der bessere Weg.",
+          "Sie können chinesisches Mahjong jetzt kostenlos online spielen, und es lehrt Sie das Spiel, das der Rest der Welt spielt."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Werden amerikanisches und chinesisches Mahjong mit denselben Steinen gespielt?",
+        "answer": "Das Steineset ist weitgehend dasselbe, aber amerikanisches Mahjong stützt sich auf Joker und die jährliche Handkarte, die chinesisches Mahjong nicht verwendet. Das Gameplay unterscheidet sich stärker als die Steine."
+      },
+      {
+        "question": "Welches ist leichter zu lernen, amerikanisches oder chinesisches Mahjong?",
+        "answer": "Chinesisches Mahjong hat leichter entdeckbare Regeln, weil die Muster fest und universell sind. Amerikanisches Mahjong erfordert das Lernen der jährlichen Handkarte, die sich jedes Jahr ändert."
+      },
+      {
+        "question": "Brauche ich die jährliche Handkarte, um amerikanisches Mahjong zu spielen?",
+        "answer": "Ja — die Karte definiert die Gewinnmuster für dieses Jahr. Ohne sie können Sie unter amerikanischen Regeln keinen gültigen Gewinn ansagen."
+      },
+      {
+        "question": "Kann ich chinesisches Mahjong kostenlos online spielen?",
+        "answer": "Ja. Unser Hongkong-Mahjong-Tisch ist kostenlos, im Browser und lehrt das klassische Spiel aus Ziehen und Ablegen gegen Computergegner."
+      }
+    ]
+  },
+  "how-to-play-mahjong-online": {
+    "title": "Mahjong online spielen: Kostenlos im Browser",
+    "description": "Spielen Sie Mahjong online kostenlos — kein Download, keine Installation. Erfahren Sie, wo Sie spielen, wie die Online-Regeln funktionieren und welche Etikette beim Spielen gegen Bots und Fremde gilt.",
+    "sections": [
+      {
+        "heading": "Warum Mahjong online spielen",
+        "body": [
+          "Online-Mahjong nimmt Anfängern den schwersten Teil des Spiels ab: die Verwaltung. Der Computer baut die Mauer, teilt die Steine aus, handhabt Rufe und berechnet Punkte. Sie konzentrieren sich ganz auf Ihre Hand.",
+          "Es ist auch der einzige Weg, wie die meisten Leute spielen können, wann immer sie wollen — ohne drei Freunde um einen Tisch zu versammeln."
+        ]
+      },
+      {
+        "heading": "Was Sie brauchen",
+        "body": [
+          "Nur einen Browser und eine Internetverbindung. Auf Desktop oder Mobil gibt es nichts zu installieren. Unsere Tische laufen im Browser auf jedem modernen Gerät und funktionieren mit Touch oder Maus.",
+          "Zum Starten ist kein Konto nötig, und jedes Spiel ist völlig kostenlos — es gibt keine Wetten und keine kaufbare Währung."
+        ]
+      },
+      {
+        "heading": "So funktioniert ein Online-Spiel",
+        "body": [
+          "Sie setzen sich an einen Tisch und das Spiel teilt Ihnen 13 Steine aus. An Ihrem Zug klicken Sie auf einen Stein zum Ziehen, dann auf einen Stein zum Ablegen. Das Spiel markiert Steine, die Sie rufen können, und zeigt, wann Ihre Hand gewinnen kann.",
+          "Ein optionaler Bereitschaftshinweis zeigt, wie weit Ihre Hand von einer vollständigen Form entfernt ist — das ist das nützlichste Werkzeug zum Lernen."
+        ],
+        "tiles": [
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          }
+        ]
+      },
+      {
+        "heading": "Bots vs. menschliche Gegner",
+        "body": [
+          "Gegen Computergegner zu spielen ist ideal zum Lernen: Bots spielen in gleichmäßigem Tempo, stocken nie und werden nie ungeduldig, während Sie nachdenken. Unsere Tische setzen immer drei Bots, sodass Sie jederzeit allein spielen können.",
+          "Wenn Sie bereit für menschliche Gegner sind, gelten dieselben Fähigkeiten — Online-Regeln sind dieselben wie Tischregeln."
+        ]
+      },
+      {
+        "heading": "Online-Mahjong-Etikette",
+        "body": [
+          "Machen Sie Ihren Zug zügig. Rufen Sie nur, wenn Sie den Stein wirklich wollen. Hetzen Sie andere nicht. Und in lockeren Spielen gilt: Das Ziel ist Spaß — niemand gewinnt jede Hand.",
+          "Die eine Regel, die online am meisten zählt: Bleiben Sie dabei. Ein stockender Tisch ist der einzige echte Ärger."
+        ]
+      },
+      {
+        "heading": "Jetzt spielen",
+        "body": [
+          "Bereit zum Ausprobieren? Unser Hongkong-Mahjong-Tisch setzt Sie gegen drei Bots mit erklärter Wertung bei jeder Hand. Kostenlos, sofort und der schnellste Weg von den Regeln zu echten Spielen."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Ist Online-Mahjong kostenlos?",
+        "answer": "Auf unserer Seite ja — völlig kostenlos, kein Konto, keine Wetten, nichts zum Herunterladen. Sie können im Browser auf Desktop oder Mobil spielen."
+      },
+      {
+        "question": "Muss ich die Regeln kennen, bevor ich online spiele?",
+        "answer": "Die Grundlagen zu kennen hilft, aber Online-Tische handhaben Rufe und Wertung automatisch. Sie können beim Spielen lernen, mit dem Bereitschaftshinweis als Führung."
+      },
+      {
+        "question": "Kann ich Mahjong online allein spielen?",
+        "answer": "Ja. Unsere Tische setzen immer drei Computergegner, sodass Sie jederzeit allein ein vollständiges Vier-Personen-Spiel spielen können."
+      },
+      {
+        "question": "Ist Online-Mahjong dasselbe wie persönlich?",
+        "answer": "Die Regeln sind identisch. Der einzige Unterschied ist, dass der Computer Austeilen, Rufen und Wertung übernimmt — was es tatsächlich leichter macht, sich auf Strategie zu konzentrieren."
+      }
+    ]
+  },
+  "best-mahjong-sets-for-beginners": {
+    "title": "Die besten Mahjong-Sets für Anfänger 2026",
+    "description": "Worauf Sie bei Ihrem ersten Mahjong-Set achten sollten: Steingröße, Material, Reisekoffer und das richtige Zubehör. Praktische Kaufberatung, damit Sie mit den richtigen Steinen starten.",
+    "sections": [
+      {
+        "heading": "Worauf Sie achten sollten",
+        "body": [
+          "Ein gutes Anfänger-Set braucht drei Dinge: lesbare Steine, eine volle 144er-Steinzahl und ein Etui, das dem Spielen standhält. Alles andere ist Geschmackssache.",
+          "Die Steingröße zählt am meisten. Standardsteine sind 28–34 mm auf der Vorderseite. Größere Steine sind leichter zu lesen und aufzuheben und lohnen den Extra-Platz am Tisch, wenn Sie locker spielen."
+        ]
+      },
+      {
+        "heading": "Steinmaterial: Bakelit, Harz und mehr",
+        "body": [
+          "Klassische Sets sind aus Knochen und Bambus, moderne Sets verwenden Harz, Kunststoff oder Melamin. Hochwertige Harzsteine haben klare, bemalte Gesichter, die nicht abnutzen. Billige Kunststoffsteine können an den Ecken absplittern und verblassen.",
+          "Für ein erstes Set wählen Sie einfarbige Harz- oder Melaminsteine mit matter Rückseite — sie mischen sich gut und halten jahrelang."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "heading": "Steinzahl und Größe",
+        "body": [
+          "Stellen Sie sicher, dass das Set 144 Steine hat. Viele moderne Sets enthalten Blumen und Jahreszeiten (8 Bonussteine) zusätzlich zu den 136 Kernsteinen. Wenn Sie amerikanisches Mahjong spielen wollen, brauchen Sie auch Joker.",
+          "Ein 144er-Set deckt Hongkong, Riichi und Chinesisch Offiziell ab. Ein 152er-Set fügt Blumen und Jahreszeiten hinzu, falls Ihr Regelwerk sie verwendet."
+        ]
+      },
+      {
+        "heading": "Reise- und Aufbewahrungsetuis",
+        "body": [
+          "Ein festes Etui oder eine Tasche schützt die Steine und hält den Tisch zwischen den Spielen ordentlich. Suchen Sie ein Etui mit Trenner für jeden Steintyp — das macht den Aufbau des nächsten Spiels dramatisch schneller.",
+          "Eine faltbare Spielmatte ist ein lohnendes Extra: Sie hält Steine vom Rutschen ab und schützt die Tischoberfläche."
+        ]
+      },
+      {
+        "heading": "Empfohlenes Zubehör",
+        "body": [
+          "Ein Würfelbecher, Wertungsstäbchen oder ein Punkteblock und ein Stein-Pusher (Rack) sind die üblichen Extras. Für Anfänger sind Wertungsstäbchen der klarste Weg, Gewinne zu verfolgen.",
+          "Manche Sets legen zwei Racks pro Spieler bei — praktisch für Anfänger, die ihre Hand gerne ordnen."
+        ]
+      },
+      {
+        "heading": "Vor dem Kauf ausprobieren",
+        "body": [
+          "Noch unsicher, ob ein physisches Set das Richtige ist? Sie können das Spiel kostenlos online gegen Computergegner lernen — einschließlich genau desselben Hongkong-Regelwerks, für das die meisten physischen Sets gebaut sind — und ein Set kaufen, sobald Sie süchtig sind."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Wie viele Steine sollte ein Anfänger-Mahjong-Set haben?",
+        "answer": "Kaufen Sie ein 144er-Set. Es deckt alle Standardstile ab, und die Struktur mit vier Exemplaren jedes Steins ist das, was das Spiel möglich macht."
+      },
+      {
+        "question": "Welche Steingröße ist für Anfänger am besten?",
+        "answer": "34-mm-Steine sind für Gelegenheitsspieler am bequemsten. Sie sind größer und leichter zu lesen als 28-mm-Turniersteine."
+      },
+      {
+        "question": "Sind teure Mahjong-Sets den Preis wert?",
+        "answer": "Für ein erstes Set nein. Ein solides Mittelklasse-Harz-Set mit klaren Gesichtern reicht. Upgraden Sie, wenn Sie wissen, dass Sie oft spielen."
+      },
+      {
+        "question": "Brauche ich Blumen und Jahreszeiten?",
+        "answer": "Nur wenn Ihr Regelwerk sie verwendet. Hongkong und Riichi brauchen keine Blumen; Chinesisch Offiziell und manche Varianten schon. Ein 144er-Set mit Blumen deckt am meisten ab."
+      }
+    ]
+  },
+  "mahjong-scoring-system-explained": {
+    "title": "Mahjong-Wertung erklärt: Faan, Han und Punkte",
+    "description": "Wie die Mahjong-Wertung über Regelwerke hinweg funktioniert: Faan in Hongkong, Han in Riichi, Punkte bei Chinesisch Offiziell. Die häufigen Muster und wie Sie Ihre Hand zählen.",
+    "sections": [
+      {
+        "heading": "Jedes Regelwerk hat ein Minimum",
+        "body": [
+          "In jedem Mahjong-Regelwerk muss eine Gewinnhand eine Mindestpunktzahl erreichen, bevor sie angesagt werden kann. Die Namen unterscheiden sich — Faan in Hongkong, Han in Riichi, Punkte bei Chinesisch Offiziell —, aber die Idee ist dieselbe: Eine Hand muss genug Struktur enthalten, um als Gewinn zu gelten.",
+          "Dieses Minimum verhindert, dass jede Hand ein langweiliger Wettlauf zur ersten vollständigen Form wird."
+        ]
+      },
+      {
+        "heading": "Die grundlegende Gewinnform",
+        "body": [
+          "Die Grundlage sind immer vier Kombinationen plus ein Paar. Kombinationen können Tripletts oder Sequenzen sein. Darüber hinaus fügen Muster Wert hinzu:",
+          "• Flush — alle Steine aus einer Farbe.",
+          "• Nur-Tripletts — jede Kombination ist ein Triplett.",
+          "• All-Simples — keine 1er, 9er oder Ehrensteine.",
+          "• Drachen-Tripletts — drei Drachen in einer Hand.",
+          "• Sieben Paare — eine alternative Gewinnform in den meisten Regelwerken."
+        ]
+      },
+      {
+        "heading": "Hongkong-Faan",
+        "body": [
+          "Hongkong-Stil verlangt mindestens drei Faan. Häufige Muster und ihr Wert: reine Farbhand (3), Nur-Tripletts (3), All-Simples (1), ein Drachen-Triplett (1–3). Hände stapeln sich — ein Flush mit einem Drachen-Triplett ist mehr wert als jedes allein.",
+          "Die Wertungstabelle belohnt saubere, bewusste Hände. Günstige Hände sind zuverlässig, aber langsam; ambitionierte Hände werten groß, kommen aber selten zusammen."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          }
+        ]
+      },
+      {
+        "heading": "Japanisches Han und Riichi",
+        "body": [
+          "Die Riichi-Wertung fügt Yaku (feste Muster) über Han hinzu. Riichi selbst ist ein Yaku — es auf Tenpai anzusagen fügt ein Han hinzu und ist das Markenzeichen des Regelwerks. Verdeckte Hände werten deutlich höher, was Geduld belohnt.",
+          "Die Bereitschaftsposition (Tenpai) zählt in Riichi ebenfalls: Sie können Riichi ansagen oder schweigen und anders werten. Han zu verstehen ist der Schlüssel zur Wahl."
+        ]
+      },
+      {
+        "heading": "Chinesisch Offiziell Punkte (MCR)",
+        "body": [
+          "Chinesisch Offiziell verwendet ein Acht-Punkte-Minimum mit einem großen Katalog von Mustern zu 1 bis 88 Punkten. Flush-Hände, Nur-Tripletts und die seltensten Muster stapeln sich schnell.",
+          "Das hohe Minimum erzwingt echte Struktur — meist braucht man eine Sieben-Paare-Hand oder einen Flush, weshalb MCR-Spieler ihre Hand von den ersten Steinen an planen."
+        ]
+      },
+      {
+        "heading": "Lassen Sie den Tisch für Sie werten",
+        "body": [
+          "Wenn Sie online spielen, berechnet der Tisch Ihre Punkte und erklärt nach jedem Gewinn genau, woher jeder Punkt kam. Das ist der schnellste Weg, die Wertungstabelle zu lernen — Sie sehen die Muster, die Sie gebaut haben, und was sie eingebracht haben, Hand für Hand."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Was ist der Unterschied zwischen Faan, Han und Punkten?",
+        "answer": "Es ist dieselbe Idee unter verschiedenen Namen: eine Punktzahl, die an Muster in einer Gewinnhand gebunden ist. Hongkong verwendet Faan, Riichi verwendet Han, Chinesisch Offiziell verwendet Punkte."
+      },
+      {
+        "question": "Wie viele Punkte brauche ich, um Mahjong zu gewinnen?",
+        "answer": "Hongkong braucht drei Faan, japanisches Riichi mindestens ein Yaku und Chinesisch Offiziell acht Punkte. Jedes Regelwerk definiert sein eigenes Minimum."
+      },
+      {
+        "question": "Was ist der einfachste Weg, die Mahjong-Wertung zu lernen?",
+        "answer": "Online spielen, wo der Tisch jede Wertung berechnet und erklärt. Die Aufschlüsselung nach jedem Gewinn zu sehen lehrt die Muster weit schneller als eine Tabelle auswendig zu lernen."
+      },
+      {
+        "question": "Welche Muster werten am meisten?",
+        "answer": "Seltene, strukturierte Hände werten am meisten: reine Farb- (Flush-) Hände, Nur-Tripletts und besondere Formen wie sieben Paare oder dreizehn Waisen gehören zu den höchstwertigen Mustern."
+      }
+    ]
+  },
+  "types-of-mahjong-games": {
+    "title": "Arten von Mahjong-Spielen: Jeder Stil erklärt",
+    "description": "Von Hongkong und Riichi bis amerikanisch, taiwanesisch und Sichuan — vergleichen Sie die wichtigsten Arten von Mahjong-Spielen und finden Sie den Stil, der zu Ihnen passt.",
+    "sections": [
+      {
+        "heading": "Ein Name, viele Spiele",
+        "body": [
+          "Mahjong spaltete sich in unterschiedliche regionale Spiele, als es sich von China ausbreitete. Sie teilen Steine und den Kern aus Ziehen und Ablegen, aber Wertung, Rufen und sogar die Steinzahl unterscheiden sich. Einen Stil zu wählen ist eine echte Entscheidung — hier ist die Landkarte."
+        ]
+      },
+      {
+        "heading": "Hongkong-Mahjong",
+        "body": [
+          "Der außerhalb Japans am weitesten verbreitete Stil und der beste Einstieg für Anfänger. Drei-Faan-Minimum, einfache Wertung, schnelle Spiele. Wenn Sie zuerst einen Stil lernen wollen, nehmen Sie diesen."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "Japanisches Riichi-Mahjong",
+        "body": [
+          "Der Wettkampfstandard. Riichi-Ansagen, strenge Yaku, Boni für verdeckte Hände und rote Fünfen. Tiefer und langsamer als Hongkong-Stil — das Schach des Mahjong, das Studium und Geduld belohnt."
+        ]
+      },
+      {
+        "heading": "Chinesisch Offiziell (MCR)",
+        "body": [
+          "Das internationale Turnierregelwerk mit einem Acht-Punkte-Minimum und einem riesigen Musterkatalog. Anspruchsvoll und strukturiert; eine Hand muss ihren Gewinn verdienen. Beliebt in chinesischsprachigen Communities und Wettbewerben."
+        ]
+      },
+      {
+        "heading": "Amerikanisches Mahjong",
+        "body": [
+          "Verwendet Joker, Blumen, den Charleston-Pass und eine jährliche Handkarte der National Mahjong League. Sozial und kartengetrieben — die Regeln ändern sich jedes Jahr. Ein sehr anderes Erlebnis als die asiatischen Stile."
+        ]
+      },
+      {
+        "heading": "Taiwanesisches Mahjong",
+        "body": [
+          "Wird mit sechzehn statt dreizehn Steinen gespielt, sodass Sie fünf Kombinationen und ein Paar bauen. Blumenersatz und Tài-basierte Wertung fügen ungewöhnliche Tiefe hinzu. Ein guter nächster Schritt, nachdem Sie das Dreizehn-Steine-Spiel beherrschen."
+        ]
+      },
+      {
+        "heading": "Sichuan-Mahjong",
+        "body": [
+          "Eine schnelle „Blutige Schlacht“-Variante ohne Ehrensteine, mit einer Pflicht-Leerfarbe und Weiterspielen nach jedem Gewinn. Spiele sind schnell und aggressiv — ideal für Gelegenheitsspieler, die Tempo mögen."
+        ]
+      },
+      {
+        "heading": "Mahjong Solitaire",
+        "body": [
+          "Gar kein Mahjong — ein Einzelspieler-Paar-Puzzle, bei dem Sie ein geschichtetes Layout durch Paaren identischer Steine räumen. Toll zum Entspannen, teilt aber mit dem Vier-Personen-Spiel außer den Steinen nichts."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Was ist die beliebteste Art von Mahjong?",
+        "answer": "Hongkong-Stil ist außerhalb Japans am weitesten verbreitet, und japanisches Riichi dominiert den Wettkampf. In China sind Sichuan und Chinesisch Offiziell beliebt."
+      },
+      {
+        "question": "Welcher Mahjong-Stil ist für Anfänger am einfachsten?",
+        "answer": "Hongkong-Mahjong. Sein Drei-Faan-Minimum und die nachsichtige Wertung machen es zum sanftesten Einstieg, bevor Sie zu Riichi oder Chinesisch Offiziell wechseln."
+      },
+      {
+        "question": "Werden alle Mahjong-Varianten mit vier Spielern gespielt?",
+        "answer": "Ja, das Vier-Personen-Spiel ist der Standard. Mahjong Solitaire ist die Ausnahme — es ist ein Einzelspieler-Puzzle, keine Mahjong-Variante."
+      },
+      {
+        "question": "Brauche ich für verschiedene Mahjong-Arten unterschiedliche Steine?",
+        "answer": "Ein Standard-144er-Set deckt Hongkong, Riichi und Chinesisch Offiziell ab. Amerikanisches Mahjong braucht Joker; Taiwanesisch und Sichuan haben eigene Konventionen."
+      }
+    ]
+  },
+  "mahjong-etiquette-tips": {
+    "title": "Mahjong-Etikette: Die ungeschriebenen Regeln am Tisch",
+    "description": "Lernen Sie die Etikette von Mahjong — wie Sie Steine handhaben, wann Sie rufen, den Fluss lesen und die sozialen Regeln, die den Tisch freundlich halten.",
+    "sections": [
+      {
+        "heading": "Etikette macht das Spiel spielbar",
+        "body": [
+          "Mahjong ist ein soziales Spiel. Die ungeschriebenen Regeln existieren, damit jeder den Tisch lesen, in Ruhe denken und die Sitzung genießen kann. Die meisten sind einfach: Respektieren Sie die Zugreihenfolge, behalten Sie Ihre Steine für sich und hetzen Sie nie einen anderen Spieler."
+        ]
+      },
+      {
+        "heading": "Gehen Sie sorgfältig mit den Steinen um",
+        "body": [
+          "Ziehen und legen Sie einen Stein nach dem anderen ab. Fegen Sie keine Steine über den Tisch und ordnen Sie nie die Abwürfe eines anderen Spielers neu. Online heißt das: Machen Sie Ihren Zug, ohne das Spiel zu ziehen — ein langsamer, aber stetiger Spieler ist besser als ein schneller, schlampiger."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "heading": "Rufen Sie mit Überzeugung, nicht aus Gewohnheit",
+        "body": [
+          "Einen Stein zu rufen kündigt Ihre Hand dem Tisch an. Etikette (und gute Strategie) sagt: Rufen Sie nur, wenn der Stein wirklich hilft. Wiederholt zu rufen und schwache Steine abzulegen wirkt unerfahren und gibt dem Tisch freie Information."
+        ]
+      },
+      {
+        "heading": "Lesen Sie den Fluss, nicht nur die Steine",
+        "body": [
+          "Beobachten Sie den Rhythmus der Abwürfe. Ein Spieler, der vor dem Ablegen pausiert, entscheidet — meist nahe einem Gewinn. Respektieren Sie die Spannung eines späten Spiels und denken Sie nach, bevor Sie einen gefährlichen Stein ablegen."
+        ]
+      },
+      {
+        "heading": "Gewinnen und Verlieren mit Anstand",
+        "body": [
+          "Gewinne und Verluste gehören zu einer Sitzung. Danken Sie dem Spieler, der einen Gewinnstein legt, und hängen Sie nicht an einem pechvollen Schlag. In freundschaftlichen Spielen ist das Ziel die Sitzung, nicht die Punktzahl."
+        ]
+      },
+      {
+        "heading": "Online-Etikette",
+        "body": [
+          "Online gelten dieselben Regeln: Züge zügig machen, ehrlich spielen und bedenken, dass Bots geduldig sind, Menschen aber nicht. Unsere Tische stocken nie und urteilen nie über Ihr Tempo — der ideale Ort, um gute Gewohnheiten zu lernen."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Darf ich die Abwürfe anderer Spieler ansehen?",
+        "answer": "Ja — der Abwurfstapel ist in jedem Regelwerk öffentliche Information. Ihn zu lesen ist nicht nur erlaubt, es wird erwartet."
+      },
+      {
+        "question": "Ist es unhöflich, Zeit für meinen Zug zu brauchen?",
+        "answer": "Eine vernünftige Pause ist in Ordnung, besonders spät in einer Hand. Das Etikette-Problem ist Stocken oder Hetzen. Die meisten lockeren Tische sind entspannt beim Tempo."
+      },
+      {
+        "question": "Soll ich meine Rufe ansagen?",
+        "answer": "Ja — sagen Sie Pung, Chow oder Kong klar an, damit der Tisch reagieren kann. Online-Tische machen das automatisch für Sie."
+      },
+      {
+        "question": "Was ist die wichtigste Etikette-Regel?",
+        "answer": "Respektieren Sie den Fluss des Spiels: Züge in der Reihenfolge machen, Abwürfe sauber halten und nie die Steine eines anderen Spielers oder Ihre eigenen freilegen, bis die Hand endet."
+      }
+    ]
+  },
+  "where-to-buy-mahjong-set": {
+    "title": "Wo man ein Mahjong-Set online kauft",
+    "description": "Wo Sie ein Mahjong-Set online kaufen: was Shops führen, wie Sie Qualität prüfen, Preisspannen und was Sie beim Kauf Ihres ersten Sets vermeiden sollten.",
+    "sections": [
+      {
+        "heading": "Was Sie eigentlich kaufen",
+        "body": [
+          "Ein Mahjong-Set sind Steine plus Etui. Innerhalb dessen schwankt die Qualität enorm — ein 144er-Harz-Set kann ab ¥100 oder bis ¥1.500+ für Knochen-und-Bambus-Handwerk kosten. Für Ihr erstes Set liegt der Sweet Spot bei einem gut gemachten Harz- oder Melamin-Set."
+        ]
+      },
+      {
+        "heading": "Online-Marktplätze",
+        "body": [
+          "Die großen Online-Marktplätze führen alle Mahjong-Sets: allgemeine Marktplätze für Budget- und Mittelklasse-Sets und Spezialshops für Premium-Handarbeit. Filtern Sie nach „144 Steine“ und lesen Sie Bewertungen, die Steingröße und Farbqualität erwähnen.",
+          "Achten Sie auf Angebote, die die Steinzahl ausdrücklich nennen. Viele Budget-Angebote verkaufen 108er- oder unvollständige Sets, ohne es zu sagen."
+        ]
+      },
+      {
+        "heading": "Was Sie in Bewertungen prüfen sollten",
+        "body": [
+          "• Hält das Etui die Steine sicher?",
+          "• Sind die Gesichter bemalt oder gedruckt? Gedruckte Gesichter können abnutzen.",
+          "• Ist die Steingröße angegeben und bequem?",
+          "• Passen die Rückseiten genau? Nicht passende Rückseiten sind ein häufiger Fehler billiger Sets.",
+          "Bewertungen, die diese vier Punkte erwähnen, sind die, denen Sie vertrauen sollten."
+        ]
+      },
+      {
+        "heading": "Preisspannen",
+        "body": [
+          "• ¥100–¥300 — brauchbare Kunststoff- oder leichte Harz-Sets. Gut für Gelegenheitsspiel.",
+          "• ¥300–¥800 — solides Harz mit klaren Gesichtern und gutem Etui. Der Anfänger-Sweet-Spot.",
+          "• ¥800+ — Premium- und Vintage-Sets. Nur lohnenswert, wenn Sie wissen, dass Sie oft spielen.",
+          "Geben Sie für Ihr erstes Set die mittlere Stufe aus, und Sie werden es nicht bereuen."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          }
+        ]
+      },
+      {
+        "heading": "Das Spiel ausprobieren, bevor Sie sich festlegen",
+        "body": [
+          "Ein Mahjong-Set ist ein Kauf, den Sie jahrelang behalten — aber nur, wenn Ihnen das Spiel gefällt. Spielen Sie zuerst ein paar kostenlose Hände online, lernen Sie, ob Ihnen der Rhythmus gefällt, und investieren Sie dann in Steine. Wenn Sie entscheiden, dass Sie es lieben, ist die Online-Set-Empfehlung immer noch der richtige Start."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Wie viel sollte ich für ein erstes Mahjong-Set ausgeben?",
+        "answer": "Planen Sie ¥300–¥800 für ein solides Harz-Set mit gutem Etui. Budget-Sets unter ¥300 haben oft dünne Steine oder gedruckte Gesichter, die schnell abnutzen."
+      },
+      {
+        "question": "Was ist ein fairer Preis für ein 144er-Mahjong-Set?",
+        "answer": "Ein zuverlässiges 144er-Harz-Set mit Etui kostet typischerweise ¥300–¥600 auf großen Marktplätzen. Premium-Knochen-und-Bambus-Sets kosten ein Vielfaches."
+      },
+      {
+        "question": "Sind billige Mahjong-Sets den Kauf wert?",
+        "answer": "Für gelegentliches Spielen ist ein Budget-Set in Ordnung. Bestätigen Sie nur, dass es 144 Steine hat, und prüfen Sie Bewertungen auf Beschwerden zu Farbe und Rückseiten-Matching."
+      },
+      {
+        "question": "Soll ich ein Mahjong-Set kaufen, bevor ich spielen lerne?",
+        "answer": "Nicht unbedingt. Sie können das Spiel zuerst kostenlos online lernen und ein Set kaufen, sobald Sie sicher sind, dass es Ihnen gefällt — dann ist der Kauf eine Investition, kein Glücksspiel."
+      }
+    ]
+  },
+  "mahjong-history-cultural-guide": {
+    "title": "Die Geschichte von Mahjong: Vom China der Qing-Dynastie in die Welt",
+    "description": "Die faszinierende Geschichte von Mahjong — seine Ursprünge im China des 19. Jahrhunderts, der West-Boom der 1920er, seine Neuerfindung in Japan und Amerika und wo es heute steht.",
+    "sections": [
+      {
+        "heading": "Ursprünge im China der Qing-Dynastie",
+        "body": [
+          "Mahjong entstand in China Mitte des 19. Jahrhunderts, höchstwahrscheinlich um Shanghai oder Ningbo. Es übernahm die Kartenspiel-Logik früherer chinesischer Spiele und übersetzte sie in Steine — ein Format, das das Verbot vieler Glücksspiele überlebte.",
+          "In den 1890er Jahren war es ein fester Bestandteil der Teehäuser Shanghais und breitete sich entlang der Handelswege aus."
+        ]
+      },
+      {
+        "heading": "Der West-Boom der 1920er",
+        "body": [
+          "Mahjong erreichte die Vereinigten Staaten Anfang der 1920er und wurde zu einem echten sozialen Phänomen — dem „Mahjong-Boom“. Hunderttausende Sets wurden verkauft, und amerikanische Spieler erfanden schnell eigene Konventionen, darunter den Charleston und später die jährliche Handkarte.",
+          "Das chinesische Spiel reiste auch nach Japan, wo es zum Riichi-Regelwerk verfeinert wurde, das heute den Wettkampf dominiert."
+        ]
+      },
+      {
+        "heading": "Regionale Neuerfindung",
+        "body": [
+          "Als Mahjong sich ausbreitete, wurde es zu vielen Spielen. Japan baute Riichi mit strengen Yaku und Wertung für verdeckte Hände. Taiwan entwickelte das Sechzehn-Steine-Spiel. Sichuan schuf die schnelle „Blutige Schlacht“-Variante. Amerika behielt den kartengetriebenen Stil, der sich am weitesten vom Original entfernte.",
+          "Jede Version behielt den Kern aus Ziehen und Ablegen, baute aber Wertung und Strategie um den lokalen Geschmack neu."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          },
+          {
+            "suit": "wind",
+            "wind": "north"
+          }
+        ]
+      },
+      {
+        "heading": "Wettkampf-Mahjong heute",
+        "body": [
+          "Das 21. Jahrhundert brachte Wettkampf-Mahjong: professionelle Riichi-Ligen, die Mahjong Competition Rules (MCR) für internationales Spiel und eine weltweite Online-Szene. Mahjong ist auch in esports-nahen Events und Streaming erschienen und erreicht eine neue Generation.",
+          "Heute wird das Spiel auf fast jedem Kontinent gespielt — in Clubs, auf Online-Plattformen und zu Hause."
+        ]
+      },
+      {
+        "heading": "Die kulturelle Bedeutung von Mahjong",
+        "body": [
+          "In Ostasien ist Mahjong mehr als ein Spiel — es ist ein soziales Ritual. Familien versammeln sich an Feiertagen um den Tisch, und das Spiel ist ein gemeinsames Band über Generationen. Im Westen trug es ein anderes Gewicht: als Symbol des Exotischen, das zu einem geliebten Hobby wurde.",
+          "Dieses Doppelleben — tief traditionell und doch endlos anpassbar — ist genau der Grund, warum Mahjong überlebte und sich ausbreitete."
+        ]
+      },
+      {
+        "heading": "Die Geschichte spielen",
+        "body": [
+          "Sie können dasselbe klassische Spiel spielen, das Shanghai, Japan und die Welt eroberte — kostenlos, online, gegen drei Computergegner. Die Steine, die Sie sehen, sind dieselben Steine, die Spieler seit fast zwei Jahrhunderten ziehen."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Wo wurde Mahjong erfunden?",
+        "answer": "Mahjong entstand in China Mitte des 19. Jahrhunderts, höchstwahrscheinlich um Shanghai oder Ningbo, aus früheren chinesischen Kartenspielen, die in Steine übersetzt wurden."
+      },
+      {
+        "question": "Warum wurde Mahjong im Westen populär?",
+        "answer": "Der „Mahjong-Boom“ der 1920er brachte es in die USA als modisches Gesellschaftsspiel, und westliche Spieler entwickelten eigene Varianten wie den Charleston und die jährliche Handkarte."
+      },
+      {
+        "question": "Ist Mahjong überall dasselbe Spiel?",
+        "answer": "Nein. Chinesisches, japanisches, amerikanisches, taiwanesisches und Sichuan-Mahjong sind unterschiedliche Spiele, die sich Steine, Ziehen und Ablegen teilen."
+      },
+      {
+        "question": "Wie alt ist Mahjong?",
+        "answer": "Etwa 150 Jahre alt. Es entstand Mitte des 19. Jahrhunderts in China und wurde von jeder Kultur, die es übernahm, neu erfunden."
+      }
+    ]
+  }
+}

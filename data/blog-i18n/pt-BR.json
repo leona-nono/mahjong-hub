@@ -1,0 +1,1154 @@
+{
+  "what-is-mahjong": {
+    "title": "O Que É Mahjong? Guia Completo para Iniciantes",
+    "description": "Mahjong é um jogo de pedras para quatro jogadores que mistura habilidade, estratégia e sorte. Saiba o que é mahjong, como as pedras funcionam, as principais regras do mundo e como ele difere dos jogos de combinar pedras que você pode ter visto online.",
+    "sections": [
+      {
+        "heading": "Mahjong É um Jogo de Pedras para Quatro Jogadores",
+        "body": [
+          "Mahjong (麻将) é um jogo de pedras para quatro jogadores que combina habilidade, estratégia e um pouco de sorte. Cada jogador começa com treze pedras e, na sua vez, compra e descarta até alguém completar uma mão vencedora — tradicionalmente quatro combinações mais um par.",
+          "Surgiu na China no século XIX e se espalhou pela Ásia e depois pelo mundo, gerando regras regionais distintas. Hoje é um dos jogos mais jogados do planeta e é totalmente gratuito para jogar online em sites como este."
+        ]
+      },
+      {
+        "heading": "As Pedras",
+        "body": [
+          "Um conjunto padrão de mahjong tem 144 pedras: três naipes de pedras numeradas, pedras de honra (ventos e dragões) e pedras bônus (flores e estações, usadas em algumas regras).",
+          "Os naipes são: caracteres (万, dezenas), bambus (条, bambus) e círculos/pontos (筒, círculos), cada um numerado de 1 a 9 com quatro cópias de cada pedra. As honras são os quatro ventos (Leste, Sul, Oeste, Norte) e três dragões (Vermelho, Verde, Branco)."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "O Objetivo",
+        "body": [
+          "O objetivo é montar uma mão de quatro combinações e um par. Uma combinação é um trio (três pedras idênticas) ou uma sequência (três pedras consecutivas do mesmo naipe). Um par são duas pedras idênticas.",
+          "Dependendo das regras, a mão vencedora também precisa de um número mínimo de pontos (chamados faan, han ou pontos). É isso que dá profundidade ao mahjong — uma mão completa nem sempre é uma mão vencedora."
+        ]
+      },
+      {
+        "heading": "As Principais Variantes",
+        "body": [
+          "Há muitas formas de jogar mahjong, e as regras mudam de região para região:",
+          "• Mahjong Chinês (estilo Hong Kong): o mais comum fora do Japão, com mínimo de três faan.",
+          "• Mahjong Japonês Riichi: as regras competitivas com declarações de riichi, doras e pontuação rigorosa.",
+          "• Chinês Oficial (MCR): as regras internacionais de torneio com mínimo de oito pontos.",
+          "• Mahjong Americano: usa curingas, flores e um cartão anual de mãos.",
+          "• Mahjong Taiwanês: jogado com dezesseis pedras em vez de treze.",
+          "• Mahjong de Sichuan: uma variante rápida de \"batalha sangrenta\" sem honras e com jogo contínuo após uma vitória."
+        ]
+      },
+      {
+        "heading": "Mahjong Solitaire vs. Mahjong de Quatro Jogadores",
+        "body": [
+          "Muitos sites ocidentais chamam o quebra-cabeça solo de combinar pedras de \"mahjong\" — na verdade isso é mahjong solitaire, um jogo completamente diferente. No solitaire você combina pedras idênticas em um layout em camadas. O mahjong de verdade é um jogo competitivo com compra, descarte, chamadas e pontuação.",
+          "Os dois são divertidos e os dois são gratuitos aqui. Este guia é sobre o jogo de quatro jogadores."
+        ]
+      },
+      {
+        "heading": "Mahjong É Jogo de Azar?",
+        "body": [
+          "Não. Mahjong é um jogo de habilidade que pode ser jogado por diversão ou por dinheiro, exatamente como pôquer ou xadrez. Neste site é totalmente gratuito — sem apostas, sem moeda comprável e sem prêmio em dinheiro."
+        ]
+      },
+      {
+        "heading": "Como Começar a Jogar",
+        "body": [
+          "A melhor forma de aprender é jogando. Comece na nossa mesa de Mahjong Hong Kong (as regras mais fáceis para aprender primeiro) ou leia Como Jogar Mahjong para um guia passo a passo. Quando estiver confortável, experimente o Japonês Riichi ou o Chinês Oficial para mais profundidade."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Quantas pedras tem um conjunto de mahjong?",
+        "answer": "Um conjunto padrão tem 144 pedras: 108 pedras numeradas (três naipes), 28 pedras de honra (ventos e dragões) e 8 pedras bônus (flores e estações). Algumas regras deixam de fora as pedras bônus."
+      },
+      {
+        "question": "Mahjong é difícil de aprender?",
+        "answer": "As regras básicas são simples: compre uma pedra, descarte uma pedra, monte quatro combinações e um par. A pontuação leva um pouco mais, mas as regras de Hong Kong com mínimo de três faan são um ponto de partida gentil."
+      },
+      {
+        "question": "Preciso de dinheiro para jogar mahjong?",
+        "answer": "Não. Mahjong pode ser jogado por diversão, sem nenhum dinheiro. Nossas mesas são totalmente gratuitas e não há apostas de nenhum tipo."
+      },
+      {
+        "question": "Posso jogar mahjong sozinho?",
+        "answer": "O mahjong de verdade precisa de quatro jogadores, mas online você pode jogar contra oponentes de computador a qualquer hora. Mahjong solitaire é um quebra-cabeça solo separado se você preferir jogar sozinho."
+      },
+      {
+        "question": "Qual é a diferença entre mahjong e mahjong solitaire?",
+        "answer": "Mahjong é um jogo competitivo de quatro jogadores com compra, descarte e pontuação. Mahjong solitaire é um quebra-cabeça solo em que você combina pedras idênticas em um layout em camadas. Jogos diferentes, mesmas pedras."
+      }
+    ]
+  },
+  "how-to-play-mahjong": {
+    "title": "Como Jogar Mahjong: Guia Passo a Passo para Iniciantes",
+    "description": "Aprenda a jogar mahjong do zero: as pedras, montar a muralha, comprar e descartar, formar Pungs e Chows e declarar uma mão vencedora — explicado de forma simples, com exemplos.",
+    "sections": [
+      {
+        "heading": "O Que Você Precisa para Jogar",
+        "body": [
+          "Você precisa de quatro jogadores e um conjunto de 144 pedras. Cada jogador senta em um lado da mesa, chamado de assento. O dealer (Leste) inicia a rodada.",
+          "Quando você joga online, o computador distribui, controla a muralha e pontua por você — então você só precisa se concentrar em montar a mão."
+        ]
+      },
+      {
+        "heading": "Montando a Muralha e Distribuindo",
+        "body": [
+          "As pedras são embaralhadas viradas para baixo e empilhadas em duas alturas, formando uma muralha de 17 pilhas por lado. Cada jogador monta um lado.",
+          "O dealer joga os dados para decidir onde quebrar a muralha; depois cada jogador recebe 13 pedras (o dealer recebe 14 e descarta primeiro). Online, tudo isso acontece automaticamente."
+        ]
+      },
+      {
+        "heading": "Sua Vez: Comprar e Descartar",
+        "body": [
+          "Na sua vez você compra uma pedra da muralha, olha sua mão e descarta uma pedra virada para cima no centro. Você sempre mantém a mão com treze pedras.",
+          "Seu objetivo ao fazer isso é transformar a mão em quatro combinações mais um par."
+        ]
+      },
+      {
+        "heading": "Chamando Pedras: Pung, Chow e Kong",
+        "body": [
+          "Quando outro jogador descarta uma pedra que você precisa, você pode chamá-la em vez de comprar:",
+          "• Pung (碰): pegue o descarte para completar um trio de três pedras idênticas.",
+          "• Chow (吃): pegue o descarte para completar uma sequência (três pedras consecutivas) — mas só do jogador à sua esquerda.",
+          "• Kong (杠): pegue o descarte para completar quatro pedras idênticas.",
+          "Chamar deixa sua mão aberta (exposta), o que pode reduzir os padrões pelos quais você é elegível — então só chame quando isso realmente ajudar."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Vencendo uma Mão",
+        "body": [
+          "Uma mão vencedora é quatro combinações mais um par. Você pode vencer por compra própria (tsumo) ou reclamando o descarte de outro jogador (ron).",
+          "A maioria das regras também exige uma pontuação mínima. O estilo Hong Kong precisa de pelo menos três faan, o Chinês Oficial precisa de oito pontos e o Japonês Riichi precisa de pelo menos um yaku. Nossas mesas mostram sua distância até o ready e explicam como cada mão vencedora pontuou."
+        ]
+      },
+      {
+        "heading": "Noções Básicas de Pontuação",
+        "body": [
+          "Os pontos vêm dos padrões montados na sua mão. Os comuns são flush (tudo de um naipe), só trios, combinações de dragão ou vento e o cobiçado sete pares.",
+          "Regras diferentes valorizam os padrões de formas diferentes. A regra mais simples: quanto mais estruturada a mão, mais ela vale. Nosso detalhamento de pontuação mostra exatamente de onde vêm seus pontos após cada vitória."
+        ]
+      },
+      {
+        "heading": "Experimente Agora",
+        "body": [
+          "A forma mais rápida de aprender é jogando. Comece com o Mahjong Hong Kong — três oponentes de computador, uma dica opcional de readiness e um detalhamento completo da pontuação em cada mão."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Com quantas pedras eu começo?",
+        "answer": "Cada jogador começa com 13 pedras. O dealer começa com 14 e descarta primeiro, o que mantém toda mão com 13 pedras após o primeiro descarte."
+      },
+      {
+        "question": "Qual é a diferença entre um Pung e um Kong?",
+        "answer": "Um Pung são três pedras idênticas; um Kong são quatro pedras idênticas. Um Kong conta como uma combinação mais uma compra extra do fim da muralha."
+      },
+      {
+        "question": "Posso chamar um descarte de qualquer jogador?",
+        "answer": "Um Pung ou Kong pode ser reclamado do descarte de qualquer jogador. Um Chow (sequência) só pode ser reclamado do jogador à sua esquerda, para manter a ordem das vezes justa."
+      },
+      {
+        "question": "O que significa estar \"ready\" ou tenpai?",
+        "answer": "Você está ready (tenpai) quando sua mão precisa de só mais uma pedra para ficar completa. Estar ready significa que você pode vencer no momento em que a pedra certa chegar."
+      },
+      {
+        "question": "Quantos pontos eu preciso para vencer?",
+        "answer": "Depende das regras: Hong Kong precisa de três faan, Japonês Riichi precisa de pelo menos um yaku e Chinês Oficial precisa de oito pontos. Nossas mesas lembram o mínimo e mostram o detalhamento da sua pontuação."
+      }
+    ]
+  },
+  "how-to-win-mahjong": {
+    "title": "Como Vencer no Mahjong: Estratégia para Novos Jogadores",
+    "description": "Estratégia prática de mahjong para iniciantes: escolha cedo a direção da mão, descarte honras, leia a pilha de descartes, evite chamar demais e chegue ao ready mais rápido. Vença os bots com mais frequência com estas dicas.",
+    "sections": [
+      {
+        "heading": "Escolha uma Direção Cedo",
+        "body": [
+          "Nas primeiras jogadas, olhe sua mão e escolha o que ela quer ser. Uma mão com sete ou oito pedras de um naipe mira um flush. Uma mão cheia de pares ou trios pode perseguir só trios. Uma mão sem nenhuma honra está perto de all-simples.",
+          "Comprometer-se cedo transforma suas pedras em um plano em vez de descartes aleatórios. Essa é a maior diferença entre quem vence e quem perde."
+        ]
+      },
+      {
+        "heading": "Descarte Honras Isoladas Primeiro",
+        "body": [
+          "Pedras de vento e dragão são as mais difíceis de emparelhar. Uma honra isolada quase não faz nada para a mão de um iniciante, então descarte-a cedo antes que vire um problema.",
+          "A exceção: se você tem um par ou trio de uma honra útil (como um dragão ou o vento do seu assento), guarde — é um padrão de pontuação esperando acontecer."
+        ]
+      },
+      {
+        "heading": "Leia a Pilha de Descartes",
+        "body": [
+          "Cada descarte é informação. Se três jogadores estão jogando fora bambus, as pedras de bambu que você precisa provavelmente ainda estão seguras. Se todo mundo está guardando caracteres, essas pedras estão sendo acumuladas e são mais difíceis de conseguir.",
+          "Observar os descartes também ajuda a evitar descartar uma pedra que completaria a mão de um oponente."
+        ]
+      },
+      {
+        "heading": "Não Chame Demais",
+        "body": [
+          "Chamar pedras deixa sua mão aberta e fecha padrões de pontuação. Na maioria das regras, uma mão fechada vale mais.",
+          "Uma boa regra para iniciantes: só chame quando a chamada o deixa a uma ou duas pedras do ready. Caso contrário, continue comprando e mantenha a mão fechada."
+        ]
+      },
+      {
+        "heading": "Chegue ao Ready o Mais Rápido Que Puder",
+        "body": [
+          "Quem chega ao ready primeiro costuma vencer. Troque pedras que você não consegue usar por pedras que talvez use e mantenha o formato da mão flexível — uma mão que pode vencer com várias pedras diferentes é mais forte do que uma que espera uma única pedra.",
+          "Nossas mesas incluem uma dica de readiness que mostra exatamente quão longe você está de uma mão completa, o que treina você a ver a distância sozinho."
+        ]
+      },
+      {
+        "heading": "Conheça os Padrões Vencedores Comuns",
+        "body": [
+          "Esses padrões aparecem o tempo todo e vale memorizar:",
+          "• All-simples (断幺九): sem 1s, 9s ou honras. Alcançável a partir de quase qualquer mão.",
+          "• Flush (清一色): todas as pedras de um naipe. Vale muitos pontos.",
+          "• Só trios (碰碰胡): toda combinação é um trio.",
+          "• Sete pares (七对子): o formato vencedor alternativo clássico.",
+          "• Combinações de dragão (三元牌): três dragões pontuam na maioria das regras."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "white"
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          }
+        ]
+      },
+      {
+        "heading": "Jogue Suas Regras, Não um Jogo Genérico",
+        "body": [
+          "Hong Kong, Riichi e Chinês Oficial recompensam coisas diferentes. Hong Kong valoriza uma mão rápida e barata de três faan. Riichi recompensa mãos fechadas e estruturadas e oferece o próprio riichi. Chinês Oficial exige um padrão real de oito pontos.",
+          "Escolha um conjunto de regras e aprenda seus padrões — trocar entre eles cedo demais é a forma mais rápida de se confundir."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Qual é a forma mais rápida de chegar ao tenpai?",
+        "answer": "Mantenha a mão flexível e mire em um padrão barato e confiável. All-simples é o mais rápido para iniciantes porque pode ser montado a partir de quase qualquer mão inicial."
+      },
+      {
+        "question": "Devo chamar pedras ou ficar fechado?",
+        "answer": "Para iniciantes, fique fechado a menos que uma chamada o leve ao ready. Mãos abertas pontuam menos e revelam informação."
+      },
+      {
+        "question": "Como evitar alimentar a mão de outro jogador?",
+        "answer": "Observe os descartes. No fim da mão, evite descartar pedras que outros jogadores vêm coletando — especialmente se estiverem ready."
+      },
+      {
+        "question": "Vencer é sorte ou habilidade?",
+        "answer": "Qualquer mão isolada tem sorte, mas ao longo de uma sessão a habilidade domina. Direção da mão, disciplina de descarte e conhecimento de padrões decidem quem vence com mais frequência."
+      },
+      {
+        "question": "Em qual conjunto de regras de mahjong é mais fácil vencer?",
+        "answer": "O Mahjong Hong Kong tem o menor mínimo de pontuação (três faan), então é o mais indulgente para iniciantes. É o melhor lugar para aprender hábitos de vitória."
+      }
+    ]
+  },
+  "mahjong-rules-beginners-complete-guide": {
+    "title": "Regras de Mahjong para Iniciantes: O Guia Completo",
+    "description": "O guia completo e acessível às regras do mahjong. Aprenda as pedras, a muralha, as jogadas, as chamadas, as mãos vencedoras e a pontuação — com uma comparação das regras em linguagem simples.",
+    "sections": [
+      {
+        "heading": "As Regras do Mahjong em um Parágrafo",
+        "body": [
+          "Quatro jogadores montam mãos a partir de 144 pedras. Em cada turno você compra uma pedra e descarta uma, tentando completar quatro combinações mais um par. Uma combinação é um trio ou uma sequência. Quando sua mão está completa e atinge a pontuação mínima das regras, você declara a vitória. Esse é o jogo inteiro — todo o resto é detalhe.",
+          "Este guia percorre cada parte desse parágrafo para que um jogador totalmente novo possa se sentar e jogar."
+        ]
+      },
+      {
+        "heading": "As Pedras",
+        "body": [
+          "Um conjunto padrão tem 144 pedras: 108 pedras numeradas, 28 honras e 8 pedras bônus. As pedras numeradas vêm em três naipes — caracteres (wàn), bambus (tiáo) e círculos (tóng) — cada um numerado de 1 a 9 com quatro cópias.",
+          "As honras são os quatro ventos (Leste, Sul, Oeste, Norte) e três dragões (Vermelho, Verde, Branco). Pedras bônus (flores e estações) aparecem em algumas regras e costumam dar um pequeno bônus em vez de formar combinações."
+        ]
+      },
+      {
+        "heading": "A Muralha e a Distribuição",
+        "body": [
+          "Todas as pedras são embaralhadas viradas para baixo e empilhadas em uma muralha de 17 pilhas por jogador. O dealer (Leste) joga dois dados para escolher onde quebrar a muralha e depois distribui 13 pedras para cada jogador. O dealer pega uma 14ª pedra e descarta primeiro.",
+          "Online, a muralha é montada e distribuída automaticamente — você só gerencia sua mão."
+        ]
+      },
+      {
+        "heading": "Sua Vez",
+        "body": [
+          "Na sua vez, compre uma pedra, estude sua mão e descarte uma pedra virada para cima. Você sempre segura 13 pedras. A pedra descartada fica no meio para todos verem — e para todos lerem sua estratégia.",
+          "O ritmo de comprar e descartar é o mesmo em todas as regras, por isso as habilidades se transferem entre elas."
+        ]
+      },
+      {
+        "heading": "Montando Combinações: Pung, Chow e Kong",
+        "body": [
+          "Quando outro jogador descarta uma pedra que completaria uma combinação na sua mão, você pode chamá-la em vez de comprar:",
+          "• Pung — três pedras idênticas. Chamável de qualquer jogador.",
+          "• Chow — três pedras consecutivas de um naipe. Chamável só do jogador à sua esquerda.",
+          "• Kong — quatro pedras idênticas. A chamada mais poderosa, vale pedras bônus em algumas regras.",
+          "Chamadas expõem sua mão. Uma mão aberta é mais fraca na maioria dos sistemas de pontuação, então iniciantes devem chamar com parcimônia."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Mãos Vencedoras",
+        "body": [
+          "Uma mão vencedora é quatro combinações mais um par. Você vence por compra própria (tsumo) ou pegando o descarte de outro jogador (ron).",
+          "As regras também exigem uma pontuação mínima: três faan no estilo Hong Kong, um yaku no Japonês Riichi, oito pontos no Chinês Oficial. Uma mão completa abaixo do mínimo não é uma mão vencedora — você continua melhorando-a."
+        ]
+      },
+      {
+        "heading": "As Principais Regras Comparadas",
+        "body": [
+          "• Mahjong Hong Kong — o ponto de entrada mais fácil. Mínimo de três faan, pontuação indulgente, o estilo mais jogado fora do Japão.",
+          "• Japonês Riichi — padrão competitivo. Mãos fechadas e declarações de riichi pontuam mais; requisitos rigorosos de yaku.",
+          "• Chinês Oficial (MCR) — regras internacionais de torneio. Um mínimo de oito pontos exige estrutura real na mão.",
+          "• Americano / Taiwanês / Sichuan — variantes regionais com curingas, dezesseis pedras ou sem honras.",
+          "Comece com Hong Kong. Quando puder vencer com confiança, experimente Riichi para profundidade ou Chinês Oficial para estrutura."
+        ]
+      },
+      {
+        "heading": "Experimente de Graça",
+        "body": [
+          "Só ler regras não leva tão longe — a forma mais rápida de aprender é jogando. Nossa mesa Hong Kong te coloca contra três oponentes de computador com dica de readiness e detalhamento completo da pontuação em cada mão. É totalmente gratuito, no navegador, sem download."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Quanto tempo leva para aprender as regras do mahjong?",
+        "answer": "Você pode aprender o fluxo básico — comprar, descartar, montar quatro combinações e um par — em cerca de uma hora. Pontuação e estratégia levam mais tempo, mas as regras de Hong Kong são gentis o bastante para aprender jogando."
+      },
+      {
+        "question": "Preciso de quatro pessoas para jogar mahjong?",
+        "answer": "Presencialmente, sim. Online, você pode jogar contra oponentes de computador a qualquer hora — nossas mesas sempre sentam três bots se você jogar sozinho."
+      },
+      {
+        "question": "Qual é a diferença entre um Pung e um Chow?",
+        "answer": "Um Pung são três pedras idênticas e pode ser chamado de qualquer jogador. Um Chow são três pedras consecutivas de um naipe e só pode ser chamado do jogador à sua esquerda."
+      },
+      {
+        "question": "É difícil vencer no mahjong?",
+        "answer": "As regras são simples; vencer bem exige prática. Escolher cedo a direção da mão e não chamar demais são os dois hábitos que melhoram os resultados mais rápido."
+      }
+    ]
+  },
+  "mahjong-tiles-meaning-guide": {
+    "title": "Pedras de Mahjong e Seus Significados: O Guia Completo",
+    "description": "O que significam as pedras de mahjong? Um guia completo das 144 pedras — naipes, ventos, dragões, flores e estações — com os símbolos explicados para iniciantes.",
+    "sections": [
+      {
+        "heading": "As 144 Pedras em um Relance",
+        "body": [
+          "Um conjunto padrão de mahjong contém 144 pedras divididas em naipes, honras e pedras bônus. Cada pedra aparece quatro vezes em um naipe (com algumas exceções para flores e estações), e é por isso que combinações e sets são possíveis.",
+          "O quadro abaixo explica cada grupo. Juntos eles dão profundidade ao jogo — você está sempre acompanhando o que está na sua mão, o que está na mesa e o que ainda está na muralha."
+        ]
+      },
+      {
+        "heading": "Os Três Naipes",
+        "body": [
+          "• Caracteres (萬, wan) — a pedra mostra um número em caracteres chineses, de 1 a 9.",
+          "• Bambus (條, tiao) — a pedra mostra de um a nove bastões de bambu.",
+          "• Círculos (筒, tong) — a pedra mostra de uma a nove moedas ou pontos.",
+          "Cada naipe tem quatro cópias de cada número, totalizando 36 pedras por naipe e 108 pedras numeradas no total. Uma combinação (sequência) são três números consecutivos do mesmo naipe, então os naipes importam para além da aparência."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          }
+        ]
+      },
+      {
+        "heading": "Os Ventos",
+        "body": [
+          "Os quatro ventos são Leste, Sul, Oeste e Norte. São pedras de honra — não formam sequências, só trios. Em muitas regras, um trio do vento do seu assento ou do vento da rodada dá pontos extras.",
+          "O dealer é sempre Leste, e as vezes rotacionam por Sul, Oeste e Norte. As pedras de vento são as únicas honras que correspondem a algo visível na mesa."
+        ]
+      },
+      {
+        "heading": "Os Dragões",
+        "body": [
+          "Os três dragões são Vermelho (中), Verde (發) e Branco (白). Como os ventos, só formam trios, mas trios de dragão pontuam em quase todas as regras — um trio de dragão vermelho é uma das formas mais confiáveis de atingir o mínimo de pontuação.",
+          "Uma mão completa com os três trios de dragão é um padrão de pontuação importante na maioria dos jogos."
+        ]
+      },
+      {
+        "heading": "Flores e Estações",
+        "body": [
+          "Flores e estações são pedras bônus, usadas em algumas regras. Cada jogador tem uma flor e uma estação; comprar a sua concede pontos bônus e permite comprar uma pedra de reposição da muralha.",
+          "Elas costumam ser colocadas de lado imediatamente e nunca fazem parte de uma mão vencedora."
+        ]
+      },
+      {
+        "heading": "Por Que os Significados das Pedras Importam",
+        "body": [
+          "Você não precisa memorizar a arte — os números e os naipes carregam toda a informação. Mas saber o que cada pedra vale (pode formar sequência? trio? padrão de pontuação?) transforma a compra aleatória em um plano.",
+          "Quando as pedras são familiares, o resto do mahjong é reconhecimento de padrões e timing."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Quantas pedras diferentes de mahjong existem?",
+        "answer": "Há 34 pedras distintas (9 caracteres, 9 bambus, 9 círculos, 4 ventos, 3 dragões), e quatro cópias da maioria, totalizando 144 pedras. Flores e estações adicionam mais 8 nos conjuntos que as incluem."
+      },
+      {
+        "question": "O que os três naipes representam?",
+        "answer": "Caracteres, bambus e círculos representam diferentes denominações de moedas na origem histórica chinesa do jogo. Na prática, são só três naipes de 1–9."
+      },
+      {
+        "question": "Honras podem formar sequências?",
+        "answer": "Não. Ventos e dragões só formam trios, nunca sequências. Por isso honras isoladas costumam ser descartadas cedo."
+      },
+      {
+        "question": "Qual é a pedra mais valiosa?",
+        "answer": "Não há uma única pedra mais valiosa — o valor depende da sua mão e das regras. Trios de dragão, o vento do seu assento e pedras raras de naipe como 1 e 9 costumam ser as mais úteis."
+      }
+    ]
+  },
+  "american-vs-chinese-mahjong": {
+    "title": "Mahjong Americano vs Chinês: Principais Diferenças Explicadas",
+    "description": "Mahjong americano e mahjong chinês são jogos bem diferentes. Compare curingas, cartões de mão, pontuação e quantidade de pedras para ver qual estilo combina com você.",
+    "sections": [
+      {
+        "heading": "Dois Jogos Que Compartilham um Nome",
+        "body": [
+          "Os dois jogos usam pedras de mahjong e os dois são jogados por quatro pessoas, mas o americano e o chinês divergiram dramaticamente depois que o mahjong chegou ao Ocidente nos anos 1920. O jogo americano guiado por cartão parece mais uma corrida de montar mãos; os estilos chineses mantêm a pureza de comprar e descartar do original.",
+          "Aqui está o que realmente difere, para você escolher o estilo que vai gostar."
+        ]
+      },
+      {
+        "heading": "O Cartão de Mão vs. Padrões Abertos",
+        "body": [
+          "A característica definidora do mahjong americano é o cartão anual de mãos, publicado todos os anos pela National Mahjong League. Ele lista dezenas de padrões vencedores exatos; você precisa montar um deles exatamente para vencer. Os padrões mudam todo ano, o que mantém o jogo fresco, mas significa que as regras não são todas descobertas só pelas pedras.",
+          "O mahjong chinês usa padrões de pontuação fixos e universais — flushes, trios, dragões — que não mudaram há um século. As regras são as mesmas quer você jogue em Pequim ou online."
+        ]
+      },
+      {
+        "heading": "Curingas e o Charleston",
+        "body": [
+          "O mahjong americano usa curingas que podem substituir qualquer pedra, e uma troca inicial fixa chamada Charleston em que os jogadores passam pedras para a esquerda, direita e atravessado em uma sequência definida. Os dois recursos adicionam uma fase de troca que não existe no mahjong chinês.",
+          "Os estilos chineses não têm curingas nem passagem — você joga estritamente com as pedras que recebeu."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          },
+          {
+            "suit": "wind",
+            "wind": "north"
+          }
+        ]
+      },
+      {
+        "heading": "Pedras, Turnos e Chamadas",
+        "body": [
+          "O mahjong americano inclui flores e estações e tem suas próprias regras de chamada. O mahjong chinês (e suas variantes regionais) mantém as chamadas clássicas de Pung / Chow / Kong e a estrutura de turno comprar-descartar.",
+          "O Japonês Riichi e o Chinês Oficial adicionam seus próprios toques — declarações de riichi, o mínimo de oito pontos — mas são reconhecivelmente da mesma família do jogo chinês original."
+        ]
+      },
+      {
+        "heading": "Qual Você Deve Jogar?",
+        "body": [
+          "Se você quer um jogo com trocas, curingas e um metajogo anual, o mahjong americano é um ótimo hobby social. Se você quer o jogo competitivo clássico que se transfere entre países e torneios, o mahjong chinês — estilo Hong Kong primeiro, depois Riichi ou Chinês Oficial — é o melhor caminho.",
+          "Você pode jogar mahjong chinês online de graça agora mesmo e isso vai te ensinar o jogo que o resto do mundo joga."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Mahjong americano e chinês são jogados com as mesmas pedras?",
+        "answer": "O conjunto de pedras é em grande parte o mesmo, mas o mahjong americano depende de curingas e do cartão anual de mãos, que o mahjong chinês não usa. A jogabilidade difere mais do que as pedras."
+      },
+      {
+        "question": "Qual é mais fácil de aprender, mahjong americano ou chinês?",
+        "answer": "O mahjong chinês tem regras mais descobertas porque os padrões são fixos e universais. O mahjong americano exige aprender o cartão anual de mãos, que muda todo ano."
+      },
+      {
+        "question": "Preciso do cartão anual de mãos para jogar mahjong americano?",
+        "answer": "Sim — o cartão define os padrões vencedores daquele ano. Sem ele você não pode declarar uma vitória válida pelas regras americanas."
+      },
+      {
+        "question": "Posso jogar mahjong chinês online de graça?",
+        "answer": "Sim. Nossa mesa de Mahjong Hong Kong é gratuita, no navegador, e ensina o jogo clássico de comprar e descartar contra oponentes de computador."
+      }
+    ]
+  },
+  "how-to-play-mahjong-online": {
+    "title": "Como Jogar Mahjong Online: Grátis no Seu Navegador",
+    "description": "Jogue mahjong online grátis — sem download, sem instalação. Saiba onde jogar, como funcionam as regras online e a etiqueta de jogar contra bots e desconhecidos.",
+    "sections": [
+      {
+        "heading": "Por Que Jogar Mahjong Online",
+        "body": [
+          "O mahjong online remove a parte mais difícil do jogo para iniciantes: a administração. O computador monta a muralha, distribui as pedras, cuida das chamadas e calcula a pontuação. Você se concentra só na sua mão.",
+          "Também é a única forma de a maioria das pessoas jogar quando quiser — sem precisar reunir três amigos em volta de uma mesa."
+        ]
+      },
+      {
+        "heading": "O Que Você Precisa",
+        "body": [
+          "Só um navegador e uma conexão com a internet. Não há nada para instalar no desktop ou no celular. Nossas mesas rodam no navegador em qualquer dispositivo moderno e funcionam com toque ou mouse.",
+          "Não é necessária conta para começar a jogar, e cada partida é totalmente gratuita — sem apostas nem moeda comprável."
+        ]
+      },
+      {
+        "heading": "Como Funciona uma Partida Online",
+        "body": [
+          "Você entra em uma mesa e o jogo te dá 13 pedras. Na sua vez você clica em uma pedra para comprar, depois clica em uma pedra para descartar. O jogo destaca pedras que você pode chamar e mostra quando sua mão pode vencer.",
+          "Uma dica opcional de readiness mostra quão longe sua mão está de um formato completo, que é a ferramenta mais útil para aprender."
+        ],
+        "tiles": [
+          {
+            "suit": "bamboo",
+            "rank": 6
+          },
+          {
+            "suit": "bamboo",
+            "rank": 7
+          },
+          {
+            "suit": "bamboo",
+            "rank": 8
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          }
+        ]
+      },
+      {
+        "heading": "Bots vs. Oponentes Humanos",
+        "body": [
+          "Jogar contra oponentes de computador é ideal para aprender: bots jogam em ritmo constante, nunca travam e nunca ficam impacientes enquanto você pensa. Nossas mesas sempre sentam três bots, então você pode jogar sozinho a qualquer hora.",
+          "Quando estiver pronto para oponentes humanos, as mesmas habilidades se aplicam — as regras online são as mesmas das regras de mesa."
+        ]
+      },
+      {
+        "heading": "Etiqueta do Mahjong Online",
+        "body": [
+          "Faça sua jogada com prontidão. Chame só quando realmente quiser a pedra. Não apresse os outros. E em partidas casuais, lembre que o objetivo é diversão — ninguém vence todas as mãos.",
+          "A regra que mais importa online: fique engajado. Uma mesa parada é o único verdadeiro incômodo."
+        ]
+      },
+      {
+        "heading": "Comece a Jogar Agora",
+        "body": [
+          "Pronto para experimentar? Nossa mesa de Mahjong Hong Kong te coloca contra três bots com a pontuação explicada em cada mão. É gratuito, instantâneo e a forma mais rápida de ir das regras para partidas de verdade."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Mahjong online é gratuito?",
+        "answer": "No nosso site, sim — totalmente gratuito, sem conta, sem apostas, sem nada para baixar. Você pode jogar no navegador no desktop ou no celular."
+      },
+      {
+        "question": "Preciso saber as regras antes de jogar online?",
+        "answer": "Ajuda conhecer o básico, mas as mesas online cuidam das chamadas e da pontuação automaticamente. Você pode aprender jogando, com a dica de readiness te guiando."
+      },
+      {
+        "question": "Posso jogar mahjong online sozinho?",
+        "answer": "Sim. Nossas mesas sempre sentam três oponentes de computador, então você pode jogar uma partida completa de quatro jogadores sozinho a qualquer hora."
+      },
+      {
+        "question": "Jogar mahjong online é igual a jogar pessoalmente?",
+        "answer": "As regras são idênticas. A única diferença é que o computador cuida da distribuição, das chamadas e da pontuação — o que na verdade facilita focar na estratégia."
+      }
+    ]
+  },
+  "best-mahjong-sets-for-beginners": {
+    "title": "Os Melhores Conjuntos de Mahjong para Iniciantes em 2026",
+    "description": "O que procurar no primeiro conjunto de mahjong: tamanho das pedras, material, cases de viagem e os acessórios certos. Conselhos práticos de compra para você começar com as pedras certas.",
+    "sections": [
+      {
+        "heading": "O Que Procurar",
+        "body": [
+          "Um bom conjunto para iniciantes precisa de três coisas: pedras legíveis, contagem completa de 144 pedras e um case que aguente o uso. Todo o resto é preferência.",
+          "O tamanho das pedras importa mais. Pedras padrão têm 28–34 mm na face. Pedras maiores são mais fáceis de ler e de pegar, e valem o espaço extra na mesa se você joga casualmente."
+        ]
+      },
+      {
+        "heading": "Material das Pedras: Bakelite, Resina e Mais",
+        "body": [
+          "Conjuntos clássicos são feitos de osso e bambu, mas os modernos usam resina, plástico ou melamina. Pedras de resina de boa qualidade têm faces pintadas nítidas que não se desgastam. Pedras de plástico barato podem lascar nos cantos e desbotar.",
+          "Para um primeiro conjunto, escolha pedras de resina ou melamina em cor sólida com verso fosco — embaralham bem e duram anos."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "heading": "Quantidade e Tamanho das Pedras",
+        "body": [
+          "Certifique-se de que o conjunto tem 144 pedras. Muitos conjuntos modernos incluem flores e estações (8 pedras bônus) além das 136 pedras principais. Se você pretende jogar mahjong americano, também precisa de curingas.",
+          "Um conjunto de 144 pedras cobre Hong Kong, Riichi e Chinês Oficial. Um conjunto de 152 pedras adiciona flores e estações se suas regras as usarem."
+        ]
+      },
+      {
+        "heading": "Cases de Viagem e Armazenamento",
+        "body": [
+          "Um case rígido ou bolsa protege as pedras e mantém a mesa organizada entre as partidas. Procure um case com divisor para cada tipo de pedra — isso torna a montagem da próxima partida bem mais rápida.",
+          "Um tapete de jogo dobrável é um complemento que vale a pena: evita que as pedras deslizem e protege a superfície da mesa."
+        ]
+      },
+      {
+        "heading": "Acessórios Recomendados",
+        "body": [
+          "Um copo de dados, sticks de pontuação ou um bloco de pontuação e um empurrador de pedras (rack) são os extras usuais. Para iniciantes, sticks de pontuação são a forma mais clara de acompanhar as vitórias.",
+          "Alguns conjuntos incluem dois racks por jogador — conveniente para iniciantes que gostam de organizar a mão."
+        ]
+      },
+      {
+        "heading": "Experimente Antes de Comprar",
+        "body": [
+          "Ainda não tem certeza se um conjunto físico é certo para você? Você pode aprender o jogo de graça online contra oponentes de computador — incluindo exatamente as mesmas regras de Hong Kong para as quais a maioria dos conjuntos físicos é feita — e comprar um conjunto quando estiver viciado."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Quantas pedras um conjunto de mahjong para iniciantes deve ter?",
+        "answer": "Compre um conjunto de 144 pedras. Ele cobre todos os estilos padrão, e a estrutura de quatro de cada pedra é o que faz o jogo funcionar."
+      },
+      {
+        "question": "Qual é o melhor tamanho de pedra para iniciantes?",
+        "answer": "Pedras de 34 mm são as mais confortáveis para jogadores casuais. São maiores e mais fáceis de ler do que as pedras de torneio de 28 mm."
+      },
+      {
+        "question": "Conjuntos caros de mahjong valem a pena?",
+        "answer": "Para um primeiro conjunto, não. Um conjunto sólido de resina de preço médio com faces nítidas é o bastante. Faça upgrade quando souber que joga com frequência."
+      },
+      {
+        "question": "Preciso de flores e estações?",
+        "answer": "Só se suas regras as usarem. Hong Kong e Riichi não exigem flores; Chinês Oficial e algumas variantes sim. Um conjunto de 144 pedras com flores cobre o máximo de terreno."
+      }
+    ]
+  },
+  "mahjong-scoring-system-explained": {
+    "title": "Sistema de Pontuação do Mahjong Explicado: Faan, Han e Pontos",
+    "description": "Como funciona a pontuação do mahjong nas diferentes regras: faan em Hong Kong, han no Riichi, pontos no Chinês Oficial. Os padrões comuns e como contar sua mão.",
+    "sections": [
+      {
+        "heading": "Toda Regra Tem um Mínimo",
+        "body": [
+          "Em todas as regras de mahjong, uma mão vencedora precisa atingir uma pontuação mínima antes de ser declarada. Os nomes diferem — faan em Hong Kong, han no Riichi, pontos no Chinês Oficial — mas a ideia é a mesma: a mão precisa ter estrutura suficiente para contar como vitória.",
+          "Esse mínimo é o que impede que toda mão seja uma corrida chata até o primeiro formato completo."
+        ]
+      },
+      {
+        "heading": "O Formato Vencedor Básico",
+        "body": [
+          "A base é sempre quatro combinações mais um par. Combinações podem ser trios ou sequências. Sobre essa base, os padrões adicionam valor:",
+          "• Flush — todas as pedras de um naipe.",
+          "• Só trios — toda combinação é um trio.",
+          "• All-simples — sem 1s, 9s ou honras.",
+          "• Trios de dragão — três dragões em uma mão.",
+          "• Sete pares — um formato vencedor alternativo na maioria das regras."
+        ]
+      },
+      {
+        "heading": "Faan de Hong Kong",
+        "body": [
+          "O estilo Hong Kong exige mínimo de três faan. Padrões comuns e seus valores: mão de naipe puro (3), só trios (3), all-simples (1), trio de dragão (1–3). As mãos se acumulam — um flush com um trio de dragão vale mais do que cada um sozinho.",
+          "A tabela de pontuação recompensa mãos limpas e deliberadas. Mãos baratas são confiáveis, mas lentas; mãos ambiciosas pontuam alto, mas raramente se formam."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          }
+        ]
+      },
+      {
+        "heading": "Han Japonês e Riichi",
+        "body": [
+          "A pontuação do Riichi adiciona yaku (padrões fixos) sobre o han. O próprio riichi é um yaku — declará-lo no tenpai adiciona um han e é a assinatura das regras. Mãos fechadas pontuam bem mais, o que recompensa a paciência.",
+          "A posição de readiness (tenpai) também importa no Riichi: você pode declarar riichi ou ficar em silêncio e pontuar de forma diferente. Entender o han é a chave para escolher."
+        ]
+      },
+      {
+        "heading": "Pontos do Chinês Oficial (MCR)",
+        "body": [
+          "O Chinês Oficial usa um mínimo de oito pontos com um grande catálogo de padrões que valem de 1 a 88 pontos. Mãos de flush, só trios e os padrões mais raros se acumulam rápido.",
+          "O mínimo alto força estrutura genuína — normalmente é preciso uma mão de sete pares ou um flush, e é por isso que jogadores de MCR planejam a mão desde as primeiras pedras."
+        ]
+      },
+      {
+        "heading": "Deixe a Mesa Pontuar por Você",
+        "body": [
+          "Quando você joga online, a mesa calcula sua pontuação e explica exatamente de onde veio cada ponto após cada vitória. É a forma mais rápida de aprender a tabela de pontuação — você vê os padrões que montou e o que renderam, mão após mão."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Qual é a diferença entre faan, han e pontos?",
+        "answer": "São a mesma ideia com nomes diferentes: uma pontuação ligada a padrões em uma mão vencedora. Hong Kong usa faan, Riichi usa han, Chinês Oficial usa pontos."
+      },
+      {
+        "question": "Quantos pontos eu preciso para vencer no mahjong?",
+        "answer": "Hong Kong precisa de três faan, Japonês Riichi precisa de pelo menos um yaku e Chinês Oficial precisa de oito pontos. Cada conjunto de regras define seu próprio mínimo."
+      },
+      {
+        "question": "Qual é a forma mais fácil de aprender a pontuação do mahjong?",
+        "answer": "Jogue online onde a mesa calcula e explica cada pontuação. Ver o detalhamento após cada vitória ensina os padrões bem mais rápido do que memorizar uma tabela."
+      },
+      {
+        "question": "Quais padrões pontuam mais?",
+        "answer": "Mãos raras e estruturadas pontuam mais: mãos de naipe puro (flush), só trios e formatos especiais como sete pares ou treze órfãos estão entre os padrões de maior valor."
+      }
+    ]
+  },
+  "types-of-mahjong-games": {
+    "title": "Tipos de Jogos de Mahjong: Cada Estilo Explicado",
+    "description": "De Hong Kong e Riichi a Americano, Taiwanês e Sichuan — compare os principais tipos de jogos de mahjong e encontre o estilo que combina com você.",
+    "sections": [
+      {
+        "heading": "Um Nome, Muitos Jogos",
+        "body": [
+          "O mahjong se dividiu em jogos regionais distintos conforme se espalhou a partir da China. Eles compartilham as pedras e o núcleo de comprar e descartar, mas pontuação, chamadas e até o número de pedras diferem. Escolher um estilo é uma escolha real — aqui está o mapa."
+        ]
+      },
+      {
+        "heading": "Mahjong Hong Kong",
+        "body": [
+          "O estilo mais jogado fora do Japão e o melhor ponto de entrada para iniciantes. Mínimo de três faan, pontuação simples, partidas rápidas. Se você quer um estilo para aprender primeiro, escolha este."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "Mahjong Japonês Riichi",
+        "body": [
+          "O padrão competitivo. Declarações de riichi, yaku rigorosos, bônus de mão fechada e cincos vermelhos. Mais profundo e mais lento que o estilo Hong Kong — o xadrez do mahjong, recompensando estudo e paciência."
+        ]
+      },
+      {
+        "heading": "Chinês Oficial (MCR)",
+        "body": [
+          "As regras internacionais de torneio com mínimo de oito pontos e um enorme catálogo de padrões. Exigente e estruturado; uma mão precisa merecer a vitória. Popular em comunidades de língua chinesa e competições."
+        ]
+      },
+      {
+        "heading": "Mahjong Americano",
+        "body": [
+          "Usa curingas, flores, a passagem Charleston e um cartão anual de mãos publicado pela National Mahjong League. Social e guiado por cartão — as regras mudam todo ano. Uma experiência bem diferente dos estilos asiáticos."
+        ]
+      },
+      {
+        "heading": "Mahjong Taiwanês",
+        "body": [
+          "Jogado com dezesseis pedras em vez de treze, então você monta cinco combinações e um par. Reposição de flores e pontuação baseada em tài adicionam profundidade incomum. Um bom próximo passo depois de dominar o jogo de treze pedras."
+        ]
+      },
+      {
+        "heading": "Mahjong de Sichuan",
+        "body": [
+          "Uma variante rápida de \"batalha sangrenta\" sem honras, um naipe obrigatoriamente anulado e jogo contínuo após cada vitória. Partidas rápidas e agressivas — ideal para jogadores casuais que gostam de ritmo."
+        ]
+      },
+      {
+        "heading": "Mahjong Solitaire",
+        "body": [
+          "Não é mahjong de verdade — um quebra-cabeça solo de combinar pedras em que você limpa um layout em camadas combinando pedras idênticas. Ótimo para relaxar, mas não compartilha nada com o jogo de quatro jogadores além das pedras."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Qual é o tipo de mahjong mais popular?",
+        "answer": "O estilo Hong Kong é o mais jogado fora do Japão, e o Japonês Riichi domina o jogo competitivo. Na China, Sichuan e Chinês Oficial são populares."
+      },
+      {
+        "question": "Qual estilo de mahjong é mais fácil para iniciantes?",
+        "answer": "Mahjong Hong Kong. Seu mínimo de três faan e pontuação indulgente fazem dele o ponto de entrada mais gentil antes de avançar para Riichi ou Chinês Oficial."
+      },
+      {
+        "question": "Todas as variantes de mahjong são jogadas com quatro jogadores?",
+        "answer": "Sim, o jogo de quatro jogadores é o padrão. Mahjong solitaire é a exceção — é um quebra-cabeça solo, não uma variante de mahjong."
+      },
+      {
+        "question": "Preciso de pedras diferentes para tipos diferentes de mahjong?",
+        "answer": "Um conjunto padrão de 144 pedras cobre Hong Kong, Riichi e Chinês Oficial. O mahjong americano precisa de curingas; Taiwanês e Sichuan têm suas próprias convenções."
+      }
+    ]
+  },
+  "mahjong-etiquette-tips": {
+    "title": "Etiqueta do Mahjong: As Regras Não Escritas da Mesa",
+    "description": "Aprenda a etiqueta do mahjong — como manusear as pedras, quando chamar, ler o fluxo e as regras sociais que mantêm a mesa amigável.",
+    "sections": [
+      {
+        "heading": "A Etiqueta É o Que Torna o Jogo Jogável",
+        "body": [
+          "Mahjong é um jogo social. As regras não escritas existem para que todos possam ler a mesa, pensar em paz e aproveitar a sessão. A maioria é simples: respeite a ordem das vezes, mantenha suas pedras para si e nunca apresse outro jogador."
+        ]
+      },
+      {
+        "heading": "Manuseie as Pedras com Cuidado",
+        "body": [
+          "Compre e descarte uma pedra por vez. Não varra pedras pela mesa e nunca reorganize os descartes de outro jogador. Online, isso se traduz em: faça sua jogada sem arrastar o jogo — um jogador lento mas constante é melhor do que um rápido e descuidado."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "heading": "Chame com Confiança, Não por Hábito",
+        "body": [
+          "Chamar uma pedra anuncia sua mão para a mesa. A etiqueta (e a boa estratégia) diz para chamar só quando a pedra realmente ajuda. Chamar e descartar pedras fracas repetidamente soa como inexperiência e dá informação grátis à mesa."
+        ]
+      },
+      {
+        "heading": "Leia o Fluxo, Não Só as Pedras",
+        "body": [
+          "Observe o ritmo dos descartes. Um jogador que pausa antes de descartar está decidindo — geralmente perto de uma vitória. Respeite a tensão do fim de jogo e pense antes de descartar uma pedra perigosa."
+        ]
+      },
+      {
+        "heading": "Vencer e Perder com Elegância",
+        "body": [
+          "Vitórias e derrotas fazem parte de uma sessão. Agradeça ao jogador que alimenta uma pedra vencedora e não fique remoendo um azar. Em partidas amistosas o objetivo é a sessão, não a pontuação."
+        ]
+      },
+      {
+        "heading": "Etiqueta Online",
+        "body": [
+          "Online as mesmas regras se aplicam: faça as jogadas com prontidão, jogue com honestidade e lembre que bots são pacientes, mas humanos não. Nossas mesas nunca travam e nunca julgam seu ritmo — o lugar ideal para aprender bons hábitos."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Posso olhar os descartes de outros jogadores?",
+        "answer": "Sim — a pilha de descartes é informação pública em todas as regras. Lê-la não só é permitido, é esperado."
+      },
+      {
+        "question": "É falta de educação demorar na minha vez?",
+        "answer": "Uma pausa razoável é ok, especialmente no fim de uma mão. O problema de etiqueta é travar ou apressar. A maioria das mesas casuais é tranquila com o ritmo."
+      },
+      {
+        "question": "Devo anunciar minhas chamadas?",
+        "answer": "Sim — anuncie Pung, Chow ou Kong com clareza para a mesa reagir. Mesas online fazem isso automaticamente por você."
+      },
+      {
+        "question": "Qual é a regra de etiqueta mais importante?",
+        "answer": "Respeite o fluxo do jogo: jogue na ordem, mantenha os descartes limpos e nunca exponha as pedras de outro jogador nem as suas até a mão terminar."
+      }
+    ]
+  },
+  "where-to-buy-mahjong-set": {
+    "title": "Onde Comprar um Conjunto de Mahjong Online",
+    "description": "Onde comprar um conjunto de mahjong online: o que as lojas oferecem, como checar a qualidade, faixas de preço e o que evitar na compra do primeiro conjunto.",
+    "sections": [
+      {
+        "heading": "O Que Você Está Comprando de Verdade",
+        "body": [
+          "Um conjunto de mahjong são pedras mais um case. Dentro disso, a qualidade varia enormemente — um conjunto de 144 pedras de resina pode custar desde ¥100 até ¥1.500+ por artesanato de osso e bambu. Para o primeiro conjunto, o ponto ideal é um conjunto bem feito de resina ou melamina."
+        ]
+      },
+      {
+        "heading": "Marketplaces Online",
+        "body": [
+          "Os principais marketplaces online todos têm conjuntos de mahjong: marketplaces gerais para conjuntos de orçamento e médio porte, e lojas especializadas para pedras premium feitas à mão. Filtre por \"144 pedras\" e leia avaliações que mencionem tamanho das pedras e qualidade da pintura.",
+          "Procure anúncios que indiquem a quantidade de pedras explicitamente. Muitos anúncios baratos vendem conjuntos de 108 pedras ou incompletos sem dizer."
+        ]
+      },
+      {
+        "heading": "O Que Checar nas Avaliações",
+        "body": [
+          "• O case segura as pedras com segurança?",
+          "• As faces são pintadas ou impressas? Faces impressas podem se desgastar.",
+          "• O tamanho das pedras está indicado e é confortável?",
+          "• Os versos combinam exatamente? Versos diferentes são um defeito comum de conjuntos baratos.",
+          "Avaliações que mencionam esses quatro pontos são as que merecem confiança."
+        ]
+      },
+      {
+        "heading": "Faixas de Preço",
+        "body": [
+          "• ¥100–¥300 — conjuntos de plástico ou resina leve usáveis. Ok para jogo casual.",
+          "• ¥300–¥800 — resina sólida com faces nítidas e um bom case. O ponto ideal para iniciantes.",
+          "• ¥800+ — conjuntos premium e vintage. Só vale se você souber que joga com frequência.",
+          "Gaste na faixa intermediária no primeiro conjunto e você não vai se arrepender."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          }
+        ]
+      },
+      {
+        "heading": "Experimente o Jogo Antes de Se Comprometer",
+        "body": [
+          "Um conjunto de mahjong é uma compra que você vai guardar por anos — mas só se gostar do jogo. Jogue algumas mãos gratuitas online primeiro, veja se gosta do ritmo e então invista nas pedras. Se decidir que ama, a recomendação de conjunto online ainda é o lugar certo para começar."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Quanto devo gastar no primeiro conjunto de mahjong?",
+        "answer": "Planeje ¥300–¥800 para um conjunto sólido de resina com um bom case. Conjuntos de orçamento abaixo de ¥300 costumam ter pedras finas ou faces impressas que se desgastam rápido."
+      },
+      {
+        "question": "Qual é um preço justo para um conjunto de mahjong de 144 pedras?",
+        "answer": "Um conjunto confiável de 144 pedras de resina com case tipicamente fica entre ¥300–¥600 nos principais marketplaces. Conjuntos premium de osso e bambu custam várias vezes mais."
+      },
+      {
+        "question": "Conjuntos baratos de mahjong valem a pena?",
+        "answer": "Para jogo ocasional, um conjunto de orçamento serve. Só confirme que tem 144 pedras e cheque avaliações sobre reclamações de pintura e versos que não combinam."
+      },
+      {
+        "question": "Devo comprar um conjunto de mahjong antes de aprender a jogar?",
+        "answer": "Não necessariamente. Você pode aprender o jogo de graça online primeiro e comprar um conjunto quando tiver certeza de que gosta — aí a compra é um investimento, não um risco."
+      }
+    ]
+  },
+  "mahjong-history-cultural-guide": {
+    "title": "A História do Mahjong: Da Dinastia Qing na China para o Mundo",
+    "description": "A fascinante história do mahjong — suas origens na China do século XIX, a febre ocidental dos anos 1920, sua reinvenção no Japão e na América, e onde ele está hoje.",
+    "sections": [
+      {
+        "heading": "Origens na Dinastia Qing na China",
+        "body": [
+          "O mahjong surgiu na China em meados do século XIX, provavelmente por volta de Xangai ou Ningbo. Pegou a lógica de jogos de cartas chineses anteriores e a traduziu em pedras — um formato que permitiu sobreviver à proibição de muitos jogos de azar.",
+          "Nos anos 1890 já era presença fixa nas casas de chá de Xangai, espalhando-se pelas rotas comerciais."
+        ]
+      },
+      {
+        "heading": "A Febre Ocidental dos Anos 1920",
+        "body": [
+          "O mahjong chegou aos Estados Unidos no início dos anos 1920 e virou um fenômeno social genuíno — a \"febre do mahjong\". Centenas de milhares de conjuntos foram vendidos, e jogadores americanos inventaram rapidamente suas próprias convenções, incluindo o Charleston e depois o cartão anual de mãos.",
+          "O jogo chinês também viajou para o Japão, onde foi refinado nas regras Riichi que hoje dominam o jogo competitivo."
+        ]
+      },
+      {
+        "heading": "Reinvenção Regional",
+        "body": [
+          "Conforme o mahjong se espalhou, virou muitos jogos. O Japão construiu o Riichi com yaku rigorosos e pontuação de mão fechada. Taiwan desenvolveu o jogo de dezesseis pedras. Sichuan criou a variante rápida de \"batalha sangrenta\". A América manteve o estilo guiado por cartão que mais se afastou do original.",
+          "Cada versão manteve o núcleo de comprar e descartar, mas reconstruiu a pontuação e a estratégia em torno do gosto local."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          },
+          {
+            "suit": "wind",
+            "wind": "north"
+          }
+        ]
+      },
+      {
+        "heading": "Mahjong Competitivo Hoje",
+        "body": [
+          "O século XXI trouxe o mahjong competitivo: ligas profissionais de Riichi, as Mahjong Competition Rules (MCR) para jogo internacional e uma cena online mundial. O mahjong também apareceu em eventos próximos a esports e em streaming, alcançando uma nova geração.",
+          "Hoje o jogo é praticado em quase todos os continentes, em clubes, plataformas online e em casa."
+        ]
+      },
+      {
+        "heading": "O Significado Cultural do Mahjong",
+        "body": [
+          "No Leste Asiático, o mahjong é mais do que um jogo — é um ritual social. Famílias se reúnem em volta da mesa nos feriados, e o jogo é um laço comum entre gerações. No Ocidente carregou um peso diferente, como símbolo do exótico que virou um hobby querido.",
+          "Essa vida dupla — profundamente tradicional e infinitamente adaptável — é exatamente por que o mahjong sobreviveu e se espalhou."
+        ]
+      },
+      {
+        "heading": "Jogue a História",
+        "body": [
+          "Você pode jogar o mesmo jogo clássico que varreu Xangai, o Japão e o mundo — de graça, online, contra três oponentes de computador. As pedras que você vê são as mesmas que jogadores vêm comprando há quase dois séculos."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "Onde o mahjong foi inventado?",
+        "answer": "O mahjong surgiu na China em meados do século XIX, provavelmente por volta de Xangai ou Ningbo, a partir de jogos de cartas chineses anteriores traduzidos em pedras."
+      },
+      {
+        "question": "Por que o mahjong se popularizou no Ocidente?",
+        "answer": "A \"febre do mahjong\" dos anos 1920 o trouxe aos EUA como um jogo social da moda, e jogadores ocidentais desenvolveram suas próprias variantes como o Charleston e o cartão anual de mãos."
+      },
+      {
+        "question": "O mahjong é o mesmo jogo em todo lugar?",
+        "answer": "Não. Mahjong chinês, japonês, americano, taiwanês e de Sichuan são jogos distintos que compartilham um núcleo de pedras, compra e descarte."
+      },
+      {
+        "question": "Quantos anos tem o mahjong?",
+        "answer": "Cerca de 150 anos. Surgiu na China de meados do século XIX e foi reinventado por cada cultura que o adotou."
+      }
+    ]
+  }
+}

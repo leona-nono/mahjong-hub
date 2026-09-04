@@ -1,26 +1,23 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Suspense } from 'react';
 
 import {
-  getMergedGames,
-  getMergedGamesByNavGroup,
-  getMergedLocalizedGame,
-  getMergedLocalizedGames,
-  getMergedRelatedGames
-} from '@/lib/games-db';
+  getGames,
+  getGamesByNavGroup,
+  getLocalizedGame,
+  getLocalizedGames,
+  getRelatedGames
+} from '@/data/games';
 import IframeSection from '@/components/IframeSection';
 import NativeGameLazy from '@/components/games/NativeGameLazy';
 import CatalogGameCard from '@/components/CatalogGameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
-import MarkdownContent from '@/components/MarkdownContent';
 import { pageMeta } from '@/lib/seo';
 import { UI_LOCALES } from '@/lib/locales';
-import { getGameFeatureMarkdown } from '@/lib/game-features';
-import { brandName, formatGameMetadata, getSiteSettings } from '@/lib/site-settings';
-import { utcDateString } from '@/lib/points-rules';
-import { dailyLevelId } from '@/lib/mahjong-solitaire/progress-rules';
+import { brandName, formatGameMetadata, getPublicSiteSettings } from '@/lib/site-settings';
 
 const SITE = 'https://mahjonggame.org';
 
@@ -36,11 +33,11 @@ const LOCALE_TO_LANGUAGE: Record<string, string> = {
   de: 'de'
 };
 
-export const revalidate = 86_400;
+/** Pure SSG from data/games + games-i18n. Redeploy to refresh. */
+export const dynamic = 'force-static';
 
-export async function generateStaticParams() {
-  const games = await getMergedGames();
-  return games.flatMap((g) =>
+export function generateStaticParams() {
+  return getGames().flatMap((g) =>
     UI_LOCALES.map((locale) => ({ locale, slug: g.slug }))
   );
 }
@@ -51,13 +48,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const game = await getMergedLocalizedGame(slug, locale);
+  const game = getLocalizedGame(slug, locale);
   if (!game) return {};
 
-  // Coming-soon rulesets ship a full rules guide, so they are indexable
-  // introduction pages. Only embedded third-party iframes stay out of the index.
   const isIndexable = game.gameType === 'native' || game.gameType === 'coming-soon';
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
   const seo = formatGameMetadata(site, game);
 
   return pageMeta({
@@ -74,40 +69,30 @@ export async function generateMetadata({
 }
 
 export default async function GamePage({
-  params,
-  searchParams
+  params
 }: {
   params: Promise<{ locale: string; slug: string }>;
-  searchParams?: Promise<{ play?: string }>;
 }) {
   const { locale, slug } = await params;
-  const query = searchParams ? await searchParams : {};
   setRequestLocale(locale);
 
-  const game = await getMergedLocalizedGame(slug, locale);
+  const game = getLocalizedGame(slug, locale);
   if (!game) notFound();
 
-  const cmsMarkdown = await getGameFeatureMarkdown(slug, locale);
   const t = await getTranslations('game');
-  const related = getMergedLocalizedGames(
-    await getMergedRelatedGames(slug, 8),
-    locale
-  );
-  const regionalSwitchGames = getMergedLocalizedGames(
-    await getMergedGamesByNavGroup('classic'),
+  const related = getLocalizedGames(getRelatedGames(slug, 8), locale);
+  const regionalSwitchGames = getLocalizedGames(
+    getGamesByNavGroup('classic'),
     locale
   ).filter((candidate) => candidate.slug !== slug);
-  const solitaireSwitchGames = getMergedLocalizedGames(
-    await getMergedGamesByNavGroup('solitaire'),
+  const solitaireSwitchGames = getLocalizedGames(
+    getGamesByNavGroup('solitaire'),
     locale
   ).filter((candidate) => candidate.slug !== slug);
   const isNative = game.gameType === 'native';
   const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
   const isHongKong = game.ruleset === 'hongkong';
-  const playDaily =
-    game.native === 'mahjong-solitaire' && query.play === 'daily';
-  const solitaireLevelId = playDaily ? dailyLevelId(utcDateString()) : undefined;
   const isFourPlayer = game.category === 'four-player';
 
   const jsonLd: Record<string, unknown>[] = [];
@@ -152,14 +137,20 @@ export default async function GamePage({
   const stage = isComingSoon ? (
     <ComingSoonGame game={game} />
   ) : isNative && game.native ? (
-    <NativeGameLazy
-      native={game.native}
-      ruleset={game.ruleset}
-      regionalRuleset={game.regionalRuleset}
-      slug={game.slug}
-      defaultLevelId={solitaireLevelId}
-      autoStart={playDaily}
-    />
+    <Suspense
+      fallback={
+        <div className="flex min-h-[520px] items-center justify-center rounded-2xl border border-portal-border bg-portal-panel text-sm text-portal-muted">
+          Loading game…
+        </div>
+      }
+    >
+      <NativeGameLazy
+        native={game.native}
+        ruleset={game.ruleset}
+        regionalRuleset={game.regionalRuleset}
+        slug={game.slug}
+      />
+    </Suspense>
   ) : (
     <IframeSection
       game={game}
@@ -223,7 +214,7 @@ export default async function GamePage({
         </aside>
       </div>
 
-      {(game.screenshots?.length || cmsMarkdown || content) && (
+      {content ? (
         <div className="mt-8 space-y-3">
           {game.screenshots?.length ? (
             <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
@@ -244,15 +235,6 @@ export default async function GamePage({
             </section>
           ) : null}
 
-          {cmsMarkdown ? (
-            <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
-              <h2 className="mb-3 font-semibold text-portal-text">{t('about')}</h2>
-              <MarkdownContent markdown={cmsMarkdown} />
-            </section>
-          ) : null}
-
-          {content ? (
-            <>
           <section className="rounded-xl border border-portal-border bg-portal-panel p-4">
             <h2 className="font-semibold text-portal-text">{t('howToPlay')}</h2>
             <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-portal-muted">
@@ -300,10 +282,8 @@ export default async function GamePage({
               </div>
             </section>
           ) : null}
-            </>
-          ) : null}
         </div>
-      )}
+      ) : null}
 
       <section className="mt-8 lg:hidden">
         <h2 className="mb-3 font-display text-lg font-semibold text-portal-text">

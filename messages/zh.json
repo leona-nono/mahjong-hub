@@ -80,7 +80,12 @@
     "tips": "策略要点",
     "faq": "常见问题",
     "comingSoon": "敬请期待",
-    "savePointsPrompt": "邮箱登录以保存你的 {n} 积分"
+    "savePointsPrompt": "邮箱登录以保存你的 {n} 积分",
+    "minRead": "约 {n} 分钟阅读",
+    "playNow": "立即开玩",
+    "beginnersCtaLead": "准备好实战练习了吗？",
+    "beginnersCtaLink": "去玩一局真麻将",
+    "beginnersCtaTail": "与三位电脑对手对战。"
   },
   "collection": {
     "title": "麻将消除游戏合集",

@@ -12,7 +12,7 @@ import ConsentBanner from '@/components/ConsentBanner';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import PwaInstallHint from '@/components/PwaInstallHint';
 import { LANGUAGE_ALTERNATES, SITE_BASE_URL, socialShareMeta } from '@/lib/seo';
-import { brandName, getSiteSettings } from '@/lib/site-settings';
+import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
 import { homeSeo } from '@/lib/home-seo';
 
 const display = Fraunces({
@@ -37,7 +37,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const site = await getSiteSettings();
+  const site = getPublicSiteSettings();
   const home = await homeSeo(locale);
   const brand = brandName(site);
   const share = socialShareMeta({

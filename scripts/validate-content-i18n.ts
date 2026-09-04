@@ -98,9 +98,12 @@ for (const locale of CONTENT_LOCALES) {
       title?: string;
       description?: string;
       content?: {
+        intro?: string;
+        howToPlay?: string[];
+        tips?: string[];
         features?: string[];
         supportedDevices?: string;
-        intro?: string;
+        faq?: unknown[];
       };
     }
   >;
@@ -121,6 +124,29 @@ for (const locale of CONTENT_LOCALES) {
     }
     const content = entry.content;
     const enContent = base.content;
+    // English has full page copy → locale must ship a complete translation
+    // (missing fields previously fell back to English on CJK routes).
+    if (enContent) {
+      if (!content) {
+        fail(`games-i18n/${locale}/${slug}: missing content (EN has full copy)`);
+        continue;
+      }
+      for (const key of [
+        'intro',
+        'howToPlay',
+        'tips',
+        'features',
+        'supportedDevices',
+        'faq'
+      ] as const) {
+        const locVal = content[key];
+        const enVal = enContent[key];
+        if (enVal == null) continue;
+        if (locVal == null || (Array.isArray(locVal) && locVal.length === 0)) {
+          fail(`games-i18n/${locale}/${slug}: missing content.${key}`);
+        }
+      }
+    }
     if (!content || !enContent) continue;
     if (
       content.features &&
@@ -143,6 +169,9 @@ for (const locale of CONTENT_LOCALES) {
       JSON.stringify(content.howToPlay) === JSON.stringify(enContent.howToPlay)
     ) {
       fail(`games-i18n/${locale}/${slug}: howToPlay still English`);
+    }
+    if (content.intro && enContent.intro && content.intro === enContent.intro) {
+      fail(`games-i18n/${locale}/${slug}: intro still English`);
     }
   }
 }

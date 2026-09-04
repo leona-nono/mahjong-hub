@@ -80,7 +80,12 @@
     "tips": "戦術のヒント",
     "faq": "よくある質問",
     "comingSoon": "近日公開",
-    "savePointsPrompt": "メールでログインして {n} ポイントを保存"
+    "savePointsPrompt": "メールでログインして {n} ポイントを保存",
+    "minRead": "約 {n} 分で読めます",
+    "playNow": "今すぐプレイ",
+    "beginnersCtaLead": "実際に試してみますか？",
+    "beginnersCtaLink": "本格的な対局をプレイ",
+    "beginnersCtaTail": "3体のコンピュータ相手に挑戦。"
   },
   "collection": {
     "title": "麻雀消除ゲームコレクション",
