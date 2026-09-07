@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { INDEXABLE_LOCALES } from '@/lib/locales';
+import { isGamePageIndexable } from '@/lib/game-seo';
 import { games } from '@/data/games';
 import { getBlogPosts } from '@/data/blog';
 
@@ -18,9 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   // Coming-soon rulesets render an indexable rules guide, so they belong in the
   // sitemap alongside the playable games. Only iframe pages stay out.
-  const indexableGames = games.filter(
-    (g) => g.gameType === 'native' || g.gameType === 'coming-soon'
-  );
+  const indexableGames = games.filter(isGamePageIndexable);
   const blogPosts = getBlogPosts();
   const lastModified = new Date();
 

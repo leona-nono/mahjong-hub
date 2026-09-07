@@ -16,6 +16,7 @@ import CatalogGameCard from '@/components/CatalogGameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
 import { pageMeta } from '@/lib/seo';
+import { isGamePageIndexable } from '@/lib/game-seo';
 import { UI_LOCALES } from '@/lib/locales';
 import { brandName, formatGameMetadata, getPublicSiteSettings } from '@/lib/site-settings';
 
@@ -51,7 +52,6 @@ export async function generateMetadata({
   const game = getLocalizedGame(slug, locale);
   if (!game) return {};
 
-  const isIndexable = game.gameType === 'native' || game.gameType === 'coming-soon';
   const site = getPublicSiteSettings();
   const seo = formatGameMetadata(site, game);
 
@@ -62,7 +62,7 @@ export async function generateMetadata({
     description: seo.description,
     ogImage: game.cover || site.ogImage,
     siteName: brandName(site),
-    robots: isIndexable
+    robots: isGamePageIndexable(game)
       ? { index: true, follow: true }
       : { index: false, follow: true }
   });
