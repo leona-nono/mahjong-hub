@@ -76,12 +76,7 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      {
-        // Prefer /en as the English home URL; / is only an entry hop.
-        source: '/',
-        destination: '/en',
-        permanent: true
-      },
+      // Bare / -> /en lives in middleware (also collapses www -> apex in one hop).
       {
         // Beginner guides moved to the canonical /blog/ hub.
         source: '/:locale/games/beginners',
