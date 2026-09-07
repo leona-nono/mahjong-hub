@@ -16,13 +16,8 @@ export const authConfig = {
     signIn: '/'
   },
   callbacks: {
-    // Authorization is enforced server-side, NOT at the edge:
-    //  - Admin pages: app/[locale]/admin/layout.tsx calls auth() and redirects.
-    //  - APIs: each route calls requireAdmin() and returns 401.
-    // Edge middleware redirecting statically-prerendered admin pages is
-    // unreliable (the cached 200 HTML is served straight from the CDN, so
-    // the edge redirect never runs). The Node server component is the
-    // authoritative gate. The middleware still runs to set up the session.
+    // Authorization is enforced in Node route handlers (requireUserId, etc.),
+    // not at the edge. Ops admin CMS was removed; player APIs stay session-gated.
     authorized() {
       return true;
     },

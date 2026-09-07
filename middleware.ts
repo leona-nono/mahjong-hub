@@ -22,9 +22,9 @@ function apexUrl(pathname: string, search: string): URL {
   return url;
 }
 
-// Locale routing + host canonicalization. Auth for /api/* and /[locale]/admin
-// is enforced in Node (requireAdmin / admin layout) so Edge Middleware does not
-// run on every API call (that matcher used to bill an invocation per session poll).
+// Locale routing + host canonicalization. Player APIs (/api/points, wardrobe,
+// etc.) enforce auth in Node handlers so Edge Middleware does not run on
+// every API call (that matcher used to bill an invocation per session poll).
 export default function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
   const host = hostname(req);

@@ -31,7 +31,7 @@ Public HTML should show primarily:
 
 - Public routes under `app/[locale]/(public)` use `export const dynamic = 'force-static'`.
 - Catalogue / blog / about / home-guide copy comes from `data/*` JSON — no Prisma on the request path.
-- `getPublicSiteSettings()` is sync defaults (+ optional `NEXT_PUBLIC_*` env); admin still uses `getSiteSettings()` (DB).
+- `getPublicSiteSettings()` is sync defaults (+ optional `NEXT_PUBLIC_*` env). Ops CMS / `getSiteSettings()` DB path was removed.
 - `?play=daily` and homepage daily level id are resolved **client-side**.
 - `SessionProvider` starts with `session={null}` and only calls `/api/auth/session` when a session cookie exists.
 
