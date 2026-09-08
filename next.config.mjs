@@ -27,8 +27,10 @@ const securityHeaders = [
       "font-src 'self' data:",
       "style-src 'self' 'unsafe-inline'",
       // Next.js + Auth.js + GA/GTM. Iframe games are third-party hosts.
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
-      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://region1.google-analytics.com",
+      // Cocos web-mobile (same-origin /cocos/*) needs wasm-unsafe-eval + blob workers.
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://www.googletagmanager.com https://www.google-analytics.com",
+      "worker-src 'self' blob:",
+      "connect-src 'self' blob: https://www.google-analytics.com https://www.googletagmanager.com https://region1.google-analytics.com",
       "frame-src 'self' https: https://www.googletagmanager.com"
     ].join('; ')
   }
@@ -76,7 +78,7 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      // Bare / -> /en lives in middleware (also collapses www -> apex in one hop).
+      // Bare `/` → `/en` lives in middleware (also collapses www → apex in one hop).
       {
         // Beginner guides moved to the canonical /blog/ hub.
         source: '/:locale/games/beginners',

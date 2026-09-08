@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "麻将乐园",
-    "tagline": "免费在线麻将游戏"
+    "tagline": "麻将游戏免费在线玩！"
   },
   "nav": {
     "home": "首页",
@@ -393,7 +393,7 @@
     "pointsTip": "积分有什么用？",
     "tipBody": "积分可兑换精美牌背、牌桌皮肤、特效！即将上线。",
     "yourPoints": "{n} 积分",
-    "guestNote": "Guests can tap Check in — we will ask you to register with email first.",
+    "guestNote": "您可以点击登录——请您使用邮箱完成注册。",
     "claimFailed": "签到未能入账，请刷新后重试。"
   },
   "challenge": {
@@ -603,7 +603,7 @@
         "body": "限时免费，每日签到解锁。"
       },
       "premium": {
-        "title": "Premium Collection",
+        "title": "高级",
         "body": "高端牌背，用积分兑换。"
       },
       "limited": {
@@ -635,6 +635,30 @@
       "bamboo-green": "竹韵绿",
       "gold-dynasty": "鎏金岁月",
       "ink-wash": "水墨山河"
+    }
+  },
+  "_meta": {
+    "overrides": {
+      "seo.homeDescription": {
+        "reason": "locale_idiom",
+        "note": "Marked from Content Studio"
+      },
+      "site.name": {
+        "reason": "locale_idiom",
+        "note": "Marked from Content Studio"
+      },
+      "site.tagline": {
+        "reason": "locale_idiom",
+        "note": "Marked from Content Studio"
+      },
+      "nav.regionSichuan": {
+        "reason": "locale_idiom",
+        "note": "Marked from Content Studio"
+      },
+      "nav.home": {
+        "reason": "locale_idiom",
+        "note": "Marked from Content Studio"
+      }
     }
   }
 }

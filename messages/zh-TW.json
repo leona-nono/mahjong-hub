@@ -53,19 +53,19 @@
     "checkInNow": "立即簽到",
     "checkInDone": "已簽到",
     "emailBonusHint": "💡 信箱登入可額外獲得 {n} 積分！",
-    "categoriesTitle": "Browse by category",
-    "catSolitaire": "Mahjong Solitaire",
-    "catSolitaireBody": "Match free tiles and clear the board — relax, no timer required.",
-    "catFourPlayer": "Mahjong 4 Player",
-    "catFourPlayerBody": "Hong Kong, Riichi, Chinese Official and more rulesets vs AI.",
-    "catMore": "More puzzles",
-    "catMoreBody": "Connect, tile-match and more free games in the Game Hall.",
-    "seoTitle": "Free mahjong games you can play in the browser",
-    "seoBody": "Mahjong Hub is a free online Game Hall for mahjong solitaire, four-player tables and tile puzzles. Jump into today’s daily challenge above, explore Solitaire and 4 Player categories, or open any game card — no download, no account required to start.",
-    "seoLinkSolitaire": "Mahjong Solitaire games",
-    "seoLinkClassic": "Four-player mahjong",
-    "seoLinkPlay": "Play Solitaire Classic",
-    "seoLinkBeginners": "Mahjong for beginners",
+    "categoriesTitle": "依類別瀏覽",
+    "catSolitaire": "麻將接龍",
+    "catSolitaireBody": "配對免費方塊並清空版面——放鬆遊玩，無需計時",
+    "catFourPlayer": "4人麻將",
+    "catFourPlayerBody": "香港、日式、中國国标以及更多規則體系對戰人工智慧。",
+    "catMore": "更多謎題",
+    "catMoreBody": "遊戲大廳內有連連看、方塊配對以及更多免費遊戲.",
+    "seoTitle": "可於瀏覽器遊玩的免費麻將遊戲",
+    "seoBody": "Mahjong Hub是一款免費線上遊戲大廳，提供麻將接龍、四人麻將桌與麻將牌益智遊戲。立即參與上方的今日每日挑戰，瀏覽接龍與四人對戰分類，或是開啟任意遊戲卡片——無需下載、無需註冊帳號即可開始遊玩。",
+    "seoLinkSolitaire": "麻將接龍遊戲",
+    "seoLinkClassic": "四人麻將",
+    "seoLinkPlay": "玩經典接龍遊戲",
+    "seoLinkBeginners": "麻將新人教學",
     "featuredHall": "精選遊戲"
   },
   "game": {
@@ -393,7 +393,7 @@
     "pointsTip": "積分有什麼用？",
     "tipBody": "積分可兌換精美牌背、牌桌皮膚、特效！即將上線。",
     "yourPoints": "{n} 積分",
-    "guestNote": "Guests can tap Check in — we will ask you to register with email first.",
+    "guestNote": "请点击登录 —— 将会使用邮箱进行注册",
     "claimFailed": "簽到未能入帳，請重新整理後再試。"
   },
   "challenge": {
@@ -406,7 +406,7 @@
     "cleared": "今日已通關",
     "play": "開始今日挑戰",
     "playAgain": "再玩一局",
-    "moreSolitaire": "More solitaire →"
+    "moreSolitaire": "更多消除游戏 →"
   },
   "portal": {
     "categories": "分類",

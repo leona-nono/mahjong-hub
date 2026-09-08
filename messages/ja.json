@@ -8,7 +8,7 @@
     "games": "ゲーム",
     "about": "について",
     "wardrobe": "きせかえ",
-    "classic": "Mahjong 4 Player",
+    "classic": "麻雀 4 人プレイ",
     "classicSubtitle": "本格四人麻雀——中国、日本、アメリカ、台湾、四川のルール。",
     "solitaire": "麻雀ソリティア",
     "solitaireSubtitle": "カジュアルな牌合わせ・消しゲーで、気軽にリラックス。",
@@ -46,27 +46,27 @@
     "dailyCheckInLine": "デイリーチェックイン: +{n} pts",
     "moreRulesets": "2026年にさらにルールを追加",
     "featuredClassic": "クラシック卓",
-    "signInRegister": "Sign in / Register",
-    "checkInTitle": "📅 Daily Check-in (Day {day})",
-    "checkInToday": "Today: +{n} points",
-    "checkInClaimed": "Checked in today · +{n} points",
-    "checkInNow": "Check in now",
-    "checkInDone": "Checked in",
-    "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!",
-    "categoriesTitle": "Browse by category",
-    "catSolitaire": "Mahjong Solitaire",
-    "catSolitaireBody": "Match free tiles and clear the board — relax, no timer required.",
-    "catFourPlayer": "Mahjong 4 Player",
-    "catFourPlayerBody": "Hong Kong, Riichi, Chinese Official and more rulesets vs AI.",
-    "catMore": "More puzzles",
-    "catMoreBody": "Connect, tile-match and more free games in the Game Hall.",
-    "seoTitle": "Free mahjong games you can play in the browser",
-    "seoBody": "Mahjong Hub is a free online Game Hall for mahjong solitaire, four-player tables and tile puzzles. Jump into today’s daily challenge above, explore Solitaire and 4 Player categories, or open any game card — no download, no account required to start.",
-    "seoLinkSolitaire": "Mahjong Solitaire games",
-    "seoLinkClassic": "Four-player mahjong",
-    "seoLinkPlay": "Play Solitaire Classic",
-    "seoLinkBeginners": "Mahjong for beginners",
-    "featuredHall": "Featured games"
+    "signInRegister": "/ 新規登録",
+    "checkInTitle": "📅デイリーチェックイン（{day} 日目）",
+    "checkInToday": "今日：+{n} ポイント",
+    "checkInClaimed": "今日チェックイン・+{n} ポイント",
+    "checkInNow": "今すぐチェックイン",
+    "checkInDone": "チェックイン済み",
+    "emailBonusHint": "💡メールアドレスでサインインすると {n} ボーナスポイントを獲得！",
+    "categoriesTitle": "カテゴリーで閲覧",
+    "catSolitaire": "麻雀ソリティア",
+    "catSolitaireBody": "フリータイルをマッチさせて盤面をクリアしよう — タイマーなしでリラックスしてプレイできます。",
+    "catFourPlayer": "麻雀 4 人プレイ",
+    "catFourPlayerBody": "香港、立直、中国公式、その他のルールセット対 AI。",
+    "catMore": "さらなるパズル",
+    "catMoreBody": "ゲームホールには、コネクト、タイルマッチなどの無料ゲームが多数あります。",
+    "seoTitle": "ブラウザで遊べる無料麻雀ゲーム",
+    "seoBody": "麻雀ソリティア",
+    "seoLinkSolitaire": "雀ソリティアゲーム",
+    "seoLinkClassic": "四人麻雀",
+    "seoLinkPlay": "クラシックソリティアをプレイする",
+    "seoLinkBeginners": "初心者向け麻雀",
+    "featuredHall": "注目ゲーム"
   },
   "game": {
     "play": "プレイ",
@@ -393,11 +393,11 @@
     "pointsTip": "ポイントの使い道は？",
     "tipBody": "ポイントで美しい牌背や牌卓スキン、エフェクトを交換できます！近日公開。",
     "yourPoints": "{n} pt",
-    "guestNote": "Guests can tap Check in — we will ask you to register with email first.",
+    "guestNote": "ゲストはチェックインをタップできます — まずメールアドレスでの登録を求められます。",
     "claimFailed": "チェックインを保存できませんでした。更新して再試行してください。"
   },
   "challenge": {
-    "eyebrow": "本日",
+    "eyebrow": "今日",
     "title": "デイリーチャレンジ",
     "subtitle": "全員同じ盤面。クリアして連続記録を伸ばそう。",
     "reward": "+{n} ポイント",
@@ -406,7 +406,7 @@
     "cleared": "本日クリア済み",
     "play": "今日の盤面を遊ぶ",
     "playAgain": "もう一度",
-    "moreSolitaire": "More solitaire →"
+    "moreSolitaire": "もっとソリティア →"
   },
   "portal": {
     "categories": "カテゴリ",
@@ -574,12 +574,12 @@
     "equipped": "Equipped",
     "owned": "Owned · ready to use",
     "locked": "Locked",
-    "apply": "Apply this look",
+    "apply": "のルックを適用する",
     "working": "Working…",
     "permanent": "Permanent",
-    "active": "In season",
+    "active": "旬の",
     "upcoming": "Coming soon",
-    "archive": "Collection archive",
+    "archive": "コレクションアーカイブ",
     "seasonalEnded": "Season ended",
     "unlockCheckIn": "Check-in unlock",
     "checkInToUnlock": "Check in to unlock",
@@ -591,12 +591,12 @@
     "needMorePoints": "Not enough points yet — keep playing or check in.",
     "needMoreFragments": "Need more weekly check-in fragments.",
     "unlockFailed": "Could not unlock. Try again.",
-    "buyMatchingSet": "Buy matching real mahjong set →",
+    "buyMatchingSet": "一致する本物の麻雀セットを購入する →",
     "shopDisclaimer": "As an Amazon Associate we earn from qualifying purchases. Links open Amazon or our shop.",
     "chapters": {
       "foundation": {
         "title": "Foundation",
-        "body": "Five free starter tables and tile backs."
+        "body": "無料のスターターテーブル5台とタイルバック."
       },
       "seasonal": {
         "title": "Seasonal",
@@ -608,15 +608,15 @@
       },
       "limited": {
         "title": "Limited Edition",
-        "body": "Craft from seven weekly check-in fragments."
+        "body": "7つの週次チェックイン断片から作成."
       },
       "solar": {
         "title": "Seasonal",
         "body": "Time-limited free looks unlocked with daily check-in."
       },
       "festival": {
-        "title": "Limited Edition",
-        "body": "Festival and limited looks."
+        "title": "限定版",
+        "body": "フェスティバル＆限定ルック."
       }
     },
     "items": {
@@ -635,6 +635,14 @@
       "bamboo-green": "Bamboo Green",
       "gold-dynasty": "Gold Dynasty",
       "ink-wash": "Ink Wash"
+    }
+  },
+  "_meta": {
+    "overrides": {
+      "challenge.eyebrow": {
+        "reason": "locale_idiom",
+        "note": "Marked from Content Studio"
+      }
     }
   }
 }

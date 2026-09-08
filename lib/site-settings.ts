@@ -1,5 +1,6 @@
 import 'server-only';
 import { applySeoTemplate, clipSeo } from '@/lib/seo-templates';
+import siteJson from '@/data/site.json';
 
 export interface PublicSiteSettings {
   siteTitle: string;
@@ -19,6 +20,7 @@ export interface PublicSiteSettings {
   gtm: string;
 }
 
+/** Fallback if site.json is missing keys. Prefer editing data/site.json. */
 export const DEFAULT_PUBLIC_SITE_SETTINGS: PublicSiteSettings = {
   siteTitle: 'Mahjong Hub · Free Mahjong Games',
   siteDescription:
@@ -39,28 +41,30 @@ export const DEFAULT_PUBLIC_SITE_SETTINGS: PublicSiteSettings = {
   gtm: ''
 };
 
-/**
- * Public-page settings — defaults + optional NEXT_PUBLIC_* env overrides.
- * No Prisma / CMS (ops admin removed). Redeploy to change branding.
- */
-export function getPublicSiteSettings(): PublicSiteSettings {
+function fromSiteFile(): PublicSiteSettings {
+  const j = siteJson as Partial<PublicSiteSettings>;
   return {
     ...DEFAULT_PUBLIC_SITE_SETTINGS,
-    siteTitle:
-      process.env.NEXT_PUBLIC_SITE_TITLE?.trim() ||
-      DEFAULT_PUBLIC_SITE_SETTINGS.siteTitle,
+    ...Object.fromEntries(
+      Object.entries(j).filter(([, v]) => typeof v === 'string')
+    )
+  } as PublicSiteSettings;
+}
+
+/**
+ * Public-page settings from data/site.json, optional NEXT_PUBLIC_* env overrides.
+ * Edit site.json (or Dev Content Studio) and redeploy — no CMS DB.
+ */
+export function getPublicSiteSettings(): PublicSiteSettings {
+  const file = fromSiteFile();
+  return {
+    ...file,
+    siteTitle: process.env.NEXT_PUBLIC_SITE_TITLE?.trim() || file.siteTitle,
     siteDescription:
-      process.env.NEXT_PUBLIC_SITE_DESCRIPTION?.trim() ||
-      DEFAULT_PUBLIC_SITE_SETTINGS.siteDescription,
-    ogImage:
-      process.env.NEXT_PUBLIC_OG_IMAGE?.trim() ||
-      DEFAULT_PUBLIC_SITE_SETTINGS.ogImage,
-    ga:
-      process.env.NEXT_PUBLIC_GA_ID?.trim() ||
-      DEFAULT_PUBLIC_SITE_SETTINGS.ga,
-    gtm:
-      process.env.NEXT_PUBLIC_GTM_ID?.trim() ||
-      DEFAULT_PUBLIC_SITE_SETTINGS.gtm
+      process.env.NEXT_PUBLIC_SITE_DESCRIPTION?.trim() || file.siteDescription,
+    ogImage: process.env.NEXT_PUBLIC_OG_IMAGE?.trim() || file.ogImage,
+    ga: process.env.NEXT_PUBLIC_GA_ID?.trim() || file.ga,
+    gtm: process.env.NEXT_PUBLIC_GTM_ID?.trim() || file.gtm
   };
 }
 

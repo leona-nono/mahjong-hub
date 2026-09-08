@@ -29,6 +29,14 @@ export default function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
   const host = hostname(req);
 
+  // Dev Content Studio — never expose on production.
+  if (pathname.startsWith('/dev')) {
+    if (process.env.NODE_ENV === 'production') {
+      return new NextResponse(null, { status: 404 });
+    }
+    return NextResponse.next();
+  }
+
   // Production only: collapse www to apex in one hop (matches SITE_BASE_URL /
   // robots / sitemap). Root goes straight to /en so crawlers never see a chain.
   if (process.env.NODE_ENV === 'production' && host === WWW_HOST) {

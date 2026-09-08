@@ -120,13 +120,13 @@
     "moreRulesets": "Más reglas en 2026",
     "featuredClassic": "Mesas clásicas",
     "signInRegister": "Sign in / Register",
-    "checkInTitle": "📅 Daily Check-in (Day {day})",
+    "checkInTitle": "📅 Registro diario (Day {day})",
     "checkInToday": "Today: +{n} points",
     "checkInClaimed": "Checked in today · +{n} points",
     "checkInNow": "Check in now",
     "checkInDone": "Checked in",
     "emailBonusHint": "💡 Earn {n} bonus points by signing in with email!",
-    "categoriesTitle": "Browse by category",
+    "categoriesTitle": "Navegar por categoría",
     "catSolitaire": "Mahjong Solitaire",
     "catSolitaireBody": "Match free tiles and clear the board — relax, no timer required.",
     "catFourPlayer": "Mahjong 4 Player",
@@ -298,6 +298,6 @@
   },
   "challenge": {
     "moreSolitaire": "More solitaire →",
-    "subtitle": "One shared board for everyone today. Clear it to keep your streak — rewards stay on this page."
+    "subtitle": "Hoy hay un tablero compartido para todos. Límpialo para mantener tu racha; las recompensas permanecen en esta página."
   }
 }

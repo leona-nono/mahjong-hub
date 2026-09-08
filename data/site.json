@@ -1,0 +1,17 @@
+{
+  "siteTitle": "Mahjong Hub · Free Mahjong Games",
+  "siteDescription": "Play free mahjong solitaire, connect and classic tile games online. Instant play in your browser — no download.",
+  "defaultLocale": "en",
+  "ogImage": "/og-default.png",
+  "titleTemplate": "{page} | {brand}",
+  "homeH1": "Free Mahjong Games Online",
+  "homeSubtitle": "Mahjong Hub · Rainbow Mahjong Games",
+  "gameTitleTemplate": "{game} | {brand}",
+  "gameDescriptionTemplate": "Play {game} free online at {brand}. Instant play in your browser — no download required. {summary}",
+  "facebook": "",
+  "x": "",
+  "instagram": "",
+  "tiktok": "",
+  "ga": "G-61V8MK15S6",
+  "gtm": ""
+}

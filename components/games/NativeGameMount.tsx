@@ -1,12 +1,15 @@
 'use client';
 
 import { useCallback } from 'react';
+import { useLocale } from 'next-intl';
 
 import MahjongTable from './MahjongTable';
 import MahjongConnect from './MahjongConnect';
+import CocosConnectPlayer from './CocosConnectPlayer';
 import MahjongSolitaire from './MahjongSolitaire';
 import AmericanMahjongTable from './AmericanMahjongTable';
 import RegionalMahjongTable from './RegionalMahjongTable';
+import { isCocosConnectEnabled } from '@/lib/cocos/hub-protocol';
 import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
 import type { NativeGame, NativeRuleset, RegionalRuleset } from '@/data/games';
 
@@ -35,6 +38,7 @@ export default function NativeGameMount({
   compact,
   autoStart
 }: NativeGameMountProps) {
+  const locale = useLocale();
   const handleWin = useCallback((points: number) => {
     trackMahjongEvent('mahjong_hand_completed', { game: slug, displayed_points: Math.min(Math.max(points, 1), 50) });
   }, [slug]);
@@ -52,6 +56,9 @@ export default function NativeGameMount({
   }
 
   if (native === 'mahjong-connect') {
+    if (isCocosConnectEnabled()) {
+      return <CocosConnectPlayer slug={slug} locale={locale} onWin={handleWin} />;
+    }
     return <MahjongConnect onWin={handleWin} />;
   }
 
