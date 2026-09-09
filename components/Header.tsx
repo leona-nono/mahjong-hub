@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
@@ -21,8 +20,6 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const user = session?.user;
-  const brand =
-    siteTitle.includes('·') ? siteTitle.split('·')[0].trim() : siteTitle;
 
   useEffect(() => {
     applyAppearance(savedAppearance());
@@ -39,20 +36,20 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
     <header className="sticky top-0 z-50 border-b border-portal-border bg-portal-elevated/90 backdrop-blur-md">
       <div className="rainbow-bar" />
       <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-3 px-4">
-        <Link
-          href="/"
-          className="flex shrink-0 items-center gap-2 rounded-lg outline-none ring-portal-accent/40 focus-visible:ring-2"
-          aria-label={brand || ts('name')}
-        >
-          <Image
-            src="/web_logo.png"
-            alt=""
-            width={160}
-            height={160}
-            priority
-            className="h-11 w-auto object-contain drop-shadow-sm sm:h-12"
-          />
-          <span className="sr-only">{ts('name')}</span>
+        <Link href="/" className="font-display text-xl font-bold tracking-tight text-portal-text">
+          {siteTitle.includes('·') ? (
+            <>
+              <span className="text-portal-accent">
+                {siteTitle.split('·')[0].trim()}
+              </span>
+              <span className="sr-only">{ts('name')}</span>
+            </>
+          ) : (
+            <>
+              {siteTitle}
+              <span className="sr-only">{ts('name')}</span>
+            </>
+          )}
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
