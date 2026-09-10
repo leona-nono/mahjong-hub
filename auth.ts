@@ -45,7 +45,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     process.env.AUTH_SECRET ??
     (process.env.NODE_ENV === 'production' ? undefined : 'mahjong-hub-dev-insecure-secret'),
   ...(databaseConfigured
-    ? { adapter: PrismaAdapter(prisma), session: { strategy: 'database' as const } }
+    ? {
+        // @auth/prisma-adapter and @prisma/client can resolve to incompatible
+        // PrismaClient generics across package boundaries (Vercel typecheck → never).
+        adapter: PrismaAdapter(prisma as Parameters<typeof PrismaAdapter>[0]),
+        session: { strategy: 'database' as const }
+      }
     : { session: { strategy: 'jwt' as const } }),
   ...authConfig,
   events: {

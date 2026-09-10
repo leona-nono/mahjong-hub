@@ -108,7 +108,7 @@ export function copyEnIntoEmpty(
   domain: string
 ): unknown {
   const enFields = flattenFields(domain, en);
-  let next = loc == null ? {} : structuredClone(loc);
+  let next: unknown = loc == null ? {} : structuredClone(loc);
   for (const f of enFields) {
     const cur = getAtPath(next, f.path);
     const empty =
@@ -127,7 +127,7 @@ export function copyEnIntoEmpty(
 /** Clear fields that are identical to EN (residual). */
 export function clearIdenticalToEn(en: unknown, loc: unknown, domain: string): unknown {
   const enFields = flattenFields(domain, en);
-  let next = loc == null ? {} : structuredClone(loc);
+  let next: unknown = loc == null ? {} : structuredClone(loc);
   for (const f of enFields) {
     const cur = getAtPath(next, f.path);
     if (JSON.stringify(cur) === JSON.stringify(f.value)) {
@@ -146,7 +146,7 @@ export function replaceInStrings(
 ): unknown {
   if (!from) return loc;
   const fields = flattenFields(domain, loc);
-  let next = loc == null ? {} : structuredClone(loc);
+  let next: unknown = loc == null ? {} : structuredClone(loc);
   for (const f of fields) {
     if (f.kind === 'string' && typeof f.value === 'string' && f.value.includes(from)) {
       next = setAtPath(next, f.path, f.value.split(from).join(to));
