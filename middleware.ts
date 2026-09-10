@@ -61,5 +61,9 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+  // Skip Edge Middleware for static packs (assets/images/cocos/…) and any
+  // file-with-extension path so CDN can serve them without invoking Node/Edge.
+  matcher: [
+    '/((?!api|_next|_vercel|assets/|images/|cocos/|icons/|covers/|.*\\..*).*)'
+  ]
 };

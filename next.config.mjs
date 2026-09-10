@@ -54,14 +54,38 @@ const nextConfig = {
     unoptimized: true
   },
   async headers() {
+    const immutableAsset = [
+      { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+    ];
     return [
       {
         source: '/:path*',
         headers: securityHeaders
       },
+      // Long-cache hashed / versioned static art & game packs (CDN hit → cut Origin Transfer).
       {
         source: '/assets/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }]
+        headers: immutableAsset
+      },
+      {
+        source: '/images/:path*',
+        headers: immutableAsset
+      },
+      {
+        source: '/cocos/:path*',
+        headers: immutableAsset
+      },
+      {
+        source: '/icons/:path*',
+        headers: immutableAsset
+      },
+      {
+        source: '/covers/:path*',
+        headers: immutableAsset
+      },
+      {
+        source: '/:path*.(js|css|png|jpg|jpeg|webp|svg|ico|wasm|atlas|plist|bin|mem|data|json)',
+        headers: immutableAsset
       },
       {
         source: '/sw.js',
