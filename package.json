@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "assets:tiles": "node scripts/generate-mahjong-tile-webp.mjs",
     "assets:solitaire": "node scripts/generate-solitaire-tile-placeholders.mjs",
+    "sync:mahjong-set": "npx tsx scripts/sync-mahjong-set-art.ts",
     "sync:cocos-connect": "node scripts/sync-cocos-connect.mjs",
     "catalog:solitaire": "npx tsx scripts/build-solitaire-catalog.ts",
     "validate:blog-i18n": "npx tsx scripts/validate-blog-i18n-json.ts",

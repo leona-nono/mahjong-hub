@@ -17,16 +17,18 @@
 | 四君子 | `flower-plum` `flower-orchid` `flower-bamboo` `flower-chrys` | `f5`–`f8` | 组内任意互配；套装未含，暂用 SVG 占位 |
 | 生肖 | `zodiac-rat` … `zodiac-pig` | 映射表另定 | P0 差异化弹药 |
 | 脸谱 | `face-01` … `face-04` | 映射表另定 | 同上 |
-| 牌背 | `../backs/default.svg` | — | 套装未含独立牌背 |
+| 牌背 | `../backs/default.png` | — | 来自 `PaiBG01.png` |
 
-## 来源映射（Mahjong-set `001.png`–`034.png`）
+## 来源映射（Mahjong-set `Pai*.png`）
 
-| 编号 | 文件 |
-|------|------|
-| 001–009 | `man-01`–`man-09` |
-| 010–018 | `pin-01`–`pin-09` |
-| 019–027 | `sou-01`–`sou-09` |
-| 028–031 | `wind-e` `wind-s` `wind-w` `wind-n` |
-| 032–034 | `dragon-red` `dragon-green` `dragon-white` |
+| 源文件 | 本目录文件 |
+|--------|------------|
+| `PaiW01`–`PaiW09` | `man-01`–`man-09` |
+| `PaiT01`–`PaiT09` | `pin-01`–`pin-09` |
+| `PaiB01`–`PaiB09` | `sou-01`–`sou-09` |
+| `PaiEast` / `South` / `West` / `North` | `wind-e` / `s` / `w` / `n` |
+| `PaiMiddle` / `PaiFa` / `PaiBai` | `dragon-red` / `green` / `white` |
+| `PaiBG01` | `../backs/default.png`（四人桌默认牌背同步到 `images/tiles/backs/`） |
 
+同步脚本：`npx tsx scripts/sync-mahjong-set-art.ts`（同时覆盖 `mahjong-hongkong` 传统牌 PNG/WebP）。  
 换正式图仍按同名覆盖，代码按 `artKeyForTile` 解析路径。

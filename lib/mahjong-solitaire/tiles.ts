@@ -104,7 +104,7 @@ export function tileArtSrc(tile: Tile): string {
 }
 
 export function tileBackSrc(): string {
-  return '/assets/mahjong-solitaire/backs/default.svg';
+  return '/assets/mahjong-solitaire/backs/default.png';
 }
 
 /** Free undos granted each level before points/ads (design P0). */

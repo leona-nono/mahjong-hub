@@ -22,7 +22,8 @@ export type AppearanceDef = {
 };
 
 const JADE_TABLE = '/images/solitaire/backgrounds/solitaire-jade-table-v1.webp';
-const JADE_BACK = '/images/tiles/backs/jade-moon-gate-tile-back-v1.webp';
+/** Default tile back from Mahjong-set `PaiBG01.png` (also mirrored as jade-moon-gate…). */
+const JADE_BACK = '/images/tiles/backs/pai-bg-01.webp';
 
 /**
  * Wardrobe catalog — Foundation free · Seasonal check-in · Premium points · Limited fragments.
