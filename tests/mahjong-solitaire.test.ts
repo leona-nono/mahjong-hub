@@ -96,9 +96,9 @@ describe('solitaire tiles + art keys', () => {
     expect(artKeyForTile('m5')).toBe('man-05');
     expect(artKeyForTile('z5')).toBe('dragon-white');
     expect(artKeyForTile('f1')).toBe('season-spring');
-    expect(tileArtSrc('m5')).toBe('/assets/mahjong-solitaire/tiles/man-05.png');
-    expect(tileArtSrc('z7')).toBe('/assets/mahjong-solitaire/tiles/dragon-red.png');
-    expect(tileArtSrc('f1')).toBe('/assets/mahjong-solitaire/tiles/season-spring.svg');
+    expect(tileArtSrc('m5')).toBe('/assets/mahjong-solitaire/tiles/man-05.png?v=20260911');
+    expect(tileArtSrc('z7')).toBe('/assets/mahjong-solitaire/tiles/dragon-red.png?v=20260911');
+    expect(tileArtSrc('f1')).toBe('/assets/mahjong-solitaire/tiles/season-spring.svg?v=20260911');
   });
 
 });

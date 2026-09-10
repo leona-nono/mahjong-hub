@@ -96,15 +96,18 @@ export function artKeyForTile(tile: Tile): string {
   return 'man-01';
 }
 
+/** Bump when replacing face/back PNGs so CDN + SW pick up new bytes. */
+export const TILE_ART_VERSION = '20260911';
+
 export function tileArtSrc(tile: Tile): string {
   const key = artKeyForTile(tile);
   // 34 standard faces are photos from Mahjong-set; bonus/special stay SVG.
   const ext = tile[0] === 'f' ? 'svg' : 'png';
-  return `/assets/mahjong-solitaire/tiles/${key}.${ext}`;
+  return `/assets/mahjong-solitaire/tiles/${key}.${ext}?v=${TILE_ART_VERSION}`;
 }
 
 export function tileBackSrc(): string {
-  return '/assets/mahjong-solitaire/backs/default.png';
+  return `/assets/mahjong-solitaire/backs/default.png?v=${TILE_ART_VERSION}`;
 }
 
 /** Free undos granted each level before points/ads (design P0). */

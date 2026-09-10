@@ -1,5 +1,5 @@
 /* Mahjong Hub service worker — cache tile art + soft app shell. Never cache auth/API. */
-const CACHE_VERSION = 'mh-pwa-v1';
+const CACHE_VERSION = 'mh-pwa-v2-mahjong-set';
 const SHELL_URLS = ['/manifest.webmanifest', '/icons/icon-192.svg', '/icons/icon-512.svg'];
 
 self.addEventListener('install', (event) => {
@@ -42,13 +42,17 @@ self.addEventListener('fetch', (event) => {
   if (isApiOrAuth(url)) return;
 
   if (isTileAsset(url)) {
+    // Stale-while-revalidate so art updates after deploy aren't stuck forever.
     event.respondWith(
       caches.open(CACHE_VERSION).then(async (cache) => {
         const cached = await cache.match(req);
-        if (cached) return cached;
-        const res = await fetch(req);
-        if (res.ok) cache.put(req, res.clone());
-        return res;
+        const network = fetch(req)
+          .then((res) => {
+            if (res.ok) cache.put(req, res.clone());
+            return res;
+          })
+          .catch(() => cached);
+        return cached || network;
       })
     );
     return;

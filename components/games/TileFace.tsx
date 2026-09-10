@@ -52,15 +52,16 @@ const TRADITIONAL_TILE_FILES: Record<Tile, string> = {
 
 function traditionalTilePngSrc(tile: Tile): string {
   const file = TRADITIONAL_TILE_FILES[tile];
-  return file
+  const base = file
     ? `/assets/mahjong-hongkong/${isBonusTile(tile) ? 'tiles' : 'tiles-display'}/` + file
     : '/assets/mahjong-chinese/source-5-crops/tile-42.png';
+  return `${base}?v=20260911`;
 }
 
 function traditionalTileWebpSrc(tile: Tile): string {
   const file = TRADITIONAL_TILE_FILES[tile];
   return file && !isBonusTile(tile)
-    ? '/assets/mahjong-hongkong/tiles-webp-v1/' + file.replace(/\.png$/, '.webp')
+    ? `/assets/mahjong-hongkong/tiles-webp-v1/${file.replace(/\.png$/, '.webp')}?v=20260911`
     : traditionalTilePngSrc(tile);
 }
 
