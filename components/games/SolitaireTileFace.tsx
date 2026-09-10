@@ -1,7 +1,7 @@
 'use client';
 
 import type { Tile } from '@/lib/mahjong/tiles';
-import { tileArtSrc } from '@/lib/mahjong-solitaire/art';
+import { tileArtSrc, tileBackSrc } from '@/lib/mahjong-solitaire/art';
 import { matchGroup } from '@/lib/mahjong-solitaire/tiles';
 import { colorblindLabel } from '@/lib/colorblind-mark';
 
@@ -40,6 +40,7 @@ export default function SolitaireTileFace({
   size?: SolitaireTileSize;
   selected?: boolean;
   hinted?: boolean;
+  /** Blocked (not free): cover face with tile-back art instead of a translucent wash. */
   dimmed?: boolean;
   colorblind?: boolean;
 }) {
@@ -53,8 +54,7 @@ export default function SolitaireTileFace({
         'relative inline-block',
         SIZE_CLASS[size],
         selected ? 'ring-2 ring-amber-400 rounded-md' : '',
-        hinted ? 'ring-2 ring-sky-400 rounded-md' : '',
-        dimmed ? 'opacity-55 saturate-50' : ''
+        hinted ? 'ring-2 ring-sky-400 rounded-md' : ''
       ]
         .filter(Boolean)
         .join(' ')}
@@ -71,18 +71,32 @@ export default function SolitaireTileFace({
         data-match-group={group}
         className="h-full w-full rounded-md object-cover shadow-sm select-none"
       />
-      {mark !== null && (
+      {!dimmed && mark !== null && (
         <span className="solitaire-lookalike-mark" aria-hidden>
           {mark}
         </span>
       )}
-      {colorblind && (
+      {!dimmed && colorblind && (
         <span
           className="pointer-events-none absolute bottom-0 left-0 rounded-bl-md rounded-tr-sm bg-slate-950/80 px-1 text-xs font-black leading-tight text-amber-100"
           aria-hidden
         >
           {colorblindLabel(tile)}
         </span>
+      )}
+      {dimmed && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={tileBackSrc()}
+          alt=""
+          width={px.w}
+          height={px.h}
+          draggable={false}
+          decoding="async"
+          loading="eager"
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-10 h-full w-full rounded-md object-cover shadow-sm select-none"
+        />
       )}
     </span>
   );
