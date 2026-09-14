@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 
 import TileFace, { TileBack, useTraditionalTilePreload } from './TileFace';
+import BoardScaleFrame from './BoardScaleFrame';
 import { sortTiles, tileFace, type Tile } from '@/lib/mahjong/tiles';
 import { AMERICAN_PRACTICE_SEASONS, americanBotStyleForSeat, americanClosestLine, americanCoachAdvice, applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, exchangeAmericanJoker, getPracticeCard, legalAmericanClaims, lockAmericanPracticeCard, passAmericanClaims, playAmericanDiscard, practiceGroupCount, previewPracticeGroups, rankAmericanLines, withAmericanReplayAction, type AmericanGameState, type AmericanReplayAction } from '@/lib/mahjong/american';
 import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/features/table/sound';
@@ -328,7 +329,8 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
       {/* A browser at 110–125% zoom often reports <1024 CSS pixels.  The
           tabletop must still be the default on desktop-sized screens; only
           genuinely narrow phones use the compact interaction layout. */}
-      <div className="mahjong-desktop-shell hidden min-w-[700px] min-[700px]:block" style={isFullscreen ? { display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 16px)' } : undefined}>
+      <BoardScaleFrame designWidth={700} designHeight={824} className="hidden min-[700px]:block">
+      <div className="mahjong-desktop-shell min-w-[700px]" style={isFullscreen ? { display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 16px)' } : undefined}>
         <div className="mahjong-table-toolbar mb-2 flex h-11 items-center justify-between gap-3" style={isFullscreen ? { flex: '0 0 44px', marginBottom: 0 } : undefined}>
           <div className="flex gap-2">
             <TableButton onClick={reset}>↻ {t('newGame')}</TableButton>
@@ -348,7 +350,7 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           <div className="flex items-center gap-3 text-emerald-100"><span className="text-xs font-black">{t('originalPracticeCard')}</span><span className="text-2xl">⚙</span></div>
         </div>
 
-        <div className="mahjong-desktop-board mahjong-desktop-board--seasonal relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-[#00553e] shadow-[inset_0_0_90px_rgba(0,30,22,.34)]" style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}>
+        <div className="mahjong-desktop-board mahjong-desktop-board--seasonal relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-transparent shadow-[inset_0_0_90px_rgba(0,30,22,.34)]" style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}>
           <div className="absolute inset-y-0 left-0 w-[11%] bg-[linear-gradient(105deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute inset-y-0 right-0 w-[11%] bg-[linear-gradient(255deg,#0b0a08_0%,#1b1914_58%,transparent_59%)]" />
           <div className="absolute left-4 top-3 text-xl font-semibold leading-6 text-emerald-100/45">NMJL-STYLE<br />PRACTICE<br />Rate: 10</div>
@@ -424,8 +426,9 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
         </div>
         <div className="mahjong-table-footer flex h-10 items-center justify-between bg-[#15583e] px-3 text-sm font-semibold text-emerald-100/75" style={isFullscreen ? { flex: '0 0 40px' } : undefined}><span>{t('footer')}</span><button type="button" onClick={enterFullscreen} className="rounded px-2 py-1 font-black hover:bg-white/10">{t('fullScreen')}</button></div>
       </div>
+      </BoardScaleFrame>
 
-      <div className="min-h-[620px] bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_62%,#003c2d_100%)] p-3 text-white min-[700px]:hidden" style={isFullscreen ? { minHeight: '100dvh' } : undefined}>
+      <div className="min-h-[620px] bg-transparent p-3 text-white min-[700px]:hidden" style={isFullscreen ? { minHeight: '100dvh' } : undefined}>
         <div className="flex items-center justify-between"><strong className="text-xs tracking-[.18em]">{t('aiTitle')}</strong><div className="flex gap-1"><button type="button" className="rounded bg-amber-300 px-3 py-1 text-xs font-black text-emerald-950" onClick={reset}>{t('newGame')}</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={toggleSound}>{soundEnabled ? t('soundOn') : t('soundOff')}</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={() => setShowAccessibility(true)}>Aa</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={enterFullscreen}>{t('fullScreen')}</button></div></div>
         <div className="mt-4 rounded-2xl border border-white/10 bg-[#003b2d]/90 p-4 text-center"><p className="text-lg font-black">{game.phase === 'second-charleston-choice' ? t('secondCharlestonQ') : game.phase === 'courtesy' ? t('courtesyPass') : inCharleston ? `${t('charleston')} ${game.charlestonRound}-${step + 1}` : t('yourTurn')}</p><p className="mt-1 text-sm text-emerald-100">{notice}</p><p className="mt-2 text-[10px] text-emerald-200">{t('cardHint', { card: card.title })}</p></div>
         <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-emerald-100"><Opponent label="P4" portrait={3} status={botStatus(3)} /><Opponent label="P3" portrait={2} status={botStatus(2)} /><Opponent label="P2" portrait={1} status={botStatus(1)} /></div>

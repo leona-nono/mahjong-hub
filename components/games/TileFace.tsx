@@ -15,6 +15,16 @@ const SIZE_CLASS: Record<TileSize, string> = {
   xl: 'h-24 w-[4.25rem] text-3xl rounded-lg'
 };
 
+/** Photo tiles already include the rim. Keep ~5:7 so object-cover does not letterbox a second card. */
+const TRADITIONAL_SIZE: Record<TileSize, string> = {
+  sm: 'h-9 w-[1.61rem] rounded-sm',
+  xs: 'h-10 w-[1.79rem] rounded-sm',
+  md: 'h-14 w-10 rounded-md',
+  lg: 'h-[4.5rem] w-[3.21rem] rounded-md',
+  table: 'h-12 w-[2.14rem] rounded-sm',
+  xl: 'h-24 w-[4.29rem] rounded-md'
+};
+
 /** Each suit gets its own colour so the board reads at a glance on mobile. */
 const SUIT_CLASS: Record<string, string> = {
   m: 'text-rose-500',
@@ -101,14 +111,14 @@ export default function TileFace({
   // A red five shares the five's artwork; the red is carried by the frame.
   const art = normalTile(tile);
   const face = traditional ? (
-    <picture>
+    <picture className="block h-full w-full">
       {!isBonusTile(art) && <source srcSet={traditionalTileWebpSrc(art)} type="image/webp" />}
       <img
         src={traditionalTilePngSrc(art)}
         alt=""
         width={150}
         height={210}
-        className="block h-full w-full object-contain"
+        className="block h-full w-full object-cover"
         decoding="async"
         fetchPriority={highlight ? 'high' : 'auto'}
         draggable={false}
@@ -116,7 +126,17 @@ export default function TileFace({
     </picture>
   ) : tileFace(tile);
 
-  const classes = [
+  const classes = (traditional
+    ? [
+      'group/tile relative inline-flex select-none items-center justify-center overflow-hidden border-0 bg-transparent p-0 shadow-none transition duration-200 motion-safe:transition-transform motion-safe:active:scale-95',
+      TRADITIONAL_SIZE[size],
+      muted ? 'opacity-45 saturate-50' : '',
+      isRedFive(tile) && !muted ? 'ring-2 ring-rose-400' : '',
+      highlight ? 'z-10 -translate-y-2 ring-2 ring-amber-400 ring-offset-1 ring-offset-transparent' : '',
+      interactive ? 'cursor-pointer hover:-translate-y-1 hover:ring-2 hover:ring-sky-300' : '',
+      disabled ? 'cursor-not-allowed opacity-40 saturate-50' : ''
+    ]
+    : [
     'group/tile relative inline-flex select-none items-center justify-center border-2 font-bold shadow-[0_3px_0_rgba(148,163,184,.35),0_7px_12px_rgba(15,23,42,.12)] transition duration-200 motion-safe:transition-transform motion-safe:hover:scale-105 motion-safe:active:scale-95',
     SIZE_CLASS[size],
     SUIT_CLASS[suit] ?? 'text-gray-700',
@@ -127,7 +147,7 @@ export default function TileFace({
       ? 'cursor-pointer hover:-translate-y-2 hover:border-sky-300 hover:shadow-[0_10px_18px_rgba(14,165,233,.2)] active:translate-y-0'
       : '',
     disabled ? 'cursor-not-allowed opacity-40 saturate-50' : ''
-  ]
+  ])
     .filter(Boolean)
     .join(' ');
 

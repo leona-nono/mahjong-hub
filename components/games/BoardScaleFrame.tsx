@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { useBoardScale } from '@/hooks/use-board-scale';
 
 export default function BoardScaleFrame({
@@ -14,12 +14,14 @@ export default function BoardScaleFrame({
   children: ReactNode;
   className?: string;
 }) {
-  const scale = useBoardScale(designWidth);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const scale = useBoardScale(designWidth, frameRef);
   const scaled = scale < 1;
 
   return (
     <div
-      className={`w-full overflow-hidden ${className}`}
+      ref={frameRef}
+      className={`w-full min-w-0 overflow-hidden ${className}`}
       style={scaled ? { height: designHeight * scale } : undefined}
     >
       <div
