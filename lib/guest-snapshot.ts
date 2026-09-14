@@ -1,8 +1,14 @@
 'use client';
 
-import { getLocalInventory, readProgress } from '@/lib/mahjong-solitaire/item-inventory';
-import { readGuestDaily } from '@/lib/mahjong-solitaire/daily-local';
-import { clearGuestPoints, readGuestPoints } from '@/lib/guest-points';
+import {
+  clearGuestPoints,
+  readGuestPoints
+} from '@/lib/guest-points';
+import {
+  getLocalInventory,
+  readGuestDaily,
+  readProgress
+} from '@/features/guest/guest-store';
 
 const MERGED_KEY = 'mh.guest-merged.v1';
 

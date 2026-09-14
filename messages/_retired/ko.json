@@ -8,14 +8,14 @@
     "games": "게임",
     "about": "소개",
     "wardrobe": "꾸미기",
-    "classic": "마작 4인 플레이",
+    "classic": "AI 대결",
     "classicSubtitle": "진짜 4인 마작——중국, 일본, 미국, 대만, 쓰촨 룰.",
-    "solitaire": "마작 솔리테어",
+    "solitaire": "게임",
     "solitaireSubtitle": "캐주얼 타일 맞추기·소거 게임으로 가볍게 즐기세요.",
-    "beginners": "마작 입문",
+    "beginners": "배우기",
     "beginnersSubtitle": "마작을 처음부터 배워요——쉬운 규칙, 전략, 가이드.",
     "beginnersComingSoon": "입문 가이드가 곧 올라옵니다.",
-    "set": "마작 세트",
+    "set": "쇼핑",
     "setSubtitle": "추천 마작 세트와 액세서리.",
     "setComingSoon": "추천 상품이 곧 올라옵니다.",
     "regionChina": "중국 마작",
@@ -66,7 +66,10 @@
     "seoLinkClassic": "4인 마작",
     "seoLinkPlay": "클래식 솔리테어 플레이하기",
     "seoLinkBeginners": "초보자를 위한 마작",
-    "featuredHall": "추천 게임"
+    "featuredHall": "추천 게임",
+    "seasonalTitle": "Seasonal table collection",
+    "seasonalBody": "Choose a free table mood and matching tile back for every game.",
+    "openWardrobe": "Open wardrobe"
   },
   "game": {
     "play": "플레이",
@@ -85,7 +88,11 @@
     "playNow": "지금 플레이",
     "beginnersCtaLead": "실전으로 연습할 준비가 됐나요?",
     "beginnersCtaLink": "진짜 대국 하기",
-    "beginnersCtaTail": "컴퓨터 상대 세 명과 대결하세요."
+    "beginnersCtaTail": "컴퓨터 상대 세 명과 대결하세요.",
+    "features": "Game features",
+    "supportedDevices": "Supported devices",
+    "startGame": "Start Game",
+    "startBlurb": "Tap Start Game to load the board. The rules and tips below are always visible — no account required."
   },
   "collection": {
     "title": "마작 제거 게임 컬렉션",
@@ -525,7 +532,11 @@
   "seo": {
     "homeTitle": "무료 온라인 마작 | Mahjong Hub",
     "homeDescription": "마작 솔리테어, 커넥트, 클래식 4인 마작을 무료로 즐기세요. 브라우저에서 즉시 플레이, 다운로드 불필요.",
-    "wardrobeTitle": "타일 뒷면 & 테이블 스킨 | Mahjong Hub"
+    "wardrobeTitle": "타일 뒷면 & 테이블 스킨 | Mahjong Hub",
+    "blogTitle": "Mahjong Guides & Rules for Beginners | Mahjong Hub",
+    "gamesTitle": "Free Online Mahjong Games – Solitaire & 4-Player | Mahjong Hub",
+    "privacyTitle": "Privacy Policy | Mahjong Hub",
+    "aboutTitle": "About Mahjong Hub — Free Mahjong Games & Beginner Guides"
   },
   "notFound": {
     "title": "페이지를 찾을 수 없습니다",

@@ -37,28 +37,19 @@ describe('glossary', () => {
 });
 
 describe('locales indexability', () => {
-  it('indexes all nine UI locales', () => {
-    expect([...INDEXABLE_LOCALES]).toEqual([
-      'en',
-      'zh',
-      'zh-TW',
-      'ja',
-      'ko',
-      'es',
-      'pt-BR',
-      'fr',
-      'de'
-    ]);
+  it('indexes the three routed UI locales', () => {
+    expect([...INDEXABLE_LOCALES]).toEqual(['en', 'zh', 'zh-TW']);
     expect(isIndexableLocale('zh')).toBe(true);
-    expect(isIndexableLocale('fr')).toBe(true);
-    expect(isIndexableLocale('pt-BR')).toBe(true);
-    expect(isContentLocale('es')).toBe(true);
-    expect(CONTENT_LOCALES).toContain('de');
+    expect(isIndexableLocale('fr')).toBe(false);
+    expect(isIndexableLocale('pt-BR')).toBe(false);
+    expect(isContentLocale('zh-TW')).toBe(true);
+    expect(isContentLocale('es')).toBe(false);
+    expect(CONTENT_LOCALES).toEqual(['zh', 'zh-TW']);
   });
 
   it('maps OG locale codes', () => {
     expect(ogLocale('zh')).toBe('zh_CN');
-    expect(ogLocale('pt-BR')).toBe('pt_BR');
+    expect(ogLocale('zh-TW')).toBe('zh_TW');
     expect(ogLocale('en')).toBe('en_US');
   });
 });

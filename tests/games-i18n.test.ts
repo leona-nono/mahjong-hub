@@ -12,7 +12,7 @@ import zhTW from '@/data/games-i18n/zh-TW.json';
 import type { GameLocaleJson } from '@/data/games-i18n/types';
 import { CONTENT_LOCALES } from '@/lib/locales';
 
-const LOCALE_JSON: Record<(typeof CONTENT_LOCALES)[number], GameLocaleJson> = {
+const LOCALE_JSON: Record<string, GameLocaleJson> = {
   zh: zh as GameLocaleJson,
   'zh-TW': zhTW as GameLocaleJson,
   ja: ja as GameLocaleJson,

@@ -325,45 +325,5 @@
         }
       ]
     }
-  },
-  "mahjong-connect": {
-    "title": "Mahjong Connect léger",
-    "description": "Empareja pares de fichas de mahjong libres unidas por un camino. Un juego relajante de eliminación estilo connect."
-  },
-  "mahjong-classic": {
-    "title": "Mahjong classique",
-    "description": "El solitario de mahjong de siempre. Vacía el tablero emparejando pares de fichas abiertas."
-  },
-  "mahjong-solitaire": {
-    "title": "Solitaire de mahjong",
-    "description": "Un hermoso diseño solitario de fichas de mahjong. Empareja y limpia la torre a tu ritmo."
-  },
-  "mahjong-3d": {
-    "title": "Mahjong en 3D",
-    "description": "Una versión tridimensional del emparejamiento de mahjong con profundidad y una paleta arcoíris serena."
-  },
-  "onet-connect-classic": {
-    "title": "Onet Connect classique",
-    "description": "El clásico juego de unir de Onet. Conecta fichas idénticas con una línea de como máximo dos giros."
-  },
-  "bee-connect": {
-    "title": "Connexion abeilles",
-    "description": "Un connect con tema de abejas. Une las pequeñas fichas y vacía el tablero de panal."
-  },
-  "aloha-mahjong": {
-    "title": "Mahjong Aloha",
-    "description": "Un giro tropical al emparejamiento de mahjong, con ambiente soleado y relajado."
-  },
-  "8x8-match-tiles": {
-    "title": "Tuiles 8×8",
-    "description": "Un puzle compacto 8×8 de emparejar fichas. Conecta iguales y persigue la puntuación alta."
-  },
-  "tile-guru": {
-    "title": "Gourou des tuiles",
-    "description": "Un puzle zen de emparejar fichas. Encuentra y conecta fichas iguales en un diseño sosegado."
-  },
-  "tile-journey": {
-    "title": "Voyage des tuiles",
-    "description": "Un viaje por niveles de emparejar fichas. Planifica tus conexiones y vacía cada tablero."
   }
 }

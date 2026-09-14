@@ -16,14 +16,17 @@ const config: Config = {
           pink: '#F783AC'
         },
         portal: {
-          bg: '#0b1220',
-          elevated: '#121a2b',
-          panel: '#162033',
-          border: 'rgba(148, 163, 184, 0.14)',
-          text: '#e8eef7',
-          muted: '#94a3b8',
-          accent: '#2dd4bf',
-          amber: '#fbbf24'
+          bg: 'rgb(var(--portal-bg-rgb) / <alpha-value>)',
+          elevated: 'rgb(var(--portal-elevated-rgb) / <alpha-value>)',
+          panel: 'rgb(var(--portal-panel-rgb) / <alpha-value>)',
+          border: 'var(--portal-border)',
+          text: 'rgb(var(--portal-text-rgb) / <alpha-value>)',
+          muted: 'rgb(var(--portal-muted-rgb) / <alpha-value>)',
+          accent: 'rgb(var(--accent-rgb) / <alpha-value>)',
+          'accent-strong': 'rgb(var(--accent-strong-rgb) / <alpha-value>)',
+          'accent-2': 'rgb(var(--accent-2-rgb) / <alpha-value>)',
+          'on-accent': 'rgb(var(--on-accent-rgb) / <alpha-value>)',
+          amber: 'rgb(var(--accent-2-rgb) / <alpha-value>)'
         }
       },
       fontFamily: {

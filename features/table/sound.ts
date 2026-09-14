@@ -1,6 +1,6 @@
 'use client';
 
-import type { Tile } from './tiles';
+import type { Tile } from '@/lib/mahjong/tiles';
 
 export type MahjongSound = 'build' | 'shuffle' | 'deal' | 'draw' | 'discard' | 'flower' | 'chi' | 'pon' | 'kan' | 'win' | 'toggle';
 export type MahjongVoiceLocale = 'cantonese' | 'mandarin' | 'japanese' | 'english' | 'none';

@@ -5,6 +5,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import LocaleSwitcher from './LocaleSwitcher';
+import ThemePicker from './ThemePicker';
 import { useAuth } from '@/lib/auth';
 import { usePoints } from '@/lib/points';
 import { applyAppearance, savedAppearance } from '@/lib/appearance';
@@ -26,10 +27,10 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
   }, []);
 
   const links = [
-    { href: '/games/solitaire', label: tn('solitaire') },
     { href: '/games/classic', label: tn('classic') },
-    { href: '/games', label: tn('gameHall') },
-    { href: '/blog', label: tn('beginners') }
+    { href: '/games/solitaire', label: tn('solitaire') },
+    { href: '/blog', label: tn('beginners') },
+    { href: '/games/set', label: tn('set') }
   ];
 
   return (
@@ -65,6 +66,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
         </nav>
 
         <div className="flex items-center gap-2">
+          <ThemePicker />
           <LocaleSwitcher />
 
           {user ? (
@@ -123,7 +125,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
               type="button"
               onClick={openLogin}
               disabled={status === 'loading'}
-              className="hidden rounded-full bg-portal-accent px-4 py-1.5 text-sm font-bold text-slate-900 hover:brightness-110 disabled:opacity-60 md:inline-block"
+              className="hidden rounded-full bg-portal-accent px-4 py-1.5 text-sm font-bold text-portal-on-accent hover:brightness-110 disabled:opacity-60 md:inline-block"
             >
               {ta('login')}
             </button>
@@ -159,7 +161,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
                 setMobileOpen(false);
                 openLogin();
               }}
-              className="mt-2 w-full rounded-full bg-portal-accent px-4 py-2 font-bold text-slate-900"
+              className="mt-2 w-full rounded-full bg-portal-accent px-4 py-2 font-bold text-portal-on-accent"
             >
               {ta('login')}
             </button>

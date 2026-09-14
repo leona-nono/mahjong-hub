@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import TileFace, { TileBack } from './TileFace';
@@ -34,9 +34,12 @@ import {
   type Seat
 } from '@/lib/mahjong/engine';
 import { chooseClaim, chooseMove, type Difficulty } from '@/lib/mahjong/ai';
+import { judgeDiscard, rankDiscards, type DiscardGrade } from '@/lib/mahjong/coach';
+import { useCoachIntensity } from '@/features/table/coach-prefs';
+import CoachControls from './table/CoachControls';
 import { describeScore } from '@/lib/mahjong/scoring';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
-import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
+import { trackMahjongEvent } from '@/features/table/telemetry';
 
 const HUMAN: Seat = 0;
 
@@ -55,13 +58,21 @@ export interface MahjongTableProps {
   defaultRuleset?: Ruleset;
   /** Points hook so a win can be reported to the site-wide points system. */
   onWin?: (points: number) => void;
+  /** Fixed wall for the homepage daily hand. New hand replays the same seed. */
+  dailySeed?: number;
+  lockRuleset?: boolean;
+  onHandOver?: (info: { won: boolean; discards: number }) => void;
 }
 
 export default function MahjongTable({
   defaultRuleset = 'hongkong',
-  onWin
+  onWin,
+  dailySeed,
+  lockRuleset = false,
+  onHandOver
 }: MahjongTableProps) {
   const t = useTranslations('mahjong');
+  const daily = useTranslations('dailyHand');
   const [ruleset, setRuleset] = useState<Ruleset>(defaultRuleset);
   const isMcr = ruleset === 'chinese-official';
   const traditional = ruleset === 'hongkong' || ruleset === 'chinese-official';
@@ -71,12 +82,29 @@ export default function MahjongTable({
   const [showHints, setShowHints] = useState(true);
   const [paused, setPaused] = useState(false);
   const [state, setState] = useState<GameState>(() =>
-    createGame({ ruleset: defaultRuleset, humanSeat: HUMAN, seed: 1, hongKongMode: 'casual' })
+    createGame({
+      ruleset: defaultRuleset,
+      humanSeat: HUMAN,
+      seed: dailySeed ?? 1,
+      hongKongMode: 'casual'
+    })
   );
+  const [coachIntensity, setCoachIntensity] = useCoachIntensity();
+  const [coachAsked, setCoachAsked] = useState(false);
+  const [coachGrade, setCoachGrade] = useState<DiscardGrade | null>(null);
+  const reportedOver = useRef<GameState | null>(null);
 
   const newGame = useCallback(
     (nextRuleset: Ruleset = ruleset, nextHongKongMode: HongKongMode = hongKongMode, nextVariant: RiichiVariant = riichiVariant) => {
-      setState(createGame({ ruleset: nextRuleset, humanSeat: HUMAN, hongKongMode: nextHongKongMode, riichiVariant: nextVariant }));
+      setCoachGrade(null);
+      setCoachAsked(false);
+      reportedOver.current = null;
+      setState(createGame({
+        ruleset: nextRuleset,
+        humanSeat: HUMAN,
+        hongKongMode: nextHongKongMode,
+        riichiVariant: nextVariant
+      }));
       setPaused(false);
       trackMahjongEvent('mahjong_game_started', { variant: nextRuleset, mode: nextRuleset === 'hongkong' ? nextHongKongMode : 'default', source: 'new_hand' });
     },
@@ -200,8 +228,23 @@ export default function MahjongTable({
 
   const handleDiscard = (tile: Tile) => {
     if (!myTurn) return;
+    if (coachIntensity !== 'silent' && (coachIntensity === 'live' || coachAsked)) {
+      setCoachGrade(judgeDiscard(state, HUMAN, tile).grade);
+    } else {
+      setCoachGrade(null);
+    }
+    setCoachAsked(false);
     setState((current) => discard(current, tile));
   };
+
+  useEffect(() => {
+    if (state.phase !== 'over' || !onHandOver || reportedOver.current === state) return;
+    reportedOver.current = state;
+    const won =
+      state.result?.winner === HUMAN ||
+      Boolean(state.result?.winners?.some((row) => row.seat === HUMAN));
+    onHandOver({ won, discards: state.players[HUMAN].discards.length });
+  }, [onHandOver, state]);
 
   const handleClaim = (option: ClaimOption) => {
     setState((current) => submitClaim(current, HUMAN, option));
@@ -234,6 +277,31 @@ export default function MahjongTable({
         onTogglePause={() => setPaused((value) => !value)}
         onNewGame={() => newGame(ruleset, hongKongMode)}
         onNextHand={() => setState((current) => startNextHand(current))}
+        coach={
+          <div className="flex flex-wrap items-center gap-2 rounded-lg bg-black/35 px-2 py-1 text-emerald-50">
+            <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} />
+            {(coachIntensity === 'live' || coachAsked) && myTurn && (() => {
+              const best = rankDiscards(state, HUMAN)[0];
+              if (!best) return null;
+              return (
+                <span className="text-xs">
+                  {daily('shanten', { n: hints?.shanten ?? best.shanten })}
+                  {' · '}
+                  {daily('ukeire', { n: best.ukeire })}
+                  {' · '}
+                  {daily('waits', { n: hints?.waits.length ?? 0 })}
+                  {' · '}
+                  {daily('best')}: {tileFace(best.tile)}
+                </span>
+              );
+            })()}
+            {coachGrade && (
+              <span className="text-xs font-semibold">
+                {coachGrade === 'best' ? daily('best') : coachGrade === 'acceptable' ? daily('ok') : daily('better')}
+              </span>
+            )}
+          </div>
+        }
         onDiscard={handleDiscard}
         onClaim={handleClaim}
         onTsumo={() => setState((current) => declareTsumo(current, HUMAN))}
@@ -255,7 +323,7 @@ export default function MahjongTable({
       {/* Controls */}
       {traditional && <div className="absolute right-5 top-5 z-20 text-sm font-semibold tracking-wide text-emerald-100/70">Rate: 10</div>}
       <div className={traditional ? "absolute left-3 top-3 z-30 flex flex-wrap items-center gap-2 rounded-lg border border-emerald-800/80 bg-[#062b23]/95 p-2 text-sm shadow-lg backdrop-blur" : "relative z-20 mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-white/80 bg-white/90 p-2 text-sm shadow-md backdrop-blur lg:absolute lg:left-3 lg:top-3 lg:mb-0"}>
-        <select
+        {!lockRuleset && <select
           value={ruleset}
           onChange={(e) => {
             const next = e.target.value as Ruleset;
@@ -270,7 +338,7 @@ export default function MahjongTable({
               {config.label}
             </option>
           ))}
-        </select>
+        </select>}
 
         <select
           value={difficulty}
@@ -288,7 +356,7 @@ export default function MahjongTable({
           onClick={() => setShowHints((v) => !v)}
           className={`min-h-11 rounded-full border px-3 py-2 font-medium transition ${
             showHints
-              ? 'border-transparent rainbow-bar text-white'
+              ? 'border-transparent bg-portal-accent text-portal-on-accent'
               : 'border-gray-200 bg-white text-gray-600'
           }`}
         >
@@ -376,7 +444,7 @@ export default function MahjongTable({
                 key={`${option.kind}-${i}`}
                 type="button"
                 onClick={() => handleClaim(option)}
-                className="rounded-full rainbow-bar px-4 py-1.5 text-sm font-bold text-white shadow-sm hover:opacity-90"
+                className="rounded-full bg-portal-accent px-4 py-1.5 text-sm font-bold text-portal-on-accent shadow-sm hover:brightness-110"
               >
                 {t(`call.${option.kind}`)}
                 {option.tiles.length > 1 && option.kind === 'chi' && (
@@ -404,7 +472,7 @@ export default function MahjongTable({
             <button
               type="button"
               onClick={() => setState((c) => declareTsumo(c, HUMAN))}
-              className="rounded-full rainbow-bar px-5 py-2 text-sm font-black text-white shadow"
+              className="rounded-full bg-portal-accent px-5 py-2 text-sm font-black text-portal-on-accent shadow"
             >
               {t('call.tsumo')}
             </button>
@@ -615,7 +683,7 @@ function ResultBanner({
       <button
         type="button"
         onClick={onNewGame}
-        className="mt-3 rounded-full rainbow-bar px-5 py-2 text-sm font-bold text-white shadow"
+        className="mt-3 rounded-full bg-portal-accent px-5 py-2 text-sm font-bold text-portal-on-accent shadow"
       >
         {t('newGame')}
       </button>

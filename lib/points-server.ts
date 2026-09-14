@@ -1,5 +1,6 @@
 import 'server-only';
 import { prisma } from '@/lib/db';
+import { ledgerTotal, syncCachedTotal } from '@/lib/points-ledger';
 import {
   CHECKIN_REWARDS,
   FIRST_LOGIN_BONUS,
@@ -41,12 +42,12 @@ export async function claimDailyCheckInForUser(userId: string): Promise<{
   );
 
   if (plan.claimedToday) {
-    const row = await prisma.userPoint.findUnique({ where: { userId } });
+    const total = await ledgerTotal(prisma, userId);
     return {
       granted: false,
       alreadyClaimed: true,
       amount: 0,
-      total: row?.total ?? 0,
+      total,
       checkIn: plan
     };
   }
@@ -60,8 +61,8 @@ export async function claimDailyCheckInForUser(userId: string): Promise<{
       today
     );
     if (againPlan.claimedToday) {
-      const row = await tx.userPoint.findUnique({ where: { userId } });
-      return { alreadyClaimed: true as const, total: row?.total ?? 0 };
+      const total = await ledgerTotal(tx, userId);
+      return { alreadyClaimed: true as const, total };
     }
 
     await tx.dailyBonus.upsert({
@@ -76,11 +77,6 @@ export async function claimDailyCheckInForUser(userId: string): Promise<{
         streak: plan.streak
       }
     });
-    const pointRow = await tx.userPoint.upsert({
-      where: { userId },
-      create: { userId, total: amount },
-      update: { total: { increment: amount } }
-    });
     await tx.pointTransaction.create({
       data: {
         userId,
@@ -88,7 +84,8 @@ export async function claimDailyCheckInForUser(userId: string): Promise<{
         reason: 'daily_checkin'
       }
     });
-    return { alreadyClaimed: false as const, total: pointRow.total };
+    const total = await syncCachedTotal(tx, userId);
+    return { alreadyClaimed: false as const, total };
   });
 
   const checkIn = await checkinStateForUser(userId);
@@ -115,14 +112,10 @@ export async function grantFirstLoginIfNeeded(userId: string): Promise<boolean> 
         select: { id: true }
       });
       if (again) return;
-      await tx.userPoint.upsert({
-        where: { userId },
-        create: { userId, total: FIRST_LOGIN_BONUS },
-        update: { total: { increment: FIRST_LOGIN_BONUS } }
-      });
       await tx.pointTransaction.create({
         data: { userId, amount: FIRST_LOGIN_BONUS, reason: 'first_login' }
       });
+      await syncCachedTotal(tx, userId);
     });
     return true;
   } catch (err) {
@@ -148,11 +141,7 @@ export async function pointsSnapshotForUser(userId: string): Promise<{
     console.error('[points] first_login grant failed', err);
   }
 
-  const [sum, checkIn, txs] = await Promise.all([
-    prisma.pointTransaction.aggregate({
-      where: { userId },
-      _sum: { amount: true }
-    }),
+  const [checkIn, txs] = await Promise.all([
     checkinStateForUser(userId).catch(() => ({
       claimedToday: false,
       streak: 1,
@@ -167,15 +156,11 @@ export async function pointsSnapshotForUser(userId: string): Promise<{
     })
   ]);
 
-  const total = sum._sum.amount ?? 0;
+  let total: number;
   try {
-    await prisma.userPoint.upsert({
-      where: { userId },
-      create: { userId, total },
-      update: { total }
-    });
+    total = await syncCachedTotal(prisma, userId);
   } catch {
-    /* cache row is optional */
+    total = await ledgerTotal(prisma, userId);
   }
 
   return {

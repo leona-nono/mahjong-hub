@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { isBonusTile, isRedFive, normalTile, tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
+import { tileHoverName } from '@/lib/mahjong/tile-hover';
 
 export type TileSize = 'xs' | 'sm' | 'md' | 'lg' | 'table' | 'xl';
 
@@ -116,7 +117,7 @@ export default function TileFace({
   ) : tileFace(tile);
 
   const classes = [
-    'inline-flex select-none items-center justify-center border-2 font-bold shadow-[0_3px_0_rgba(148,163,184,.35),0_7px_12px_rgba(15,23,42,.12)] transition duration-200 motion-safe:transition-transform motion-safe:hover:scale-105 motion-safe:active:scale-95',
+    'group/tile relative inline-flex select-none items-center justify-center border-2 font-bold shadow-[0_3px_0_rgba(148,163,184,.35),0_7px_12px_rgba(15,23,42,.12)] transition duration-200 motion-safe:transition-transform motion-safe:hover:scale-105 motion-safe:active:scale-95',
     SIZE_CLASS[size],
     SUIT_CLASS[suit] ?? 'text-gray-700',
     muted ? 'border-slate-200 bg-slate-100 opacity-45 saturate-50' : 'border-slate-200 bg-gradient-to-b from-white to-slate-50',
@@ -132,8 +133,11 @@ export default function TileFace({
 
   if (!interactive) {
     return (
-      <span data-mahjong-tile className={classes} role="img" aria-label={tileName(tile)}>
+      <span data-mahjong-tile className={classes} role="img" aria-label={tileName(tile)} title={tileHoverName(tile)}>
         {face}
+        <span className="pointer-events-none absolute -top-7 left-1/2 z-30 hidden -translate-x-1/2 whitespace-nowrap rounded bg-slate-900 px-1.5 py-0.5 text-[10px] font-semibold text-white group-hover/tile:block">
+          {tileHoverName(tile)}
+        </span>
       </span>
     );
   }
@@ -145,8 +149,12 @@ export default function TileFace({
       className={classes}
       onClick={() => onClick?.(tile)}
       aria-label={tileName(tile)}
+      title={tileHoverName(tile)}
     >
       {face}
+      <span className="pointer-events-none absolute -top-7 left-1/2 z-30 hidden -translate-x-1/2 whitespace-nowrap rounded bg-slate-900 px-1.5 py-0.5 text-[10px] font-semibold text-white group-hover/tile:block">
+        {tileHoverName(tile)}
+      </span>
     </button>
   );
 }

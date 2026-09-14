@@ -7,6 +7,7 @@ import {
   type ItemType
 } from '@/lib/mahjong-solitaire/items';
 import { planDailyStreak } from '@/lib/mahjong-solitaire/progress-rules';
+import { syncCachedTotal } from '@/lib/points-ledger';
 import { utcDateString } from '@/lib/points-rules';
 
 export type GuestMergePayload = {
@@ -55,11 +56,7 @@ export async function mergeGuestIntoUser(
           await tx.pointTransaction.create({
             data: { userId, amount: guestPoints, reason: 'guest_points_merge' }
           });
-          await tx.userPoint.upsert({
-            where: { userId },
-            create: { userId, total: guestPoints },
-            update: { total: { increment: guestPoints } }
-          });
+          await syncCachedTotal(tx, userId);
         }
       });
     }
@@ -122,11 +119,7 @@ export async function mergeGuestIntoUser(
         await tx.pointTransaction.create({
           data: { userId, amount: guestPoints, reason: 'guest_points_merge' }
         });
-        await tx.userPoint.upsert({
-          where: { userId },
-          create: { userId, total: guestPoints },
-          update: { total: { increment: guestPoints } }
-        });
+        await syncCachedTotal(tx, userId);
       }
     }
 

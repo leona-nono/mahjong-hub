@@ -1,5 +1,5 @@
 /**
- * Validate about / home-guide / games locale JSON and glossary completeness.
+ * Validate about / home-guide / games / messages locale JSON and glossary completeness.
  * Rules live in lib/i18n-rules (shared with Dev Content Studio).
  *
  * Run: npx tsx scripts/validate-content-i18n.ts
@@ -8,6 +8,7 @@ import {
   checkAboutHomeGuide,
   checkGamesI18n,
   checkGlossary,
+  checkMessagesStructure,
   mergeResults
 } from '../lib/i18n-rules';
 import { CONTENT_LOCALES } from '../lib/locales';
@@ -15,7 +16,8 @@ import { CONTENT_LOCALES } from '../lib/locales';
 const result = mergeResults(
   checkGlossary(),
   checkAboutHomeGuide(),
-  checkGamesI18n()
+  checkGamesI18n(),
+  checkMessagesStructure()
 );
 
 for (const e of result.errors) {

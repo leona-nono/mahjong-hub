@@ -205,7 +205,7 @@ export default function MahjongConnect({
         <button
           type="button"
           onClick={() => restart()}
-          className="ml-auto rounded-full rainbow-bar px-4 py-1.5 font-bold text-white"
+          className="ml-auto rounded-full bg-portal-accent px-4 py-1.5 font-bold text-portal-on-accent"
         >
           {t('restart')}
         </button>

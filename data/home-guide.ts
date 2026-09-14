@@ -1,5 +1,6 @@
 import type { Locale } from '@/i18n/routing';
 import type { HomeGuideDoc } from './home-guide-i18n/types';
+import { mergeHomeGuideDoc } from './merge-doc';
 import de from './home-guide-i18n/de.json';
 import en from './home-guide-i18n/en.json';
 import es from './home-guide-i18n/es.json';
@@ -16,6 +17,7 @@ export type {
   HomeGuideDoc,
   HomeGuideSection
 } from './home-guide-i18n/types';
+export { mergeHomeGuideDoc } from './merge-doc';
 
 const homeGuideByLocale: Record<string, HomeGuideDoc> = {
   en: en as HomeGuideDoc,
@@ -29,6 +31,15 @@ const homeGuideByLocale: Record<string, HomeGuideDoc> = {
   'pt-BR': ptBR as HomeGuideDoc
 };
 
+const enDoc = en as HomeGuideDoc;
+
+/**
+ * Locale home-guide copy with field-level English fallback (partial overlays are safe).
+ * Missing locale → full English document.
+ */
 export function getHomeGuideDoc(locale: string): HomeGuideDoc {
-  return homeGuideByLocale[locale as Locale] ?? (en as HomeGuideDoc);
+  if (locale === 'en') return enDoc;
+  const overlay = homeGuideByLocale[locale as Locale];
+  if (!overlay) return enDoc;
+  return mergeHomeGuideDoc(enDoc, overlay);
 }

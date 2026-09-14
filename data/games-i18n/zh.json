@@ -317,45 +317,5 @@
         }
       ]
     }
-  },
-  "mahjong-connect": {
-    "title": "麻将连连看精简版",
-    "description": "匹配由路径相连的免费麻将牌。一款轻松的连连看消除游戏。"
-  },
-  "mahjong-classic": {
-    "title": "经典麻将",
-    "description": "经典麻将接龙。匹配敞开的牌对，清空棋盘。"
-  },
-  "mahjong-solitaire": {
-    "title": "麻将接龙",
-    "description": "美丽的麻将塔牌型。按自己的节奏匹配并清除高塔。"
-  },
-  "mahjong-3d": {
-    "title": "麻将 3D",
-    "description": "三维麻将消除，带景深和宁静的彩虹色调。"
-  },
-  "onet-connect-classic": {
-    "title": "Onet 连连看经典",
-    "description": "经典 Onet 连线游戏。用最多两次转弯的线连接相同牌。"
-  },
-  "bee-connect": {
-    "title": "蜜蜂连连看",
-    "description": "可爱的蜜蜂主题连连看。连接小牌块，清空蜂巢棋盘。"
-  },
-  "aloha-mahjong": {
-    "title": "阿罗哈麻将",
-    "description": "充满热带风情的麻将消除，阳光明媚、慵懒自在。"
-  },
-  "8x8-match-tiles": {
-    "title": "8x8 匹配砖块",
-    "description": "紧凑的 8x8 砖块匹配谜题。连接相同砖块，冲击高分。"
-  },
-  "tile-guru": {
-    "title": "砖块大师",
-    "description": "禅意砖块匹配谜题。在宁静的布局中寻找并连接匹配的砖块。"
-  },
-  "tile-journey": {
-    "title": "砖块之旅",
-    "description": "穿越砖块匹配关卡的旅程。规划你的连接，清空每一关。"
   }
 }

@@ -90,12 +90,12 @@ export default async function BlogPostPage({
 
       <Link
         href="/games/beginners"
-        className="text-sm font-medium text-rainbow-pink hover:underline"
+        className="text-sm font-medium text-portal-accent hover:underline"
       >
         ← {t('tryAnother')}
       </Link>
 
-      <h1 className="mt-4 text-3xl font-black rainbow-text">{post.title}</h1>
+      <h1 className="mt-4 text-3xl font-black text-portal-text">{post.title}</h1>
       <p className="mt-3 text-gray-600">{post.description}</p>
       <p className="mt-2 text-xs font-medium uppercase tracking-wide text-gray-400">
         {t('minRead', { n: post.readMinutes })}
@@ -135,7 +135,7 @@ export default async function BlogPostPage({
 
       <p className="mt-12 rounded-2xl bg-white/70 p-5 text-sm text-gray-600">
         {t('beginnersCtaLead')}{' '}
-        <Link href="/games/classic" className="font-semibold text-rainbow-pink hover:underline">
+        <Link href="/games/classic" className="font-semibold text-portal-accent hover:underline">
           {t('beginnersCtaLink')}
         </Link>{' '}
         {t('beginnersCtaTail')}

@@ -4,6 +4,7 @@ import type { Tile } from '@/lib/mahjong/tiles';
 import { tileArtSrc, tileBackSrc } from '@/lib/mahjong-solitaire/art';
 import { matchGroup } from '@/lib/mahjong-solitaire/tiles';
 import { colorblindLabel } from '@/lib/colorblind-mark';
+import { tileHoverName } from '@/lib/mahjong/tile-hover';
 
 export type SolitaireTileSize = 'sm' | 'md' | 'lg';
 
@@ -51,7 +52,7 @@ export default function SolitaireTileFace({
     <span
       data-mahjong-tile
       className={[
-        'relative inline-block',
+        'group/tile relative inline-block',
         SIZE_CLASS[size],
         selected ? 'ring-2 ring-amber-400 rounded-md' : '',
         hinted ? 'ring-2 ring-sky-400 rounded-md' : ''
@@ -62,7 +63,8 @@ export default function SolitaireTileFace({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={tileArtSrc(tile)}
-        alt=""
+        alt={tileHoverName(tile)}
+        title={tileHoverName(tile)}
         width={px.w}
         height={px.h}
         draggable={false}
@@ -71,6 +73,11 @@ export default function SolitaireTileFace({
         data-match-group={group}
         className="h-full w-full rounded-md object-cover shadow-sm select-none"
       />
+      {!dimmed && (
+        <span className="pointer-events-none absolute -top-6 left-1/2 z-30 hidden -translate-x-1/2 whitespace-nowrap rounded bg-slate-900 px-1.5 py-0.5 text-[10px] font-semibold text-white group-hover/tile:block">
+          {tileHoverName(tile)}
+        </span>
+      )}
       {!dimmed && mark !== null && (
         <span className="solitaire-lookalike-mark" aria-hidden>
           {mark}

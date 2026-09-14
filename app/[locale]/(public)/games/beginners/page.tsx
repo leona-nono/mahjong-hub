@@ -38,7 +38,7 @@ export default async function BeginnersPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-3xl font-black rainbow-text">{t('beginners')}</h1>
+      <h1 className="text-3xl font-black text-portal-text">{t('beginners')}</h1>
       <p className="mt-3 text-gray-600">{t('beginnersSubtitle')}</p>
 
       <div className="mt-10 space-y-4">
@@ -46,7 +46,7 @@ export default async function BeginnersPage({
           <Link
             key={post.slug}
             href={`/games/beginners/${post.slug}`}
-            className="block rounded-2xl rainbow-card p-6 transition hover:-translate-y-0.5 hover:shadow-lg"
+            className="block rounded-2xl border border-portal-border bg-portal-panel p-6 transition hover:-translate-y-0.5 hover:shadow-lg"
           >
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-bold text-gray-800">{post.title}</h2>

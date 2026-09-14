@@ -325,45 +325,5 @@
         }
       ]
     }
-  },
-  "mahjong-connect": {
-    "title": "Mahjong-Connect Light",
-    "description": "Paaren Sie freie Mahjong-Steinpaare, die durch einen Pfad verbunden sind. Ein entspannendes Connect-Eliminationsspiel."
-  },
-  "mahjong-classic": {
-    "title": "Klassisches Mahjong",
-    "description": "Das zeitlose Mahjong-Solitaire. Räumen Sie das Brett, indem Sie offene Steinpaare matchen."
-  },
-  "mahjong-solitaire": {
-    "title": "Mahjong-Solitär",
-    "description": "Ein schönes Solitaire-Layout aus Mahjong-Steinen. Paaren und räumen Sie den Turm in Ihrem Tempo."
-  },
-  "mahjong-3d": {
-    "title": "Mahjong in 3D",
-    "description": "Eine dreidimensionale Variante des Mahjong-Matchings mit Tiefe und ruhiger Regenbogenpalette."
-  },
-  "onet-connect-classic": {
-    "title": "Onet-Connect Klassik",
-    "description": "Das klassische Onet-Verbindungsspiel. Verbinden Sie identische Steine mit einer Linie von höchstens zwei Abbiegungen."
-  },
-  "bee-connect": {
-    "title": "Bienen-Connect",
-    "description": "Ein Connect mit Bienen-Thema. Verbinden Sie die kleinen Steine und räumen Sie das Wabenbrett."
-  },
-  "aloha-mahjong": {
-    "title": "Aloha-Mahjong",
-    "description": "Ein tropischer Twist am Mahjong-Matching mit sonniger, entspannter Stimmung."
-  },
-  "8x8-match-tiles": {
-    "title": "8×8 Match-Steine",
-    "description": "Ein kompaktes 8×8-Stein-Match-Puzzle. Verbinden Sie gleiche Steine und jagen Sie den Highscore."
-  },
-  "tile-guru": {
-    "title": "Stein-Guru",
-    "description": "Ein zen Stein-Match-Puzzle. Finden und verbinden Sie passende Steine in einem ruhigen Layout."
-  },
-  "tile-journey": {
-    "title": "Steinreise",
-    "description": "Eine Reise durch Stein-Match-Level. Planen Sie Ihre Verbindungen und räumen Sie jedes Brett."
   }
 }

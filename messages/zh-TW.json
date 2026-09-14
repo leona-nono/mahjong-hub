@@ -8,14 +8,15 @@
     "games": "遊戲",
     "about": "關於",
     "wardrobe": "衣櫥",
-    "classic": "四人麻將",
+    "classic": "人機對戰",
     "classicSubtitle": "玩真正的四人麻將——中國、日本、美國、台灣與四川玩法。",
-    "solitaire": "麻將消除",
+    "solitaire": "更多麻將休閒遊戲",
     "solitaireSubtitle": "休閒配對與消除小遊戲，輕鬆放鬆片刻。",
-    "beginners": "麻將入門",
+    "solitaireBuilding": "自研麻將內容。更多原創牌局會繼續補上。",
+    "beginners": "學習",
     "beginnersSubtitle": "從零開始學麻將——淺顯易懂的規則、策略與教學。",
     "beginnersComingSoon": "入門教學即將上線。",
-    "set": "麻將套裝",
+    "set": "商店",
     "setSubtitle": "精選麻將套裝與配件推薦。",
     "setComingSoon": "精選商品即將上線。",
     "regionChina": "中國麻將",
@@ -66,7 +67,10 @@
     "seoLinkClassic": "四人麻將",
     "seoLinkPlay": "玩經典接龍遊戲",
     "seoLinkBeginners": "麻將新人教學",
-    "featuredHall": "精選遊戲"
+    "featuredHall": "精選遊戲",
+    "seasonalTitle": "Seasonal table collection",
+    "seasonalBody": "Choose a free table mood and matching tile back for every game.",
+    "openWardrobe": "Open wardrobe"
   },
   "game": {
     "play": "開始遊戲",
@@ -85,7 +89,11 @@
     "playNow": "立即開玩",
     "beginnersCtaLead": "準備好實戰練習了嗎？",
     "beginnersCtaLink": "去玩一局真麻將",
-    "beginnersCtaTail": "與三位電腦對手對戰。"
+    "beginnersCtaTail": "與三位電腦對手對戰。",
+    "features": "Game features",
+    "supportedDevices": "Supported devices",
+    "startGame": "Start Game",
+    "startBlurb": "Tap Start Game to load the board. The rules and tips below are always visible — no account required."
   },
   "collection": {
     "title": "麻將消除遊戲合集",
@@ -157,6 +165,10 @@
     "normal": "普通",
     "hard": "困難",
     "hints": "提示",
+    "coachAsk": "問問教練",
+    "coachLive": "教練常駐",
+    "coachSilent": "關閉教練",
+    "coachIntensity": "教練",
     "newGame": "重新開局",
     "yourHand": "你的手牌",
     "waiting": "等待其他玩家出牌…",
@@ -525,7 +537,11 @@
   "seo": {
     "homeTitle": "免費線上麻將 | Mahjong Hub",
     "homeDescription": "免費線上玩麻將消消樂、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。",
-    "wardrobeTitle": "牌背與桌布外觀 | Mahjong Hub"
+    "wardrobeTitle": "牌背與桌布外觀 | Mahjong Hub",
+    "blogTitle": "Mahjong Guides & Rules for Beginners | Mahjong Hub",
+    "gamesTitle": "Free Online Mahjong Games – Solitaire & 4-Player | Mahjong Hub",
+    "privacyTitle": "Privacy Policy | Mahjong Hub",
+    "aboutTitle": "About Mahjong Hub — Free Mahjong Games & Beginner Guides"
   },
   "notFound": {
     "title": "頁面不存在",
@@ -636,5 +652,51 @@
       "gold-dynasty": "Gold Dynasty",
       "ink-wash": "Ink Wash"
     }
+  },
+  "learn": {
+    "title": "學麻將",
+    "subtitle": "沒打過真麻將，從這裡開始。",
+    "scratch": "從零認識麻將",
+    "tiles": "怎麼認牌",
+    "scoring": "番數入門",
+    "glossary": "術語表",
+    "comingSoon": "即將上線"
+  },
+  "faq": {
+    "title": "常見問題",
+    "q1": "麻將難學嗎？",
+    "a1": "難的不是規則，是沒有人陪你打第一局。這裡有免費的 AI 對家，你可以慢慢打。",
+    "q2": "一定要四個人嗎？",
+    "a2": "不用。另外三家是 AI，不用等空房。",
+    "q3": "可以一個人玩嗎？",
+    "a3": "可以。跟 AI 打一桌，或者先玩一局消除。",
+    "q4": "中國麻將和美式麻將有什麼不同？",
+    "a4": "中式是成牌型和一對。美式練習用原創牌卡、過牌和百搭，不是現年 NMJL 牌。兩邊都是免費練習，沒有真錢。",
+    "q5": "這個站真的免費嗎？",
+    "a5": "是。沒有買入、沒有提現，也沒有可購買的博弈貨幣。",
+    "q6": "必須註冊嗎？",
+    "a6": "不用。不登入也能開局。帳號只用來保存積分和進度。"
+  },
+  "dailyHand": {
+    "eyebrow": "每日一局",
+    "title": "今天的四人麻將",
+    "subtitle": "同一 UTC 日期，全球同一副牌牆。和牌即算過關，無需登入。",
+    "complete": "本局完成",
+    "share": "複製成績",
+    "copied": "已複製",
+    "streak": "連續 {n} 天",
+    "better": "有更優選擇",
+    "ok": "可以接受",
+    "best": "好選擇",
+    "shanten": "向聽 {n}",
+    "ukeire": "進張 {n} 張",
+    "waits": "聽牌 {n} 種",
+    "rules": "香港麻將",
+    "resultLine": "{date} · {rules} · {n} 巡"
+  },
+  "tiles": {
+    "crak": "萬",
+    "dot": "筒",
+    "bam": "條"
   }
 }

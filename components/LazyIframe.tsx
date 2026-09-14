@@ -57,7 +57,7 @@ export default function LazyIframe({
               <Link
                 key={g.slug}
                 href={`/games/${g.slug}`}
-                className="rounded-full bg-rainbow-indigo/10 px-3 py-1 text-sm font-medium text-rainbow-indigo hover:bg-rainbow-indigo/20"
+                className="rounded-full bg-portal-accent/10 px-3 py-1 text-sm font-medium text-portal-accent hover:bg-portal-accent/20"
               >
                 {g.title}
               </Link>
@@ -82,11 +82,11 @@ export default function LazyIframe({
             // but are prompted to sign in the moment points would be awarded.
             void awardPoints(10, 'start_game');
           }}
-          className="absolute inset-0 flex flex-col items-center justify-center gap-3 rainbow-card"
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3 border border-portal-border bg-portal-panel/90"
           aria-label={t('play')}
         >
           <span className="text-3xl">🀄</span>
-          <span className="rainbow-text text-2xl font-black">{t('play')}</span>
+          <span className="text-2xl font-black text-portal-accent">{t('play')}</span>
           <span className="text-sm text-gray-500">{title}</span>
         </button>
       )}

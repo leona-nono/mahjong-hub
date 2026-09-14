@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { prisma } from '@/lib/db';
+import { ledgerTotal, syncCachedTotal } from '@/lib/points-ledger';
 import { utcDateString } from '@/lib/points-rules';
 import { parseCampaignLevel } from '@/lib/mahjong-solitaire/levels';
 import {
@@ -116,14 +117,14 @@ export async function completeSolitaireForUser(
 
   const check = validateSolitaireComplete(input, expected, today);
   if (!check.ok) {
-    const row = await prisma.userPoint.findUnique({ where: { userId } });
+    const total = await ledgerTotal(prisma, userId);
     return {
       ok: false,
       error: check.error,
       awarded: false,
       alreadyCleared: false,
       amount: 0,
-      total: row?.total ?? 0,
+      total,
       stars: 0
     };
   }
@@ -132,17 +133,9 @@ export async function completeSolitaireForUser(
   const dailyDay = parseDailyLevelId(input.levelId);
 
   return prisma.$transaction(async (tx) => {
-    const pointRow = async (extra: number) => {
-      if (extra <= 0) {
-        const row = await tx.userPoint.findUnique({ where: { userId } });
-        return row?.total ?? 0;
-      }
-      const updated = await tx.userPoint.upsert({
-        where: { userId },
-        create: { userId, total: extra },
-        update: { total: { increment: extra } }
-      });
-      return updated.total;
+    const cachedTotal = async (extra: number) => {
+      if (extra <= 0) return ledgerTotal(tx, userId);
+      return syncCachedTotal(tx, userId);
     };
 
     if (kind === 'daily' && dailyDay) {
@@ -150,7 +143,7 @@ export async function completeSolitaireForUser(
         where: { userId_utcDate: { userId, utcDate: dailyDay } }
       });
       if (existing?.awarded) {
-        const total = await pointRow(0);
+        const total = await cachedTotal(0);
         const meta = await tx.solitaireStreak.findUnique({ where: { userId } });
         return {
           ok: true,
@@ -216,7 +209,7 @@ export async function completeSolitaireForUser(
           gameSlug: 'mahjong-solitaire'
         }
       });
-      const total = await pointRow(amount);
+      const total = await cachedTotal(amount);
       return {
         ok: true,
         awarded: true,
@@ -284,7 +277,7 @@ export async function completeSolitaireForUser(
       });
     }
 
-    const total = await pointRow(amount);
+    const total = await cachedTotal(amount);
     return {
       ok: true,
       awarded: amount > 0,

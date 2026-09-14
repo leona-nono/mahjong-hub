@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import TileFace, { TileBack } from './TileFace';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
-import { playMahjongSound, primeMahjongAudio } from '@/lib/mahjong/sound';
+import { playMahjongSound, primeMahjongAudio } from '@/features/table/sound';
 import { visibleDoraIndicators } from '@/lib/mahjong/riichi';
 import TableToolButton from './TableToolButton';
 

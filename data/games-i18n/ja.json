@@ -318,45 +318,5 @@
         }
       ]
     }
-  },
-  "mahjong-connect": {
-    "title": "麻雀コネクトライト",
-    "description": "道でつながる空いた麻雀牌をペアで消すリラックスできるコネクトゲーム。"
-  },
-  "mahjong-classic": {
-    "title": "クラシック麻雀",
-    "description": "定番の麻雀ソリティア。開いた牌のペアを消して盤面をクリア。"
-  },
-  "mahjong-solitaire": {
-    "title": "麻雀ソリティア",
-    "description": "美しい麻雀の配置。自分のペースでタイルを消して塔をクリア。"
-  },
-  "mahjong-3d": {
-    "title": "麻雀3D",
-    "description": "奥行きのある3Dの麻雀消し。落ち着いた虹色のパレット。"
-  },
-  "onet-connect-classic": {
-    "title": "オネットクラシック",
-    "description": "定番のオネット。最大2回曲がる線で同じ牌をつなぐ。"
-  },
-  "bee-connect": {
-    "title": "ビーコネクト",
-    "description": "かわいい蜂をテーマにしたコネクト。小さな牌をつないでハニカム盤面をクリア。"
-  },
-  "aloha-mahjong": {
-    "title": "アロハ麻雀",
-    "description": "トロピカルな雰囲気の麻雀消し。明るくてのんびりした気分。"
-  },
-  "8x8-match-tiles": {
-    "title": "8x8 マッチタイル",
-    "description": "コンパクトな8x8タイルマッチ。同じタイルをつないでハイスコアを狙う。"
-  },
-  "tile-guru": {
-    "title": "タイルグル",
-    "description": "禅のようなタイルマッチパズル。落ち着いた配置で同じタイルを見つけてつなぐ。"
-  },
-  "tile-journey": {
-    "title": "タイルジャーニー",
-    "description": "タイルマッチのレベルを巡る旅。つなぎ方を計画して各ボードをクリア。"
   }
 }

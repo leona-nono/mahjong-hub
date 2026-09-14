@@ -8,14 +8,14 @@
     "games": "ゲーム",
     "about": "について",
     "wardrobe": "きせかえ",
-    "classic": "麻雀 4 人プレイ",
+    "classic": "AI対戦",
     "classicSubtitle": "本格四人麻雀——中国、日本、アメリカ、台湾、四川のルール。",
-    "solitaire": "麻雀ソリティア",
+    "solitaire": "ゲーム",
     "solitaireSubtitle": "カジュアルな牌合わせ・消しゲーで、気軽にリラックス。",
-    "beginners": "麻雀入門",
+    "beginners": "学ぶ",
     "beginnersSubtitle": "ゼロから学ぶ麻雀——わかりやすいルール・戦略・ガイド。",
     "beginnersComingSoon": "入門ガイドは準備中です。",
-    "set": "麻雀セット",
+    "set": "ショップ",
     "setSubtitle": "おすすめの麻雀セットとアクセサリー。",
     "setComingSoon": "おすすめ商品は準備中です。",
     "regionChina": "中国麻雀",
@@ -66,7 +66,10 @@
     "seoLinkClassic": "四人麻雀",
     "seoLinkPlay": "クラシックソリティアをプレイする",
     "seoLinkBeginners": "初心者向け麻雀",
-    "featuredHall": "注目ゲーム"
+    "featuredHall": "注目ゲーム",
+    "seasonalTitle": "Seasonal table collection",
+    "seasonalBody": "Choose a free table mood and matching tile back for every game.",
+    "openWardrobe": "Open wardrobe"
   },
   "game": {
     "play": "プレイ",
@@ -85,7 +88,11 @@
     "playNow": "今すぐプレイ",
     "beginnersCtaLead": "実際に試してみますか？",
     "beginnersCtaLink": "本格的な対局をプレイ",
-    "beginnersCtaTail": "3体のコンピュータ相手に挑戦。"
+    "beginnersCtaTail": "3体のコンピュータ相手に挑戦。",
+    "features": "Game features",
+    "supportedDevices": "Supported devices",
+    "startGame": "Start Game",
+    "startBlurb": "Tap Start Game to load the board. The rules and tips below are always visible — no account required."
   },
   "collection": {
     "title": "麻雀消除ゲームコレクション",
@@ -525,7 +532,11 @@
   "seo": {
     "homeTitle": "無料オンライン麻雀 | Mahjong Hub",
     "homeDescription": "麻雀ソリティア、コネクト、本格四人麻雀を無料で。ブラウザですぐ遊べてダウンロード不要。デイリーチャレンジ対応。",
-    "wardrobeTitle": "牌背＆卓スキン | Mahjong Hub"
+    "wardrobeTitle": "牌背＆卓スキン | Mahjong Hub",
+    "blogTitle": "Mahjong Guides & Rules for Beginners | Mahjong Hub",
+    "gamesTitle": "Free Online Mahjong Games – Solitaire & 4-Player | Mahjong Hub",
+    "privacyTitle": "Privacy Policy | Mahjong Hub",
+    "aboutTitle": "About Mahjong Hub — Free Mahjong Games & Beginner Guides"
   },
   "notFound": {
     "title": "ページが見つかりません",

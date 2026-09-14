@@ -1,56 +1,41 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import SolitaireTileFace from './SolitaireTileFace';
+import SolitaireBoard from './solitaire/SolitaireBoard';
+import SolitaireHud from './solitaire/SolitaireHud';
+import { useSolitaireCampaign, playableLevel } from './solitaire/useSolitaireCampaign';
+import { useSolitaireDaily } from './solitaire/useSolitaireDaily';
+import { useSolitaireBoardItems } from './solitaire/useSolitaireBoardItems';
 import {
   canMatch,
   isCleared,
   isExposed,
-  removePair,
-  type Board
+  removePair
 } from '@/lib/mahjong-solitaire/board';
-import { createBoard } from '@/lib/mahjong-solitaire/generator';
 import { isDead } from '@/lib/mahjong-solitaire/solver';
 import type { SolitaireLayout } from '@/lib/mahjong-solitaire/layouts';
 import { FREE_PLAY_LAYOUTS, layoutTileCount } from '@/lib/mahjong-solitaire/layouts';
-import { FREE_UNDO_PER_LEVEL } from '@/lib/mahjong-solitaire/tiles';
 import {
   applyMatchScore,
   type ScoreState
 } from '@/lib/mahjong-solitaire/scoring';
 import {
-  TEACHING_LEVELS,
-  campaignOptions,
-  createLevelBoard,
   getLevel,
   nextLevelId,
-  parseCampaignLevel,
-  type LevelDef
+  parseCampaignLevel
 } from '@/lib/mahjong-solitaire/levels';
-import type { CatalogEntry } from '@/lib/mahjong-solitaire/difficulty';
-import { parseDailyLevelId, type SolitaireDeal, DAILY_CLEAR_POINTS } from '@/lib/mahjong-solitaire/progress-rules';
-import { recordGuestDailyClear } from '@/lib/mahjong-solitaire/daily-local';
-import { useSolitaireTilePreload, warmSolitaireTileArt } from '@/lib/mahjong-solitaire/tile-preload';
-import { trackSolitaireEvent } from '@/lib/mahjong-solitaire/telemetry';
-import { utcDateString } from '@/lib/points-rules';
+import {
+  parseDailyLevelId,
+  DAILY_CLEAR_POINTS
+} from '@/lib/mahjong-solitaire/progress-rules';
+import { recordGuestDailyClear } from '@/features/guest/guest-store';
+import { useSolitaireTilePreload, warmSolitaireTileArt } from '@/features/solitaire/tile-preload';
+import { trackSolitaireEvent } from '@/features/solitaire/telemetry';
 import { adsEnabled } from '@/lib/flags';
-import catalogFile from '@/lib/mahjong-solitaire/seed-catalog.json';
-import {
-  applyHint,
-  applyRescue,
-  applyShuffle,
-  applyUndo,
-  isItemUnlocked,
-  starsForLevel,
-  type ItemType
-} from '@/lib/mahjong-solitaire/items';
-import {
-  useSolitaireItems,
-  type PayChannel
-} from '@/lib/solitaire-items';
-import { tileName } from '@/lib/mahjong/tiles';
+import { starsForLevel } from '@/lib/mahjong-solitaire/items';
+import { useSolitaireItems } from '@/lib/solitaire-items';
 import { applyLedgerTotal, usePoints } from '@/lib/points';
 import { awardGuestPoints, ensureGuestId } from '@/lib/guest-points';
 import { openLogin } from '@/lib/auth';
@@ -58,12 +43,6 @@ import MahjongAccessibilityPanel, {
   useMahjongPreferences
 } from '@/components/games/MahjongAccessibilityPanel';
 
-/** Same catalog the API serves — deal locally so level switches skip the network wait. */
-const SEED_CATALOG = (catalogFile.entries ?? []) as CatalogEntry[];
-
-function playableLevel(id: string): LevelDef | undefined {
-  return getLevel(id, SEED_CATALOG);
-}
 export interface MahjongSolitaireProps {
   defaultLayout?: SolitaireLayout;
   defaultLevelId?: string;
@@ -73,19 +52,6 @@ export interface MahjongSolitaireProps {
   /** Prefer starting play immediately (skips coach / free-play entry). */
   autoStart?: boolean;
 }
-
-const CELL_W = 44;
-const CELL_H = 58;
-const STACK_X = 22;
-const STACK_Y = 16;
-
-type PlayMode = 'level' | 'free';
-
-type OfferState = {
-  item: ItemType;
-  /** After paying, run this effect */
-  run: (channel: PayChannel) => Promise<void>;
-} | null;
 
 export default function MahjongSolitaire({
   defaultLayout = 'classic',
@@ -99,13 +65,8 @@ export default function MahjongSolitaire({
   const items = useSolitaireItems();
   const { preferences, setPreference } = useMahjongPreferences();
   const [a11yOpen, setA11yOpen] = useState(false);
-  const initialLevel = playableLevel(defaultLevelId) ?? TEACHING_LEVELS[0];
   useSolitaireTilePreload(true);
 
-  const [mode, setMode] = useState<PlayMode>('level');
-  const [level, setLevel] = useState<LevelDef>(initialLevel);
-  const [layout, setLayout] = useState<SolitaireLayout>(defaultLayout);
-  const [board, setBoard] = useState<Board>(() => createLevelBoard(initialLevel));
   const [selected, setSelected] = useState<number | null>(null);
   const [hint, setHint] = useState<[number, number] | null>(null);
   const [scoreState, setScoreState] = useState<ScoreState>({
@@ -117,19 +78,74 @@ export default function MahjongSolitaire({
   const [paused, setPaused] = useState(false);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [savePromptPts, setSavePromptPts] = useState<number | null>(null);
-  const [coachDismissed, setCoachDismissed] = useState(autoStart || compact);
-  const [itemUses, setItemUses] = useState(0);
-  const [offer, setOffer] = useState<OfferState>(null);
-  const [dailyHud, setDailyHud] = useState<{
-    utcDay: string;
-    id: string;
-    cleared: boolean;
-    streak: number;
-  } | null>(null);
-  const [dealReady, setDealReady] = useState(true);
   const startedAt = useRef(Date.now());
   const submitting = useRef(false);
   const firstTileTracked = useRef(false);
+
+  const boardItemsRef = useRef<{ resetItemMeta: () => void } | null>(null);
+
+  const resetRoundMeta = () => {
+    setSelected(null);
+    setHint(null);
+    setScoreState({ score: 0, combo: 0, lastMatchAt: 0 });
+    setStatus('playing');
+    setStatusMsg(null);
+    boardItemsRef.current?.resetItemMeta();
+    items.resetLevelAds();
+    startedAt.current = Date.now();
+    submitting.current = false;
+    firstTileTracked.current = false;
+  };
+
+  const {
+    mode,
+    setMode,
+    level,
+    layout,
+    setLayout,
+    board,
+    setBoard,
+    coachDismissed,
+    setCoachDismissed,
+    dealReady,
+    campaignLevels,
+    restartLevel,
+    restartFree,
+    enterFree
+  } = useSolitaireCampaign({
+    defaultLayout,
+    defaultLevelId,
+    autoStart,
+    compact,
+    onRoundReset: resetRoundMeta,
+    onFreeModeDeal: () => setStatus('playing')
+  });
+
+  const { dailyHud, markDailyCleared } = useSolitaireDaily();
+
+  const {
+    itemUses,
+    offer,
+    setOffer,
+    resetItemMeta,
+    runHint,
+    runUndo,
+    runShuffle,
+    runRescue
+  } = useSolitaireBoardItems({
+    board,
+    setBoard,
+    status,
+    setStatus,
+    paused,
+    setSelected,
+    setHint,
+    setStatusMsg,
+    levelId: level.id,
+    items,
+    t
+  });
+  boardItemsRef.current = { resetItemMeta };
 
   useEffect(() => {
     warmSolitaireTileArt();
@@ -169,106 +185,6 @@ export default function MahjongSolitaire({
     freePlay: mode === 'free'
   };
 
-  useEffect(() => {
-    if (mode !== 'free') return;
-    setBoard(
-      createBoard({
-        layout: defaultLayout,
-        seed: Math.floor(Math.random() * 2 ** 31)
-      })
-    );
-    setStatus('playing');
-  }, [defaultLayout, mode]);
-
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      try {
-        const res = await fetch('/api/solitaire/daily', { credentials: 'same-origin' });
-        if (cancelled) return;
-        if (res.ok) {
-          const data = (await res.json()) as {
-            utcDay?: string;
-            deal?: SolitaireDeal;
-            cleared?: boolean;
-            streak?: number;
-          };
-          if (!data.deal || cancelled) return;
-          setDailyHud({
-            utcDay: data.utcDay ?? utcDateString(),
-            id: data.deal.id,
-            cleared: !!data.cleared,
-            streak: Number(data.streak) || 0
-          });
-          return;
-        }
-        const day = utcDateString();
-        const local = getLevel(`daily:${day}`);
-        if (local && !cancelled) {
-          setDailyHud({ utcDay: day, id: local.id, cleared: false, streak: 0 });
-        }
-      } catch {
-        const day = utcDateString();
-        const local = getLevel(`daily:${day}`);
-        if (local && !cancelled) {
-          setDailyHud({ utcDay: day, id: local.id, cleared: false, streak: 0 });
-        }
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const resetRoundMeta = () => {
-    setSelected(null);
-    setHint(null);
-    setScoreState({ score: 0, combo: 0, lastMatchAt: 0 });
-    setStatus('playing');
-    setStatusMsg(null);
-    setItemUses(0);
-    setOffer(null);
-    items.resetLevelAds();
-    startedAt.current = Date.now();
-    submitting.current = false;
-    firstTileTracked.current = false;
-  };
-
-  const restartLevel = (next: LevelDef) => {
-    const def = playableLevel(next.id) ?? next;
-    setMode('level');
-    setLevel(def);
-    setCoachDismissed(false);
-    setBoard(createLevelBoard(def));
-    resetRoundMeta();
-    setDealReady(true);
-    const daily = parseDailyLevelId(def.id);
-    trackSolitaireEvent(daily ? 'solitaire_daily_enter' : 'solitaire_level_enter', {
-      levelId: def.id,
-      layout: def.layout,
-      alphabet: def.deal.alphabet ?? 0,
-      remaining: layoutTileCount(def.layout)
-    });
-  };
-
-  useEffect(() => {
-    if (!defaultLevelId || defaultLevelId.startsWith('teach-')) return;
-    const next = playableLevel(defaultLevelId);
-    if (next) restartLevel(next);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultLevelId]);
-
-  const restartFree = (nextLayout: SolitaireLayout = layout) => {
-    setDealReady(true);
-    setBoard(
-      createBoard({
-        layout: nextLayout,
-        seed: Math.floor(Math.random() * 2 ** 31)
-      })
-    );
-    resetRoundMeta();
-  };
-
   const submitClear = async (score: number) => {
     if (submitting.current) return;
     submitting.current = true;
@@ -292,9 +208,7 @@ export default function MahjongSolitaire({
         const total = awardGuestPoints(guestAward, 'solitaire_clear');
         if (parseDailyLevelId(level.id)) {
           const g = recordGuestDailyClear();
-          setDailyHud((d) =>
-            d ? { ...d, cleared: true, streak: g.streak } : d
-          );
+          markDailyCleared(g.streak);
         }
         setStatusMsg(t('savePointsPrompt', { n: total }));
         setSavePromptPts(total);
@@ -318,11 +232,9 @@ export default function MahjongSolitaire({
       if (data.alreadyCleared) setStatusMsg(t('alreadyCleared'));
       else if (data.awarded) setStatusMsg(t('awardedPoints', { n: data.amount ?? 0 }));
       if (typeof data.streak === 'number') {
-        setDailyHud((d) =>
-          d ? { ...d, cleared: true, streak: data.streak as number } : d
-        );
+        markDailyCleared(data.streak);
       } else if (parseDailyLevelId(level.id)) {
-        setDailyHud((d) => (d ? { ...d, cleared: true } : d));
+        markDailyCleared();
       }
       onWin?.(data.amount ?? 0);
     } catch {
@@ -330,39 +242,12 @@ export default function MahjongSolitaire({
     }
   };
 
-  const geometry = useMemo(() => {
-    const pts = board.positions.map((p) => ({
-      x: p.col * CELL_W - p.layer * STACK_X,
-      y: p.row * CELL_H - p.layer * STACK_Y
-    }));
-    const minX = Math.min(...pts.map((pt) => pt.x));
-    const minY = Math.min(...pts.map((pt) => pt.y));
-    const maxX = Math.max(...pts.map((pt) => pt.x));
-    const maxY = Math.max(...pts.map((pt) => pt.y));
-    return {
-      minX,
-      minY,
-      width: maxX - minX + CELL_W,
-      height: maxY - minY + CELL_H
-    };
-  }, [board.positions]);
-
   const showCoach =
     !compact && mode === 'level' && Boolean(level.coachKey) && !coachDismissed;
-  const campaignUpto = Math.max(12, parseCampaignLevel(level.id) ?? 0);
-  const campaignLevels = useMemo(
-    () => campaignOptions(campaignUpto, SEED_CATALOG),
-    [campaignUpto]
-  );
   const stars = starsForLevel({
     cleared: status === 'won',
     itemUses
   });
-
-  const bumpItemUse = (type: ItemType) => {
-    setItemUses((n) => n + 1);
-    trackSolitaireEvent('solitaire_item_use', { levelId: level.id, item: type });
-  };
 
   const handleTile = (index: number) => {
     if (status !== 'playing' || paused || !dealReady) return;
@@ -434,94 +319,6 @@ export default function MahjongSolitaire({
     }
   };
 
-  const runHint = async (channel: PayChannel) => {
-    if (status !== 'playing' || paused) return;
-    const paid = await items.tryConsume('hint', channel);
-    if (!paid.ok) {
-      if (paid.reason === 'empty') setOffer({ item: 'hint', run: runHint });
-      return;
-    }
-    const r = applyHint(board);
-    if (!r.ok) {
-      setStatusMsg(t('noMoves'));
-      return;
-    }
-    setHint(r.pair);
-    bumpItemUse('hint');
-    setOffer(null);
-  };
-
-  const runUndo = async (channel: PayChannel) => {
-    // Free undos first — no inventory
-    const freeTry = applyUndo(board);
-    if (freeTry.ok && freeTry.usedFree) {
-      setBoard(freeTry.board);
-      setSelected(null);
-      setHint(null);
-      setStatusMsg(null);
-      if (status === 'won' || status === 'dead') setStatus('playing');
-      setOffer(null);
-      return;
-    }
-    if (freeTry.ok && !freeTry.usedFree) {
-      // shouldn't happen without spendItem
-    }
-
-    const paid = await items.tryConsume('undo', channel);
-    if (!paid.ok) {
-      if (paid.reason === 'empty' || paid.reason === undefined) {
-        setOffer({ item: 'undo', run: runUndo });
-        setStatusMsg(t('noFreeUndo', { n: FREE_UNDO_PER_LEVEL }));
-      }
-      return;
-    }
-    const r = applyUndo(board, { spendItem: true });
-    if (!r.ok) {
-      setStatusMsg(null);
-      return;
-    }
-    setBoard(r.board);
-    setSelected(null);
-    setHint(null);
-    bumpItemUse('undo');
-    setOffer(null);
-    if (status === 'won' || status === 'dead') setStatus('playing');
-  };
-
-  const runShuffle = async (channel: PayChannel) => {
-    if (status !== 'playing' && status !== 'dead') return;
-    const paid = await items.tryConsume('shuffle', channel);
-    if (!paid.ok) {
-      if (paid.reason === 'empty') setOffer({ item: 'shuffle', run: runShuffle });
-      return;
-    }
-    const r = applyShuffle(board);
-    if (!r.ok) return;
-    setBoard(r.board);
-    setSelected(null);
-    setHint(null);
-    setStatus('playing');
-    bumpItemUse('shuffle');
-    setOffer(null);
-  };
-
-  const runRescue = async (channel: PayChannel) => {
-    if (status !== 'dead') return;
-    const paid = await items.tryConsume('rescue', channel);
-    if (!paid.ok) {
-      if (paid.reason === 'empty') setOffer({ item: 'rescue', run: runRescue });
-      return;
-    }
-    const r = applyRescue(board);
-    if (!r.ok) return;
-    setBoard(r.board);
-    setSelected(null);
-    setHint(null);
-    setStatus('playing');
-    bumpItemUse('rescue');
-    setOffer(null);
-  };
-
   const hotkeys = useRef({
     hint: runHint,
     undo: runUndo,
@@ -565,13 +362,6 @@ export default function MahjongSolitaire({
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  const enterFree = () => {
-    setMode('free');
-    setLayout(defaultLayout);
-    restartFree(defaultLayout);
-    setCoachDismissed(true);
-  };
-
   const layoutLabel = (id: SolitaireLayout) => {
     if (id === 'classic') return 'Classic 144';
     if (id === 'mini') return 'Mini';
@@ -594,28 +384,6 @@ export default function MahjongSolitaire({
     );
   };
 
-  const itemBtn = (
-    type: ItemType,
-    label: string,
-    onClick: () => void,
-    disabled?: boolean
-  ) => {
-    const unlocked = isItemUnlocked(type, unlockCtx);
-    const count = items.inventory[type] ?? 0;
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        disabled={disabled || !unlocked}
-        title={!unlocked ? t('itemLocked') : undefined}
-        className="min-h-11 rounded-full border border-slate-600 bg-[#213c47] px-3 py-2 font-medium text-emerald-200 hover:bg-[#2c4b57] disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        {label}
-        <span className="ml-1 text-xs text-amber-200">×{count}</span>
-      </button>
-    );
-  };
-
   return (
     <div
       className={`solitaire-shell rounded-3xl border border-slate-950/20 bg-[#13252d] p-3 text-slate-100 shadow-[0_24px_70px_rgba(15,23,42,.28)] ${
@@ -635,112 +403,35 @@ export default function MahjongSolitaire({
           solitaireExtras
         />
       )}
-      <div className="sticky top-2 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-2xl border border-slate-700 bg-[#172f39]/95 p-2 text-sm shadow-md backdrop-blur">
-        {!compact && (
-        <select
-          value={mode === 'level' ? level.id : `free:${layout}`}
-          onChange={(e) => {
-            const v = e.target.value;
-            if (v.startsWith('free:')) {
-              const next = v.slice(5) as SolitaireLayout;
-              setMode('free');
-              setLayout(next);
-              restartFree(next);
-              return;
-            }
-            const next = playableLevel(v) ?? getLevel(v);
-            if (!next) return;
-            setMode('level');
-            restartLevel(next);
-          }}
-          className="max-w-[11rem] rounded-full border border-slate-600 bg-[#213c47] px-3 py-1.5 font-medium text-emerald-100 sm:max-w-none"
-          aria-label={t('layoutLabel')}
-        >
-          <optgroup label={t('lessons')}>
-            {TEACHING_LEVELS.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.title}
-              </option>
-            ))}
-          </optgroup>
-          {dailyHud && (
-            <optgroup label={t('dailyChallenge')}>
-              <option value={dailyHud.id}>
-                {t('dailyChallenge')}
-                {dailyHud.cleared ? ` · ${t('dailyDone')}` : ''}
-              </option>
-            </optgroup>
-          )}
-          <optgroup label={t('campaign')}>
-            {campaignLevels.map((l) => (
-              <option key={l.id} value={l.id}>
-                {t('levelN', { n: l.campaign?.level ?? parseCampaignLevel(l.id) })}
-              </option>
-            ))}
-          </optgroup>
-          <optgroup label={t('freePlay')}>
-            {FREE_PLAY_LAYOUTS.map((id) => (
-              <option key={id} value={`free:${id}`}>
-                {layoutLabel(id)}
-              </option>
-            ))}
-          </optgroup>
-        </select>
-        )}
-        {compact && (
-          <span className="rounded-full bg-[#213c47] px-3 py-1.5 font-semibold text-emerald-100">
-            {t('dailyChallenge')}
-            {dailyHud?.cleared ? ` · ${t('dailyDone')}` : ''}
-          </span>
-        )}
-
-        <span className="rounded-full bg-[#213c47] px-3 py-1.5 font-semibold text-emerald-100">
-          {t('score', { n: scoreState.score })}
-        </span>
-        <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-slate-300">
-          {t('left', { n: board.remaining })}
-        </span>
-        {scoreState.combo > 1 && (
-          <span className="rounded-full bg-[#213c47] px-3 py-1.5 text-amber-200">
-            ×{scoreState.combo}
-          </span>
-        )}
-
-        {itemBtn('hint', t('hint'), () => void runHint('inventory'), status !== 'playing' || paused)}
-        {itemBtn('undo', t('undo'), () => void runUndo('inventory'), paused)}
-        {itemBtn(
-          'shuffle',
-          t('shuffle'),
-          () => void runShuffle('inventory'),
-          (status !== 'playing' && status !== 'dead') || paused
-        )}
-
-        <button
-          type="button"
-          onClick={() => setPaused((value) => !value)}
-          className="min-h-11 rounded-full border border-slate-500 bg-[#213c47] px-3 py-2 font-medium text-emerald-100"
-        >
-          {paused ? t('resume') : t('pause')}
-        </button>
-        <button
-          type="button"
-          onClick={() => setA11yOpen(true)}
-          className="min-h-11 rounded-full border border-slate-600 bg-[#213c47] px-3 py-2 font-medium text-emerald-100 hover:bg-[#2c4b57]"
-          aria-label={t('settings')}
-          title={t('settings')}
-        >
-          {t('settings')}
-        </button>
-        <button
-          type="button"
-          onClick={() =>
-            mode === 'level' ? restartLevel(level) : restartFree()
-          }
-          className="ml-auto min-h-11 rounded-full bg-emerald-600 px-4 py-2 font-bold text-white hover:bg-emerald-500"
-        >
-          {t('restart')}
-        </button>
-      </div>
+      <SolitaireHud
+        compact={compact}
+        mode={mode}
+        level={level}
+        layout={layout}
+        board={board}
+        scoreState={scoreState}
+        status={status}
+        paused={paused}
+        dailyHud={dailyHud}
+        campaignLevels={campaignLevels}
+        items={items}
+        unlockCtx={unlockCtx}
+        onSelectLevel={(next) => {
+          setMode('level');
+          restartLevel(next);
+        }}
+        onSelectFree={(next) => {
+          setMode('free');
+          setLayout(next);
+          restartFree(next);
+        }}
+        onHint={() => void runHint('inventory')}
+        onUndo={() => void runUndo('inventory')}
+        onShuffle={() => void runShuffle('inventory')}
+        onTogglePause={() => setPaused((value) => !value)}
+        onOpenA11y={() => setA11yOpen(true)}
+        onRestart={() => (mode === 'level' ? restartLevel(level) : restartFree())}
+      />
 
       {!compact && mode === 'free' && (
         <div className="mb-3">
@@ -946,74 +637,18 @@ export default function MahjongSolitaire({
         </div>
       )}
 
-      <div
-        className="solitaire-board-stage overflow-x-auto rounded-2xl border border-slate-700 bg-[#1e3843] px-3 py-5 shadow-inner"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(15,34,42,.78), rgba(15,34,42,.78)), var(--mahjong-table-image)',
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-        }}
-      >
-        <div
-          className="relative mx-auto"
-          style={{ width: geometry.width, height: geometry.height }}
-        >
-          {board.positions.map((p, i) => {
-            const tile = board.tiles[i];
-            if (tile === null) return null;
-            const exposed = isExposed(board, i);
-            const isSelected = selected === i;
-            const isHinted =
-              hint !== null && (hint[0] === i || hint[1] === i);
-            const coachHighlight =
-              showCoach &&
-              level.tutorial === 'free_tile' &&
-              exposed &&
-              !isSelected;
-            const freeHighlight =
-              preferences.highlightFreeTiles &&
-              exposed &&
-              status === 'playing' &&
-              !paused &&
-              !isSelected &&
-              !isHinted;
-
-            return (
-              <button
-                key={i}
-                type="button"
-                onClick={() => handleTile(i)}
-                disabled={!exposed || status !== 'playing' || !dealReady}
-                aria-label={tileName(tile)}
-                className={[
-                  'absolute rounded-lg transition',
-                  exposed
-                    ? 'cursor-pointer hover:-translate-y-1 hover:shadow-lg'
-                    : 'cursor-default',
-                  coachHighlight ? 'ring-2 ring-sky-300/80' : '',
-                  freeHighlight ? 'solitaire-free-highlight' : ''
-                ].join(' ')}
-                style={{
-                  left: p.col * CELL_W - p.layer * STACK_X - geometry.minX,
-                  top: p.row * CELL_H - p.layer * STACK_Y - geometry.minY,
-                  zIndex: isSelected
-                    ? 10000
-                    : p.layer * 1000 + p.row * 100 + p.col
-                }}
-              >
-                <SolitaireTileFace
-                  tile={tile}
-                  size="md"
-                  selected={isSelected}
-                  hinted={isHinted}
-                  dimmed={!exposed}
-                  colorblind={preferences.colorblindMarks}
-                />
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <SolitaireBoard
+        board={board}
+        selected={selected}
+        hint={hint}
+        status={status}
+        paused={paused}
+        dealReady={dealReady}
+        showCoach={showCoach}
+        coachTutorial={level.tutorial}
+        preferences={preferences}
+        onTileClick={handleTile}
+      />
     </div>
   );
 }

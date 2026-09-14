@@ -20,7 +20,7 @@ export default function Footer({ siteTitle }: { siteTitle: string }) {
         </div>
         <div className="flex flex-wrap gap-4 text-sm text-portal-muted">
           <Link href="/games" className="hover:text-portal-accent">
-            {tn('games')}
+            {tn('gameHall')}
           </Link>
           <Link href="/games/solitaire" className="hover:text-portal-accent">
             {tn('solitaire')}

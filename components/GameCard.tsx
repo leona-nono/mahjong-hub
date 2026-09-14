@@ -49,7 +49,7 @@ export default function GameCard({
           </span>
         ) : (
           isNative && (
-            <span className="absolute left-2 top-2 rounded-md bg-portal-accent/95 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-slate-900">
+            <span className="absolute left-2 top-2 rounded-md bg-portal-accent/95 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-portal-on-accent">
               ✓ Original
             </span>
           )

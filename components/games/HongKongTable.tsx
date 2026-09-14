@@ -7,13 +7,15 @@ import TileFace, { useTraditionalTilePreload } from './TileFace';
 import MobileMahjongTable from './MobileMahjongTable';
 import BoardScaleFrame from './BoardScaleFrame';
 import TableToolButton from './TableToolButton';
+import ClaimDialog from './table/ClaimDialog';
+import DiscardPool from './table/DiscardPool';
+import { McrScoreCoach, ResultBanner, ScoringTipsDialog, TurnHintsBar } from './table/ScorePanel';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type RiichiVariant, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
-import { describeScore } from '@/lib/mahjong/scoring';
-import { tileFace, type Tile } from '@/lib/mahjong/tiles';
+import { type Tile } from '@/lib/mahjong/tiles';
 import type { Difficulty } from '@/lib/mahjong/ai';
-import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/lib/mahjong/sound';
+import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/features/table/sound';
 import MahjongAccessibilityPanel, { useMahjongPreferences } from './MahjongAccessibilityPanel';
-import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
+import { trackMahjongEvent } from '@/features/table/telemetry';
 import { visibleDoraIndicators } from '@/lib/mahjong/riichi';
 
 const HUMAN: Seat = 0;
@@ -39,6 +41,7 @@ interface HongKongTableProps {
   onTogglePause: () => void;
   onNewGame: () => void;
   onNextHand: () => void;
+  coach?: ReactNode;
   onDiscard: (tile: Tile) => void;
   onClaim: (option: ClaimOption) => void;
   onTsumo: () => void;
@@ -76,6 +79,7 @@ export default function HongKongTable({
   onTogglePause,
   onNewGame,
   onNextHand,
+  coach,
   onDiscard,
   onClaim,
   onTsumo,
@@ -200,7 +204,8 @@ export default function HongKongTable({
   }, [state, soundEnabled, voiceLocale]);
 
   return (
-    <section ref={tableShellRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
+    <section ref={tableShellRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell relative ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
+      {coach && <div className="absolute left-3 top-14 z-40 max-w-sm">{coach}</div>}
       <MobileMahjongTable
         state={state}
         variant={variant}
@@ -330,10 +335,10 @@ export default function HongKongTable({
 
           {/* Hand racks stay on the outside of the table.  Each player's
               discard / exposed-meld area is one of these four inner zones. */}
-          <DiscardZone state={state} seat={3} className="left-1/2 top-[22%] -translate-x-1/2" />
-          <DiscardZone state={state} seat={2} className="left-[27%] top-[32%]" />
-          <DiscardZone state={state} seat={1} className="right-[27%] top-[32%]" />
-          <DiscardZone state={state} seat={0} className="bottom-[24%] left-1/2 -translate-x-1/2" />
+          <DiscardPool state={state} seat={3} className="left-1/2 top-[22%] -translate-x-1/2" />
+          <DiscardPool state={state} seat={2} className="left-[27%] top-[32%]" />
+          <DiscardPool state={state} seat={1} className="right-[27%] top-[32%]" />
+          <DiscardPool state={state} seat={0} className="bottom-[24%] left-1/2 -translate-x-1/2" />
 
           <div className="absolute left-1/2 top-[45%] z-10 h-44 w-52 -translate-x-1/2 -translate-y-1/2 rounded-xl border-[5px] border-[#20222d] bg-[#11121a] shadow-[0_12px_20px_rgba(0,0,0,.45)]">
             <div className="absolute inset-5 flex flex-col items-center justify-center bg-[#07090d] text-center">
@@ -352,13 +357,11 @@ export default function HongKongTable({
             </div>
           )}
           {isMcr && (
-            <div className="absolute right-[12%] top-[56%] z-20 w-52 rounded-xl border border-amber-200/25 bg-[#063d30]/95 p-3 text-xs text-emerald-50 shadow-xl">
-              <p className="font-black uppercase tracking-[.14em] text-amber-200">{t('mcrScoreCoach')}</p>
-              <div className="mt-2 flex justify-between"><span>{t('qualifyingHand')}</span><strong>{mcrQualifying}/8</strong></div>
-              <div className="mt-1 flex justify-between"><span>{t('flowersSeasons')}</span><strong>+{mcrFlowers}</strong></div>
-              <p className="mt-2 text-sm leading-5 text-emerald-100/75">{t('flowerGateNote')}</p>
-              {tsumoEvaluation?.score?.patterns.length ? <p className="mt-2 border-t border-white/10 pt-2 text-sm leading-5 text-amber-50">{tsumoEvaluation.score.patterns.map((pattern) => `${pattern.label} +${pattern.value}`).join(' · ')}</p> : null}
-            </div>
+            <McrScoreCoach
+              qualifying={mcrQualifying}
+              flowers={mcrFlowers}
+              patterns={tsumoEvaluation?.score?.patterns}
+            />
           )}
           {isRiichi && (
             <div className="absolute left-[58%] top-[24%] z-10 rounded-lg bg-black/30 p-2 text-center text-sm font-bold uppercase tracking-wider text-amber-200">
@@ -379,80 +382,35 @@ export default function HongKongTable({
             </button>
           )}
 
-          {(myClaims || canTsumo || tsumoEvaluation?.complete || kanTiles.length > 0 || riichiDiscards.length > 0) && !paused && (
-            <div className="absolute bottom-[18%] left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-xl border border-amber-200/50 bg-[#101711]/95 p-2 shadow-2xl">
-              {myClaims?.map((option, index) => (
-                <button
-                  key={`${option.kind}-${index}`}
-                  type="button"
-                  onClick={() => {
-                    primeMahjongAudio();
-                    onClaim(option);
-                  }}
-                  className="rounded-lg bg-amber-300 px-5 py-2 text-sm font-black text-emerald-950 hover:bg-amber-200"
-                >
-                  {t(`call.${option.kind}`)}
-                </button>
-              ))}
-              {myClaims && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    primeMahjongAudio();
-                    onClaim({ kind: 'pass', tiles: [] });
-                  }}
-                  className="rounded-lg border border-white/30 px-5 py-2 text-sm font-bold text-white hover:bg-white/10"
-                >
-                  {t('call.pass')}
-                </button>
-              )}
-              {tsumoEvaluation?.complete && !tsumoEvaluation.legal && (
-                <div className="max-w-md rounded-lg border border-amber-300/40 bg-amber-50 px-4 py-2 text-sm font-bold text-amber-950">
-                  <span className="block">{t('completeHandBlocked', { score: tsumoEvaluation.score?.total ?? 0, unit: scoreUnit, min: tsumoEvaluation.minimum })}</span>
-                  {tsumoEvaluation.score?.patterns.length ? <span className="mt-1 block text-xs">{t('currentPatterns')} {tsumoEvaluation.score.patterns.map((pattern) => pattern.label).join(' · ')}</span> : null}
-                  {variant === 'hongkong' && hongKongMode === 'standard' ? (
-                    <button type="button" onClick={() => onHongKongMode('casual')} className="mt-2 rounded-md bg-emerald-700 px-3 py-1.5 text-xs font-black text-white">{t('switchToCasual')}</button>
-                  ) : null}
-                </div>
-              )}
-              {canTsumo && (
-                <button type="button" onClick={() => { primeMahjongAudio(); onTsumo(); }} className="animate-pulse rounded-lg bg-rose-500 px-6 py-3 text-base font-black text-white shadow-[0_0_24px_rgba(244,63,94,.55)]">
-                  {t('selfDrawWin')}
-                </button>
-              )}
-              {isRiichi && riichiDiscards.length > 0 && !human.declaredReady && (
-                <button type="button" onClick={onRiichi} className="rounded-lg bg-red-600 px-6 py-3 text-base font-black text-white">
-                  {human.riichiPending ? t('chooseHighlightedDiscard') : t('riichi')}
-                </button>
-              )}
-              {canAbortNineTerminals && (
-                <button type="button" onClick={onNineTerminals} className="rounded-lg bg-slate-700 px-5 py-2 text-sm font-black text-white">
-                  {t('nineTerminalsAbandon')}
-                </button>
-              )}
-              {kanTiles.map((tile) => (
-                <button key={tile} type="button" onClick={() => { primeMahjongAudio(); onKan(tile); }} className="rounded-lg bg-amber-300 px-5 py-2 text-sm font-black text-emerald-950">
-                  {t('call.kan')} {tileFace(tile)}
-                </button>
-              ))}
-            </div>
-          )}
+          <ClaimDialog
+            variant={variant}
+            hongKongMode={hongKongMode}
+            paused={paused}
+            myClaims={myClaims}
+            canTsumo={canTsumo}
+            tsumoEvaluation={tsumoEvaluation}
+            kanTiles={kanTiles}
+            riichiDiscards={riichiDiscards}
+            declaredReady={human.declaredReady}
+            riichiPending={human.riichiPending}
+            canAbortNineTerminals={canAbortNineTerminals}
+            scoreUnit={scoreUnit}
+            onClaim={onClaim}
+            onTsumo={onTsumo}
+            onKan={onKan}
+            onRiichi={onRiichi}
+            onNineTerminals={onNineTerminals}
+            onHongKongMode={onHongKongMode}
+          />
 
           <div className="absolute bottom-3 left-1/2 z-20 w-[88%] -translate-x-1/2">
-            <div className="mb-2 flex h-5 items-center justify-between px-1 text-xs font-semibold text-emerald-100/75">
-              <span>{myTurn ? t('yourTurnDiscard') : t('seatPlaying', { seat: currentWind })}</span>
-              {hints && (
-                <span>
-                  {tsumoEvaluation?.complete
-                    ? tsumoEvaluation.legal
-                    ? t('winningHandScore', { score: tsumoEvaluation.score?.total ?? 0, unit: scoreUnit })
-                      : t('completeHandRequired', { score: tsumoEvaluation.score?.total ?? 0, min: tsumoEvaluation.minimum, unit: scoreUnit })
-                    : hints.shanten <= 0
-                      ? t('ready', { tiles: hints.waits.map(tileFace).join(' ') || '-' })
-                      : t('awayFromReady', { n: hints.shanten })}
-                </span>
-              )}
-            </div>
+            <TurnHintsBar
+              myTurn={myTurn}
+              currentWind={currentWind}
+              hints={hints}
+              tsumoEvaluation={tsumoEvaluation}
+              scoreUnit={scoreUnit}
+            />
             {human.melds.length > 0 && (
               <div className="absolute bottom-[84px] left-0 flex gap-2">
                 {human.melds.map((meld, index) => (
@@ -493,7 +451,7 @@ export default function HongKongTable({
           </div>
 
           {state.phase === 'over' && state.result && (
-            <HongKongResultBanner state={state} onNewGame={startNewGame} onNextHand={continueNextHand} />
+            <ResultBanner state={state} onNewGame={startNewGame} onNextHand={continueNextHand} />
           )}
         </div>
 
@@ -507,44 +465,13 @@ export default function HongKongTable({
       </div>
         </BoardScaleFrame>
       </div>
-      {showScoring && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/65 p-4" role="dialog" aria-modal="true" aria-label={gameName + ' Mahjong scoring tips'}>
-          <div className="w-full max-w-lg rounded-2xl bg-[#f4f0df] p-6 text-slate-900 shadow-2xl">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-black">{gameName} {t('scoringTips')}</h2>
-              <button type="button" onClick={() => setShowScoring(false)} className="flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-full bg-slate-900 text-white" aria-label={t('closeScoringTips')}>X</button>
-            </div>
-            <ul className="mt-4 space-y-2 text-sm leading-6">
-              {isRiichi ? (
-                <>
-                  <li>{t('tipRiichiYaku')}</li>
-                  <li>{t('tipRiichiDeclaration')}</li>
-                  <li>{t('tipRiichiHeadBump')}</li>
-                  <li>{t('tipRiichiNoRed')}</li>
-                </>
-              ) : isMcr ? (
-                <>
-                  <li>{t('tipMcrWall')}</li>
-                  <li>{t('tipMcrGate')}</li>
-                  <li>{t('tipMcrTraining')}</li>
-                  <li>{t('tipMcrOpenInfo')}</li>
-                </>
-              ) : (
-                <>
-                  <li>{t('tipHkWall')}</li>
-                  <li>
-                    <strong>{hongKongMode === 'casual' ? t('tipHkCasualLabel') : t('tipHkStandardLabel')}</strong>{' '}
-                    {hongKongMode === 'casual' ? t('tipHkCasualBody') : t('tipHkStandardBody')}
-                  </li>
-                  <li>{t('tipHkCap')}</li>
-                  <li>{t('tipHkDiscardWin')}</li>
-                  <li>{t('tipHkSelfDraw')}</li>
-                </>
-              )}
-            </ul>
-          </div>
-        </div>
-      )}
+      <ScoringTipsDialog
+        open={showScoring}
+        gameName={gameName}
+        variant={variant}
+        hongKongMode={hongKongMode}
+        onClose={() => setShowScoring(false)}
+      />
       {showAccessibility && <MahjongAccessibilityPanel preferences={preferences} onChange={(key, value) => { setPreference(key, value); trackMahjongEvent('mahjong_accessibility_changed', { setting: key, value: String(value) }); }} onClose={() => setShowAccessibility(false)} />}
     </section>
   );
@@ -638,33 +565,6 @@ function PlayerBadge({
   );
 }
 
-function DiscardZone({ state, seat, className }: { state: GameState; seat: Seat; className: string }) {
-  const player = state.players[seat];
-  return (
-    <div className={`absolute z-[5] w-[190px] ${className}`}>
-      {player.melds.length > 0 && (
-        <div className="mb-1 flex justify-center gap-1">
-          {player.melds.map((meld, meldIndex) => (
-            <div key={meldIndex} className="flex gap-px bg-black/10 p-0.5">
-              {meld.tiles.map((tile, tileIndex) => <TileFace key={tileIndex} tile={tile} size="md" traditional />)}
-            </div>
-          ))}
-        </div>
-      )}
-      <div className="grid grid-cols-6 justify-items-center gap-0.5">
-        {player.discards.slice(-18).map((tile, index, visible) => {
-          const latest = state.lastDiscard?.from === seat && index === visible.length - 1;
-          return (
-            <span key={`${tile}-${index}`} className={latest ? 'relative after:absolute after:-right-1 after:-top-1 after:h-2.5 after:w-2.5 after:rotate-45 after:bg-yellow-300' : ''}>
-              <TileFace tile={tile} size="sm" traditional muted={!latest} highlight={latest} />
-            </span>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 function CenterWind({
   position,
   active,
@@ -682,85 +582,3 @@ function CenterWind({
   }[position];
   return <span className={`absolute ${classes} flex h-6 w-8 items-center justify-center rounded text-sm font-black ${active ? 'bg-rose-700 text-white' : 'bg-slate-600 text-slate-100'}`}>{children}</span>;
 }
-function HongKongResultBanner({ state, onNewGame, onNextHand }: { state: GameState; onNewGame: () => void; onNextHand: () => void }) {
-  const t = useTranslations('mahjong');
-  const result = state.result!;
-  const selfDrawn = result.kind === 'win' && !result.winners && result.loser === undefined;
-  const humanWon = result.winner === HUMAN || result.winners?.some((item) => item.seat === HUMAN);
-  const winnerSeat = result.winner ?? result.winners?.[0]?.seat;
-  const winner = winnerSeat === HUMAN ? t('youLabel') : SEAT_LABEL[winnerSeat as Seat];
-  const reviewTiles = (seat: Seat) => [
-    ...state.players[seat].hand,
-    ...(seat === winnerSeat && result.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
-  ];
-  return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-[3px]">
-      <div className="max-h-[92vh] min-w-[380px] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#f4f0df] p-8 text-center text-emerald-950 shadow-[0_0_70px_rgba(251,191,36,.38)]">
-        {result.kind === 'draw' ? (
-          <>
-            <p className="text-3xl font-black">{t('drawGame')}</p>
-            {result.reason && <p className="mt-2 text-sm font-bold text-emerald-800">{result.reason === 'nine-terminals' ? t('drawReasonNine') : result.reason === 'four-winds' ? t('drawReasonFourWinds') : result.reason === 'four-kans' ? t('drawReasonFourKans') : t('drawReasonExhaustive')}</p>}
-          </>
-        ) : (
-          <>
-            <p className="text-sm font-black uppercase tracking-[.3em] text-rose-600">{selfDrawn ? t('selfDrawLabel') : t('winOnDiscardLabel')}</p>
-            <p className="mt-2 text-4xl font-black">{humanWon ? t('youWinExclaim') : t('seatWinsExclaim', { seat: winner })}</p>
-            {result.score && (
-              <>
-                <p className="mt-3 text-2xl font-black text-amber-700">
-                  {state.ruleset === 'riichi'
-                    ? (result.score.han ?? result.score.total) + ' Han · ' + (result.score.fu ?? 0) + ' Fu · ' + (result.score.points ?? 0) + ' points'
-                    : result.score.total + ' Fan' + (result.score.points ? ' · ' + result.score.points + ' points' : '')}
-                </p>
-                <p className="mt-2 max-w-md text-sm leading-6 text-emerald-800">{describeScore(result.score)}</p>
-                {result.score.paymentLabel && (
-                  <p className="mt-2 text-sm font-bold">{result.score.paymentLabel}</p>
-                )}
-              </>
-            )}
-            {winnerSeat !== undefined && (
-              <div className="mt-5 rounded-xl border border-emerald-200 bg-white/80 p-4 text-left">
-                <p className="text-center text-sm font-black uppercase tracking-[.16em] text-emerald-800">{t('winningHandReview', { winner })}</p>
-                <p className="mt-1 text-center text-xs font-bold text-slate-500">{t('revealReviewNote')}</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {([0, 1, 2, 3] as Seat[]).map((seat) => {
-                    const isWinner = seat === winnerSeat;
-                    const tiles = reviewTiles(seat);
-                    return <div key={seat} className={`rounded-lg border p-2 ${isWinner ? 'border-amber-400 bg-amber-50' : 'border-emerald-100 bg-white'}`}>
-                      <p className="text-center text-[11px] font-black text-emerald-800">{seat === HUMAN ? t('youLabel') : SEAT_LABEL[seat]}{isWinner ? ` - ${t('winnerLabel')}` : ''}</p>
-                      <div className="mt-1 flex flex-wrap justify-center gap-px">{tiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional highlight={Boolean(isWinner && result.loser !== undefined && index === tiles.length - 1)} />)}</div>
-                      {state.players[seat].melds.length > 0 && <div className="mt-1 flex flex-wrap justify-center gap-1 border-t border-emerald-100 pt-1">{state.players[seat].melds.map((meld, meldIndex) => <div key={meldIndex} className="flex gap-px rounded bg-emerald-50 p-0.5">{meld.tiles.map((tile, tileIndex) => <TileFace key={`${tile}-${tileIndex}`} tile={tile} size="xs" traditional />)}</div>)}</div>}
-                    </div>;
-                  })}
-                </div>
-              </div>
-            )}
-          </>
-        )}
-        {state.matchEnded && state.matchResult && (
-          <div className="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-left">
-            <p className="text-center text-sm font-black uppercase tracking-[.16em] text-emerald-800">{t('wrcHanchanResult')}</p>
-            <div className="mt-2 space-y-1 text-sm font-bold">
-              {state.matchResult.rankings.map((entry) => (
-                <div key={entry.seat} className="grid grid-cols-[2.5rem_1fr_auto] gap-2">
-                  <span>#{entry.rank}</span>
-                  <span>{SEAT_LABEL[entry.seat]}</span>
-                  <span>{entry.score.toLocaleString()} · {entry.uma >= 0 ? '+' : ''}{entry.uma}P</span>
-                </div>
-              ))}
-            </div>
-            {state.matchResult.remainingRiichiSticks > 0 && <p className="mt-2 text-xs font-bold text-amber-800">{t('riichiDepositsRemain', { n: state.matchResult.remainingRiichiSticks })}</p>}
-          </div>
-        )}
-        <div className="mt-6 flex justify-center gap-3">
-          {state.matchEnded ? (
-            <p className="rounded-lg bg-amber-100 px-5 py-3 font-black text-emerald-950">{t('southRoundComplete')}</p>
-          ) : <button type="button" onClick={onNextHand} className="rounded-lg bg-[#0b6749] px-7 py-3 font-black text-white hover:bg-[#07553b]">{t('nextHand')}</button>}
-          <button type="button" onClick={onNewGame} className="rounded-lg border border-[#0b6749] px-5 py-3 font-black text-[#0b6749] hover:bg-emerald-50">{t('newMatch')}</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-

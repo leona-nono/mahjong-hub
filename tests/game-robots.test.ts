@@ -25,7 +25,7 @@ describe('game page robots (scheme: iframe stays noindex)', () => {
         game.gameType === 'native' || game.gameType === 'coming-soon'
       );
     }
-    expect(games.some((g) => g.gameType === 'iframe')).toBe(true);
+    expect(games.some((g) => g.gameType === 'iframe')).toBe(false);
     expect(games.some((g) => g.gameType === 'native')).toBe(true);
   });
 
@@ -34,7 +34,7 @@ describe('game page robots (scheme: iframe stays noindex)', () => {
     expect(native?.gameType).toBe('native');
     const robots = gameRobots('native');
 
-    for (const locale of ['de', 'fr', 'pt-BR', 'zh-TW', 'es', 'ja', 'ko', 'zh', 'en'] as const) {
+    for (const locale of ['zh-TW', 'zh', 'en'] as const) {
       expect(isIndexableLocale(locale)).toBe(true);
       const meta = pageMeta({
         locale,
@@ -48,16 +48,14 @@ describe('game page robots (scheme: iframe stays noindex)', () => {
   });
 
   it('always noindexes iframe games on every locale including en', () => {
-    const iframe = getGame('mahjong-solitaire');
-    expect(iframe?.gameType).toBe('iframe');
     const robots = gameRobots('iframe');
 
     for (const locale of INDEXABLE_LOCALES) {
       const meta = pageMeta({
         locale,
-        path: `/games/${iframe!.slug}`,
-        title: iframe!.title,
-        description: iframe!.description,
+        path: '/games/mahjong-solitaire',
+        title: 'Retired iframe',
+        description: 'No longer catalogued',
         robots
       });
       expect(meta.robots).toEqual({ index: false, follow: true });
@@ -67,7 +65,7 @@ describe('game page robots (scheme: iframe stays noindex)', () => {
   it('lists blog posts for all indexable locales without forced noindex', () => {
     const posts = getBlogPosts();
     expect(posts.length).toBeGreaterThan(0);
-    for (const locale of ['de', 'fr', 'pt-BR', 'zh-TW'] as const) {
+    for (const locale of ['zh', 'zh-TW'] as const) {
       const meta = pageMeta({
         locale,
         path: `/blog/${posts[0].slug}`,

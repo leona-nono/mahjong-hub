@@ -16,7 +16,7 @@ import {
   readProgress,
   writeProgress,
   type SolitaireProgress
-} from '@/lib/mahjong-solitaire/item-inventory';
+} from '@/features/guest/guest-store';
 import { adsEnabled } from '@/lib/flags';
 
 export type PayChannel = 'inventory' | 'points' | 'ad';

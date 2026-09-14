@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { cantoneseTileLabel, japaneseTileLabel, mandarinTileLabel } from '@/lib/mahjong/sound';
+import { cantoneseTileLabel, japaneseTileLabel, mandarinTileLabel } from '@/features/table/sound';
 
 describe('Hong Kong discard voice labels', () => {
   it('uses Cantonese table terminology for suits and honours', () => {

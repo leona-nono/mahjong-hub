@@ -7,7 +7,7 @@
 
 import { useEffect } from 'react';
 import { tileFromIndex, BONUS_TILES, type Tile } from '@/lib/mahjong/tiles';
-import { tileArtSrc } from './tiles';
+import { tileArtSrc } from '@/lib/mahjong-solitaire/tiles';
 
 /** One URL per distinct face (34 suited/honours + 8 bonus). */
 export const SOLITAIRE_TILE_SRCS: string[] = (() => {

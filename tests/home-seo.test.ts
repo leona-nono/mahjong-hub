@@ -19,7 +19,7 @@ describe('homepage SEO consolidation', () => {
   });
 
   it('gives each locale its own self-canonical home URL', () => {
-    for (const locale of ['en', 'fr', 'de', 'es', 'pt-BR', 'zh', 'ja', 'ko']) {
+    for (const locale of ['en', 'zh', 'zh-TW']) {
       const alts = alternatesFor(locale, '');
       expect(alts.canonical).toBe(`${SITE_BASE_URL}/${locale}`);
     }
@@ -45,25 +45,23 @@ describe('homepage SEO consolidation', () => {
 
   it('builds full pageMeta with canonical, hreflang, OG url/image', () => {
     const meta = pageMeta({
-      locale: 'fr',
+      locale: 'zh-TW',
       path: '/games',
-      title: 'Jeux',
-      description: 'Tous les jeux',
+      title: '遊戲',
+      description: '全部遊戲',
       ogImage: '/og-default.png',
       siteName: 'Mahjong Hub'
     });
-    expect(meta.alternates?.canonical).toBe(`${SITE_BASE_URL}/fr/games`);
+    expect(meta.alternates?.canonical).toBe(`${SITE_BASE_URL}/zh-TW/games`);
     expect(meta.alternates?.languages?.['x-default']).toBe(`${SITE_BASE_URL}/en/games`);
-    // All UI locales are indexable and appear in hreflang.
-    expect(meta.alternates?.languages?.de).toBe(`${SITE_BASE_URL}/de/games`);
-    expect(meta.alternates?.languages?.es).toBe(`${SITE_BASE_URL}/es/games`);
-    expect(meta.alternates?.languages?.['pt-BR']).toBe(`${SITE_BASE_URL}/pt-BR/games`);
     expect(meta.alternates?.languages?.zh).toBe(`${SITE_BASE_URL}/zh/games`);
+    expect(meta.alternates?.languages?.['zh-TW']).toBe(`${SITE_BASE_URL}/zh-TW/games`);
+    expect(meta.alternates?.languages?.fr).toBeUndefined();
     expect(meta.robots).toBeUndefined();
-    expect(meta.openGraph?.url).toBe(`${SITE_BASE_URL}/fr/games`);
-    expect(meta.openGraph?.locale).toBe('fr_FR');
-    expect(meta.title).toEqual({ absolute: 'Jeux' });
-    expect(meta.openGraph?.title).toBe('Jeux');
+    expect(meta.openGraph?.url).toBe(`${SITE_BASE_URL}/zh-TW/games`);
+    expect(meta.openGraph?.locale).toBe('zh_TW');
+    expect(meta.title).toEqual({ absolute: '遊戲' });
+    expect(meta.openGraph?.title).toBe('遊戲');
     expect(meta.twitter?.card).toBe('summary_large_image');
   });
 
@@ -75,15 +73,15 @@ describe('homepage SEO consolidation', () => {
       description: '简介'
     });
     expect(meta.robots).toBeUndefined();
-    expect(meta.alternates?.languages?.ja).toBe(`${SITE_BASE_URL}/ja/about`);
-    expect(meta.alternates?.languages?.fr).toBe(`${SITE_BASE_URL}/fr/about`);
+    expect(meta.alternates?.languages?.['zh-TW']).toBe(`${SITE_BASE_URL}/zh-TW/about`);
+    expect(meta.alternates?.languages?.fr).toBeUndefined();
     expect(meta.openGraph?.locale).toBe('zh_CN');
   });
 
   it('includes Organization and SoftwareApplication JSON-LD', () => {
     const nodes = homeJsonLd({
       site: DEFAULT_PUBLIC_SITE_SETTINGS,
-      locale: 'fr',
+      locale: 'zh',
       description: 'Description FR'
     });
     const types = nodes.map((n) => n['@type']);

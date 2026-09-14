@@ -35,7 +35,7 @@ export default async function GamesHallPage({
   const t = await getTranslations('nav');
   const th = await getTranslations('home');
   const all = getLocalizedGames(getGames(), locale);
-  const wall = all.filter((g) => g.gameType === 'iframe');
+  const wall = all.filter((g) => g.gameType === 'native');
 
   return (
     <div className="mx-auto max-w-[1400px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
@@ -54,7 +54,7 @@ export default async function GamesHallPage({
         </h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {wall.map((g) => (
-            <GameCard key={g.slug} game={g} size="sm" />
+            <GameCard key={g.slug} game={g} locale={locale} size="sm" />
           ))}
         </div>
       </section>

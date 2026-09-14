@@ -12,7 +12,7 @@ const GOOGLE_CLS =
   'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50';
 const FB_CLS = 'bg-[#1877F2] text-white hover:bg-[#166fe5]';
 const X_CLS = 'bg-black text-white hover:bg-gray-800';
-const EMAIL_CLS = 'bg-rainbow-pink text-white hover:opacity-90';
+const EMAIL_CLS = 'bg-portal-accent text-portal-on-accent hover:brightness-110';
 const COOLDOWN_KEY = 'mh_email_send_until';
 const COOLDOWN_SECONDS = 60;
 
@@ -123,10 +123,10 @@ export default function LoginModal({
       aria-labelledby="login-title"
     >
       <div
-        className="rainbow-card w-full max-w-sm rounded-3xl p-6"
+        className="w-full max-w-sm rounded-3xl border border-portal-border bg-portal-panel p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 id="login-title" className="text-xl font-black rainbow-text">
+        <h2 id="login-title" className="text-xl font-black text-portal-text">
           {t('loginToEarn')}
         </h2>
         <p className="mt-1 text-sm text-gray-500">{t('connectToSave')}</p>

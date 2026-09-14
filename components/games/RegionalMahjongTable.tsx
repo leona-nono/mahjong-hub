@@ -12,6 +12,7 @@ import {
   canWinSichuan,
   canWinTaiwan,
   chooseRegionalDiscard,
+  judgeRegionalDiscard,
   chooseSichuanVoidSuit,
   createRegionalGame,
   declareRegionalTsumo,
@@ -30,7 +31,9 @@ import {
   type RegionalMeld,
   type RegionalRuleset
 } from '@/lib/mahjong/regional';
-import { playMahjongSound, primeMahjongAudio } from '@/lib/mahjong/sound';
+import { playMahjongSound, primeMahjongAudio } from '@/features/table/sound';
+import { useCoachIntensity } from '@/features/table/coach-prefs';
+import CoachControls from './table/CoachControls';
 import { tileFace, tileSuit, type Suit, type Tile } from '@/lib/mahjong/tiles';
 
 const HUMAN = 0 as const;
@@ -54,6 +57,7 @@ export default function RegionalMahjongTable({
 }) {
   const t = useTranslations('mahjong');
   const r = useTranslations('regional');
+  const daily = useTranslations('dailyHand');
   const [state, setState] = useState<RegionalGameState>(() => {
     const fresh = createRegionalGame({ ruleset, humanSeat: HUMAN, seed: 1 });
     if (typeof window === 'undefined') return fresh;
@@ -74,6 +78,9 @@ export default function RegionalMahjongTable({
   const [readyIntent, setReadyIntent] = useState(false);
   const [paused, setPaused] = useState(false);
   const [showHints, setShowHints] = useState(false);
+  const [coachIntensity, setCoachIntensity] = useCoachIntensity();
+  const [coachAsked, setCoachAsked] = useState(false);
+  const [coachGrade, setCoachGrade] = useState<'best' | 'acceptable' | 'better' | null>(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [difficulty, setDifficulty] = useState<'easy' | 'normal' | 'hard'>('normal');
   const [largeTiles, setLargeTiles] = useState(false);
@@ -221,7 +228,20 @@ export default function RegionalMahjongTable({
   // fitting the full hand, including the separated drawn tile, on screen.
   const wideHand = human.hand.length > 14;
   const handTileSize = wideHand ? 'lg' as const : 'xl' as const;
-  const suggestedDiscard = showHints && isMyDiscard ? chooseRegionalDiscard(state, HUMAN) : null;
+  const coachOpen = coachIntensity === 'live' || coachAsked;
+  const suggestedDiscard = (showHints || coachOpen) && isMyDiscard ? chooseRegionalDiscard(state, HUMAN) : null;
+  const playDiscard = (discarded: Tile) => {
+    if (readyIntent && !readyDiscards.includes(discarded)) return;
+    if (coachIntensity !== 'silent' && coachOpen) {
+      setCoachGrade(judgeRegionalDiscard(state, HUMAN, discarded).grade);
+    } else {
+      setCoachGrade(null);
+    }
+    setCoachAsked(false);
+    announceDiscard(discarded);
+    setState((current) => discardRegionalTile(current, HUMAN, discarded, readyIntent));
+    setReadyIntent(false);
+  };
   const actionButtons = (
     <div className="absolute bottom-[19%] left-1/2 z-30 flex max-w-[84%] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-xl border border-amber-200/50 bg-[#101711]/95 p-2 shadow-2xl">
       {state.phase === 'exchange' && <><span className="px-2 text-sm font-bold text-amber-100">{r('exchange', { n: selectedExchange.length })}</span><button type="button" disabled={selectedExchange.length !== 3} onClick={() => { setState((current) => submitSichuanExchange(current, HUMAN, selectedExchange)); setSelectedExchange([]); }} className="rounded-lg bg-amber-300 px-4 py-2 text-sm font-black text-emerald-950 disabled:opacity-40">{r('exchangeAction')}</button><button type="button" onClick={() => setSelectedExchange([])} className="rounded-lg border border-white/30 px-4 py-2 text-sm font-bold text-white">{r('clear')}</button></>}
@@ -243,6 +263,7 @@ export default function RegionalMahjongTable({
           <TableToolButton tone="green" onClick={() => setPaused((value) => !value)} active={paused}>{paused ? t('resume') : t('pause')}</TableToolButton>
           <TableToolButton tone="green" onClick={reset}>↻ {t('newGame')}</TableToolButton>
           <TableToolButton tone="green" onClick={() => setShowHints((value) => !value)} active={showHints}>◇ {t('hints')}</TableToolButton>
+          <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} className="text-emerald-50" />
           <TableToolButton tone="green" onClick={() => setSoundEnabled((value) => !value)} active={soundEnabled}>{soundEnabled ? t('soundOn') : t('soundOff')}</TableToolButton>
           <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">{t('rules')}<span className="ml-2 text-emerald-50">{isSichuan ? r('sichuanTitle') : r('taiwanTitle')}</span></label>
           <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">{t('ai')}<select value={difficulty} onChange={(event) => setDifficulty(event.target.value as 'easy' | 'normal' | 'hard')} className="ml-2 bg-transparent text-emerald-50 outline-none" aria-label={t('difficultyLabel')}><option className="text-slate-900" value="easy">{t('easy')}</option><option className="text-slate-900" value="normal">{t('normal')}</option><option className="text-slate-900" value="hard">{t('hard')}</option></select></label>
@@ -283,11 +304,12 @@ export default function RegionalMahjongTable({
           <span className="mt-2 text-4xl font-light text-cyan-200">{wallLeft}</span>
         </div>
         {!isSichuan && human.flowers.length > 0 && <div className="absolute right-[12%] top-[57%] z-20 flex items-center gap-1 rounded-lg bg-amber-50/95 px-2 py-1 text-sm font-black text-emerald-950 shadow-lg"><span>{t('flowersLabel')}</span>{human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}</div>}
+        {coachGrade && <p className="absolute bottom-[28%] left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#063d30]/95 px-3 py-1 text-xs font-bold text-amber-100">{coachGrade === 'best' ? daily('best') : coachGrade === 'acceptable' ? daily('ok') : daily('better')}</p>}
         {readyIntent && <p className="absolute bottom-[28%] left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#063d30]/95 px-3 py-1 text-xs font-bold text-amber-100">{r('readyHint')}</p>}
         {actionButtons}
         {state.phase === 'over' && state.result && <div className="absolute left-1/2 top-[56%] z-40 -translate-x-1/2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-center text-slate-800 shadow-xl"><strong>{state.result.kind === 'win' ? r('winner', { seats: state.result.winners.map((seat) => seatNames[seat]).join(', ') }) : r('wallExhausted')}</strong>{state.result.tai !== undefined && <span className="ml-2">{state.result.tai} Tai</span>}<button type="button" onClick={() => setState(startNextRegionalHand)} className="ml-3 rounded-lg bg-emerald-700 px-3 py-2 text-sm font-black text-white">{r('nextHand')}</button></div>}
 
-        <div className={`absolute bottom-3 left-1/2 z-20 ${wideHand ? 'w-[96%]' : 'w-[88%]'} -translate-x-1/2`}><div className="mb-2 flex h-5 items-center justify-between px-1 text-xs font-semibold text-emerald-100/75"><span>{isMyDiscard ? t('yourTurnDiscard') : r('turnDealer', { turn: seatNames[state.turn], dealer: seatNames[state.dealer] })}</span>{isSichuan && human.voidSuit && <span>{r('forbidden', { suit: human.voidSuit.toUpperCase() })}</span>}</div><div className="flex items-end justify-center gap-[2px]">{human.hand.map((tile, index) => <span key={`${tile}-${index}`} className={index === human.hand.length - 1 ? 'ml-3' : ''}><TileFace tile={tile} size={handTileSize} traditional highlight={(state.phase === 'exchange' && selectedExchange.includes(tile)) || (readyIntent && readyDiscards.includes(tile)) || (isMyDiscard && (index === human.hand.length - 1 || tile === suggestedDiscard))} onClick={state.phase === 'exchange' ? toggleExchange : isMyDiscard ? (discarded) => { if (readyIntent && !readyDiscards.includes(discarded)) return; announceDiscard(discarded); setState((current) => discardRegionalTile(current, HUMAN, discarded, readyIntent)); setReadyIntent(false); } : undefined} /></span>)}</div></div>
+        <div className={`absolute bottom-3 left-1/2 z-20 ${wideHand ? 'w-[96%]' : 'w-[88%]'} -translate-x-1/2`}><div className="mb-2 flex h-5 items-center justify-between px-1 text-xs font-semibold text-emerald-100/75"><span>{isMyDiscard ? t('yourTurnDiscard') : r('turnDealer', { turn: seatNames[state.turn], dealer: seatNames[state.dealer] })}</span>{isSichuan && human.voidSuit && <span>{r('forbidden', { suit: human.voidSuit.toUpperCase() })}</span>}</div><div className="flex items-end justify-center gap-[2px]">{human.hand.map((tile, index) => <span key={`${tile}-${index}`} className={index === human.hand.length - 1 ? 'ml-3' : ''}><TileFace tile={tile} size={handTileSize} traditional highlight={(state.phase === 'exchange' && selectedExchange.includes(tile)) || (readyIntent && readyDiscards.includes(tile)) || (isMyDiscard && (index === human.hand.length - 1 || tile === suggestedDiscard))} onClick={state.phase === 'exchange' ? toggleExchange : isMyDiscard ? playDiscard : undefined} /></span>)}</div></div>
       </div>
       <div className="mahjong-table-footer flex h-10 items-center justify-between bg-[#15583e] px-3 text-sm font-semibold text-emerald-100/75" style={isFullscreen ? { flex: '0 0 40px' } : undefined}><div className="flex items-center gap-3"><span>{r('scope')}</span><button type="button" onClick={shareReplay} className="rounded-full border border-emerald-100/50 px-3 py-1 font-bold text-emerald-50">{r('shareReplay')}</button>{replayNotice && <span className="text-emerald-100">{replayNotice}</span>}</div><div className="flex gap-2"><button type="button" onClick={() => setShowScoring(true)} className="rounded px-2 py-1 hover:bg-white/10">{t('scoringTips')}</button><button type="button" onClick={enterFullscreen} className="rounded px-2 py-1 hover:bg-white/10">{t('fullScreen')}</button></div></div>
       </div>

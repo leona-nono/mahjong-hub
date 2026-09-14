@@ -18,7 +18,7 @@ import {
   type CocosRequestRewardPayload,
   type CocosRewardResultPayload
 } from '@/lib/cocos/hub-protocol';
-import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
+import { trackMahjongEvent } from '@/features/table/telemetry';
 import type { ConnectDifficulty } from './MahjongConnect';
 
 type HubWindow = Window & { MahjongHub?: CocosMahjongHubApi };

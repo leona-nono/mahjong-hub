@@ -318,45 +318,5 @@
         }
       ]
     }
-  },
-  "mahjong-connect": {
-    "title": "마작 커넥트 라이트",
-    "description": "경로로 연결된 비어 있는 마작 타일을 짝지으세요. 편안한 커넥트 스타일 소거 게임."
-  },
-  "mahjong-classic": {
-    "title": "클래식 마작",
-    "description": "고전적인 마작 솔리테어. 열린 타일 쌍을 맞춰 보드를 지우세요."
-  },
-  "mahjong-solitaire": {
-    "title": "마작 솔리테어",
-    "description": "아름다운 마작 타워 레이아웃. 자신의 속도로 타일을 맞춰 탑을 지우세요."
-  },
-  "mahjong-3d": {
-    "title": "마작 3D",
-    "description": "깊이감과 차분한 레인보우 팔레트를 갖춘 3D 마작 맞추기."
-  },
-  "onet-connect-classic": {
-    "title": "오넷 커넥트 클래식",
-    "description": "고전적인 오넷 연결 게임. 최대 두 번 꺾이는 선으로 같은 타일을 연결하세요."
-  },
-  "bee-connect": {
-    "title": "비 커넥트",
-    "description": "귀여운 벌 테마 커넥트 게임. 작은 타일을 연결해 벌집 보드를 지우세요."
-  },
-  "aloha-mahjong": {
-    "title": "알로하 마작",
-    "description": "햇살 가득한 편안한 분위기의 트로피컬 마작 맞추기."
-  },
-  "8x8-match-tiles": {
-    "title": "8x8 매치 타일",
-    "description": "컴팩트한 8x8 타일 매치 퍼즐. 같은 타일을 연결해 하이스코어를 노리세요."
-  },
-  "tile-guru": {
-    "title": "타일 구루",
-    "description": "젠 스타일 타일 매치 퍼즐. 차분한 레이아웃에서 같은 타일을 찾아 연결하세요."
-  },
-  "tile-journey": {
-    "title": "타일 저니",
-    "description": "타일 매치 레벨을 지나는 여정. 연결을 계획하고 각 보드를 지우세요."
   }
 }

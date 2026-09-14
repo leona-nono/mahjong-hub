@@ -73,7 +73,7 @@ export default function HomeHero() {
       <div className="mt-8 grid gap-3 sm:grid-cols-3">
         <SecondaryEntry href="/games/mahjong-connect-classic" label={t('entryConnect')} />
         <SecondaryEntry href="/games/classic" label={t('entryClassic')} />
-        <SecondaryEntry href="/games/8x8-match-tiles" label={t('entryTileMatch')} />
+        <SecondaryEntry href="/games/solitaire" label={t('entryTileMatch')} />
       </div>
 
       <div className="mt-8 space-y-4 border-t border-portal-border/80 pt-6">

@@ -43,6 +43,7 @@ export default async function SolitaireCatalogPage({
           {t('solitaire')}
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-portal-muted">{t('solitaireSubtitle')}</p>
+        <p className="mt-2 max-w-2xl text-sm text-portal-muted">{t('solitaireBuilding')}</p>
       </header>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {games.map((g) => (

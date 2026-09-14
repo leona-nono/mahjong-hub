@@ -48,8 +48,11 @@ const nextConfig = {
   // webpack server bundle so the production compiler does not crawl protected
   // Windows profile junctions while resolving that binary.
   serverExternalPackages: ['@prisma/client', '@prisma/engines', '@vercel/blob'],
-  // We do not use next/image yet. Leaving optimization on with a wildcard
-  // remote host would both weaken security and bill Image Optimization.
+  // Image Optimization evaluation (P5): covers use plain <img> + long-cache
+  // headers on /images|/covers|/assets. Turning on next/image would require
+  // migrating GameCard/CatalogGameCard off <img>, and on Vercel bills Image
+  // Optimization transforms. Keep unoptimized until that migration is intentional.
+  // Cocos Connect stays behind NEXT_PUBLIC_COCOS_CONNECT + dynamic import.
   images: {
     unoptimized: true
   },
@@ -129,7 +132,62 @@ const nextConfig = {
         source: '/:locale/privacy-policy',
         destination: '/:locale/privacy',
         permanent: true
-      }
+      },
+      // Retired third-party iframes — nearest in-house game, not the category hub.
+      {
+        source: '/:locale/games/bee-connect',
+        destination: '/:locale/games/mahjong-connect-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/aloha-mahjong',
+        destination: '/:locale/games/mahjong-solitaire-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/8x8-match-tiles',
+        destination: '/:locale/games/mahjong-solitaire-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/tile-guru',
+        destination: '/:locale/games/mahjong-solitaire-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/mahjong-connect',
+        destination: '/:locale/games/mahjong-connect-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/onet-connect-classic',
+        destination: '/:locale/games/mahjong-connect-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/mahjong-solitaire',
+        destination: '/:locale/games/mahjong-solitaire-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/mahjong-classic',
+        destination: '/:locale/games/mahjong-solitaire-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/mahjong-3d',
+        destination: '/:locale/games/mahjong-solitaire-classic',
+        permanent: true
+      },
+      {
+        source: '/:locale/games/tile-journey',
+        destination: '/:locale/games/mahjong-solitaire-classic',
+        permanent: true
+      },
+      ...['ja', 'ko', 'es', 'fr', 'de', 'pt-BR'].flatMap((locale) => [
+        { source: `/${locale}`, destination: '/en', permanent: true },
+        { source: `/${locale}/:path*`, destination: '/en/:path*', permanent: true }
+      ])
     ];
   },
   async rewrites() {

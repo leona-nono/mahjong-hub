@@ -12,8 +12,6 @@
  */
 
 import {
-  COPIES_PER_TILE,
-  TILE_KINDS,
   isHonour,
   isTerminalOrHonour,
   tileIndex,
@@ -21,6 +19,7 @@ import {
   type Tile
 } from './tiles';
 import { shanten } from './shanten';
+import { acceptance, unseenCounts } from './coach';
 import {
   availableConcealedKans,
   canDeclareTsumo,
@@ -36,43 +35,6 @@ export type BotMove =
   | { type: 'tsumo' }
   | { type: 'kan'; tile: Tile }
   | { type: 'discard'; tile: Tile };
-
-/**
- * Unseen copies per tile kind: how many of each kind are not yet visible in any
- * discard, meld, or the seat's own hand. Computed once per acceptance call —
- * scanning the whole table inside the 34-kind loop would do the same work 34
- * times for no benefit.
- */
-function unseenCounts(state: GameState, seat: Seat): number[] {
-  const seen = new Array<number>(TILE_KINDS).fill(0);
-  for (const player of state.players) {
-    for (const t of player.discards) seen[tileIndex(t)] += 1;
-    for (const meld of player.melds) {
-      for (const t of meld.tiles) seen[tileIndex(t)] += 1;
-    }
-  }
-  for (const t of state.players[seat].hand) seen[tileIndex(t)] += 1;
-  return seen.map((n) => Math.max(0, COPIES_PER_TILE - n));
-}
-
-/**
- * Ukeire: total number of unseen tiles that would reduce the hand's shanten.
- * Higher is better — it is the single most useful tie-breaker for discards.
- */
-function acceptance(state: GameState, seat: Seat, hand: Tile[], melds: number): number {
-  const counts = toCounts(hand);
-  const current = shanten(counts, melds, state.ruleset);
-  const unseen = unseenCounts(state, seat);
-  let total = 0;
-  for (let i = 0; i < TILE_KINDS; i += 1) {
-    if (counts[i] >= COPIES_PER_TILE) continue;
-    counts[i] += 1;
-    const improved = shanten(counts, melds, state.ruleset) < current;
-    counts[i] -= 1;
-    if (improved) total += unseen[i];
-  }
-  return total;
-}
 
 /**
  * Cheap heuristic used to break remaining ties and to drive the easy bots.

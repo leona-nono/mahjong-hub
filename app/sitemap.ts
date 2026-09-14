@@ -12,7 +12,7 @@ const BASE = 'https://mahjonggame.org';
  * (and 500 when Neon was slow). Admin CMS overlay is not required for
  * crawlers; native slugs live in `data/games.ts` / `data/blog.ts`.
  *
- * INDEXABLE_LOCALES (all nine UI languages) are emitted — each locale has
+ * INDEXABLE_LOCALES (en, zh, zh-TW) are emitted — each locale has
  * dedicated long-form copy and is open to crawlers.
  */
 export default function sitemap(): MetadataRoute.Sitemap {

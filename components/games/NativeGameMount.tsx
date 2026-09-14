@@ -1,17 +1,26 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useCallback } from 'react';
 import { useLocale } from 'next-intl';
 
 import MahjongTable from './MahjongTable';
 import MahjongConnect from './MahjongConnect';
-import CocosConnectPlayer from './CocosConnectPlayer';
 import MahjongSolitaire from './MahjongSolitaire';
 import AmericanMahjongTable from './AmericanMahjongTable';
 import RegionalMahjongTable from './RegionalMahjongTable';
 import { isCocosConnectEnabled } from '@/lib/cocos/hub-protocol';
-import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
+import { trackMahjongEvent } from '@/features/table/telemetry';
 import type { NativeGame, NativeRuleset, RegionalRuleset } from '@/data/games';
+
+const CocosConnectPlayer = dynamic(() => import('./CocosConnectPlayer'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex min-h-[320px] items-center justify-center rounded-2xl border border-portal-border bg-portal-panel text-sm text-portal-muted">
+      Loading…
+    </div>
+  )
+});
 
 export interface NativeGameMountProps {
   native: NativeGame;

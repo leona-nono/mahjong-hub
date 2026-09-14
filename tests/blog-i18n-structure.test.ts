@@ -12,7 +12,7 @@ import zhTW from '@/data/blog-i18n/zh-TW.json';
 import type { BlogLocaleJson } from '@/data/blog-i18n/types';
 import { CONTENT_LOCALES } from '@/lib/locales';
 
-const LOCALE_JSON: Record<(typeof CONTENT_LOCALES)[number], BlogLocaleJson> = {
+const LOCALE_JSON: Record<string, BlogLocaleJson> = {
   zh: zh as BlogLocaleJson,
   'zh-TW': zhTW as BlogLocaleJson,
   ja: ja as BlogLocaleJson,

@@ -453,19 +453,21 @@ export function checkMessagesStructure(): CheckResult {
     const locFlat = flatten(loc);
     for (const key of Object.keys(enFlat)) {
       if (!(key in locFlat)) {
-        warnings.push(
-          warning('messages', key, 'missing key (falls back to EN)', locale)
-        );
+        // Runtime deep-merges to en, but build validation requires a complete key tree
+        // so translators / Studio see every leaf. Fill gaps via translate-content-i18n
+        // --domain messages (or EN copy when DeepSeek is unavailable).
+        errors.push(error('messages', key, 'missing key vs en.json', locale));
       } else if (locFlat[key] === enFlat[key] && locFlat[key].length > 12) {
-        const bag = { errors, warnings };
-        pushResidualFinding(
-          bag,
-          'messages',
-          locale,
-          key,
-          enFlat[key],
-          locFlat[key],
-          undefined
+        // Messages may intentionally keep EN placeholders after gap-fill without
+        // DeepSeek. Key completeness is the hard gate; residuals stay soft warnings
+        // even for CJK (unlike about/games long-form copy).
+        warnings.push(
+          warning(
+            'messages',
+            key,
+            'English residual (identical to EN)',
+            locale
+          )
         );
       }
     }

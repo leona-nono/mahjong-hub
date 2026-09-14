@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { trackSolitaireEvent } from '@/lib/mahjong-solitaire/telemetry';
+import { trackSolitaireEvent } from '@/features/solitaire/telemetry';
 
 const DISMISS_KEY = 'mh_pwa_install_dismissed';
 

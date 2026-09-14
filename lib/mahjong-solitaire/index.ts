@@ -8,5 +8,4 @@ export * from './difficulty';
 export * from './scoring';
 export * from './levels';
 export * from './progress-rules';
-export * from './tile-preload';
 export * from './items';

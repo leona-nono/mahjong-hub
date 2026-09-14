@@ -925,27 +925,46 @@ export function declareRegionalTsumo(state: RegionalGameState, seat: Seat): Regi
   return next;
 }
 
+/** Higher means the tile is more worth keeping. Void-suit tiles are never kept. */
+export function regionalKeepValue(hand: Tile[], tile: Tile, voidSuit?: Suit | null): number {
+  if (voidSuit && tileSuit(tile) === voidSuit) return -100;
+  const suit = tileSuit(tile);
+  const rank = tileRank(tile);
+  let score = (countOf(hand, tile) - 1) * 3;
+  if (suit === 'z') return score - 2;
+  for (const gap of [-2, -1, 1, 2]) {
+    const candidate = rank + gap;
+    if (candidate >= 1 && candidate <= 9) score += countOf(hand, `${suit}${candidate}`);
+  }
+  if (rank === 1 || rank === 9) score -= 1;
+  return score;
+}
+
 /** A deterministic no-claim bot policy used by the first playable table slice. */
 export function chooseRegionalDiscard(state: RegionalGameState, seat: Seat): Tile {
   const player = state.players[seat];
-  const voidTile = player.voidSuit && player.hand.find((tile) => tileSuit(tile) === player.voidSuit);
-  if (voidTile) return voidTile;
-  // A lightweight, deterministic tile-efficiency policy: retain pairs and
-  // connected suit tiles, then prefer discarding isolated honours/terminals.
-  // It deliberately stays explainable rather than pretending to be a solver.
-  const value = (tile: Tile) => {
-    const suit = tileSuit(tile);
-    const rank = tileRank(tile);
-    let score = (countOf(player.hand, tile) - 1) * 3;
-    if (suit === 'z') return score - 2;
-    for (const gap of [-2, -1, 1, 2]) {
-      const candidate = rank + gap;
-      if (candidate >= 1 && candidate <= 9) score += countOf(player.hand, `${suit}${candidate}`);
-    }
-    if (rank === 1 || rank === 9) score -= 1;
-    return score;
-  };
-  return [...player.hand].sort((a, b) => value(a) - value(b) || a.localeCompare(b))[0];
+  return [...player.hand].sort(
+    (a, b) =>
+      regionalKeepValue(player.hand, a, player.voidSuit) - regionalKeepValue(player.hand, b, player.voidSuit) ||
+      a.localeCompare(b)
+  )[0];
+}
+
+export function judgeRegionalDiscard(
+  state: RegionalGameState,
+  seat: Seat,
+  tile: Tile
+): { grade: 'best' | 'acceptable' | 'better'; suggested: Tile } {
+  const player = state.players[seat];
+  const suggested = chooseRegionalDiscard(state, seat);
+  if (player.voidSuit && tileSuit(tile) === player.voidSuit) {
+    return { grade: 'best', suggested: tile };
+  }
+  if (tile === suggested) return { grade: 'best', suggested };
+  const played = regionalKeepValue(player.hand, tile, player.voidSuit);
+  const best = regionalKeepValue(player.hand, suggested, player.voidSuit);
+  if (played - best <= 1) return { grade: 'acceptable', suggested };
+  return { grade: 'better', suggested };
 }
 
 export type RegionalDiscardRisk = 'low' | 'medium' | 'high';

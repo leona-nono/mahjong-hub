@@ -1,4 +1,3 @@
-import type { Locale } from '@/i18n/routing';
 import { privacyEmail } from '@/lib/ads-inventory';
 
 export const LEGAL_UPDATED = '2026-08-18';
@@ -419,7 +418,7 @@ const cookiesKo: LegalDoc = {
   ]
 };
 
-const privacyByLocale: Partial<Record<Locale, LegalDoc>> = {
+const privacyByLocale: Record<string, LegalDoc> = {
   en: privacyEn,
   zh: privacyZh,
   'zh-TW': privacyZhTw,
@@ -427,7 +426,7 @@ const privacyByLocale: Partial<Record<Locale, LegalDoc>> = {
   ko: privacyKo
 };
 
-const cookiesByLocale: Partial<Record<Locale, LegalDoc>> = {
+const cookiesByLocale: Record<string, LegalDoc> = {
   en: cookiesEn,
   zh: cookiesZh,
   'zh-TW': cookiesZhTw,
@@ -436,9 +435,9 @@ const cookiesByLocale: Partial<Record<Locale, LegalDoc>> = {
 };
 
 export function getPrivacyDoc(locale: string): LegalDoc {
-  return privacyByLocale[locale as Locale] ?? privacyEn;
+  return privacyByLocale[locale] ?? privacyEn;
 }
 
 export function getCookiesDoc(locale: string): LegalDoc {
-  return cookiesByLocale[locale as Locale] ?? cookiesEn;
+  return cookiesByLocale[locale] ?? cookiesEn;
 }

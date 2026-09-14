@@ -6,9 +6,11 @@ import { useTranslations } from 'next-intl';
 import TileFace, { TileBack, useTraditionalTilePreload } from './TileFace';
 import { sortTiles, tileFace, type Tile } from '@/lib/mahjong/tiles';
 import { AMERICAN_PRACTICE_SEASONS, americanBotStyleForSeat, americanClosestLine, americanCoachAdvice, applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, exchangeAmericanJoker, getPracticeCard, legalAmericanClaims, lockAmericanPracticeCard, passAmericanClaims, playAmericanDiscard, practiceGroupCount, previewPracticeGroups, rankAmericanLines, withAmericanReplayAction, type AmericanGameState, type AmericanReplayAction } from '@/lib/mahjong/american';
-import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/lib/mahjong/sound';
+import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/features/table/sound';
+import { useCoachIntensity } from '@/features/table/coach-prefs';
+import CoachControls from './table/CoachControls';
 import MahjongAccessibilityPanel, { useMahjongPreferences } from './MahjongAccessibilityPanel';
-import { trackMahjongEvent } from '@/lib/mahjong/telemetry';
+import { trackMahjongEvent } from '@/features/table/telemetry';
 import { AMERICAN_LESSONS, startAmericanLesson } from '@/lib/mahjong/american-learning';
 
 type CharlestonStep = 0 | 1 | 2 | 3;
@@ -65,6 +67,8 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   const [showAccessibility, setShowAccessibility] = useState(false);
   const [restored, setRestored] = useState(false);
   const [lessonGoal, setLessonGoal] = useState<string | null>(null);
+  const [coachIntensity, setCoachIntensity] = useCoachIntensity();
+  const [coachAsked, setCoachAsked] = useState(false);
   const soundEnabled = preferences.soundEnabled;
 
   useEffect(() => {
@@ -388,7 +392,10 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
             <div className="mt-2 space-y-1.5">{targetProgress.groups.map((group) => <div key={group.label} className="flex items-center justify-between gap-2"><span className="flex min-w-0 items-center gap-1 truncate">{group.relation && <b title={group.relationRule} className={`inline-flex h-4 min-w-4 shrink-0 items-center justify-center rounded text-[9px] ${group.relation === 'A' ? 'bg-amber-300 text-amber-950' : 'bg-sky-300 text-sky-950'}`}>{group.relation}</b>}<span className="truncate">{group.label}</span></span><strong className={group.current === group.required ? 'text-emerald-300' : 'text-amber-100'}>{group.current}/{group.required}</strong></div>)}</div>
             <p className="mt-2 border-t border-white/10 pt-2 text-[10px] text-emerald-100/70">{t('jokersHeld', { n: targetProgress.jokers, s: targetProgress.jokers === 1 ? '' : 's' })}</p>
           </div>
-          <CoachPanel coach={coach} t={t} className="absolute left-[2%] top-[58%] z-20 w-56" />
+          <div className="absolute left-[2%] top-[52%] z-20 w-56">
+            <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} className="mb-2 text-emerald-50" />
+            {coachIntensity === 'live' || coachAsked ? <CoachPanel coach={coach} t={t} className="w-56" /> : null}
+          </div>
 
           <div className="absolute bottom-[20%] left-1/2 z-30 flex -translate-x-1/2 items-center gap-4 rounded-xl bg-transparent p-3">
             {inCharleston && selectedTiles.map((tile, index) => <AmericanTile key={`${tile}-${index}`} tile={tile} selected />)}
@@ -422,7 +429,8 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
         <div className="flex items-center justify-between"><strong className="text-xs tracking-[.18em]">{t('aiTitle')}</strong><div className="flex gap-1"><button type="button" className="rounded bg-amber-300 px-3 py-1 text-xs font-black text-emerald-950" onClick={reset}>{t('newGame')}</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={toggleSound}>{soundEnabled ? t('soundOn') : t('soundOff')}</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={() => setShowAccessibility(true)}>Aa</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={enterFullscreen}>{t('fullScreen')}</button></div></div>
         <div className="mt-4 rounded-2xl border border-white/10 bg-[#003b2d]/90 p-4 text-center"><p className="text-lg font-black">{game.phase === 'second-charleston-choice' ? t('secondCharlestonQ') : game.phase === 'courtesy' ? t('courtesyPass') : inCharleston ? `${t('charleston')} ${game.charlestonRound}-${step + 1}` : t('yourTurn')}</p><p className="mt-1 text-sm text-emerald-100">{notice}</p><p className="mt-2 text-[10px] text-emerald-200">{t('cardHint', { card: card.title })}</p></div>
         <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-emerald-100"><Opponent label="P4" portrait={3} status={botStatus(3)} /><Opponent label="P3" portrait={2} status={botStatus(2)} /><Opponent label="P2" portrait={1} status={botStatus(1)} /></div>
-        <CoachPanel coach={coach} t={t} className="mt-4" compact />
+        <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} className="mt-4 text-emerald-50" />
+        {(coachIntensity === 'live' || coachAsked) && <CoachPanel coach={coach} t={t} className="mt-2" compact />}
         <div className="mt-5 rounded-xl bg-black/25 p-3"><p className="text-center text-xs font-black">{inCharleston ? t('tap3Tiles', { n: selected.length }) : t('tapTileDiscard')}</p><div className="mt-3 flex flex-wrap justify-center gap-1">{hand.map((tile, index) => <AmericanTile key={`${tile}-${index}`} tile={tile} selected={selected.includes(index)} onClick={() => discard(index)} highlight={!inCharleston && index === hand.length - 1} compact />)}</div></div>
         {inCharleston && <button type="button" onClick={pass} className="mt-4 w-full rounded-xl bg-amber-300 py-3 text-lg font-black text-emerald-950">{t('pass3Tiles')}</button>}
         {game.phase === 'second-charleston-choice' && <div className="mt-4 flex gap-2"><button type="button" onClick={() => secondCharleston(true)} className="flex-1 rounded-xl bg-amber-300 py-3 font-black text-emerald-950">{t('playSecond')}</button><button type="button" onClick={() => secondCharleston(false)} className="flex-1 rounded-xl bg-white/80 py-3 font-black text-emerald-950">{t('skip')}</button></div>}

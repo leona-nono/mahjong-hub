@@ -5,8 +5,9 @@ import {
   getLocalizedGames
 } from '@/data/games';
 import GameCard from '@/components/GameCard';
-import HomeDailyChallenge from '@/components/HomeDailyChallenge';
-import HomeCategoryCards from '@/components/HomeCategoryCards';
+import HomeDailyHand from '@/components/HomeDailyHand';
+import HomeFaq, { homeFaqJsonLd } from '@/components/HomeFaq';
+import HomeLearnCards from '@/components/HomeLearnCards';
 import HomeSeoBlock from '@/components/HomeSeoBlock';
 import { homeSeo } from '@/lib/home-seo';
 import { homeJsonLd } from '@/lib/home-jsonld';
@@ -50,12 +51,14 @@ export default async function HomePage({
   const site = getPublicSiteSettings();
   const home = await homeSeo(locale);
   const all = getLocalizedGames(getGames(), locale);
-  const wall = all.filter((g) => g.gameType === 'iframe');
+  const wall = all.filter((g) => g.gameType === 'native').slice(0, 6);
+  const faq = await homeFaqJsonLd();
 
   const jsonLd = homeJsonLd({
     site,
     locale,
-    description: home.description
+    description: home.description,
+    faq
   });
 
   return (
@@ -65,11 +68,12 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <HomeDailyChallenge />
+      <HomeDailyHand />
 
       <HomeSeoBlock locale={locale} />
 
-      <HomeCategoryCards />
+      <HomeLearnCards />
+      <HomeFaq />
 
       <section aria-labelledby="home-game-wall">
         <div className="mb-3 flex items-end justify-between gap-3">
@@ -80,11 +84,13 @@ export default async function HomePage({
             {t('featuredHall')}
           </h2>
         </div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          {wall.map((g, i) => (
-            <GameCard key={g.slug} game={g} size="sm" priority={i < 2} />
-          ))}
-        </div>
+        {wall.length > 0 && (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {wall.map((g, i) => (
+              <GameCard key={g.slug} game={g} locale={locale} size="sm" priority={i < 2} />
+            ))}
+          </div>
+        )}
       </section>
 
     </div>

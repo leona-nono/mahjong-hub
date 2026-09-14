@@ -325,45 +325,5 @@
         }
       ]
     }
-  },
-  "mahjong-connect": {
-    "title": "Mahjong Connect leve",
-    "description": "Emparelhe pares de peças de mahjong livres unidas por um caminho. Um jogo relaxante de eliminação estilo connect."
-  },
-  "mahjong-classic": {
-    "title": "Mahjong clássico",
-    "description": "O solitário de mahjong de sempre. Esvazie o tabuleiro emparelhando pares de peças abertas."
-  },
-  "mahjong-solitaire": {
-    "title": "Paciência de mahjong",
-    "description": "Um belo layout solitário de peças de mahjong. Emparelhe e limpe a torre no seu ritmo."
-  },
-  "mahjong-3d": {
-    "title": "Mahjong em 3D",
-    "description": "Uma versão tridimensional do emparelhamento de mahjong, com profundidade e uma paleta arco-íris serena."
-  },
-  "onet-connect-classic": {
-    "title": "Onet Connect clássico",
-    "description": "O clássico jogo de unir do Onet. Conecte peças idênticas com uma linha de no máximo duas viradas."
-  },
-  "bee-connect": {
-    "title": "Conecte abelhas",
-    "description": "Um connect com tema de abelhas. Una as pequenas peças e esvazie o tabuleiro de colmeia."
-  },
-  "aloha-mahjong": {
-    "title": "Mahjong Aloha",
-    "description": "Um giro tropical no emparelhamento de mahjong, com clima ensolarado e relaxado."
-  },
-  "8x8-match-tiles": {
-    "title": "Peças 8×8",
-    "description": "Um puzzle compacto 8×8 de emparelhar peças. Conecte iguais e persiga a pontuação alta."
-  },
-  "tile-guru": {
-    "title": "Guru das peças",
-    "description": "Um puzzle zen de emparelhar peças. Encontre e conecte peças iguais em um layout sossegado."
-  },
-  "tile-journey": {
-    "title": "Jornada das peças",
-    "description": "Uma jornada por níveis de emparelhar peças. Planeje suas conexões e esvazie cada tabuleiro."
   }
 }
