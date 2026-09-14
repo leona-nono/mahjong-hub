@@ -660,7 +660,27 @@
     "tiles": "怎么认牌",
     "scoring": "番数入门",
     "glossary": "术语表",
-    "comingSoon": "即将上线"
+    "comingSoon": "即将上线",
+    "related": "相关阅读",
+    "glossaryTitle": "麻将术语表",
+    "glossaryLead": "本站用到的牌、叫牌和胡牌牌型，一句说清。",
+    "seeOnTable": "到港麻牌桌上看",
+    "whatIs": "{term}是什么？",
+    "cluster": {
+      "learn": "认识麻将",
+      "variants": "规则与变体",
+      "play": "打得更好",
+      "culture": "文化",
+      "buy": "购买指南"
+    },
+    "groups": {
+      "tiles": "牌与花色",
+      "honours": "字牌",
+      "calls": "吃碰杠",
+      "winning": "胡牌",
+      "patterns": "番种",
+      "table": "牌桌"
+    }
   },
   "faq": {
     "title": "常见问题",

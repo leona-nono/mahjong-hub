@@ -1,9 +1,7 @@
 /**
- * SEO blog — beginner guides published under /games/beginners.
- *
- * English is the base here; per-locale overrides live in data/blog-i18n/*.json and
- * are merged by getLocalizedBlogPost().
- * as FAQPage JSON-LD for rich results.
+ * SEO blog published under /blog.
+ * English is the base; per-locale overrides live in data/blog-i18n/*.json
+ * and are merged by getLocalizedBlogPost(). FAQ data is rendered as FAQPage JSON-LD.
  */
 import { BLOG_I18N, type LocaleCode } from './blog.i18n';
 import { cornerstonePosts } from './blog.cornerstone';
@@ -27,6 +25,9 @@ export interface BlogCta {
   href: string;
 }
 
+/** Shared publish date for guides that predate per-article timestamps. */
+export const BLOG_SITE_EPOCH = '2026-08-18';
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -34,6 +35,9 @@ export interface BlogPost {
   readMinutes: number;
   sections: BlogSection[];
   faq: BlogFaq[];
+  /** ISO date. Falls back to BLOG_SITE_EPOCH when absent. */
+  publishedAt?: string;
+  updatedAt?: string;
   /** Meta keywords (not rendered). */
   keywords: string;
   /** End-of-article Play Now button back to the games. */
@@ -42,7 +46,7 @@ export interface BlogPost {
   heroTiles?: TileSpec[];
 }
 
-/** Beginner guides (kept for /games/beginners) + cornerstone SEO articles. */
+/** Beginner guides plus cornerstone SEO articles. */
 const beginnerPosts: BlogPost[] = [
   {
     slug: 'what-is-mahjong',
@@ -265,8 +269,14 @@ export function getBlogPosts(): BlogPost[] {
   return blogPosts;
 }
 
+function withDates(post: BlogPost): BlogPost {
+  const publishedAt = post.publishedAt ?? BLOG_SITE_EPOCH;
+  return { ...post, publishedAt, updatedAt: post.updatedAt ?? publishedAt };
+}
+
 export function getBlogPost(slug: string): BlogPost | undefined {
-  return blogPosts.find((p) => p.slug === slug);
+  const post = blogPosts.find((p) => p.slug === slug);
+  return post ? withDates(post) : undefined;
 }
 
 /** Merge locale overrides (data/blog-i18n/*.json) into a post, falling back to en. */
@@ -275,7 +285,7 @@ export function getLocalizedBlogPost(
   locale: string
 ): BlogPost | undefined {
   const post = getBlogPost(slug);
-  if (!post || locale === 'en') return post;
+  if (!post || locale === 'en') return post ? withDates(post) : undefined;
 
   const i18n = BLOG_I18N[slug];
   if (!i18n) return post;

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getGamesByNavGroup, getLocalizedGames } from '@/data/games';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import CatalogGameCard from '@/components/CatalogGameCard';
 import { pageMeta } from '@/lib/seo';
 import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
@@ -38,6 +39,14 @@ export default async function SolitaireCatalogPage({
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8">
+      <Breadcrumbs
+        locale={locale}
+        crumbs={[
+          { name: t('home'), path: '/' },
+          { name: t('games'), path: '/games' },
+          { name: t('solitaire'), path: '/games/solitaire' }
+        ]}
+      />
       <header className="mb-6">
         <h1 className="font-display text-3xl font-semibold text-portal-text">
           {t('solitaire')}

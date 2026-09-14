@@ -72,7 +72,7 @@ export default async function HomePage({
 
       <HomeSeoBlock locale={locale} />
 
-      <HomeLearnCards />
+      <HomeLearnCards locale={locale} />
       <HomeFaq />
 
       <section aria-labelledby="home-game-wall">

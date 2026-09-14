@@ -660,7 +660,27 @@
     "tiles": "How to read the tiles",
     "scoring": "Scoring basics",
     "glossary": "Terms glossary",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "related": "Related reading",
+    "glossaryTitle": "Mahjong glossary",
+    "glossaryLead": "Short definitions for the tiles, calls and winning shapes used on this site.",
+    "seeOnTable": "See it on the Hong Kong table",
+    "whatIs": "What is {term}?",
+    "cluster": {
+      "learn": "Learn the game",
+      "variants": "Rules and variants",
+      "play": "Play better",
+      "culture": "Culture",
+      "buy": "Buying guide"
+    },
+    "groups": {
+      "tiles": "Tiles and suits",
+      "honours": "Honours",
+      "calls": "Calls and actions",
+      "winning": "Winning hands",
+      "patterns": "Scoring patterns",
+      "table": "Table and setup"
+    }
   },
   "faq": {
     "title": "Questions",

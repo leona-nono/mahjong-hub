@@ -660,7 +660,27 @@
     "tiles": "怎麼認牌",
     "scoring": "番數入門",
     "glossary": "術語表",
-    "comingSoon": "即將上線"
+    "comingSoon": "即將上線",
+    "related": "相關閱讀",
+    "glossaryTitle": "麻將術語表",
+    "glossaryLead": "本站用到的牌、叫牌和胡牌牌型，一句說清。",
+    "seeOnTable": "到港麻牌桌上看",
+    "whatIs": "{term}是什麼？",
+    "cluster": {
+      "learn": "認識麻將",
+      "variants": "規則與變體",
+      "play": "打得更好",
+      "culture": "文化",
+      "buy": "購買指南"
+    },
+    "groups": {
+      "tiles": "牌與花色",
+      "honours": "字牌",
+      "calls": "吃碰槓",
+      "winning": "胡牌",
+      "patterns": "番種",
+      "table": "牌桌"
+    }
   },
   "faq": {
     "title": "常見問題",

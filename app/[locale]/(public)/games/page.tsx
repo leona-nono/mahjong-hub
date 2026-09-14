@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getGames, getLocalizedGames } from '@/data/games';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import GameCard from '@/components/GameCard';
 import HomeCategoryCards from '@/components/HomeCategoryCards';
 import { hubPageMeta } from '@/lib/hub-seo';
@@ -39,6 +40,13 @@ export default async function GamesHallPage({
 
   return (
     <div className="mx-auto max-w-[1400px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
+      <Breadcrumbs
+        locale={locale}
+        crumbs={[
+          { name: t('home'), path: '/' },
+          { name: t('games'), path: '/games' }
+        ]}
+      />
       <header>
         <h1 className="font-display text-3xl font-semibold text-portal-text">
           {t('gameHall')}

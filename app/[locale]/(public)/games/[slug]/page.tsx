@@ -15,6 +15,7 @@ import NativeGameLazy from '@/components/games/NativeGameLazy';
 import CatalogGameCard from '@/components/CatalogGameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { pageMeta } from '@/lib/seo';
 import { isGamePageIndexable } from '@/lib/game-seo';
 import { UI_LOCALES } from '@/lib/locales';
@@ -80,6 +81,7 @@ export default async function GamePage({
   if (!game) notFound();
 
   const t = await getTranslations('game');
+  const nav = await getTranslations('nav');
   const related = getLocalizedGames(getRelatedGames(slug, 8), locale);
   const regionalSwitchGames = getLocalizedGames(
     getGamesByNavGroup('classic'),
@@ -171,6 +173,15 @@ export default async function GamePage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
         />
       ))}
+
+      <Breadcrumbs
+        locale={locale}
+        crumbs={[
+          { name: nav('home'), path: '/' },
+          { name: nav('games'), path: '/games' },
+          { name: game.title, path: `/games/${slug}` }
+        ]}
+      />
 
       <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
         <div>

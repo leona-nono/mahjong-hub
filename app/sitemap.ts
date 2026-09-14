@@ -70,6 +70,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: alternatesFor('/blog') }
     });
 
+    entries.push({
+      url: `${BASE}/${locale}/learn/glossary`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.65,
+      alternates: { languages: alternatesFor('/learn/glossary') }
+    });
+
     for (const legalPath of ['/about', '/privacy', '/cookies'] as const) {
       entries.push({
         url: `${BASE}/${locale}${legalPath}`,
