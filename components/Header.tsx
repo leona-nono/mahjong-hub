@@ -29,8 +29,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
   const links = [
     { href: '/games/classic', label: tn('classic') },
     { href: '/games/solitaire', label: tn('solitaire') },
-    { href: '/blog', label: tn('beginners') },
-    { href: '/games/set', label: tn('set') }
+    { href: '/blog', label: tn('beginners') }
   ];
 
   return (

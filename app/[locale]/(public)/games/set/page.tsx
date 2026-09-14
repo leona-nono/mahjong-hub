@@ -19,7 +19,8 @@ export async function generateMetadata({
     title: t('set'),
     description: t('setSubtitle'),
     ogImage: site.ogImage,
-    siteName: brandName(site)
+    siteName: brandName(site),
+    robots: { index: false, follow: false }
   });
 }
 
