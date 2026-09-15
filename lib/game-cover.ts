@@ -17,7 +17,6 @@ export const CATALOG_COVER: Record<string, string> = {
   'mahjong-solitaire': '/images/catalog/solitaire/mahjong-connect-pipe.png',
   'mahjong-3d': '/images/catalog/solitaire/mahjong-3d.png',
   'onet-connect-classic': '/images/catalog/solitaire/onet-connect-classic.png',
-  'tile-journey': '/images/catalog/solitaire/tile-journey.png',
   'american-mahjong': '/images/catalog/classic/american-mahjong.png',
   'riichi-mahjong': '/images/catalog/classic/riichi-mahjong.png',
   'chinese-official-mahjong': '/images/catalog/classic/chinese-official-mahjong.png',

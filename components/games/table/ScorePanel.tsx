@@ -4,11 +4,11 @@ import { useTranslations } from 'next-intl';
 
 import TileFace from '../TileFace';
 import type { GameState, HongKongMode, Seat, SelfDrawEvaluation } from '@/lib/mahjong/engine';
-import { describeScore } from '@/lib/mahjong/scoring';
+import { formatPatternList, formatPaymentLabel, formatScoreHeadline } from '@/features/table/score-copy';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 
 const HUMAN: Seat = 0;
-const SEAT_LABEL: Record<Seat, string> = { 0: 'East', 1: 'South', 2: 'West', 3: 'North' };
+const SEAT_KEY = { 0: 'seatEast', 1: 'seatSouth', 2: 'seatWest', 3: 'seatNorth' } as const;
 
 export interface TurnHintsBarProps {
   myTurn: boolean;
@@ -42,7 +42,7 @@ export function TurnHintsBar({ myTurn, currentWind, hints, tsumoEvaluation, scor
 export interface McrScoreCoachProps {
   qualifying: number;
   flowers: number;
-  patterns: { label: string; value: number }[] | undefined;
+  patterns: { id?: string; label: string; value: number }[] | undefined;
 }
 
 /** Chinese Official live score coach beside the table center. */
@@ -54,7 +54,7 @@ export function McrScoreCoach({ qualifying, flowers, patterns }: McrScoreCoachPr
       <div className="mt-2 flex justify-between"><span>{t('qualifyingHand')}</span><strong>{qualifying}/8</strong></div>
       <div className="mt-1 flex justify-between"><span>{t('flowersSeasons')}</span><strong>+{flowers}</strong></div>
       <p className="mt-2 text-sm leading-5 text-emerald-100/75">{t('flowerGateNote')}</p>
-      {patterns?.length ? <p className="mt-2 border-t border-white/10 pt-2 text-sm leading-5 text-amber-50">{patterns.map((pattern) => `${pattern.label} +${pattern.value}`).join(' · ')}</p> : null}
+      {patterns?.length ? <p className="mt-2 border-t border-white/10 pt-2 text-sm leading-5 text-amber-50">{formatPatternList(patterns.map((pattern) => ({ id: pattern.id ?? '', label: pattern.label, value: pattern.value })), t, 'plus')}</p> : null}
     </div>
   );
 }
@@ -122,11 +122,13 @@ export interface ResultBannerProps {
 /** End-of-hand result overlay with score breakdown and hand review. */
 export function ResultBanner({ state, onNewGame, onNextHand }: ResultBannerProps) {
   const t = useTranslations('mahjong');
+  const seats = useTranslations('regional');
+  const seatName = (seat: number) => seats(SEAT_KEY[seat as Seat]);
   const result = state.result!;
   const selfDrawn = result.kind === 'win' && !result.winners && result.loser === undefined;
   const humanWon = result.winner === HUMAN || result.winners?.some((item) => item.seat === HUMAN);
   const winnerSeat = result.winner ?? result.winners?.[0]?.seat;
-  const winner = winnerSeat === HUMAN ? t('youLabel') : SEAT_LABEL[winnerSeat as Seat];
+  const winner = winnerSeat === HUMAN ? t('youLabel') : winnerSeat !== undefined ? seatName(winnerSeat) : '';
   const reviewTiles = (seat: Seat) => [
     ...state.players[seat].hand,
     ...(seat === winnerSeat && result.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
@@ -146,13 +148,11 @@ export function ResultBanner({ state, onNewGame, onNextHand }: ResultBannerProps
             {result.score && (
               <>
                 <p className="mt-3 text-2xl font-black text-amber-700">
-                  {state.ruleset === 'riichi'
-                    ? (result.score.han ?? result.score.total) + ' Han · ' + (result.score.fu ?? 0) + ' Fu · ' + (result.score.points ?? 0) + ' points'
-                    : result.score.total + ' Fan' + (result.score.points ? ' · ' + result.score.points + ' points' : '')}
+                  {formatScoreHeadline(state.ruleset, result.score, t)}
                 </p>
-                <p className="mt-2 max-w-md text-sm leading-6 text-emerald-800">{describeScore(result.score)}</p>
+                <p className="mt-2 max-w-md text-sm leading-6 text-emerald-800">{formatPatternList(result.score.patterns, t)}</p>
                 {result.score.paymentLabel && (
-                  <p className="mt-2 text-sm font-bold">{result.score.paymentLabel}</p>
+                  <p className="mt-2 text-sm font-bold">{formatPaymentLabel(result.score.paymentLabel, t, seatName)}</p>
                 )}
               </>
             )}
@@ -165,7 +165,7 @@ export function ResultBanner({ state, onNewGame, onNextHand }: ResultBannerProps
                     const isWinner = seat === winnerSeat;
                     const tiles = reviewTiles(seat);
                     return <div key={seat} className={`rounded-lg border p-2 ${isWinner ? 'border-amber-400 bg-amber-50' : 'border-emerald-100 bg-white'}`}>
-                      <p className="text-center text-[11px] font-black text-emerald-800">{seat === HUMAN ? t('youLabel') : SEAT_LABEL[seat]}{isWinner ? ` - ${t('winnerLabel')}` : ''}</p>
+                      <p className="text-center text-[11px] font-black text-emerald-800">{seat === HUMAN ? t('youLabel') : seatName(seat)}{isWinner ? ` - ${t('winnerLabel')}` : ''}</p>
                       <div className="mt-1 flex flex-wrap justify-center gap-px">{tiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional highlight={Boolean(isWinner && result.loser !== undefined && index === tiles.length - 1)} />)}</div>
                       {state.players[seat].melds.length > 0 && <div className="mt-1 flex flex-wrap justify-center gap-1 border-t border-emerald-100 pt-1">{state.players[seat].melds.map((meld, meldIndex) => <div key={meldIndex} className="flex gap-px rounded bg-emerald-50 p-0.5">{meld.tiles.map((tile, tileIndex) => <TileFace key={`${tile}-${tileIndex}`} tile={tile} size="xs" traditional />)}</div>)}</div>}
                     </div>;
@@ -182,7 +182,7 @@ export function ResultBanner({ state, onNewGame, onNextHand }: ResultBannerProps
               {state.matchResult.rankings.map((entry) => (
                 <div key={entry.seat} className="grid grid-cols-[2.5rem_1fr_auto] gap-2">
                   <span>#{entry.rank}</span>
-                  <span>{SEAT_LABEL[entry.seat]}</span>
+                  <span>{entry.seat === HUMAN ? t('youLabel') : seatName(entry.seat)}</span>
                   <span>{entry.score.toLocaleString()} · {entry.uma >= 0 ? '+' : ''}{entry.uma}P</span>
                 </div>
               ))}

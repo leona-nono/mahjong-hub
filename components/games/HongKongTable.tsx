@@ -19,8 +19,8 @@ import { trackMahjongEvent } from '@/features/table/telemetry';
 import { visibleDoraIndicators } from '@/lib/mahjong/riichi';
 
 const HUMAN: Seat = 0;
-const SEAT_LABEL: Record<Seat, string> = { 0: 'East', 1: 'South', 2: 'West', 3: 'North' };
-const WIND_LABEL: Record<Tile, string> = { z1: 'East', z2: 'South', z3: 'West', z4: 'North' };
+const SEAT_KEY = { 0: 'seatEast', 1: 'seatSouth', 2: 'seatWest', 3: 'seatNorth' } as const;
+const WIND_KEY = { z1: 'seatEast', z2: 'seatSouth', z3: 'seatWest', z4: 'seatNorth' } as const;
 interface HongKongTableProps {
   state: GameState;
   variant?: 'hongkong' | 'riichi' | 'chinese-official';
@@ -92,8 +92,9 @@ export default function HongKongTable({
 }: HongKongTableProps) {
   useTraditionalTilePreload();
   const t = useTranslations('mahjong');
+  const seats = useTranslations('regional');
   const human = state.players[HUMAN];
-  const currentWind = SEAT_LABEL[state.turn];
+  const currentWind = seats(SEAT_KEY[state.turn]);
   const isRiichi = variant === 'riichi';
   const isMcr = variant === 'chinese-official';
   // Keep the call-outs faithful to the ruleset, rather than to the site's UI
@@ -109,7 +110,8 @@ export default function HongKongTable({
   // A stable three-side wall makes the remaining wall and table orientation
   // readable; it does not expose any opponent's concealed hand.
   const wallTiles = Math.max(6, Math.min(18, Math.ceil(tilesRemaining(state) / 4)));
-  const roundLabel = `${WIND_LABEL[state.roundWind]} ${state.handNumber % 4 + 1}`;
+  const roundWindKey = WIND_KEY[state.roundWind as keyof typeof WIND_KEY];
+  const roundLabel = `${roundWindKey ? seats(roundWindKey) : ''} ${state.handNumber % 4 + 1}`;
   const tableShellRef = useRef<HTMLElement>(null);
   const [showScoring, setShowScoring] = useState(false);
   const { preferences, setPreference } = useMahjongPreferences();

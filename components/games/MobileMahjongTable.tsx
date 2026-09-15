@@ -6,11 +6,12 @@ import TileFace, { TileBack } from './TileFace';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 import { playMahjongSound, primeMahjongAudio } from '@/features/table/sound';
+import { formatPatternList, formatPaymentLabel, formatRiichiHanFu, formatScoreHeadline } from '@/features/table/score-copy';
 import { visibleDoraIndicators } from '@/lib/mahjong/riichi';
 import TableToolButton from './TableToolButton';
 
 const HUMAN: Seat = 0;
-const NAMES: Record<Seat, string> = { 0: 'YOU', 1: 'SOUTH', 2: 'WEST', 3: 'NORTH' };
+const SEAT_KEY = { 0: 'seatEast', 1: 'seatSouth', 2: 'seatWest', 3: 'seatNorth' } as const;
 
 export interface MobileMahjongTableProps {
   state: GameState;
@@ -54,6 +55,8 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
   const isMcr = variant === 'chinese-official';
   const voiceLocale = isRiichi ? 'japanese' as const : 'cantonese' as const;
   const t = useTranslations('mahjong');
+  const seats = useTranslations('regional');
+  const seatName = (seat: number) => seat === HUMAN ? t('youLabel') : seats(SEAT_KEY[seat as Seat]);
   const humanWon = state.result?.winner === HUMAN || state.result?.winners?.some((winner) => winner.seat === HUMAN);
   const resultScore = state.result?.winner === HUMAN
     ? state.result.score
@@ -147,7 +150,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
           <span className="text-xs font-bold tracking-[.2em] text-cyan-300">{isRiichi ? 'RIICHI' : isMcr ? 'CHINESE MCR' : 'HONG KONG'}</span>
           <strong className="text-base font-medium text-cyan-100">{roundLabel}</strong>
           <span className="text-xl font-light text-cyan-200">{tilesRemaining(state)}</span>
-          <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-xs font-black">{NAMES[state.turn]}</span>
+          <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-xs font-black">{seatName(state.turn)}</span>
         </div>
 
         {isRiichi && (
@@ -194,7 +197,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
 
         <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-white/15 bg-[#063d30]/95 pb-[max(.4rem,env(safe-area-inset-bottom))] pt-1 shadow-[0_-8px_22px_rgba(0,0,0,.3)]">
           <div className="flex h-7 items-center justify-between px-2 text-sm font-bold text-emerald-100">
-            <span>{myTurn ? t('yourTurnTap') : t('seatPlaying', { seat: NAMES[state.turn] })}</span>
+            <span>{myTurn ? t('yourTurnTap') : t('seatPlaying', { seat: seatName(state.turn) })}</span>
             {hintStatus && <span className={tsumoEvaluation?.complete ? 'text-amber-200' : ''}>{hintStatus}</span>}
           </div>
           {human.melds.length > 0 && (
@@ -260,28 +263,32 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
                 <div className="mt-3 rounded-xl bg-amber-100 p-3">
                   <strong className="block text-xl text-rose-700">
                     {isRiichi
-                      ? `${resultScore.han ?? resultScore.total} Han · ${resultScore.fu ?? 0} Fu`
-                      : `${resultScore.total} ${isMcr ? t('unitPoints') : t('unitFan')}`}
+                      ? formatRiichiHanFu(resultScore, t)
+                      : formatScoreHeadline(variant, { ...resultScore, points: undefined }, t)}
                   </strong>
-                  {resultScore.points && (
-                    <span className="mt-1 block text-xs font-black text-emerald-800">{resultScore.points} points · {resultScore.paymentLabel}</span>
-                  )}
+                  {resultScore.points ? (
+                    <span className="mt-1 block text-xs font-black text-emerald-800">
+                      {resultScore.paymentLabel
+                        ? t('scorePointsLine', { points: resultScore.points, unit: t('unitPoints'), payment: formatPaymentLabel(resultScore.paymentLabel, t, seatName) })
+                        : `${resultScore.points} ${t('unitPoints')}`}
+                    </span>
+                  ) : null}
                   <span className="mt-1 block text-xs font-bold text-slate-600">
-                    {resultScore.patterns.map((pattern) => `${pattern.label} +${pattern.value}`).join(' · ')}
+                    {formatPatternList(resultScore.patterns, t, 'plus')}
                   </span>
                 </div>
               )}
               {state.matchEnded && state.matchResult && (
                 <div className="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-left text-xs font-bold text-emerald-950">
                   <p className="mb-1 text-center text-sm font-black">{t('hanchanResultShort')}</p>
-                  {state.matchResult.rankings.map((entry) => <p key={entry.seat}>#{entry.rank} · {NAMES[entry.seat]} · {entry.score.toLocaleString()} · {entry.uma >= 0 ? '+' : ''}{entry.uma}P</p>)}
+                  {state.matchResult.rankings.map((entry) => <p key={entry.seat}>#{entry.rank} · {seatName(entry.seat)} · {entry.score.toLocaleString()} · {entry.uma >= 0 ? '+' : ''}{entry.uma}P</p>)}
                 </div>
               )}
               {opponentWon && (
                 <div className="mt-3 rounded-xl border border-emerald-200 bg-white/90 p-3 text-left">
-                  <p className="text-center text-xs font-black uppercase tracking-[.12em] text-emerald-800">{t('winningHandLabel')} · {NAMES[winnerSeat]}</p>
+                  <p className="text-center text-xs font-black uppercase tracking-[.12em] text-emerald-800">{t('winningHandLabel')} · {seatName(winnerSeat)}</p>
                   <p className="mt-1 text-center text-sm font-bold text-slate-500">{t('completeHandRevealed')}</p>
-                  {winnerScore && <p className="mt-1 text-center text-[11px] font-black text-amber-700">{isRiichi ? `${winnerScore.han ?? winnerScore.total} Han · ${winnerScore.fu ?? 0} Fu · ${winnerScore.points ?? 0} points` : `${winnerScore.total} ${isMcr ? t('unitPoints') : t('unitFan')} · ${winnerScore.points ?? 0} ${t('unitPoints')}`}</p>}
+                  {winnerScore && <p className="mt-1 text-center text-[11px] font-black text-amber-700">{formatScoreHeadline(variant, winnerScore, t)}</p>}
                   <div className="mt-2 flex flex-wrap justify-center gap-0.5">
                     {revealedTiles.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional highlight={Boolean(state.result?.loser !== undefined && index === revealedTiles.length - 1)} />)}
                   </div>
