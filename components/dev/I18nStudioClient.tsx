@@ -239,14 +239,16 @@ function padIndex(n: number, width: number) {
 
 export default function I18nStudioClient() {
   const [locales, setLocales] = useState<string[]>(['en']);
-  const [domain, setDomain] = useState<Domain>('messages');
+  // Blog is the usual editing target; messages (700+ leaves) is too heavy as default.
+  const [domain, setDomain] = useState<Domain>('blog');
   const [items, setItems] = useState<{ id: string; label: string }[]>([]);
-  const [id, setId] = useState('tree');
+  const [id, setId] = useState('');
   const [itemQuery, setItemQuery] = useState('');
   const [locale, setLocale] = useState('zh');
   const [enObj, setEnObj] = useState<unknown>(null);
   const [locObj, setLocObj] = useState<unknown>(null);
   const [status, setStatus] = useState('');
+  const [statusTone, setStatusTone] = useState<'neutral' | 'ok' | 'err'>('neutral');
   const [findings, setFindings] = useState<Finding[]>([]);
   const [cats, setCats] = useState<FieldCategory[]>([...FIELD_CATEGORIES]);
   const [focusPath, setFocusPath] = useState<string | null>(null);
@@ -254,6 +256,7 @@ export default function I18nStudioClient() {
   const [replaceFrom, setReplaceFrom] = useState('');
   const [replaceTo, setReplaceTo] = useState('');
   const [checking, setChecking] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const [sevFilter, setSevFilter] = useState<SeverityFilter>('errors');
   const [issueDomain, setIssueDomain] = useState<string>('all');
@@ -262,7 +265,8 @@ export default function I18nStudioClient() {
   const [issueSort, setIssueSort] = useState<IssueSort>('locale');
   const [onlyCurrentEntry, setOnlyCurrentEntry] = useState(false);
   const [activeIssueKey, setActiveIssueKey] = useState<string | null>(null);
-  const [issuesCollapsed, setIssuesCollapsed] = useState(false);
+  // Issues panel is expensive when check returns thousands of rows — collapse until asked.
+  const [issuesCollapsed, setIssuesCollapsed] = useState(true);
 
   const undoStack = useRef<unknown[]>([]);
   const fieldRefs = useRef<Record<string, HTMLElement | null>>({});
@@ -291,53 +295,91 @@ export default function I18nStudioClient() {
     });
   }, []);
 
-  const loadEntry = useCallback(async () => {
-    setStatus('Loading…');
-    const res = await fetch(
-      `/api/dev/i18n/entry?domain=${domain}&id=${encodeURIComponent(id)}&locale=${locale}`
-    );
-    const data = await res.json();
-    if (!res.ok) {
-      setStatus(data.error || 'load failed');
-      return;
+  const flashStatus = useCallback(
+    (message: string, tone: 'neutral' | 'ok' | 'err' = 'neutral') => {
+      setStatus(message);
+      setStatusTone(tone);
+    },
+    []
+  );
+
+  const readJsonResponse = async (
+    res: Response
+  ): Promise<{ data: Record<string, unknown> | null; raw: string }> => {
+    const raw = await res.text();
+    if (!raw) return { data: null, raw: '' };
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      if (parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        return { data: parsed as Record<string, unknown>, raw };
+      }
+      return { data: null, raw };
+    } catch {
+      return { data: null, raw };
     }
-    setEnObj(data.en);
-    setLocObj(data.locale);
-    undoStack.current = [];
-    setStatus('Loaded');
-  }, [domain, id, locale]);
+  };
+
+  const loadEntry = useCallback(async () => {
+    flashStatus('Loading…');
+    try {
+      const res = await fetch(
+        `/api/dev/i18n/entry?domain=${domain}&id=${encodeURIComponent(id)}&locale=${locale}`
+      );
+      const { data, raw } = await readJsonResponse(res);
+      if (!res.ok) {
+        flashStatus(
+          data?.error
+            ? String(data.error)
+            : `Load failed: HTTP ${res.status}${raw.startsWith('<!') ? ' (API missing — restart npm run dev)' : ''}`,
+          'err'
+        );
+        return;
+      }
+      setEnObj(data?.en ?? null);
+      setLocObj(data?.locale ?? null);
+      undoStack.current = [];
+      flashStatus('Loaded');
+    } catch (e) {
+      flashStatus(`Load failed: ${e instanceof Error ? e.message : String(e)}`, 'err');
+    }
+  }, [domain, id, locale, flashStatus]);
 
   const runCheck = useCallback(async () => {
     setChecking(true);
-    setStatus('Checking…');
+    flashStatus('Checking…');
     try {
       const res = await fetch('/api/dev/i18n/check');
-      const data = await res.json();
+      const { data, raw } = await readJsonResponse(res);
       if (!res.ok) {
-        setStatus(data.error || 'check failed');
+        flashStatus(
+          data?.error
+            ? String(data.error)
+            : `Check failed: HTTP ${res.status}${raw.startsWith('<!') ? ' (API missing)' : ''}`,
+          'err'
+        );
         return;
       }
-      setFindings([...(data.errors ?? []), ...(data.warnings ?? [])]);
-      setStatus(
-        `Check: ${data.errors?.length ?? 0} errors, ${data.warnings?.length ?? 0} warnings`
-      );
+      const errors = (data?.errors as Finding[] | undefined) ?? [];
+      const warnings = (data?.warnings as Finding[] | undefined) ?? [];
+      setFindings([...errors, ...warnings]);
+      flashStatus(`Check: ${errors.length} errors, ${warnings.length} warnings`);
+    } catch (e) {
+      flashStatus(`Check failed: ${e instanceof Error ? e.message : String(e)}`, 'err');
     } finally {
       setChecking(false);
     }
-  }, []);
+  }, [flashStatus]);
 
   useEffect(() => {
-    loadCatalog(domain).catch((e) => setStatus(String(e)));
-  }, [domain, loadCatalog]);
+    loadCatalog(domain).catch((e) => flashStatus(String(e), 'err'));
+  }, [domain, loadCatalog, flashStatus]);
 
   useEffect(() => {
     if (!id) return;
-    loadEntry().catch((e) => setStatus(String(e)));
-  }, [id, locale, loadEntry]);
+    loadEntry().catch((e) => flashStatus(String(e), 'err'));
+  }, [id, locale, loadEntry, flashStatus]);
 
-  useEffect(() => {
-    void runCheck();
-  }, [runCheck]);
+  // Do NOT auto-run full i18n check on mount — it blocks the UI and races Save status.
 
   useEffect(() => {
     if (!focusPath) return;
@@ -496,7 +538,7 @@ export default function I18nStudioClient() {
 
   const saveLocale = async (payload: unknown) => {
     if (payload == null) {
-      setStatus('Nothing to save');
+      flashStatus('Nothing to save', 'err');
       return;
     }
     const fields = flattenFields(domain, payload);
@@ -506,38 +548,73 @@ export default function I18nStudioClient() {
         (f.category === 'title' || f.category === 'description') &&
         String(f.value).trim() === ''
       ) {
-        setStatus(`Blocked: empty required field ${f.path}`);
+        flashStatus(`Blocked: empty required field ${f.path}`, 'err');
         return;
       }
     }
-    const res = await fetch('/api/dev/i18n/entry', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ domain, id, locale, payload })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setStatus(data.error || 'save failed');
-      return;
+    setSaving(true);
+    flashStatus(`Saving ${domain}/${id} @ ${locale}…`);
+    try {
+      const res = await fetch('/api/dev/i18n/entry', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ domain, id, locale, payload })
+      });
+      const { data, raw } = await readJsonResponse(res);
+      if (!res.ok) {
+        flashStatus(
+          data?.error
+            ? `Save failed: ${String(data.error)}`
+            : `Save failed: HTTP ${res.status}${raw.startsWith('<!') ? ' — API 404/HTML (restart npm run dev on this repo)' : ''}`,
+          'err'
+        );
+        return;
+      }
+      flashStatus(
+        `Saved ${domain}/${id} @ ${locale} → ${
+          locale === 'en'
+            ? `data/${domain === 'messages' ? 'messages' : `${domain}-i18n`}/en.json`
+            : domain === 'messages'
+              ? `messages/${locale}.json`
+              : domain === 'blog' || domain === 'games'
+                ? `data/${domain}-i18n/${locale}.json`
+                : 'disk'
+        }`,
+        'ok'
+      );
+    } catch (e) {
+      flashStatus(`Save failed: ${e instanceof Error ? e.message : String(e)}`, 'err');
+    } finally {
+      setSaving(false);
     }
-    setStatus(`Saved ${domain}/${id} @ ${locale}`);
-    await runCheck();
   };
 
   const saveEn = async () => {
     if (enObj == null) return;
-    const res = await fetch('/api/dev/i18n/entry', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ domain, id, locale: 'en', payload: enObj })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setStatus(data.error || 'EN save failed');
-      return;
+    setSaving(true);
+    flashStatus('Saving EN…');
+    try {
+      const res = await fetch('/api/dev/i18n/entry', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ domain, id, locale: 'en', payload: enObj })
+      });
+      const { data, raw } = await readJsonResponse(res);
+      if (!res.ok) {
+        flashStatus(
+          data?.error
+            ? `EN save failed: ${String(data.error)}`
+            : `EN save failed: HTTP ${res.status}${raw.startsWith('<!') ? ' — API missing' : ''}`,
+          'err'
+        );
+        return;
+      }
+      flashStatus('Saved EN — sync locale structures if shape changed', 'ok');
+    } catch (e) {
+      flashStatus(`EN save failed: ${e instanceof Error ? e.message : String(e)}`, 'err');
+    } finally {
+      setSaving(false);
     }
-    setStatus('Saved EN — sync locale structures if shape changed');
-    await runCheck();
   };
 
   const updateLocField = (path: string, value: unknown) => {
@@ -546,26 +623,34 @@ export default function I18nStudioClient() {
   };
 
   const markIdiom = async (fieldPath: string) => {
-    const res = await fetch('/api/dev/i18n/override', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        domain,
-        id,
-        locale,
-        fieldPath,
-        reason: 'locale_idiom',
-        note: 'Marked from Content Studio'
-      })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setStatus(data.error || 'override failed');
-      return;
+    try {
+      const res = await fetch('/api/dev/i18n/override', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          domain,
+          id,
+          locale,
+          fieldPath,
+          reason: 'locale_idiom',
+          note: 'Marked from Content Studio'
+        })
+      });
+      const { data, raw } = await readJsonResponse(res);
+      if (!res.ok) {
+        flashStatus(
+          data?.error
+            ? String(data.error)
+            : `Override failed: HTTP ${res.status}${raw.startsWith('<!') ? ' — API missing' : ''}`,
+          'err'
+        );
+        return;
+      }
+      setLocObj(data?.entry ?? null);
+      flashStatus(`Marked ${fieldPath} as locale_idiom`, 'ok');
+    } catch (e) {
+      flashStatus(`Override failed: ${e instanceof Error ? e.message : String(e)}`, 'err');
     }
-    setLocObj(data.entry);
-    setStatus(`Marked ${fieldPath} as locale_idiom`);
-    await runCheck();
   };
 
   const applyGlossaryFix = (message: string) => {
@@ -575,7 +660,7 @@ export default function I18nStudioClient() {
     if (!m || !locObj) return;
     pushUndo(locObj);
     setLocObj(replaceInStrings(locObj, domain, m[1], m[2]));
-    setStatus(`Replaced "${m[1]}" → "${m[2]}" (save to persist)`);
+    flashStatus(`Replaced "${m[1]}" → "${m[2]}" (save to persist)`, 'ok');
   };
 
   const downloadSnapshot = () => {
@@ -611,7 +696,7 @@ export default function I18nStudioClient() {
       parsed = null;
     }
     if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
-      setStatus(`Import failed: ${file.name} is not a JSON object`);
+      flashStatus(`Import failed: ${file.name} is not a JSON object`);
       return;
     }
     const bag = parsed as Record<string, unknown>;
@@ -620,15 +705,15 @@ export default function I18nStudioClient() {
     if ('localePayload' in bag) {
       payload = bag.localePayload;
       if (payload === undefined || payload === null) {
-        setStatus('Import failed: snapshot has no localePayload');
+        flashStatus('Import failed: snapshot has no localePayload');
         return;
       }
       if (typeof bag.id === 'string' && bag.id !== id) {
-        setStatus(`Import skipped: file targets "${bag.id}", current entry is "${id}"`);
+        flashStatus(`Import skipped: file targets "${bag.id}", current entry is "${id}"`);
         return;
       }
       if (typeof bag.locale === 'string' && bag.locale !== locale) {
-        setStatus(`Import skipped: file is "${bag.locale}", current locale is "${locale}"`);
+        flashStatus(`Import skipped: file is "${bag.locale}", current locale is "${locale}"`);
         return;
       }
     } else if (
@@ -647,7 +732,7 @@ export default function I18nStudioClient() {
 
     pushUndo(locObj);
     setLocObj(payload);
-    setStatus(`Imported ${file.name} — review, then Save`);
+    flashStatus(`Imported ${file.name} — review, then Save`);
   };
 
   const copyIssueList = async () => {
@@ -658,7 +743,7 @@ export default function I18nStudioClient() {
     });
     const header = `#\tseverity\tdomain\tlocale\tpath\tmessage`;
     await navigator.clipboard.writeText([header, ...lines].join('\n'));
-    setStatus(`Copied ${listedIssues.length} issues to clipboard`);
+    flashStatus(`Copied ${listedIssues.length} issues to clipboard`);
   };
 
   const downloadIssueList = () => {
@@ -683,7 +768,7 @@ export default function I18nStudioClient() {
     setActiveIssueKey(key);
     const nav = resolveFindingNav(f);
     if (!nav) {
-      setStatus(`Cannot navigate: ${f.domain} / ${f.path}`);
+      flashStatus(`Cannot navigate: ${f.domain} / ${f.path}`);
       return;
     }
     if (nav.locale && nav.locale !== locale) setLocale(nav.locale);
@@ -695,7 +780,7 @@ export default function I18nStudioClient() {
     }
     setFocusPath(nav.fieldPath);
     setCats([...FIELD_CATEGORIES]);
-    setStatus(
+    flashStatus(
       `Jump #${index + 1} → ${nav.domain}/${nav.id} @ ${nav.locale ?? locale} · ${nav.fieldPath}`
     );
   };
@@ -710,7 +795,7 @@ export default function I18nStudioClient() {
     if (!enField) return;
     pushUndo(locObj);
     setLocObj(setAtPath(locObj ?? {}, path, structuredClone(enField.value)));
-    setStatus(`Copied Original → Translation: ${path}`);
+    flashStatus(`Copied Original → Translation: ${path}`);
   };
 
   const boxClass = (readOnly: boolean) =>
@@ -909,10 +994,11 @@ export default function I18nStudioClient() {
             )}
             <button
               type="button"
-              className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-500"
+              className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-500 disabled:opacity-50"
+              disabled={saving || locObj == null}
               onClick={() => void saveLocale(locObj)}
             >
-              Save {locale}
+              {saving ? 'Saving…' : `Save ${locale}`}
             </button>
           </div>
         </div>
@@ -924,6 +1010,11 @@ export default function I18nStudioClient() {
                 key={d}
                 type="button"
                 onClick={() => setDomain(d)}
+                title={
+                  d === 'messages'
+                    ? 'UI strings (~700 fields) — can feel slow; prefer blog/games for articles'
+                    : undefined
+                }
                 className={`rounded-full px-3 py-1 text-xs font-medium ${
                   domain === d
                     ? 'bg-zinc-900 text-white'
@@ -968,7 +1059,7 @@ export default function I18nStudioClient() {
             onClick={() => {
               pushUndo(locObj);
               setLocObj(copyEnIntoEmpty(enObj, locObj, domain));
-              setStatus('Filled empty/residual from EN (not saved)');
+              flashStatus('Filled empty/residual from EN (not saved)');
             }}
           >
             Copy EN→empty
@@ -980,7 +1071,7 @@ export default function I18nStudioClient() {
               if (!confirm('Clear fields identical to EN?')) return;
               pushUndo(locObj);
               setLocObj(clearIdenticalToEn(enObj, locObj, domain));
-              setStatus('Cleared residual fields (not saved)');
+              flashStatus('Cleared residual fields (not saved)');
             }}
           >
             Clear residual
@@ -1005,7 +1096,7 @@ export default function I18nStudioClient() {
               setLocObj(
                 replaceInStrings(locObj, domain, replaceFrom, replaceTo)
               );
-              setStatus('Replaced in locale (not saved)');
+              flashStatus('Replaced in locale (not saved)');
             }}
           >
             Replace
@@ -1016,11 +1107,11 @@ export default function I18nStudioClient() {
             onClick={() => {
               const prev = undoStack.current.pop();
               if (prev === undefined) {
-                setStatus('Nothing to undo');
+                flashStatus('Nothing to undo');
                 return;
               }
               setLocObj(prev);
-              setStatus('Undo');
+              flashStatus('Undo');
             }}
           >
             Undo
@@ -1050,8 +1141,18 @@ export default function I18nStudioClient() {
               }}
             />
           </label>
-          <span className="ml-auto max-w-md truncate text-xs text-zinc-500">
-            {status}
+          <span
+            className={`ml-auto max-w-xl truncate rounded-md px-2 py-1 text-xs font-medium ${
+              statusTone === 'ok'
+                ? 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-200'
+                : statusTone === 'err'
+                  ? 'bg-red-50 text-red-800 ring-1 ring-red-200'
+                  : 'text-zinc-500'
+            }`}
+            title={status}
+            role="status"
+          >
+            {status || 'Ready'}
           </span>
         </div>
       </header>

@@ -10,21 +10,22 @@
 
 `http://localhost:3000/dev/i18n`
 
-保持弹出的 **mahjong-hub-dev** 窗口不要关。首次需已 `npm install`。
+启动脚本会顺带探测 Save API（`/api/dev/i18n`）；页面能开但 API 404/500 时会杀掉卡死的 `:3000` 并重启。保持弹出的 **mahjong-hub-dev** 窗口不要关。首次需已 `npm install`。
 
 ## 界面怎么用
 
-1. 顶栏：Domain 按钮 + Locale；分类筛选；**Run check** / **Save locale**  
+1. 顶栏：Domain 按钮 + Locale；分类筛选；**Sync check** / **Save zh**（或当前语种）  
 2. 左：条目列表（按当前语种的错误数排序，红/黄角标）  
 3. 中：EN ∥ 当前语字段；红框=英文残稿，黄=术语/警告；可标 `locale_idiom`  
-4. **底部 Issues 面板（全量）**：默认列出全部 Errors（可切 Warnings / All）  
+4. **底部 Issues 面板**：默认折叠；点开后需先点 **Sync check** 才有全量结果  
    - 按 locale / domain / path / message 筛选与排序  
    - 语种芯片快速过滤（Errors by locale）  
    - 每行编号 `#001…`，点击跳转到对应 domain / locale / 字段  
    - **Copy list** / **Download TSV** 导出当前筛选结果  
 5. 批量：Copy EN→empty / Clear residual / Replace / Undo / JSON
 
-打开页面会自动跑一次 check。Advanced 折叠里仍可编辑 raw JSON。
+默认 Domain 是 **blog**（文章）。`messages` 有约 700 个字段，打开会明显变慢——改 UI 文案时再切。  
+Save **不会** git commit，只写本地 JSON；成功时状态栏变绿并显示目标文件路径。Advanced 折叠里仍可编辑 raw JSON。
 
 ## 规则（与 CI 共用 `lib/i18n-rules`）
 
