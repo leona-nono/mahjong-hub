@@ -370,7 +370,8 @@ export const cornerstonePosts: BlogPost[] = [
         heading: 'Every Ruleset Has a Minimum',
         body: [
           'In every mahjong ruleset, a winning hand must reach a minimum score before it can be declared. The names differ — faan in Hong Kong, han in Riichi, points in Chinese Official — but the idea is the same: a hand must contain enough structure to count as a win.',
-          'This minimum is what stops every hand from being a boring race to the first complete shape.'
+          'This minimum is what stops every hand from being a boring race to the first complete shape.',
+          'It also shapes how you play, not just how you score. A hand that cannot reach the minimum is worth abandoning, so players fold those shapes early rather than spend a dozen turns completing something that pays nothing. The minimum turns mahjong into a game of hand selection rather than hand completion.'
         ]
       },
       {
@@ -381,14 +382,16 @@ export const cornerstonePosts: BlogPost[] = [
           '• All-triplets — every set is a triplet.',
           '• All-simples — no 1s, 9s or honours.',
           '• Dragon triplets — three dragons in a hand.',
-          '• Seven pairs — an alternative winning shape in most rulesets.'
+          '• Seven pairs — an alternative winning shape in most rulesets.',
+          'Everything else is a variation on that base. A flush is the base restricted to one suit, all-triplets is the base with the sequences replaced by triplets, and a dragon triplet is one of the four sets. Once you can point to the four sets and the pair, you can already read the scoring table.'
         ]
       },
       {
         heading: 'Hong Kong Faan',
         body: [
           'Hong Kong style requires three faan minimum. Common patterns and their value: a pure suit hand (3), all-triplets (3), all-simples (1), a dragon triplet (1\u20133). Hands stack — a flush with a dragon triplet is worth more than either alone.',
-          'The scoring table rewards clean, deliberate hands. Cheap hands are reliable but slow; ambitious hands score big but rarely come together.'
+          'The scoring table rewards clean, deliberate hands. Cheap hands are reliable but slow; ambitious hands score big but rarely come together.',
+          'All simples alone is worth one faan, so a hand built only from 2s through 8s cannot be declared on that pattern by itself. It needs company: all sequences and a fully concealed win take the same hand to exactly three, which is the bar. That is why Hong Kong hands tend to be either cheap and specific or ambitious and rare.'
         ],
         tiles: [{"suit": 'dragon', "dragon": 'red'}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}],
       },
@@ -396,15 +399,49 @@ export const cornerstonePosts: BlogPost[] = [
         heading: 'Japanese Han and Riichi',
         body: [
           'Riichi scoring adds yaku (fixed patterns) on top of han. Riichi itself is a yaku — declaring it on tenpai adds one han and is the signature of the ruleset. Concealed hands score much higher, which rewards patience.',
-          'The readiness (tenpai) position matters in Riichi too: you can declare riichi, or stay silent and score differently. Understanding han is the key to choosing.'
+          'The readiness (tenpai) position matters in Riichi too: you can declare riichi, or stay silent and score differently. Understanding han is the key to choosing.',
+          'Fu converts that han into points, but only below five han \u2014 above that the payment tiers are fixed by han alone. Fu is therefore the number that decides close hands, and the one beginners most often get wrong.'
         ]
       },
       {
         heading: 'Chinese Official Points (MCR)',
         body: [
           'Chinese Official uses an eight-point minimum with a large catalogue of patterns worth 1 to 88 points. Flush hands, all-triplets and the rarest patterns stack quickly.',
-          'The high minimum forces genuine structure — a seven-pairs hand or a flush is usually needed, which is why MCR players plan their hand from the first tiles.'
+          'The high minimum forces genuine structure — a seven-pairs hand or a flush is usually needed, which is why MCR players plan their hand from the first tiles.',
+          'It also settles overlapping patterns by an account-once rule: when one pattern covers another, only the larger is paid. That is why an MCR total is usually smaller than the list of names the hand appears to contain.'
         ]
+      },
+      {
+        heading: 'How to Score a Hand in Five Steps',
+        body: [
+          'Scoring tables look like homework, but you do not memorise them \u2014 you work them. Every ruleset runs the same five steps, and the only thing that changes between Hong Kong, Riichi and Chinese Official is the numbers you look up at step three.',
+          'Step 1 \u2014 confirm the shape. A standard hand is four sets and a pair, and each set is either a triplet or a sequence. If the tiles will not divide that way, check for a special shape before anything else: seven pairs and thirteen orphans are scored as a single pattern rather than as sets.',
+          'Step 2 \u2014 name what the hand contains. Before valuing anything, list what is true. Is every tile from one suit? Is every set a triplet? Are there dragons? Did you claim anything, or is the hand still concealed? Did the win come off the last tile in the wall? Naming is description, not judgement.',
+          'Step 3 \u2014 look each name up in the ruleset\u2019s table. This is where the three games part company. The same name is worth different numbers in each: a half flush is 3 in Hong Kong, 2 in Riichi and 6 in Chinese Official. The vocabulary overlaps heavily; the values deliberately do not.',
+          'Step 4 \u2014 add the patterns, then apply the cap. Most rulesets let patterns stack, so a flush that also contains a dragon triplet is paid for both. Hong Kong stops at 10 faan, Riichi converts a full yakuman into a flat 13, and Chinese Official has no total cap at all.',
+          'Step 5 \u2014 check the minimum. Below it the hand is not a legal win however complete it looks: 3 faan in Hong Kong, at least one yaku in Riichi, 8 points in Chinese Official. This is the step that catches beginners.',
+          'Run the procedure once on a real hand, in Hong Kong. You have claimed one exposed triplet of 8 Circles. Concealed, you still hold 2-2-2 Circles, 5-5-5 Circles and the Red Dragon triplet, and you are waiting on a pair of 9 Circles. An opponent discards one and you claim the win.',
+          'Naming first: every tile is Circles or an honour, so that is a half flush; all four sets are triplets, so all triplets; and one of those triplets is a dragon triplet. Adding: 3 + 3 + 1 = 7 faan. The Hong Kong minimum is 3, so the hand stands with room to spare.',
+          'The shortcut most players use is that you do not run all five steps every hand. Two or three patterns decide the value of almost every hand you will play, so the table you actually consult shrinks to about a dozen names. Step 2 is still worth doing carefully, though — beginners usually miss a pattern rather than misprice one.',
+          'One thing trips people up here: the names from step 2 are not a fixed vocabulary shared by every game. Chinese Official calls all-triplets all pungs, and carries patterns Hong Kong has no entry for at all. You are looking the same hand up in three different tables rather than translating between them.',
+          'Two habits make the whole procedure faster. Learn the three or four patterns that decide most hands in your ruleset, and check the minimum before you commit to a shape rather than after you have completed it. Scoring then stops being arithmetic and becomes part of how you choose a hand.'
+        ],
+        tiles: [{"suit": 'dragon', "dragon": 'red'}, {"suit": 'dragon', "dragon": 'red'}, {"suit": 'dragon', "dragon": 'red'}, {"suit": 'dot', "rank": 8}, {"suit": 'dot', "rank": 8}, {"suit": 'dot', "rank": 8}],
+      },
+      {
+        heading: 'One Hand, Three Rulesets',
+        body: [
+          'That hand is legal in all three games, and each prices it differently. Nothing about the tiles changes \u2014 only the table you look them up in.',
+          '• Hong Kong pays 7 faan: half flush (3), all triplets (3), dragon triplet (1).',
+          '• Riichi pays 7 han and 40 fu, worth 12,000 points: half flush (2), dragon triplet (1), all triplets (2), three concealed triplets (2).',
+          '• Chinese Official pays 32 points: half flush (6), dragon triplet (2), all pungs (6), pung of terminals or honours (1), three concealed pungs (16), single wait (1).',
+          'Three totals, one hand. The numbers are not convertible: 7 faan is not 7 han, and neither is 32 Chinese points. Hong Kong caps a hand at 10 faan, Riichi treats 13 han as a ceiling, and Chinese Official lets a single pattern reach 88 without capping the total. Comparing raw numbers across games tells you nothing.',
+          'Go the other way and take the cheapest legal hand: four sequences, no honours, nothing but 2s through 8s, completed on a two-sided wait with the hand still concealed. Hong Kong pays exactly 3 faan \u2014 all simples (1), all sequences (1), fully concealed (1), right on the minimum. Riichi pays 2 han, all simples plus pinfu, worth 2,000. Chinese Official pays exactly 8 points: all simples (2), no honours (1), all chows (2), short straight (1), concealed hand (2), also on the minimum.',
+          'Two hands, both legal, and the spread runs from 2 han to 32 points. That is why the scoring table matters less than knowing which patterns your ruleset actually pays for. Someone who learns one game\u2019s table and then switches will spend a whole session building hands that do not qualify.',
+          'Each scale is tuned to make a different kind of hand expensive. Hong Kong keeps its ceiling low, so a modest, fast hand stays competitive. Chinese Official\u2019s 88-point fans pay for rare, difficult constructions. Riichi sits between them and pays extra for concealment and for the shape of the wait.',
+          'Caps matter as much as values. Because Hong Kong stops at 10 faan, a hand worth 11 and a hand worth 30 settle identically, so there is no reason to keep building. Riichi\u2019s ceiling and Chinese Official\u2019s absence of one push the same decision in opposite directions.'
+        ],
+        tiles: [{"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}],
       },
       {
         heading: 'Let the Table Score for You',
@@ -416,8 +453,11 @@ export const cornerstonePosts: BlogPost[] = [
     faq: [
       { question: 'What is the difference between faan, han and points?', answer: 'They are the same idea under different names: a score attached to patterns in a winning hand. Hong Kong uses faan, Riichi uses han, Chinese Official uses points.' },
       { question: 'How many points do I need to win mahjong?', answer: 'Hong Kong needs three faan, Japanese Riichi needs at least one yaku, and Chinese Official needs eight points. Each ruleset defines its own minimum.' },
+      { question: 'Can I compare a faan score with a han score?', answer: 'No. The three scales are independent \u2014 7 faan in Hong Kong, 7 han in Riichi and 32 points in Chinese Official can all describe the same hand. Each game also caps differently, so raw totals mean nothing across rulesets.' },
+      { question: 'Why does a complete hand sometimes fail to win?', answer: 'Because every ruleset enforces a minimum. A hand can be structurally complete and still fall below three faan in Hong Kong or eight points in Chinese Official, in which case it cannot be declared at all.' },
       { question: 'What is the easiest way to learn mahjong scoring?', answer: 'Play online where the table calculates and explains every score. Seeing the breakdown after each win teaches the patterns far faster than memorising a table.' },
-      { question: 'Which patterns score the most?', answer: 'Rare, structured hands score most: pure-suit (flush) hands, all-triplets, and special shapes like seven pairs or thirteen orphans are among the highest-value patterns.' }
+      { question: 'Which patterns score the most?', answer: 'Rare, structured hands score most: pure-suit hands, all-triplets, and special shapes like seven pairs or thirteen orphans. Riichi\u2019s limit hands and Chinese Official\u2019s 88-point fans sit at the top of their scales.' },
+      { question: 'Does the same hand score the same in every ruleset?', answer: 'No, and the gap is wide. A half flush with a dragon triplet and all triplets pays 7 faan in Hong Kong, 7 han in Riichi and 32 points in Chinese Official. Learn the table of the game you actually play.' }
     ]
   },
   {
