@@ -101,7 +101,7 @@ export const cornerstonePosts: BlogPost[] = [
         heading: 'The 144 Tiles at a Glance',
         body: [
           'A standard mahjong set contains 144 tiles divided into suits, honours and bonus tiles. Every tile appears four times in a suit (with a few exceptions for flowers and seasons), which is why matches and sets are possible at all.',
-          'The chart below explains each group. Together they give the game its depth — you are always tracking what is in your hand, what is on the table and what is still in the wall.'
+          'There are five groups in the set: three numbered suits, four winds, three dragons and the bonus tiles. Each group behaves differently — some tiles can form sequences, some can only form triplets, and a few never enter a winning hand at all. Learning which group a tile belongs to is most of what knowing the tiles means.'
         ]
       },
       {
@@ -110,7 +110,7 @@ export const cornerstonePosts: BlogPost[] = [
           '• Characters (萬, wan) — the tile shows a number of Chinese characters, 1 through 9.',
           '• Bamboo (條, tiao) — the tile shows one to nine sticks of bamboo.',
           '• Circles (筒, tong) — the tile shows one to nine coins or dots.',
-          'Each suit has four copies of each number, giving 36 tiles per suit and 108 numbered tiles in total. A set (sequence) is three consecutive numbers in the same suit, so suits matter for more than just looks.'
+          'Each suit has four copies of each number, giving 36 tiles per suit and 108 numbered tiles in total. A set (sequence) is three consecutive numbers in the same suit, so suits matter for more than looks: two tiles can only be joined if they share a suit and sit close in number. That is why a hand which keeps drifting between all three suits never gets anywhere.'
         ],
         tiles: [{"suit": 'char', "rank": 1}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}],
       },
@@ -118,28 +118,57 @@ export const cornerstonePosts: BlogPost[] = [
         heading: 'The Winds',
         body: [
           'The four winds are East, South, West and North. They are honour tiles — they cannot form sequences, only triplets. In many rulesets, a triplet of your seat wind or the round wind scores extra points.',
-          'The dealer is always East, and turns rotate through South, West and North. The wind tiles are the only honours that map to something visible at the table.'
+          'The dealer is always East, and turns rotate through South, West and North. The wind tiles are the only honours that map to something visible at the table — your seat and the round both carry a name you can point to, so you can always tell which winds are worth more to you right now.',
+          'That is what makes winds awkward to hold. A single South does nothing until it becomes a pair, and a pair does nothing until it becomes a triplet — and there are only four copies of any given wind in the whole set. Beginners therefore throw lone winds away early. The exception is the wind that matches your seat or the round: those earn extra points when they complete, so they are worth a few extra turns of patience.'
         ]
       },
       {
         heading: 'The Dragons',
         body: [
           'The three dragons are Red (中), Green (發) and White (白). Like winds, they only form triplets, but dragon triplets score in almost every ruleset — a red dragon triplet is one of the most reliable ways to reach a scoring minimum.',
-          'A full hand with all three dragon triplets is a major scoring pattern in most games.'
+          'A hand holding all three dragon triplets is a major scoring pattern in most games. In Hong Kong mahjong it is one of those patterns that beginners build by accident once, then spend the next twenty games chasing.',
+          'Dragons differ from winds in one important way: a dragon triplet pays in almost every ruleset, while a wind triplet only pays when the wind matches your seat or the round. That difference is why a lone red dragon is a better keep than a lone South, and why an experienced player will hold a dragon pair two turns longer than a wind pair.'
         ]
       },
       {
         heading: 'Flowers and Seasons',
         body: [
           'Flowers and seasons are bonus tiles, used in some rulesets. Each player has one flower and one season; drawing your own grants bonus points and lets you draw a replacement tile from the wall.',
-          'They are usually set aside immediately and never form part of a winning hand.'
+          'They are usually set aside immediately and never form part of a winning hand.',
+          'Bonus tiles also change the arithmetic of a set. A set that includes flowers holds 144 tiles, while the Japanese game uses 136 and plays with no flowers at all. That is why two beginner guides can quote different tile totals and both be right — the first thing to check is whether the set being described includes flowers.'
         ]
+      },
+      {
+        heading: 'How to Read a Mahjong Tile: A Field Guide',
+        body: [
+          'You do not need to read Chinese to identify a mahjong tile. Every tile tells you its group first and its value second. Learn that two-step habit and you can name all 144 tiles after a handful of games.',
+          'Step one: which group is it? Numbered suit tiles always show a number in one of three visual forms — characters, bamboo sticks or circles. Anything that does not show a number is either an honour or a bonus tile. That single check narrows 144 tiles down to the right family straight away.',
+          'Step two: what number, or which honour? In the three suits you count the pips or read the Chinese numeral. 一 through 九 are simply 1 to 9. The character tiles carry the numeral above the character for ten thousand (萬), so 一萬 is 1 and 九萬 is 9. Dot tiles show that many coins, and the 1-dot is a single large circle.',
+          'Bamboo tiles show that many sticks — with one famous exception. On traditional sets the 1-bamboo is drawn as a bird rather than a single stick, which trips up nearly every beginner at least once. If a tile shows a small bird, it is the 1 of bamboo.',
+          'Honours are written as single characters and never show digits. The four winds are 東 East, 南 South, 西 West and 北 North. The three dragons are 中 Red, 發 Green and 白 White. The white dragon is usually drawn as a plain or lightly framed tile, which makes it the easiest of the three to overlook.',
+          'Bonus tiles sit outside this system. The four flowers are 梅 plum, 蘭 orchid, 菊 chrysanthemum and 竹 bamboo; the four seasons are 春 spring, 夏 summer, 秋 autumn and 冬 winter. They are not numbered in any useful sense — each one simply belongs to a seat — and they never become part of a hand.',
+          'A quick way to train your eye: lay a set face up, draw five tiles at random, and name the group and value of each one out loud before you set it down. Most people can recognise all 34 distinct tiles within an evening.'
+        ],
+        tiles: [{"suit": 'char', "rank": 9}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}, {"suit": 'wind', "wind": 'north'}, {"suit": 'dragon', "dragon": 'white'}],
+      },
+      {
+        heading: 'What Each Tile Is Worth: Rarity and What to Keep',
+        body: [
+          'Once you can name a tile, the next question is whether to keep it. Tile value in mahjong is not a price list. It comes down to three things: what the tile can become, how many copies are still in play, and what your ruleset actually pays for.',
+          'What it can become. A tile that can join a sequence has more futures than a tile that can only form a triplet. A 4, 5 or 6 of any suit slots into runs on either side, so it stays useful in almost any hand. A lone honour has exactly one future, and only if you find two more copies.',
+          'How many copies are left. Every tile has four copies in the set. If three of them are already on the table, the fourth is nearly dead. If two are sitting in your own hand, only the remaining two can complete your triplet. This is why strong players watch the discards instead of trying to memorise odds — the table tells you which tiles are still alive.',
+          'What the ruleset pays for. A tile is only valuable inside a scoring system. Hong Kong mahjong rewards a dragon triplet, your seat wind and a pure one suit. Chinese Official demands eight points before any hand counts at all. The same red dragon can be the most useful tile in one ruleset and an easy discard in another, so value is never a property of the tile alone.',
+          'A practical keep-or-throw order for beginners. Keep the middle tiles (4, 5, 6) of a suit you already hold three or more of. Keep a pair of dragons or a pair of your seat wind. Throw lone winds, lone 1s and 9s in suits you are not collecting, and lone honours that are not dragons. Then re-check after every draw, because the answer changes as the wall empties.',
+          'One trap catches almost everyone. Tile value is relative to your own hand, not absolute. A 9-dot is close to worthless in a hand built on 4s and 5s, and close to essential in a hand already holding 7-dot and 8-dot. Before you keep or throw, name the hand the tile is going to complete — if you cannot name it, the tile is not doing any work.',
+          'Two habits separate players who improve from players who stall. First, choose your hand direction by the fifth or sixth discard and stop second-guessing it. Second, never keep a tile because it looks valuable — keep it because you can name the hand it is about to complete.'
+        ],
+        tiles: [{"suit": 'char', "rank": 4}, {"suit": 'char', "rank": 5}, {"suit": 'char', "rank": 6}, {"suit": 'dragon', "dragon": 'red'}, {"suit": 'dragon', "dragon": 'red'}],
       },
       {
         heading: 'Why Tile Meanings Matter',
         body: [
           'You do not need to memorise the artwork — the numbers and suits carry all the information. But knowing what each tile is worth (can it make a sequence? a triplet? a scoring pattern?) turns random drawing into a plan.',
-          'Once the tiles are familiar, the rest of mahjong is pattern recognition and timing.'
+          'Once the tiles are familiar, the rest of mahjong is pattern recognition and timing. You stop asking what a tile is and start asking what it can still become — which is the whole game.'
         ]
       }
     ],
@@ -147,7 +176,10 @@ export const cornerstonePosts: BlogPost[] = [
       { question: 'How many different mahjong tiles are there?', answer: 'There are 34 distinct tiles (9 characters, 9 bamboo, 9 circles, 4 winds, 3 dragons), and four copies of most, giving 144 tiles. Flowers and seasons add 8 more in sets that include them.' },
       { question: 'What do the three suits represent?', answer: 'Characters, bamboo and circles represent different denominations of coins in the game\u2019s historical Chinese origin. In play they are just three suits of 1\u20139.' },
       { question: 'Can honours form sequences?', answer: 'No. Winds and dragons can only form triplets, never sequences. That is why lone honours are usually discarded early.' },
-      { question: 'What is the most valuable tile?', answer: 'There is no single most valuable tile — value depends on your hand and ruleset. Dragon triplets, your seat wind and rare suit tiles like 1 and 9 are generally the most useful.' }
+      { question: 'What is the most valuable tile?', answer: 'There is no single most valuable tile — value depends on your hand and ruleset. Dragon triplets, your seat wind and rare suit tiles like 1 and 9 are generally the most useful.' },
+      { question: 'How do I tell which mahjong tile I am holding?', answer: 'Check the group first: a number means a suit tile, a single character means an honour, and flowers or seasons are bonus tiles. Then read the value — count the pips, read the numeral, or recognise the wind or dragon character.' },
+      { question: 'Why is the 1-bamboo tile drawn as a bird?', answer: 'On traditional sets the 1 of bamboo is illustrated as a sparrow or peacock rather than a single stick. The artwork is decorative only — the tile still counts as the 1 of the bamboo suit.' },
+      { question: 'Which tiles should a beginner keep?', answer: 'Keep middle tiles (4, 5, 6) in a suit you are collecting, plus pairs of dragons or your seat wind. Discard lone winds, lone 1s and 9s in suits you are not using, and lone honours that are not dragons.' }
     ]
   },
   {
