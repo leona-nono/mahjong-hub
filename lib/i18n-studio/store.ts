@@ -101,12 +101,17 @@ export function getEntry(
     case 'blog': {
       const post = getBlogPosts().find((p) => p.slug === id);
       if (!post) throw Object.assign(new Error('Unknown blog slug'), { status: 404 });
-      const en = {
+      const tsEn = {
         title: post.title,
         description: post.description,
         sections: post.sections,
         faq: post.faq
       };
+      const enAbs = path.join(ROOT, 'data', 'blog-i18n', 'en.json');
+      const enFile = existsSync(enAbs)
+        ? (readJson(resolveSafePath('data/blog-i18n/en.json')) as Record<string, unknown>)
+        : null;
+      const en = (enFile?.[id] as typeof tsEn | undefined) ?? tsEn;
       if (locale === 'en') return { en, locale: en, localeCode: 'en' };
       const file = readJson(
         resolveSafePath(`data/blog-i18n/${locale}.json`)
@@ -116,11 +121,16 @@ export function getEntry(
     case 'games': {
       const game = games.find((g) => g.slug === id);
       if (!game) throw Object.assign(new Error('Unknown game slug'), { status: 404 });
-      const en = {
+      const tsEn = {
         title: game.title,
         description: game.description,
         content: game.content ?? null
       };
+      const enAbs = path.join(ROOT, 'data', 'games-i18n', 'en.json');
+      const enFile = existsSync(enAbs)
+        ? (readJson(resolveSafePath('data/games-i18n/en.json')) as Record<string, unknown>)
+        : null;
+      const en = (enFile?.[id] as typeof tsEn | undefined) ?? tsEn;
       if (locale === 'en') return { en, locale: en, localeCode: 'en' };
       const file = readJson(
         resolveSafePath(`data/games-i18n/${locale}.json`)
@@ -170,12 +180,13 @@ export function saveEntry(
     }
     case 'blog': {
       if (locale === 'en') {
-        throw Object.assign(
-          new Error(
-            'English blog root lives in data/blog.ts — edit there or migrate to en.json later'
-          ),
-          { status: 400 }
-        );
+        const abs = resolveSafePath('data/blog-i18n/en.json');
+        const file = (
+          existsSync(abs) ? readJson(abs) : {}
+        ) as Record<string, unknown>;
+        file[id] = payload;
+        writeJson(abs, file);
+        return;
       }
       if (!(CONTENT_LOCALES as readonly string[]).includes(locale)) {
         throw Object.assign(new Error('Invalid locale'), { status: 400 });
@@ -188,12 +199,13 @@ export function saveEntry(
     }
     case 'games': {
       if (locale === 'en') {
-        throw Object.assign(
-          new Error(
-            'English game root lives in data/games.ts — edit there or migrate to en.json later'
-          ),
-          { status: 400 }
-        );
+        const abs = resolveSafePath('data/games-i18n/en.json');
+        const file = (
+          existsSync(abs) ? readJson(abs) : {}
+        ) as Record<string, unknown>;
+        file[id] = payload;
+        writeJson(abs, file);
+        return;
       }
       const abs = resolveSafePath(`data/games-i18n/${locale}.json`);
       const file = readJson(abs) as Record<string, unknown>;

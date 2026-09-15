@@ -279,25 +279,26 @@ export function getBlogPost(slug: string): BlogPost | undefined {
   return post ? withDates(post) : undefined;
 }
 
-/** Merge locale overrides (data/blog-i18n/*.json) into a post, falling back to en. */
+/** Merge locale overlays (data/blog-i18n/*.json) into a post, falling back to TS. */
 export function getLocalizedBlogPost(
   slug: string,
   locale: string
 ): BlogPost | undefined {
   const post = getBlogPost(slug);
-  if (!post || locale === 'en') return post ? withDates(post) : undefined;
+  if (!post) return undefined;
 
   const i18n = BLOG_I18N[slug];
-  if (!i18n) return post;
+  if (!i18n) return withDates(post);
 
   const localeKey = locale as LocaleCode;
-  return {
+  // EN prefers en.json when present so Studio "Save EN" is live on the site.
+  return withDates({
     ...post,
     title: i18n.title?.[localeKey] ?? post.title,
     description: i18n.description?.[localeKey] ?? post.description,
     sections: i18n.sections?.[localeKey] ?? post.sections,
     faq: i18n.faq?.[localeKey] ?? post.faq
-  };
+  });
 }
 
 /** Localize a list of posts (for the beginners listing). */

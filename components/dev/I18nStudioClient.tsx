@@ -450,7 +450,10 @@ export default function I18nStudioClient() {
       if (!cats.includes(f.category)) continue;
       map.set(f.path, { ...map.get(f.path), loc: f });
     }
-    return [...map.entries()].sort(([a], [b]) => a.localeCompare(b));
+    return [...map.entries()].sort(([a], [b]) =>
+      // numeric: keep sections.2 above sections.10 when a post grows past 9 sections
+      a.localeCompare(b, undefined, { numeric: true })
+    );
   }, [enFields, locFields, cats]);
 
   const grouped = useMemo(() => {
@@ -484,6 +487,8 @@ export default function I18nStudioClient() {
 
   const enEditable =
     domain === 'messages' ||
+    domain === 'blog' ||
+    domain === 'games' ||
     domain === 'about' ||
     domain === 'home-guide' ||
     domain === 'glossary' ||
@@ -496,8 +501,8 @@ export default function I18nStudioClient() {
     }
     const fields = flattenFields(domain, payload);
     for (const f of fields) {
+      if (f.kind !== 'string') continue;
       if (
-        f.kind === 'string' &&
         (f.category === 'title' || f.category === 'description') &&
         String(f.value).trim() === ''
       ) {
@@ -589,6 +594,60 @@ export default function I18nStudioClient() {
     a.download = `${domain}-${id}-${locale}.json`;
     a.click();
     URL.revokeObjectURL(a.href);
+  };
+
+  /**
+   * Load a JSON file into the Translation pane. Accepts:
+   * - bare locale entry `{ title, sections, ... }`
+   * - Studio snapshot `{ domain, id, locale, en, localePayload }`
+   * - whole locale file slug map `{ [slug]: entry }` → uses current `id`
+   * Nothing is written to disk until Save.
+   */
+  const importSnapshot = async (file: File) => {
+    let parsed: unknown = null;
+    try {
+      parsed = parseJsonSafe(await file.text());
+    } catch {
+      parsed = null;
+    }
+    if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      setStatus(`Import failed: ${file.name} is not a JSON object`);
+      return;
+    }
+    const bag = parsed as Record<string, unknown>;
+
+    let payload: unknown;
+    if ('localePayload' in bag) {
+      payload = bag.localePayload;
+      if (payload === undefined || payload === null) {
+        setStatus('Import failed: snapshot has no localePayload');
+        return;
+      }
+      if (typeof bag.id === 'string' && bag.id !== id) {
+        setStatus(`Import skipped: file targets "${bag.id}", current entry is "${id}"`);
+        return;
+      }
+      if (typeof bag.locale === 'string' && bag.locale !== locale) {
+        setStatus(`Import skipped: file is "${bag.locale}", current locale is "${locale}"`);
+        return;
+      }
+    } else if (
+      id &&
+      bag[id] !== undefined &&
+      typeof bag[id] === 'object' &&
+      bag[id] !== null &&
+      !Array.isArray(bag[id]) &&
+      !('title' in bag && 'description' in bag)
+    ) {
+      // Whole-file slug map (e.g. blog-i18n/zh.json) — pick current entry.
+      payload = bag[id];
+    } else {
+      payload = parsed;
+    }
+
+    pushUndo(locObj);
+    setLocObj(payload);
+    setStatus(`Imported ${file.name} — review, then Save`);
   };
 
   const copyIssueList = async () => {
@@ -970,9 +1029,27 @@ export default function I18nStudioClient() {
             type="button"
             className="rounded-lg border border-zinc-300 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 hover:bg-zinc-50"
             onClick={downloadSnapshot}
+            title="Download a snapshot of both panes as JSON"
           >
             JSON
           </button>
+          <label
+            className="cursor-pointer rounded-lg border border-zinc-300 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 hover:bg-zinc-50"
+            title="Load a JSON file into the Translation pane (nothing is written until Save)"
+          >
+            Import
+            <input
+              type="file"
+              accept="application/json,.json"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) void importSnapshot(file);
+                // Reset so the same file can be re-imported after edits.
+                e.target.value = '';
+              }}
+            />
+          </label>
           <span className="ml-auto max-w-md truncate text-xs text-zinc-500">
             {status}
           </span>

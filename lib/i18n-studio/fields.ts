@@ -14,6 +14,17 @@ export interface FlatField {
 
 const SKIP = new Set(['_meta']);
 
+/**
+ * Keys whose value is structured art data rather than prose. These stay as a
+ * single JSON field instead of expanding, so a 14-tile row does not turn into
+ * 28 suit/rank inputs that drown out the text around it.
+ */
+const JSON_BLOB_KEYS = new Set(['tiles', 'heroTiles']);
+
+function isPlainObject(value: unknown): boolean {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
 /** Flatten editable leaves for Studio (skip _meta). */
 export function flattenFields(
   domain: string,
@@ -42,21 +53,41 @@ export function flattenFields(
         }
       ];
     }
-    // Mixed / object arrays → single JSON editor for the array
-    return [
-      {
-        path: prefix || '(root)',
-        kind: 'json',
-        value,
-        category: categorizeFieldPath(domain, prefix || 'root')
-      }
-    ];
+    // Arrays of objects expand into indexed paths (sections.0.heading,
+    // faq.2.answer) so headings and paragraphs can be diffed side by side.
+    // Anything else (numbers, nested arrays, mixed) keeps one editor.
+    if (value.length === 0 || !value.every(isPlainObject)) {
+      return [
+        {
+          path: prefix || '(root)',
+          kind: 'json',
+          value,
+          category: categorizeFieldPath(domain, prefix || 'root')
+        }
+      ];
+    }
+    const out: FlatField[] = [];
+    value.forEach((item, index) => {
+      out.push(...flattenFields(domain, item, prefix ? `${prefix}.${index}` : String(index)));
+    });
+    return out;
   }
   if (typeof value === 'object') {
     const out: FlatField[] = [];
     for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
       if (SKIP.has(k)) continue;
       const p = prefix ? `${prefix}.${k}` : k;
+      if (JSON_BLOB_KEYS.has(k)) {
+        if (v === null || v === undefined) continue;
+        if (Array.isArray(v) && v.length === 0) continue;
+        out.push({
+          path: p,
+          kind: 'json',
+          value: v,
+          category: categorizeFieldPath(domain, p)
+        });
+        continue;
+      }
       out.push(...flattenFields(domain, v, p));
     }
     return out;
@@ -90,7 +121,12 @@ export function setAtPath(root: unknown, path: string, value: unknown): unknown 
   for (let i = 0; i < parts.length - 1; i++) {
     const p = parts[i];
     const next = cur[p];
-    if (next === null || typeof next !== 'object' || Array.isArray(next)) {
+    if (Array.isArray(next)) {
+      // Walk *through* array containers. Overwriting an array with {} here
+      // would rewrite `sections: [...]` as `{"0": ...}` and silently break
+      // both the renderer and blog-i18n-structure.test.ts.
+      cur[p] = structuredClone(next);
+    } else if (next === null || typeof next !== 'object') {
       cur[p] = {};
     } else {
       cur[p] = structuredClone(next);

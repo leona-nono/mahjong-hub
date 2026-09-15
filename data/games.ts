@@ -524,15 +524,15 @@ export function getGame(slug: string): GameConfig | undefined {
 
 /**
  * Return a game with locale-aware title / description / content merged in.
- * Falls back to the English base for any missing key, so partial translations
- * are safe. `locale === 'en'` returns the raw config unchanged.
+ * Falls back to the English TS base for any missing key. `locale === 'en'`
+ * prefers data/games-i18n/en.json when present so Studio EN edits are live.
  */
 export function getLocalizedGame(
   slug: string,
   locale: string
 ): GameConfig | undefined {
   const game = getGame(slug);
-  if (!game || locale === 'en') return game;
+  if (!game) return game;
   const i18n = GAME_I18N[slug];
   if (!i18n) return game;
 
@@ -551,7 +551,9 @@ export function getLocalizedGame(
           supportedDevices: ci.supportedDevices ?? game.content.supportedDevices,
           faq: ci.faq ?? game.content.faq
         }
-      : game.content;
+      : ci && !game.content
+        ? (ci as GameContent)
+        : game.content;
 
   return { ...game, title, description, content };
 }

@@ -4,7 +4,8 @@ import {
   clearIdenticalToEn,
   copyEnIntoEmpty,
   flattenFields,
-  replaceInStrings
+  replaceInStrings,
+  setAtPath
 } from '@/lib/i18n-studio/fields';
 import { isCjkLocale, pushResidualFinding } from '@/lib/i18n-rules/residual';
 import type { I18nFinding } from '@/lib/i18n-rules/types';
@@ -16,6 +17,14 @@ describe('field taxonomy', () => {
     expect(categorizeFieldPath('games', 'content.howToPlay')).toBe('list');
     expect(categorizeFieldPath('site', 'ogImage')).toBe('media');
     expect(categorizeFieldPath('messages', 'nav.play')).toBe('button');
+  });
+
+  it('classifies expanded blog leaves for accurate filters', () => {
+    expect(categorizeFieldPath('blog', 'sections.0.heading')).toBe('title');
+    expect(categorizeFieldPath('blog', 'sections.0.body')).toBe('context');
+    expect(categorizeFieldPath('blog', 'faq.2.answer')).toBe('context');
+    expect(categorizeFieldPath('blog', 'faq.2.question')).toBe('context');
+    expect(categorizeFieldPath('blog', 'sections.0.tiles')).toBe('media');
   });
 });
 
@@ -51,6 +60,34 @@ describe('field helpers', () => {
     expect(fields.some((f) => f.path === 'content.howToPlay' && f.kind === 'string[]')).toBe(
       true
     );
+  });
+
+  it('expands object arrays into indexed paths', () => {
+    const fields = flattenFields('blog', {
+      title: 'T',
+      sections: [
+        { heading: 'H1', body: ['a', 'b'] },
+        { heading: 'H2', body: ['c'] }
+      ],
+      faq: [{ question: 'Q?', answer: 'A.' }]
+    });
+    expect(fields.some((f) => f.path === 'sections.0.heading' && f.value === 'H1')).toBe(true);
+    expect(
+      fields.some((f) => f.path === 'sections.0.body' && f.kind === 'string[]')
+    ).toBe(true);
+    expect(fields.some((f) => f.path === 'faq.0.answer' && f.value === 'A.')).toBe(true);
+    expect(fields.some((f) => f.path === 'sections')).toBe(false);
+  });
+
+  it('keeps sections as an array when writing indexed paths', () => {
+    const doc = {
+      title: 'T',
+      sections: [{ heading: 'Old', body: ['a'] }]
+    };
+    const next = setAtPath(doc, 'sections.0.heading', 'X') as typeof doc;
+    expect(Array.isArray(next.sections)).toBe(true);
+    expect(next.sections[0].heading).toBe('X');
+    expect(next.sections[0].body).toEqual(['a']);
   });
 });
 

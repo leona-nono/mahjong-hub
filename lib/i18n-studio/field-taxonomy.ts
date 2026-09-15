@@ -20,16 +20,20 @@ export function categorizeFieldPath(domain: string, path: string): FieldCategory
   const p = path.toLowerCase();
   const leaf = p.split('.').pop() ?? p;
 
+  // Decorative tile rows — art data, not prose.
   if (
+    leaf === 'herotiles' ||
+    leaf === 'tiles' ||
+    /(^|\.)tiles$/.test(p) ||
     /ogimage|thumbnail|cover|image|img|video|screenshot|url$/.test(leaf) ||
     /\/(images|img|video)/.test(p)
   ) {
     return 'media';
   }
+  // After array expansion, leaf keys decide the filter bucket.
   if (
-    /^(title|subtitle|homeh1|pagename)$/.test(leaf) ||
+    /^(title|subtitle|homeh1|pagename|heading)$/.test(leaf) ||
     leaf.endsWith('title') ||
-    leaf === 'heading' ||
     p.includes('.heading')
   ) {
     return 'title';
@@ -41,6 +45,15 @@ export function categorizeFieldPath(domain: string, path: string): FieldCategory
     return 'description';
   }
   if (
+    leaf === 'body' ||
+    leaf === 'answer' ||
+    leaf === 'question' ||
+    leaf === 'paragraphs' ||
+    leaf === 'intro'
+  ) {
+    return 'context';
+  }
+  if (
     domain === 'messages' &&
     (/btn|button|cta|play|start|submit|label$/.test(leaf) ||
       p.includes('.cta') ||
@@ -48,6 +61,7 @@ export function categorizeFieldPath(domain: string, path: string): FieldCategory
   ) {
     return 'button';
   }
+  // Whole-array containers (before expansion) stay under list.
   if (
     leaf === 'howtoplay' ||
     leaf === 'tips' ||
@@ -55,7 +69,6 @@ export function categorizeFieldPath(domain: string, path: string): FieldCategory
     leaf === 'faq' ||
     leaf === 'sections' ||
     leaf === 'bullets' ||
-    leaf === 'paragraphs' ||
     leaf === 'closing' ||
     p.includes('.howtoplay') ||
     p.includes('.features') ||

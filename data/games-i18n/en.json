@@ -1,0 +1,329 @@
+{
+  "hong-kong-mahjong": {
+    "title": "Hong Kong Mahjong",
+    "description": "Play real four-player mahjong against three opponents. Hong Kong Old Style scoring, free, no download.",
+    "content": {
+      "intro": "Mahjong Hub Hong Kong Mahjong is a four-player product ruleset based on Hong Kong Old Style. It uses Characters, Dots, Bamboo, Winds and all three Dragons — Red, Green and White; Flowers and Seasons are deliberately excluded. Build four sets and one pair, then choose Casual mode for beginner-friendly chicken hands or Standard mode for the traditional three-faan minimum.",
+      "howToPlay": [
+        "The 136-tile product wall contains Characters, Dots, Bamboo, Winds and the Red, Green and White Dragons. Flowers and Seasons are not used.",
+        "Each player starts with 13 tiles; East starts with 14 and makes the first discard. On a later turn, draw one tile and then discard one, keeping your hand at 13.",
+        "A winning hand is four sets plus one pair. A set is either three identical tiles or three consecutive tiles in the same suit.",
+        "When another player discards a tile you need, you may call it: pong for a triplet, chi for a sequence (from the player to your left only), or kong for all four copies.",
+        "Calling a tile makes your hand open, which costs you some scoring patterns. Take the call only when it genuinely moves you forward.",
+        "Declare a win by self-draw or on another player’s discard. Casual mode accepts any complete four-sets-and-a-pair hand; Standard mode requires at least three faan.",
+        "After settlement, East keeps the dealer seat after a dealer win or a draw; otherwise the dealer moves to the next seat."
+      ],
+      "tips": [
+        "Discard lone honour tiles early. They are the hardest tiles to pair up and the least flexible thing in your hand.",
+        "Track your distance to ready rather than staring at individual tiles. Two away is a normal mid-game position; one away is when you start playing carefully.",
+        "A hand of all one suit is worth far more than the sum of its parts. Dealt seven or eight tiles in a single suit, committing early usually pays.",
+        "Watch the other seats. Three players throwing away the same suit means the tiles you need are probably still live.",
+        "In Standard mode, verify the faan total before committing to a call: a complete shape below three faan is not a legal win."
+      ],
+      "faq": [
+        {
+          "question": "Do I need to download anything?",
+          "answer": "No. The game runs entirely in your browser on desktop and mobile, and nothing is installed."
+        },
+        {
+          "question": "Is this real mahjong or the tile-matching game?",
+          "answer": "This is real four-player mahjong with drawing, discarding, calling and scoring. The tile-matching game most Western sites call \"mahjong\" is mahjong solitaire, which is a different game."
+        },
+        {
+          "question": "What is the difference between Casual and Standard mode?",
+          "answer": "Casual mode lets any structurally complete hand win and awards a one-faan chicken hand when no other pattern scores. Standard Hong Kong mode requires at least three faan, so a complete lower-scoring hand must keep playing."
+        },
+        {
+          "question": "Is there any real-money gambling?",
+          "answer": "No. There is no wagering, no purchasable currency and no cash prize of any kind. Scores track your own progress only."
+        }
+      ],
+      "features": [
+        "Authentic Hong Kong Old Style rules with 136 tiles — Characters, Dots, Bamboo, Winds and Dragons only.",
+        "Casual mode for learning complete hands without a faan gate; Standard mode enforces the traditional three-faan minimum.",
+        "Three AI opponents with sensible discard logic so you can practice real four-player tempo.",
+        "Optional readiness hint and post-hand faan breakdown help you learn scoring without a rulebook open.",
+        "Full browser play on desktop and mobile — tap or click to discard, call tiles and declare wins."
+      ],
+      "supportedDevices": "Hong Kong Mahjong runs in any modern browser on Windows, macOS, Linux, Android and iOS with no download. Landscape on a phone or tablet gives the widest tile view; portrait still works with scrollable hands. Chrome, Safari, Firefox and Edge are supported — use an updated browser for smooth animations during calls and settlement."
+    }
+  },
+  "riichi-mahjong": {
+    "title": "Riichi Mahjong",
+    "description": "Japanese Riichi mahjong against three opponents. The ruleset behind the modern competitive scene.",
+    "content": {
+      "intro": "This four-player Japanese Riichi table follows the approved World Riichi Championship 2025 baseline: no red fives, one-winner head-bump, and a 30,000-point start.",
+      "howToPlay": [
+        "Each player starts with 13 tiles. Draw one tile and discard one, aiming for four sets and a pair; Seven Pairs and Thirteen Orphans are also valid closed shapes.",
+        "A complete shape is not enough: the hand needs at least one yaku. Dora adds value but is not a yaku by itself.",
+        "Chi is available only from the player on your left. Pon, Kan and Ron may be called from any opponent, subject to claim priority.",
+        "Keep the hand closed and reach tenpai to declare Riichi. Choose a highlighted discard and place a 1,000-point stick.",
+        "Win by Tsumo on your own draw or Ron on an opponent discard. Under WRC head-bump, only the first winner in turn order receives the Ron.",
+        "The match runs through East and South rounds. In this product baseline, a dealer win or an exhaustive draw keeps the dealer; exhaustive draws use a 3,000-point noten payment.",
+        "This table uses 136 tiles, a 14-tile dead wall, Dora indicators and no red fives."
+      ],
+      "tips": [
+        "Secure a yaku before chasing Dora: bonus tiles cannot make an otherwise yaku-less hand legal.",
+        "Compare shanten and effective tiles before every discard; keep shapes with more improving draws.",
+        "Against Riichi, begin with genbutsu, then use suji and visible tile walls to reduce risk.",
+        "Declare Riichi deliberately: compare wait quality, hand value, remaining tiles and the match score.",
+        "Do not force low-value attacks late in the hand when a safer fold protects your position."
+      ],
+      "faq": [
+        {
+          "question": "How is Riichi different from Chinese mahjong?",
+          "answer": "Riichi requires a scoring pattern before a win can be declared, values concealed hands more highly, and uses a different scoring table. The draw-and-discard core is the same, so the two transfer easily."
+        },
+        {
+          "question": "Is this a good place to learn Riichi?",
+          "answer": "It is a good place to get comfortable with the flow, the calls and the common patterns. The readiness hint shows how far you are from a complete hand, which is the single most useful thing for a new player to see."
+        }
+      ],
+      "features": [
+        "World Riichi Championship 2025 baseline — no red fives, head-bump Ron and 30,000-point start.",
+        "Full yaku gate, Dora indicators and a 14-tile dead wall for authentic competitive flow.",
+        "Riichi declaration with 1,000-point stick, Tsumo and Ron wins with turn-order priority.",
+        "Readiness hint tracks shanten so you can learn tenpai without guessing tile counts.",
+        "East and South rounds with dealer continuation on dealer wins and exhaustive draws."
+      ],
+      "supportedDevices": "Riichi Mahjong plays in your browser on desktop, laptop, tablet and phone without installing an app. Mobile landscape is recommended for reading opponent discards and your hand together. Supported browsers include current Chrome, Safari, Firefox and Edge on Windows, macOS, Linux, Android and iOS."
+    }
+  },
+  "chinese-official-mahjong": {
+    "title": "Chinese Official Mahjong",
+    "description": "Chinese Official Mahjong (MCR) training table — 144 tiles, Flower replacement, and an eight-point win gate.",
+    "content": {
+      "intro": "This is our Chinese Official Mahjong (MCR) training table. It already uses 144 tiles, exposes and replaces Flowers and Seasons, and enforces the eight-point win gate. The full 81-element competition scorer and its exclusion rules are still in development, so this page must not be used as a tournament adjudicator.",
+      "howToPlay": [
+        "Standard four-player mahjong: draw, discard, and build four sets plus a pair.",
+        "Reveal every Flower or Season immediately in the Flower area, then take a replacement from the back of the wall.",
+        "A hand must be worth at least eight qualifying points before it can be declared. Flower points do not meet that gate on their own.",
+        "The current scorer covers only a training subset; use the result to learn the turn flow, not to certify a competition score."
+      ],
+      "tips": [
+        "Treat this build as a practice table while the official 81 scoring elements are being added.",
+        "A hand one tile from complete but below eight qualifying points is not a legal win; keep improving its scoring structure.",
+        "When the full scorer arrives it will explain included and excluded elements, rather than simply adding every visible pattern."
+      ],
+      "faq": [
+        {
+          "question": "Why can I not declare a win on a complete hand?",
+          "answer": "Chinese Official requires eight points minimum. If your completed hand scores less, the win cannot be declared and play continues."
+        },
+        {
+          "question": "Is the scoring here complete?",
+          "answer": "No. This training version implements the 144-tile and Flower replacement flow plus an initial scoring subset. The complete official 81-element table and its exclusions are still being implemented."
+        }
+      ],
+      "features": [
+        "144-tile Chinese Official (MCR) training table with Flower and Season replacement flow.",
+        "Eight-point minimum win gate teaches competition-ready adjudication early.",
+        "Four-player draw-and-discard against AI with standard meld calls.",
+        "Training scorer covers an initial pattern subset while the full 81-element table is built.",
+        "Clear on-screen feedback when a complete hand is below the eight-point threshold."
+      ],
+      "supportedDevices": "Chinese Official Mahjong runs entirely in the browser on Windows, macOS, Linux, Android and iOS. Desktop and tablet screens make Flower replacement and scoring feedback easiest to read; phones work in either orientation. Use an up-to-date Chrome, Safari, Firefox or Edge for the best performance during multi-player turns."
+    }
+  },
+  "sichuan-mahjong": {
+    "title": "Sichuan Mahjong",
+    "description": "Sichuan Blood Battle Mahjong with Exchange Three, a forbidden suit, and continued play after the first win.",
+    "content": {
+      "intro": "Sichuan Mahjong on Mahjong Hub follows the Chengdu Blood Battle to the End baseline: three suits only, Exchange Three, a forbidden suit, no Chow, and play continuing after the first player wins.",
+      "howToPlay": [
+        "The 108-tile wall uses only Characters, Dots and Bamboo. Winds, Dragons, Flowers and Seasons are not used.",
+        "Before normal play, select three tiles from one suit for Exchange Three; the table passes them in the direction chosen for that hand.",
+        "Choose one forbidden suit. You must discard every tile of that suit before you are allowed to win.",
+        "Draw and discard normally. Chow is not allowed; Pung and Kong are allowed under the table claim order.",
+        "Make four melds and a pair, or an approved special hand such as Seven Pairs, then win by self-draw or a legal discard.",
+        "A winner stops drawing, but the hand continues for the remaining players. End-of-hand settlement includes ready-hand check, flower-pig penalty and Kong refund."
+      ],
+      "tips": [
+        "Choose the forbidden suit from the suit you can clear most quickly, not merely from its lowest tiles.",
+        "Exchange Three should remove three tiles from one coherent weak suit so you do not create three unrelated dead tiles.",
+        "Because Chow is unavailable, pairs and connected shapes are more valuable than in Chow-enabled variants.",
+        "After another player wins, reassess risk: staying ready matters for the end-of-hand check, but avoid becoming flower pig.",
+        "Track Kong exposure and settlement. A high-value Kong is not automatically safe if it opens a dangerous draw."
+      ],
+      "faq": [
+        {
+          "question": "Why can I not win while I still hold my forbidden suit?",
+          "answer": "The forbidden-suit rule is a core Chengdu Blood Battle condition. Clear every tile of your chosen suit before a win may be declared."
+        },
+        {
+          "question": "Why does the game continue after someone wins?",
+          "answer": "Blood Battle to the End permits remaining players to continue. This can create several winners or penalties within one hand."
+        }
+      ],
+      "features": [
+        "Chengdu Blood Battle baseline — 108 tiles, Exchange Three and a personal forbidden suit.",
+        "No Chow: Pung and Kong only, matching fast Sichuan table tempo against three AI seats.",
+        "Blood Battle flow continues after the first win with end-of-hand ready check and penalties.",
+        "Interactive Exchange Three and forbidden-suit picker before each hand begins.",
+        "Self-draw and discard wins with Seven Pairs and standard four-meld shapes supported."
+      ],
+      "supportedDevices": "Sichuan Mahjong runs in modern browsers on desktop, laptop, tablet and phone without an install. Landscape mobile view fits the exchange and forbidden-suit controls best. Chrome, Safari, Firefox and Edge on Windows, macOS, Linux, Android and iOS are all supported."
+    }
+  },
+  "taiwan-mahjong": {
+    "title": "Taiwan Mahjong",
+    "description": "Taiwanese 16-tile Mahjong with Flower replacement and Tai-based scoring.",
+    "content": {
+      "intro": "Mahjong Hub Taiwan Mahjong is a relaxed 16-tile version: a 144-tile wall with Flowers and Seasons, five melds plus a pair to win, additive Tai scoring, and a 0-Tai minimum for beginner-friendly play.",
+      "howToPlay": [
+        "Use all 144 tiles. Each non-dealer starts with 16 tiles; East starts with 17 and makes the first discard.",
+        "Reveal every Flower or Season immediately and draw a replacement. It remains outside your 16-tile hand and adds Tai when applicable.",
+        "On your turn draw one tile and discard one. You may Chow from the left player, or Pung and Kong according to the claim order.",
+        "Win with five melds and one pair, for a 17-tile hand. Self-draw and discard wins are both supported.",
+        "Tai patterns add together for settlement. This Mahjong Hub beginner baseline allows a complete 0-Tai hand to win."
+      ],
+      "tips": [
+        "With 16 concealed tiles, retain several connected shapes early instead of committing to one wait too quickly.",
+        "Flowers add value but do not repair a weak main hand; build the five-meld structure first.",
+        "Kongs are more frequent in Taiwan Mahjong. Consider both the replacement draw and the information you reveal.",
+        "Use 0-Tai mode to learn tempo; once comfortable, chase Tai only when it does not reduce your live waits.",
+        "Check whether your Flower matches your seat, as seat Flowers can add an extra scoring bonus."
+      ],
+      "faq": [
+        {
+          "question": "Why do I hold 16 tiles instead of 13?",
+          "answer": "Taiwan Mahjong uses five melds plus one pair. Players normally hold 16 tiles and win after drawing or claiming the 17th."
+        },
+        {
+          "question": "Can a 0-Tai hand win here?",
+          "answer": "Yes. Mahjong Hub uses a relaxed 0-Tai baseline. Other Taiwan tables may require a minimum Tai, so this is shown clearly in the game settings."
+        }
+      ],
+      "features": [
+        "16-tile Taiwanese hands with five melds plus a pair and 144-tile wall including Flowers.",
+        "Immediate Flower replacement with Tai bonuses and seat-Flower scoring options.",
+        "Chow, Pung and Kong calls with additive Tai settlement on every win.",
+        "Beginner-friendly 0-Tai minimum so you can learn tempo before chasing high-Tai patterns.",
+        "Four-player table against AI with self-draw and discard wins."
+      ],
+      "supportedDevices": "Taiwan Mahjong plays in the browser on Windows, macOS, Linux, Android and iOS. Tablets and desktops make the larger 16-tile hand easiest to scan; phones work in portrait or landscape. Use current Chrome, Safari, Firefox or Edge for responsive tile taps and smooth Flower replacement animations."
+    }
+  },
+  "american-mahjong": {
+    "title": "American Mahjong",
+    "description": "American Mahjong with Charleston, Jokers, Flowers, and card-based winning patterns.",
+    "content": {
+      "intro": "Mahjong Hub American Mahjong is an original practice-card game inspired by NMJL-style flow: 152 tiles, Charleston, Flowers, Jokers, exposed groups and exact card-pattern wins. It does not reproduce a current NMJL annual card.",
+      "howToPlay": [
+        "Use a 152-tile set with standard tiles, eight Flowers and eight Jokers. Every player takes 13 tiles; East takes 14 and discards first.",
+        "Read the original practice card, then complete Charleston: pass three tiles right, across and left. A second Charleston and courtesy pass are table options.",
+        "Draw and discard while steering toward one exact line on the practice card, not a general four-meld-and-a-pair shape.",
+        "Expose legal Pungs, Kongs or larger groups when the selected card line permits it. Concealed card lines may not be exposed before the final win.",
+        "Use a Joker only in a group of three or more; never use it as a single or pair. On your turn, a natural tile may exchange for a Joker in an opponent exposure.",
+        "Declare Mah Jongg only when all 14 tiles exactly match one legal original practice-card line."
+      ],
+      "tips": [
+        "Before Charleston, keep two or three compatible card lines open rather than committing to a single rare line.",
+        "Pass tiles that do not support any of your likely card categories, but never pass a Joker.",
+        "Do not expose a group merely because you can: exposure signals your target and may make your hand impossible to pivot.",
+        "Treat Jokers as group accelerators, not universal wildcards; you still need natural tiles for singles and pairs.",
+        "Use opponent exposures to decide which natural tiles are safe to discard and when a Joker exchange is valuable."
+      ],
+      "faq": [
+        {
+          "question": "Is this the official NMJL yearly card?",
+          "answer": "No. This game uses Mahjong Hub original practice cards. A licensed NMJL-card integration would be a separate future product."
+        },
+        {
+          "question": "Can a Joker be used in a pair?",
+          "answer": "No. In this rules baseline, Jokers are legal only in groups of three or more, never in singles or pairs."
+        }
+      ],
+      "features": [
+        "152-tile American-style set with Flowers, Jokers and NMJL-inspired Charleston passes.",
+        "Original Mahjong Hub practice cards — exact pattern wins, not generic meld shapes.",
+        "Legal Joker groups, Joker exchange on your turn and exposure rules tied to the card line.",
+        "Optional second Charleston and courtesy pass for table-style practice sessions.",
+        "Four-player browser table with guided Charleston and card-pattern validation."
+      ],
+      "supportedDevices": "American Mahjong runs entirely in the browser on desktop and mobile without downloading an app. A wide screen helps read the practice card and exposures together; phones rotate to landscape for the full table layout. Supported on Chrome, Safari, Firefox and Edge across Windows, macOS, Linux, Android and iOS."
+    }
+  },
+  "mahjong-connect-classic": {
+    "title": "Mahjong Connect",
+    "description": "Link matching tile pairs with a path that turns at most twice. Three board sizes, hints, and no timer on relaxed mode.",
+    "content": {
+      "intro": "Mahjong Connect, also known as Onet, is the link-matching puzzle built from mahjong tiles. Clear the whole board by joining pairs of identical tiles with a path that bends no more than twice. Relaxed mode has no clock if you would rather take your time.",
+      "howToPlay": [
+        "Tap or click two tiles showing the same face.",
+        "The pair clears if they can be joined by a path of empty space that turns at most twice. The path may travel around the outside edge of the board.",
+        "Clear every tile to win. Consecutive matches build a streak bonus.",
+        "If no pair is playable, the board reshuffles automatically so you never get stuck."
+      ],
+      "tips": [
+        "Work the edges first. Outside tiles have the most routes available and open up the middle as they clear.",
+        "Two identical tiles sitting next to each other are always playable — but clearing them may be the only way to open a path elsewhere, so look before taking the free match.",
+        "The hint button costs a few points. On the timed boards that trade is almost always worth it."
+      ],
+      "faq": [
+        {
+          "question": "How is this different from mahjong solitaire?",
+          "answer": "Solitaire stacks tiles in layers and you match tiles that are free on one side. Connect lays them flat and asks you to join pairs with a path. Different puzzle, same tiles."
+        },
+        {
+          "question": "What counts as a turn in the path?",
+          "answer": "Every change of direction. A straight line has no turns, an L shape has one, and a Z or U shape has two. Three or more is not allowed."
+        }
+      ],
+      "features": [
+        "Classic Onet-style link matching with authentic mahjong tile faces.",
+        "Three board sizes from compact to full-grid challenges.",
+        "Relaxed mode with no timer plus timed boards for streak scoring.",
+        "Automatic reshuffle when no pair is playable — boards never dead-end.",
+        "Hint system and streak bonus for longer sessions."
+      ],
+      "supportedDevices": "Mahjong Connect runs in any modern browser on desktop, tablet and phone with no install. Touch taps on mobile and click-to-match on desktop both work on the same board. Chrome, Safari, Firefox and Edge on Windows, macOS, Linux, Android and iOS are supported; a mid-size phone screen fits the default board comfortably in portrait."
+    }
+  },
+  "mahjong-solitaire-classic": {
+    "title": "Mahjong Solitaire Classic",
+    "description": "The classic layered tile-matching puzzle. Turtle and pyramid layouts, guaranteed-solvable deals, hints and undo.",
+    "content": {
+      "intro": "Mahjong Solitaire is the classic single-player tile-matching puzzle built from mahjong tiles. Clear the whole layout by matching identical tiles that are free: nothing rests on top of them and at least one side is open. Every deal here is generated solvable, so a complete clearing always exists. Two classic shapes are included — the turtle and the pyramid — plus hints, undo, and a reshuffle for when you corner yourself.",
+      "howToPlay": [
+        "Tap two tiles showing the same face to match them. A tile can be matched only when it is free: nothing rests on top of it and it is open on at least one side at its own layer.",
+        "Tiles cover the tiles directly beneath them, so clear a stack from the top down. The top layer is always available; lower layers open up as you work through it.",
+        "Clear every tile to win. The turtle spreads a wide shell across the board; the pyramid stacks five centred triangles that you peel from the edges inward.",
+        "Every deal is generated solvable, so a solution always exists. Use hints if you are stuck, undo a hasty match, or reshuffle to re-deal the remaining tiles.",
+        "There is no timer and no score pressure — take as long as you like."
+      ],
+      "tips": [
+        "Work the outside first. A tile on the outer edge of a layer has an open side for free, so clearing the perimeter opens up the middle.",
+        "Before taking an obvious pair, glance at what it frees. Two adjacent identical tiles are an easy match, but clearing them may be the only way to unpin a higher stack.",
+        "Use the pyramid tiers to your advantage: its edge tiles are playable from the start, and the apex tile is only reachable once its layer is reached.",
+        "If you run out of matches, reshuffle instead of restarting — the remaining tiles are re-dealt in a fresh solvable arrangement."
+      ],
+      "faq": [
+        {
+          "question": "How is this different from mahjong connect?",
+          "answer": "Connect lays tiles flat and asks you to join matching pairs with a path. Solitaire stacks tiles in layers, and you match tiles that are free on one side and uncovered on top. Different puzzle, same tiles."
+        },
+        {
+          "question": "What does \"free\" mean here?",
+          "answer": "A tile is free when nothing rests directly on top of it and at least one of its left or right neighbours at the same level is empty. The outer edge tiles of a layer are always free on the outside."
+        },
+        {
+          "question": "Is every game guaranteed solvable?",
+          "answer": "Yes. Deals are built in reverse — the game repeatedly picks two free tiles, removes them and records the match — so every layout has a known solution path you can find with thought."
+        },
+        {
+          "question": "Is there any real-money gambling?",
+          "answer": "No. This is a pure puzzle with no wagering, no purchasable currency and no cash prize of any kind."
+        }
+      ],
+      "features": [
+        "Layered mahjong solitaire with turtle and pyramid layouts.",
+        "Every deal is reverse-generated solvable — a full clear is always possible.",
+        "Free-tile matching rules with visual highlight for playable pairs.",
+        "Hints, undo and reshuffle tools when you want a second look without restarting.",
+        "Daily challenge, campaign levels and a no-timer relaxed mode."
+      ],
+      "supportedDevices": "Mahjong Solitaire Classic runs in the browser on Windows, macOS, Linux, Android and iOS without a download. Desktop and tablet screens show the full layered layout; phones scroll naturally over taller turtle stacks. Chrome, Safari, Firefox and Edge are supported — guest progress saves locally on your device."
+    }
+  }
+}

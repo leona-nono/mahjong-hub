@@ -17,6 +17,7 @@
     "validate:blog-i18n": "npx tsx scripts/validate-blog-i18n-json.ts",
     "validate:content-i18n": "npx tsx scripts/validate-content-i18n.ts",
     "validate:games": "npx tsx scripts/validate-games.ts",
+    "verify:en": "npx tsx scripts/verify-en-json-parity.ts",
     "i18n:check": "npx tsx scripts/i18n-check.ts",
     "i18n:studio": "scripts/open-i18n-studio.cmd",
     "translate:content-i18n": "npx tsx scripts/i18n/translate-content-i18n.ts",
