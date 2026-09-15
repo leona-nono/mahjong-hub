@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import ArticleTiles from '@/components/blog/ArticleTiles';
 import { pageMeta, SITE_BASE_URL } from '@/lib/seo';
 import { UI_LOCALES } from '@/lib/locales';
 import { getBlogPosts, getLocalizedBlogPost } from '@/data/blog';
@@ -133,6 +134,7 @@ export default async function BlogPostPage({
                 <RichParagraph text={para} />
               </p>
             ))}
+            {section.tiles?.length ? <ArticleTiles tiles={section.tiles} /> : null}
           </section>
         ))}
       </div>

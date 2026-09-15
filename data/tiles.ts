@@ -1,6 +1,8 @@
 /**
- * Shared mahjong tile spec + presets, used by TileArt (SVG rendering) and the
- * blog content so articles can decorate sections with 牌图.
+ * Shared mahjong tile spec + presets, used by the blog content so articles can
+ * decorate sections with 牌图. Tiles are drawn with the game's own artwork:
+ * lib/mahjong/tile-spec.ts maps a spec to an engine tile id and
+ * components/blog/ArticleTiles.tsx renders it.
  */
 export type TileSuit = 'dot' | 'bamboo' | 'char' | 'wind' | 'dragon';
 

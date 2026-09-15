@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { isBonusTile, isRedFive, normalTile, tileFace, tileName, tileRank, tileSuit, type Tile } from '@/lib/mahjong/tiles';
 import { tileHoverName } from '@/lib/mahjong/tile-hover';
+import { TILE_ART_SIZE, TILE_ART_SRCS, tileArtPngSrc, tileArtWebpSrc } from '@/lib/mahjong/tile-art';
 
 export type TileSize = 'xs' | 'sm' | 'md' | 'lg' | 'table' | 'xl';
 
@@ -13,16 +14,6 @@ const SIZE_CLASS: Record<TileSize, string> = {
   lg: 'h-[4.5rem] w-14 text-2xl rounded-xl',
   table: 'h-12 w-9 text-base rounded-md',
   xl: 'h-24 w-[4.25rem] text-3xl rounded-lg'
-};
-
-/** Photo tiles already include the rim. Keep ~5:7 so object-cover does not letterbox a second card. */
-const TRADITIONAL_SIZE: Record<TileSize, string> = {
-  sm: 'h-9 w-[1.61rem] rounded-sm',
-  xs: 'h-10 w-[1.79rem] rounded-sm',
-  md: 'h-14 w-10 rounded-md',
-  lg: 'h-[4.5rem] w-[3.21rem] rounded-md',
-  table: 'h-12 w-[2.14rem] rounded-sm',
-  xl: 'h-24 w-[4.29rem] rounded-md'
 };
 
 /** Each suit gets its own colour so the board reads at a glance on mobile. */
@@ -47,43 +38,12 @@ export interface TileFaceProps {
   traditional?: boolean;
 }
 
-const TRADITIONAL_TILE_FILES: Record<Tile, string> = {
-  // Exact source order in majiangmeishuziyuan1: Characters, Dots,
-  // Bamboo, Winds, then Dragons. Flowers and Seasons are never mapped.
-  m1: '001.png', m2: '002.png', m3: '003.png', m4: '004.png', m5: '005.png', m6: '006.png', m7: '007.png', m8: '008.png', m9: '009.png',
-  p1: '010.png', p2: '011.png', p3: '012.png', p4: '013.png', p5: '014.png', p6: '015.png', p7: '016.png', p8: '017.png', p9: '018.png',
-  s1: '019.png', s2: '020.png', s3: '021.png', s4: '022.png', s5: '023.png', s6: '024.png', s7: '025.png', s8: '026.png', s9: '027.png',
-  z1: '028.png', z2: '029.png', z3: '030.png', z4: '031.png',
-  z5: '034.png', z6: '033.png', z7: '032.png',
-  // Existing project-owned artwork: Spring/Summer/Autumn/Winter, then
-  // Plum/Orchid/Bamboo/Chrysanthemum. These are only enabled by MCR.
-  f1: '037.png', f2: '038.png', f3: '039.png', f4: '040.png',
-  f5: '041.png', f6: '042.png', f7: '043.png', f8: '044.png'
-};
-
-function traditionalTilePngSrc(tile: Tile): string {
-  const file = TRADITIONAL_TILE_FILES[tile];
-  const base = file
-    ? `/assets/mahjong-hongkong/${isBonusTile(tile) ? 'tiles' : 'tiles-display'}/` + file
-    : '/assets/mahjong-chinese/source-5-crops/tile-42.png';
-  return `${base}?v=20260911`;
-}
-
-function traditionalTileWebpSrc(tile: Tile): string {
-  const file = TRADITIONAL_TILE_FILES[tile];
-  return file && !isBonusTile(tile)
-    ? `/assets/mahjong-hongkong/tiles-webp-v1/${file.replace(/\.png$/, '.webp')}?v=20260911`
-    : traditionalTilePngSrc(tile);
-}
-
-const TRADITIONAL_TILE_SRCS = Object.keys(TRADITIONAL_TILE_FILES).map((tile) => traditionalTileWebpSrc(tile));
-
 /** Warm the browser's decoded image cache after the table becomes interactive. */
 export function useTraditionalTilePreload(enabled = true): void {
   useEffect(() => {
     if (!enabled || typeof window === 'undefined') return;
     const warm = () => {
-      for (const src of TRADITIONAL_TILE_SRCS) {
+      for (const src of TILE_ART_SRCS) {
         const image = new Image();
         image.decoding = 'async';
         image.src = src;
@@ -112,9 +72,9 @@ export default function TileFace({
   const art = normalTile(tile);
   const face = traditional ? (
     <picture className="block h-full w-full">
-      {!isBonusTile(art) && <source srcSet={traditionalTileWebpSrc(art)} type="image/webp" />}
+      {!isBonusTile(art) && <source srcSet={tileArtWebpSrc(art)} type="image/webp" />}
       <img
-        src={traditionalTilePngSrc(art)}
+        src={tileArtPngSrc(art)}
         alt=""
         width={150}
         height={210}
@@ -129,7 +89,7 @@ export default function TileFace({
   const classes = (traditional
     ? [
       'group/tile relative inline-flex select-none items-center justify-center overflow-hidden border-0 bg-transparent p-0 shadow-none transition duration-200 motion-safe:transition-transform motion-safe:active:scale-95',
-      TRADITIONAL_SIZE[size],
+      TILE_ART_SIZE[size],
       muted ? 'opacity-45 saturate-50' : '',
       isRedFive(tile) && !muted ? 'ring-2 ring-rose-400' : '',
       highlight ? 'z-10 -translate-y-2 ring-2 ring-amber-400 ring-offset-1 ring-offset-transparent' : '',

@@ -53,7 +53,7 @@ const beginnerPosts: BlogPost[] = [
     title: 'What Is Mahjong? A Complete Beginner Guide',
     description:
       'Mahjong is a four-player tile game of skill, strategy and luck. Learn what mahjong is, how the tiles work, the main rulesets around the world, and how it differs from the tile-matching games you may have seen online.',
-    readMinutes: 6,
+    readMinutes: 8,
     keywords: 'what is mahjong, mahjong rules, mahjong tiles, mahjong variants, four player mahjong',
     heroTiles: [{"suit": 'char', "rank": 1}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}],
     sections: [
@@ -61,14 +61,17 @@ const beginnerPosts: BlogPost[] = [
         heading: 'Mahjong Is a Four-Player Tile Game',
         body: [
           'Mahjong (麻将) is a tile-based game for four players that combines skill, strategy, and a little luck. Each player starts with thirteen tiles and takes turns drawing and discarding until someone completes a winning hand — traditionally four sets plus a pair.',
-          'It originated in China in the 19th century and spread across Asia, then the world, producing distinct regional rulesets. Today it is one of the most-played games in the world, and it is completely free to play online on sites like this one.'
+          'It originated in China in the 19th century and spread across Asia, then the world, producing distinct regional rulesets. Today it is one of the most-played games in the world, and it is completely free to play online on sites like this one.',
+          'There is no board and no score pad in front of you — only tiles. Four players sit around a square, each guarding thirteen tiles, the undealt tiles are stacked face down in the middle as a tile wall, and the discards pile up in rows in front of every player. Everything else in the game grows out of that arrangement.',
+          'A hand begins with all 144 tiles shuffled face down and built into four walls around the table, then dealt out thirteen at a time. The player who deals first becomes the dealer, and the four seats are named after the winds — East is the dealer, then South, West and North. Those names come back later, because a triplet of your own seat wind is worth extra points.'
         ]
       },
       {
         heading: 'The Tiles',
         body: [
           'A standard mahjong set has 144 tiles: three suits of numbered tiles, honour tiles (winds and dragons), and bonus tiles (flowers and seasons, used in some rulesets).',
-          'The suits are: characters (万, tens), bamboo (条, bamboos) and dots (筒, circles), each numbered 1 through 9 with four copies of every tile. The honours are the four winds (East, South, West, North) and three dragons (Red, Green, White).'
+          'The suits are the character tiles (万, tens), bamboo (条, bamboos) and dots (筒, circles), each numbered 1 through 9 with four copies of every tile. The honours are the four winds (East, South, West, North) and three dragons (Red, Green, White).',
+          'Every mahjong tile exists exactly four times, and that single fact shapes the whole game. It is why three identical tiles can form a set, why you can often work out that two copies of a tile are already gone, and why a hand that looks finished on paper may still be waiting for a tile that no longer exists anywhere on the table. Counting those four copies is the first real skill a beginner picks up.'
         ],
         tiles: [{"suit": 'char', "rank": 1}, {"suit": 'bamboo', "rank": 1}, {"suit": 'dot', "rank": 1}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}],
       },
@@ -76,8 +79,20 @@ const beginnerPosts: BlogPost[] = [
         heading: 'The Objective',
         body: [
           'The goal is to build a hand of four sets and one pair. A set is either a triplet (three identical tiles) or a sequence (three consecutive tiles in the same suit). A pair is two identical tiles.',
-          'Depending on the ruleset, a winning hand also needs a minimum number of points (called faan, han or points). This is what gives mahjong its depth — a complete hand is not always a winning hand.'
+          'Depending on the ruleset, a winning hand also needs a minimum number of points (called faan, han or points). This is what gives mahjong its depth — a complete hand is not always a winning hand.',
+          'The arithmetic tells you almost everything: four sets of three tiles plus a pair is fourteen tiles, which is why a finished hand is fourteen tiles, why you hold thirteen between turns, and why every turn is a draw followed by a discard. The fourteenth tile is the one that closes the shape — every hand is one tile short of itself until that tile arrives.'
         ]
+      },
+      {
+        heading: 'What a Turn Actually Looks Like',
+        body: [
+          'Strip away the rulesets and every turn follows the same rhythm: draw a tile, work out what it does to your shape, then discard a tile. Beginners tend to rush the middle step. Most of the skill in the game lives in those few seconds between picking a tile up and putting one down.',
+          'Picture an early turn. Among your thirteen tiles you hold a 2 and a 3 of dots, a 7 and an 8 of bamboo, a pair of East winds, and several loose tiles that are going nowhere. You draw a 4 of dots. It is not the 1 of dots you were quietly hoping for, but 2-3-4 is a finished sequence all the same — one draw has turned a wish into a set.',
+          'That is when the turn gets interesting, because now you have to give something back. Discarding a lone White Dragon costs you nothing: it pairs with nothing and blocks nothing. Breaking up the 2-3 that has just become useful would cost you the set. Strong players spend their turn on this decision far more than on the draw itself.',
+          'Not every turn belongs to you alone. When another player discards a tile you need, you can sometimes claim it instead of waiting for your own draw. That is what the calls at the table are for, and it is why strong players read all four discard rows and not just their own hand.',
+          'That is the loop — draw, evaluate, release. Early on you are collecting shapes that might grow; later you are holding the ones that will finish and cutting the ones that will not. Once the loop feels natural, the rules stop reading like a checklist and start reading like a map.'
+        ],
+        tiles: [{"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 3}, {"suit": 'dot', "rank": 4}, {"suit": 'bamboo', "rank": 7}, {"suit": 'bamboo', "rank": 8}, {"suit": 'wind', "wind": 'east'}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'white'}],
       },
       {
         heading: 'The Main Variants',
@@ -95,19 +110,31 @@ const beginnerPosts: BlogPost[] = [
         heading: 'Mahjong Solitaire vs. Four-Player Mahjong',
         body: [
           'Many western websites call the single-player tile-matching puzzle "mahjong" — this is actually mahjong solitaire, a completely different game. Solitaire asks you to match identical tiles in a layered layout. Real mahjong is a competitive game with drawing, discarding, calling and scoring.',
-          'Both are fun and both are free to play here. This guide is about the four-player game.'
+          'Both are fun and both are free to play here. This guide is about the four-player game.',
+          'The two share little beyond their artwork. Solitaire is a solo puzzle on a fixed, fully visible layout that has a solution if you look carefully enough; four-player mahjong hides every hand, deals a different draw each time, and ends when somebody wins — or when nobody does. Same tiles, opposite games.'
+        ]
+      },
+      {
+        heading: 'One Hand Is Not the Whole Game',
+        body: [
+          'A single hand ends in one of three ways. You draw the tile you were missing and win on your own — a self-draw. Or another player discards the tile you were waiting for and you claim it, which is how most first wins actually happen. Or the wall runs out before anybody completes a hand, and the round is a draw with nobody scoring.',
+          'That third ending takes new players by surprise. There are only 136 playable tiles in a set, and if all four players defend carefully, the wall really can run dry. A hand that stalls is not a failure by anyone — it is the table agreeing that nobody found a way through. Experienced players will often take a draw over a risky discard.',
+          'Then everything resets and you play the next hand. The deal moves around the table, scores build up across hands, and a session is usually a dozen hands or more rather than a single round. That is why a game of mahjong can take twenty minutes or fill an evening, depending on how the table plays.',
+          'For a beginner this matters more than any rule. You are not trying to win one hand; you are learning to read tiles, to take your chances when the table is quiet, and to let a hopeless hand go early instead of chasing it. The players who improve fastest are the ones who stop playing every hand as if it were the last — and start treating a session as one long game.'
         ]
       },
       {
         heading: 'Is Mahjong Gambling?',
         body: [
-          'No. Mahjong is a game of skill that can be played for fun or for money, exactly like poker or chess. On this site it is completely free — there is no wagering, no purchasable currency and no cash prize.'
+          'No. Mahjong is a game of skill that can be played for fun or for money, exactly like poker or chess. On this site it is completely free — there is no wagering, no purchasable currency and no cash prize.',
+          'Skill shows up over time rather than inside a single hand. Luck decides who draws the tile they need tonight; judgement decides who is ahead after fifty hands, because reading discards, defending against an obvious threat, and folding a hopeless hand early are all choices. The tiles are dealt to you — what you do with them is yours.'
         ]
       },
       {
         heading: 'How to Start Playing',
         body: [
-          'The best way to learn is to play. Start with our Hong Kong Mahjong table (the easiest ruleset to learn first), or read How to Play Mahjong for a step-by-step guide. When you are comfortable, try Japanese Riichi or Chinese Official for more depth.'
+          'The best way to learn is to play. Start with our Hong Kong Mahjong table (the easiest ruleset to learn first), or read How to Play Mahjong for a step-by-step guide. When you are comfortable, try Japanese Riichi or Chinese Official for more depth.',
+          'If you want a plan for a first session: play one hand slowly, ignore the score completely, and just try to reach four sets and a pair. Once that shape feels natural, add the three-faan minimum and start keeping score. Two or three short sessions is usually enough to stop counting on your fingers.'
         ]
       }
     ],
@@ -116,7 +143,9 @@ const beginnerPosts: BlogPost[] = [
       { question: 'Is mahjong hard to learn?', answer: 'The core rules are simple: draw a tile, discard a tile, build four sets and a pair. Scoring takes a little longer, but the Hong Kong ruleset with its three-faan minimum is a gentle entry point.' },
       { question: 'Do I need money to play mahjong?', answer: 'No. Mahjong can be played for fun without any money. Our tables are completely free and there is no wagering of any kind.' },
       { question: 'Can I play mahjong alone?', answer: 'Real mahjong needs four players, but online you can play against computer opponents anytime. Mahjong solitaire is a separate single-player puzzle if you prefer solo play.' },
-      { question: 'What is the difference between mahjong and mahjong solitaire?', answer: 'Mahjong is a competitive four-player game of drawing, discarding and scoring. Mahjong solitaire is a single-player puzzle where you match identical tiles in a layered layout. Different games, same tiles.' }
+      { question: 'What is the difference between mahjong and mahjong solitaire?', answer: 'Mahjong is a competitive four-player game of drawing, discarding and scoring. Mahjong solitaire is a single-player puzzle where you match identical tiles in a layered layout. Different games, same tiles.' },
+      { question: 'How long does a game of mahjong last?', answer: 'A single hand usually takes five to ten minutes, but a game is normally a series of hands — often a dozen or more — so a full session can run from twenty minutes to a few hours. A wall that runs out ends a hand quickly; a tight, defensive table can stretch each one out.' },
+      { question: 'How many tiles do you need to win at mahjong?', answer: 'Fourteen: four sets of three tiles plus a pair. You hold thirteen between turns and win on the fourteenth, either by drawing it yourself or by claiming it from another player’s discard. Taiwanese mahjong plays with sixteen instead of thirteen.' },
     ]
   },
   {
