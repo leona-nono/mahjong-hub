@@ -4,7 +4,7 @@ import { createBoard } from '@/lib/mahjong-solitaire/generator';
 import { removePair } from '@/lib/mahjong-solitaire/board';
 import { findHint, isDead } from '@/lib/mahjong-solitaire/solver';
 import {
-  ITEM_PRICE,
+  ITEM_DAILY_FREE,
   STARTER_PACK,
   applyHint,
   applyRescue,
@@ -16,10 +16,15 @@ import {
 } from '@/lib/mahjong-solitaire/items';
 
 describe('item catalog', () => {
-  it('keeps price ladder hint≈undo < shuffle < rescue', () => {
-    expect(ITEM_PRICE.hint).toBe(ITEM_PRICE.undo);
-    expect(ITEM_PRICE.hint).toBeLessThan(ITEM_PRICE.shuffle);
-    expect(ITEM_PRICE.shuffle).toBeLessThan(ITEM_PRICE.rescue);
+  it('defines daily free grants hint < undo capacity and rescue scarcest', () => {
+    expect(ITEM_DAILY_FREE).toEqual({
+      hint: 3,
+      undo: 5,
+      shuffle: 2,
+      rescue: 1
+    });
+    expect(ITEM_DAILY_FREE.hint).toBeLessThan(ITEM_DAILY_FREE.undo);
+    expect(ITEM_DAILY_FREE.rescue).toBeLessThan(ITEM_DAILY_FREE.shuffle);
   });
 
   it('starter pack matches design', () => {

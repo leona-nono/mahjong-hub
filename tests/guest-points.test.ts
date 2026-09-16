@@ -4,21 +4,14 @@ import {
   clearGuestPoints,
   ensureGuestId,
   readGuestPoints,
-  GUEST_ID_KEY,
-  GUEST_POINTS_KEY
+  GUEST_ID_KEY
 } from '@/lib/guest-points';
 import {
   GUEST_STORE_KEY,
-  LEGACY_GUEST_POINTS_KEY,
-  LEGACY_DAILY_KEY,
   LEGACY_ITEM_LEDGER_KEY,
-  LEGACY_PROGRESS_KEY,
   LEGACY_STARTER_FLAG_KEY,
   ensureStarterPack,
-  getLocalInventory,
-  readGuestDaily,
-  readGuestStore,
-  readProgress
+  getLocalInventory
 } from '@/features/guest/guest-store';
 
 function installMemoryStorage() {
@@ -43,62 +36,39 @@ function installMemoryStorage() {
   });
 }
 
-describe('guest points localStorage', () => {
+describe('guest identity (points currency removed)', () => {
   beforeEach(() => {
     installMemoryStorage();
   });
 
-  it('creates a silent guest id and accumulates points', () => {
+  it('creates a silent guest id; points stubs stay at zero', () => {
     const id = ensureGuestId();
     expect(id).toBeTruthy();
     expect(localStorage.getItem(GUEST_ID_KEY)).toBe(id);
-    expect(awardGuestPoints(50, 'start_game')).toBe(50);
-    expect(awardGuestPoints(300, 'solitaire_clear')).toBe(350);
-    expect(readGuestPoints()).toBe(350);
+    expect(awardGuestPoints(50, 'start_game')).toBe(0);
+    expect(awardGuestPoints(300, 'solitaire_clear')).toBe(0);
+    expect(readGuestPoints()).toBe(0);
     clearGuestPoints();
     expect(readGuestPoints()).toBe(0);
-    expect(localStorage.getItem(GUEST_POINTS_KEY)).toBeNull();
   });
 
-  it('writes the versioned guest store key', () => {
-    awardGuestPoints(10, 'start_game');
-    const raw = localStorage.getItem(GUEST_STORE_KEY);
-    expect(raw).toBeTruthy();
-    const parsed = JSON.parse(raw!) as { version: number; points: { total: number } };
-    expect(parsed.version).toBe(1);
-    expect(parsed.points.total).toBe(10);
-  });
-
-  it('migrates legacy keys into the unified store once', () => {
-    localStorage.setItem(
-      LEGACY_GUEST_POINTS_KEY,
-      JSON.stringify({ total: 120, entries: [{ amount: 120, reason: 'start_game', at: 1 }] })
-    );
+  it('still migrates legacy item keys into the unified store', () => {
     localStorage.setItem(
       LEGACY_ITEM_LEDGER_KEY,
       JSON.stringify([{ itemType: 'hint', delta: 2, reason: 'starter', at: 1 }])
     );
     localStorage.setItem(LEGACY_STARTER_FLAG_KEY, '1');
-    localStorage.setItem(
-      LEGACY_PROGRESS_KEY,
-      JSON.stringify({ lessonsCleared: 3, seenDeadEnd: true })
-    );
-    localStorage.setItem(
-      LEGACY_DAILY_KEY,
-      JSON.stringify({ lastClearDate: '2026-09-10', streak: 4, freezeWeekKey: null })
-    );
 
-    const store = readGuestStore();
-    expect(store.points.total).toBe(120);
-    expect(getLocalInventory().hint).toBe(2);
-    expect(readProgress()).toEqual({ lessonsCleared: 3, seenDeadEnd: true });
-    expect(readGuestDaily()).toMatchObject({ lastClearDate: '2026-09-10', streak: 4 });
-    expect(localStorage.getItem(LEGACY_GUEST_POINTS_KEY)).toBeNull();
-    expect(localStorage.getItem(LEGACY_ITEM_LEDGER_KEY)).toBeNull();
+    ensureGuestId();
+    expect(getLocalInventory().hint).toBeGreaterThanOrEqual(2);
     expect(localStorage.getItem(GUEST_STORE_KEY)).toBeTruthy();
+  });
 
-    // Starter already granted via legacy flag — do not double-grant
+  it('ensureStarterPack still grants inventory once', () => {
     ensureStarterPack();
-    expect(getLocalInventory().hint).toBe(2);
+    const inv = getLocalInventory();
+    expect(inv.hint).toBeGreaterThan(0);
+    ensureStarterPack();
+    expect(getLocalInventory().hint).toBe(inv.hint);
   });
 });

@@ -11,7 +11,16 @@ export type ItemType = 'hint' | 'undo' | 'shuffle' | 'rescue';
 
 export const ITEM_TYPES: ItemType[] = ['hint', 'undo', 'shuffle', 'rescue'];
 
-/** Points price [PLACEHOLDER] — relative ladder locked. */
+/** Daily free grants per item. Replaces the points price ladder. */
+// [PLACEHOLDER] values pending playtest — assume ~2–3 clears/day, 1–2 tools each
+export const ITEM_DAILY_FREE: Record<ItemType, number> = {
+  hint: 3,
+  undo: 5,
+  shuffle: 2,
+  rescue: 1
+};
+
+/** @deprecated Points currency removed — do not use in game logic. */
 export const ITEM_PRICE: Record<ItemType, number> = {
   hint: 200,
   undo: 200,

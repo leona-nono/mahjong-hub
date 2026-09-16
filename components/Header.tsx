@@ -14,13 +14,14 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
   const tn = useTranslations('nav');
   const ts = useTranslations('site');
   const ta = useTranslations('auth');
-  const tp = useTranslations('points');
+  const td = useTranslations('daily');
   const { openLogin } = useAuth();
   const { data: session, status } = useSession();
-  const { points, ledger } = usePoints();
+  const { checkIn } = usePoints();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const user = session?.user;
+  const streak = checkIn?.streak ?? 0;
 
   useEffect(() => {
     applyAppearance(savedAppearance());
@@ -70,9 +71,11 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
 
           {user ? (
             <div className="relative hidden items-center gap-2 md:flex">
-              <span className="rounded-full bg-portal-accent/15 px-2.5 py-1 text-xs font-bold text-portal-accent">
-                {tp('youHave', { n: points })}
-              </span>
+              {streak > 0 ? (
+                <span className="rounded-full bg-portal-accent/15 px-2.5 py-1 text-xs font-bold text-portal-accent">
+                  {td('streakLineShort', { days: streak })}
+                </span>
+              ) : null}
               <button
                 type="button"
                 onClick={() => setShowAccount((v) => !v)}
@@ -85,29 +88,6 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
                   <p className="truncate text-sm font-semibold">{user.name ?? 'Mahjong Hub User'}</p>
                   {user.email && (
                     <p className="mt-0.5 truncate text-xs text-portal-muted">{user.email}</p>
-                  )}
-                  {ledger.length > 0 && (
-                    <ul className="mt-2 max-h-32 space-y-1 overflow-auto border-t border-portal-border pt-2">
-                      {ledger.slice(0, 6).map((row, i) => (
-                        <li
-                          key={`${row.createdAt}-${i}`}
-                          className="flex items-center justify-between gap-2 text-[11px] text-portal-muted"
-                        >
-                          <span className="truncate">
-                            {tp.has(`ledger.${row.reason}`)
-                              ? tp(`ledger.${row.reason}`)
-                              : row.reason}
-                          </span>
-                          <span
-                            className={`shrink-0 font-semibold ${
-                              row.amount < 0 ? 'text-rose-300' : 'text-portal-accent'
-                            }`}
-                          >
-                            {row.amount > 0 ? `+${row.amount}` : row.amount}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
                   )}
                   <button
                     type="button"

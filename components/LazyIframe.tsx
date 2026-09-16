@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { awardPoints } from '@/lib/points';
 
 interface FallbackGame {
   slug: string;
@@ -76,12 +75,7 @@ export default function LazyIframe({
       {!active && (
         <button
           type="button"
-          onClick={() => {
-            setActive(true);
-            // Earning points is gated behind login: guests keep playing,
-            // but are prompted to sign in the moment points would be awarded.
-            void awardPoints(10, 'start_game');
-          }}
+          onClick={() => setActive(true)}
           className="absolute inset-0 flex flex-col items-center justify-center gap-3 border border-portal-border bg-portal-panel/90"
           aria-label={t('play')}
         >

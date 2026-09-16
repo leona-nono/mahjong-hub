@@ -3,18 +3,15 @@ export const OWNED_APPEARANCES_KEY = 'mh.owned-appearances.v1';
 export const PENDING_CHECKIN_KEY = 'mh.pending-checkin.v1';
 
 export type AppearanceTier = 'foundation' | 'seasonal' | 'premium' | 'limited';
-export type UnlockRule = 'free' | 'seasonal_checkin' | 'points' | 'fragments';
+export type UnlockRule = 'free' | 'seasonal_checkin' | 'achievement';
 
 export type AppearanceDef = {
   table: string;
   back: string;
   tier: AppearanceTier;
   unlock: UnlockRule;
-  /** Points price when unlock === 'points'. */
-  price?: number;
-  /** Fragments required when unlock === 'fragments'. */
-  fragmentsRequired?: number;
-  fragmentId?: string;
+  /** Achievement that grants this look when unlock === 'achievement'. */
+  achievementId?: string;
   availableFrom: string | null;
   availableUntil: string | null;
   /** Amazon/Shopify deep link for matching physical set. */
@@ -26,8 +23,8 @@ const JADE_TABLE = '/images/solitaire/backgrounds/solitaire-jade-table-v1.webp';
 const JADE_BACK = '/images/tiles/backs/pai-bg-01.webp?v=20260916';
 
 /**
- * Wardrobe catalog — Foundation free · Seasonal check-in · Premium points · Limited fragments.
- * Premium tile backs ship as SVG placeholders until final art lands.
+ * Wardrobe catalog — Foundation free · Seasonal check-in · Achievement unlocks.
+ * Premium / Limited tile backs ship as SVG placeholders until final art lands.
  */
 export const APPEARANCES = {
   // ── Foundation (5 free) ───────────────────────────────────────────────
@@ -114,13 +111,13 @@ export const APPEARANCES = {
     availableUntil: '2027-02-20'
   },
 
-  // ── Premium Collection ────────────────────────────────────────────────
+  // ── Premium Collection (achievement unlocks) ──────────────────────────
   'deep-sea-blue': {
     table: JADE_TABLE,
     back: '/images/tiles/backs/premium/deep-sea-blue.svg',
     tier: 'premium',
-    unlock: 'points',
-    price: 800,
+    unlock: 'achievement',
+    achievementId: 'clean-hand',
     availableFrom: null,
     availableUntil: null,
     shopUrl:
@@ -131,8 +128,8 @@ export const APPEARANCES = {
     table: '/images/seasonal/tables/spring-equinox-table-v1.webp',
     back: '/images/tiles/backs/premium/sakura-pink.svg',
     tier: 'premium',
-    unlock: 'points',
-    price: 800,
+    unlock: 'achievement',
+    achievementId: 'all-sequences',
     availableFrom: null,
     availableUntil: null,
     shopUrl:
@@ -143,8 +140,8 @@ export const APPEARANCES = {
     table: JADE_TABLE,
     back: '/images/tiles/backs/premium/bamboo-green.svg',
     tier: 'premium',
-    unlock: 'points',
-    price: 800,
+    unlock: 'achievement',
+    achievementId: 'half-flush',
     availableFrom: null,
     availableUntil: null,
     shopUrl:
@@ -155,8 +152,8 @@ export const APPEARANCES = {
     table: '/images/seasonal/tables/autumn-equinox-table-v1.webp',
     back: '/images/tiles/backs/premium/gold-dynasty.svg',
     tier: 'premium',
-    unlock: 'points',
-    price: 2500,
+    unlock: 'achievement',
+    achievementId: 'big-dragons',
     availableFrom: null,
     availableUntil: null,
     shopUrl:
@@ -164,14 +161,13 @@ export const APPEARANCES = {
       'https://www.amazon.com/s?k=gold+luxury+mahjong+set'
   },
 
-  // ── Limited — 7 weekly check-in fragments ─────────────────────────────
+  // ── Limited — 30-day check-in achievement ─────────────────────────────
   'ink-wash': {
     table: '/images/seasonal/tables/winter-solstice-table-v1.webp',
     back: '/images/tiles/backs/premium/ink-wash.svg',
     tier: 'limited',
-    unlock: 'fragments',
-    fragmentsRequired: 7,
-    fragmentId: 'ink-wash',
+    unlock: 'achievement',
+    achievementId: 'daily-thirty',
     availableFrom: null,
     availableUntil: null,
     shopUrl:
@@ -183,7 +179,7 @@ export const APPEARANCES = {
 export type AppearanceId = keyof typeof APPEARANCES;
 export type AppearanceChapter = AppearanceTier;
 
-/** Widen catalog entries so optional price/shop/fragment fields are always readable. */
+/** Widen catalog entries so optional shop/achievement fields are always readable. */
 export function appearanceOf(id: AppearanceId): AppearanceDef {
   return APPEARANCES[id];
 }
@@ -266,7 +262,7 @@ export function hasPendingCheckIn() {
   return localStorage.getItem(PENDING_CHECKIN_KEY) === '1';
 }
 
-/** ISO week key YYYY-Www for fragment drops. */
+/** ISO week key YYYY-Www (kept for any remaining weekly idempotency needs). */
 export function utcWeekKey(date = new Date()): string {
   const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const day = d.getUTCDay() || 7;

@@ -7,7 +7,6 @@ import nodemailer from 'nodemailer';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/lib/db';
 import { authConfig } from './auth.config';
-import { grantFirstLoginIfNeeded } from '@/lib/points-server';
 
 /**
  * Auth.js (NextAuth v5) wiring.
@@ -53,16 +52,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
     : { session: { strategy: 'jwt' as const } }),
   ...authConfig,
-  events: {
-    async signIn({ user }) {
-      if (!user?.id) return;
-      try {
-        await grantFirstLoginIfNeeded(user.id);
-      } catch (err) {
-        console.error('[points] first_login grant on signIn failed', err);
-      }
-    }
-  },
   providers: [
     ...(googleConfigured ? [Google] : []),
     ...(facebookConfigured ? [Facebook] : []),

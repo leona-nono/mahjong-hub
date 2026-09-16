@@ -74,9 +74,14 @@ export function useSolitaireBoardItems({
 
   const runHint = async (channel: PayChannel) => {
     if (status !== 'playing' || paused) return;
-    const paid = await items.tryConsume('hint', channel);
+    let paid = await items.tryConsume('hint', channel);
+    if (!paid.ok && channel === 'inventory') {
+      paid = await items.tryConsume('hint', 'daily_free');
+    }
     if (!paid.ok) {
-      if (paid.reason === 'empty') setOffer({ item: 'hint', run: runHint });
+      if (paid.reason === 'empty' || paid.reason === 'daily_free_exhausted') {
+        setOffer({ item: 'hint', run: runHint });
+      }
       return;
     }
     const r = applyHint(board);
@@ -105,9 +110,12 @@ export function useSolitaireBoardItems({
       // shouldn't happen without spendItem
     }
 
-    const paid = await items.tryConsume('undo', channel);
+    let paid = await items.tryConsume('undo', channel);
+    if (!paid.ok && channel === 'inventory') {
+      paid = await items.tryConsume('undo', 'daily_free');
+    }
     if (!paid.ok) {
-      if (paid.reason === 'empty' || paid.reason === undefined) {
+      if (paid.reason === 'empty' || paid.reason === 'daily_free_exhausted' || paid.reason === undefined) {
         setOffer({ item: 'undo', run: runUndo });
         setStatusMsg(t('noFreeUndo', { n: FREE_UNDO_PER_LEVEL }));
       }
@@ -128,9 +136,14 @@ export function useSolitaireBoardItems({
 
   const runShuffle = async (channel: PayChannel) => {
     if (status !== 'playing' && status !== 'dead') return;
-    const paid = await items.tryConsume('shuffle', channel);
+    let paid = await items.tryConsume('shuffle', channel);
+    if (!paid.ok && channel === 'inventory') {
+      paid = await items.tryConsume('shuffle', 'daily_free');
+    }
     if (!paid.ok) {
-      if (paid.reason === 'empty') setOffer({ item: 'shuffle', run: runShuffle });
+      if (paid.reason === 'empty' || paid.reason === 'daily_free_exhausted') {
+        setOffer({ item: 'shuffle', run: runShuffle });
+      }
       return;
     }
     const r = applyShuffle(board);
@@ -145,9 +158,14 @@ export function useSolitaireBoardItems({
 
   const runRescue = async (channel: PayChannel) => {
     if (status !== 'dead') return;
-    const paid = await items.tryConsume('rescue', channel);
+    let paid = await items.tryConsume('rescue', channel);
+    if (!paid.ok && channel === 'inventory') {
+      paid = await items.tryConsume('rescue', 'daily_free');
+    }
     if (!paid.ok) {
-      if (paid.reason === 'empty') setOffer({ item: 'rescue', run: runRescue });
+      if (paid.reason === 'empty' || paid.reason === 'daily_free_exhausted') {
+        setOffer({ item: 'rescue', run: runRescue });
+      }
       return;
     }
     const r = applyRescue(board);

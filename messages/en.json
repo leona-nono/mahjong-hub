@@ -84,15 +84,17 @@
   "wardrobe": {
     "eyebrow": "Looks & unlocks",
     "title": "Table wardrobe",
-    "subtitle": "Free Foundation looks, seasonal check-in unlocks, Premium skins for points, and Limited editions from weekly fragments.",
+    "subtitle": "Free Foundation looks, seasonal check-in unlocks, and Premium or Limited skins from achievements.",
     "collection": "Your collection",
-    "freeNote": "Foundation looks are free. Premium and Limited need points or fragments.",
-    "tierNote": "Foundation free · Seasonal check-in · Premium points · Limited fragments",
+    "freeNote": "Foundation looks are free. Premium and Limited unlock via achievements.",
+    "tierNote": "Foundation free · Seasonal check-in · Premium & Limited via achievements",
     "balance": "{n} pts",
     "preview": "Preview",
     "equipped": "Equipped",
     "owned": "Owned · ready to use",
     "locked": "Locked",
+    "unlockAchievement": "Unlock via achievement",
+    "unlockAchievementNamed": "Unlock via “{name}”",
     "apply": "Apply this look",
     "working": "Working…",
     "permanent": "Permanent",
@@ -103,12 +105,8 @@
     "unlockCheckIn": "Check-in unlock",
     "checkInToUnlock": "Check in to unlock",
     "pricePoints": "{n} pts",
-    "limitedBadge": "Limited",
-    "fragmentProgress": "{have}/{need} fragments",
     "redeemFor": "Redeem for {n} pts",
-    "craftFor": "Craft ({n} fragments)",
     "needMorePoints": "Not enough points yet — keep playing or check in.",
-    "needMoreFragments": "Need more weekly check-in fragments.",
     "unlockFailed": "Could not unlock. Try again.",
     "buyMatchingSet": "Buy matching real mahjong set →",
     "shopDisclaimer": "As an Amazon Associate we earn from qualifying purchases. Links open Amazon or our shop.",
@@ -123,11 +121,11 @@
       },
       "premium": {
         "title": "Premium Collection",
-        "body": "High-end tile backs unlocked with points."
+        "body": "High-end tile backs unlocked by learning achievements."
       },
       "limited": {
         "title": "Limited Edition",
-        "body": "Craft from seven weekly check-in fragments."
+        "body": "Rare looks unlocked by long-term achievements."
       },
       "solar": {
         "title": "Seasonal",
@@ -565,6 +563,7 @@
     "itemPrice": "Costs {n} points",
     "pointsBalance": "Your points: {n}",
     "buyWithPoints": "Spend {n} points",
+    "useDailyFree": "Use free ({n} left)",
     "watchAdOnce": "Watch a short video (demo) for 1 use",
     "watchAdRescue": "Watch video to rescue (demo)",
     "giveUp": "Restart",
@@ -613,23 +612,17 @@
   },
   "daily": {
     "title": "Daily Check-in",
-    "todayReward": "Today's reward: {n} points (Day {day})",
-    "claimedReward": "Checked in! +{n} points (Day {day})",
-    "todayRewardShort": "Today +{n}",
-    "claimedRewardShort": "Claimed +{n}",
     "claim": "Check in",
     "claimed": "Done",
-    "streakLine": "{days}-day streak — check in tomorrow for {n} points",
-    "streakLineShort": "{days}-day streak · tomorrow +{n}",
     "cycleProgress": "{filled}/7 this week",
     "dayShort": "D{day}",
     "doneMark": "✓",
     "weekAria": "Seven-day check-in progress",
-    "pointsTip": "What can points be used for?",
-    "tipBody": "Points unlock Premium tile backs in the Wardrobe (from 800 pts). Keep checking in for Seasonal looks and Limited fragments.",
-    "yourPoints": "{n} pts",
+    "streakLine": "{days}-day streak — come back tomorrow to keep it",
+    "streakLineShort": "{days}-day streak",
     "guestNote": "Guests can tap Check in — we will ask you to register with email first.",
-    "claimFailed": "Check-in could not be saved. Refresh and try again."
+    "claimFailed": "Check-in could not be saved. Refresh and try again.",
+    "achievementHint": "Check in 7 days to unlock an achievement"
   },
   "challenge": {
     "eyebrow": "Today",
@@ -857,5 +850,54 @@
     "crak": "Crak",
     "dot": "Dot",
     "bam": "Bam"
+  },
+  "achievements": {
+    "title": "Learning achievements",
+    "progress": "{done} / {total}",
+    "tiers": {
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold",
+      "platinum": "Platinum"
+    },
+    "loginValue": {
+      "title": "Save your progress",
+      "body": "Register to keep your achievements and stats across devices. No download, no password — just your email.",
+      "cta": "Save my progress"
+    },
+    "items": {
+      "first-hand": { "name": "First Hand", "desc": "Finish your first coached hand." },
+      "first-win": { "name": "First Win", "desc": "Win a hand for the first time." },
+      "ten-hands": { "name": "Ten Hands", "desc": "Finish 10 hands." },
+      "fifty-hands": { "name": "Fifty Hands", "desc": "Finish 50 hands." },
+      "fifty-discards": { "name": "Fifty Discards", "desc": "Make 50 coached discards." },
+      "sharp-eye": { "name": "Sharp Eye", "desc": "Earn a best-grade discard." },
+      "clean-hand": { "name": "Clean Hand", "desc": "Finish a hand with 100% best-grade discards." },
+      "no-regrets": { "name": "No Regrets", "desc": "Finish a hand with no worse-shanten discards." },
+      "streak-ten": { "name": "Streak of Ten", "desc": "Land 10 best grades in a row in one hand." },
+      "streak-thirty": { "name": "Streak of Thirty", "desc": "Land 30 best grades in a row across hands." },
+      "efficient": { "name": "Efficient", "desc": "Keep strong ukeire on average across a hand." },
+      "comeback": { "name": "Comeback", "desc": "Recover after a worse-shanten discard and still win." },
+      "coach-graduate": { "name": "Coach Graduate", "desc": "Receive 50 coach feedbacks." },
+      "chicken": { "name": "Chicken Hand", "desc": "Win a minimal qualifying hand." },
+      "all-sequences": { "name": "All Sequences", "desc": "Win with an all-sequences hand." },
+      "all-triplets": { "name": "All Triplets", "desc": "Win with an all-triplets hand." },
+      "seven-pairs": { "name": "Seven Pairs", "desc": "Win with seven pairs." },
+      "pure-straight": { "name": "Pure Straight", "desc": "Win with a pure straight (1–9 in one suit)." },
+      "mixed-triple": { "name": "Mixed Triple Chow", "desc": "Win with the same chow in three suits." },
+      "half-flush": { "name": "Half Flush", "desc": "Win a half-flush (one suit plus honors)." },
+      "full-flush": { "name": "Full Flush", "desc": "Win a full flush (one suit only)." },
+      "little-dragons": { "name": "Little Dragons", "desc": "Win with Little Three Dragons." },
+      "big-dragons": { "name": "Big Dragons", "desc": "Win with Big Three Dragons." },
+      "thirteen-orphans": { "name": "Thirteen Orphans", "desc": "Win with Thirteen Orphans." },
+      "nine-gates": { "name": "Nine Gates", "desc": "Win with Nine Gates." },
+      "hk-casual": { "name": "Hong Kong Casual", "desc": "Finish a Hong Kong casual hand." },
+      "hk-standard": { "name": "Hong Kong Standard", "desc": "Finish a Hong Kong standard hand." },
+      "riichi-declare": { "name": "Riichi Declare", "desc": "Declare riichi once." },
+      "riichi-win": { "name": "Riichi Win", "desc": "Win after declaring riichi." },
+      "mcr-qualified": { "name": "MCR Qualified", "desc": "Win a Chinese Official hand that meets the fan minimum." },
+      "daily-seven": { "name": "Week of Check-ins", "desc": "Check in on 7 consecutive days." },
+      "daily-thirty": { "name": "Month of Check-ins", "desc": "Check in on 30 consecutive days." }
+    }
   }
 }

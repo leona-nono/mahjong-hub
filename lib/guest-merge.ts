@@ -7,7 +7,6 @@ import {
   type ItemType
 } from '@/lib/mahjong-solitaire/items';
 import { planDailyStreak } from '@/lib/mahjong-solitaire/progress-rules';
-import { syncCachedTotal } from '@/lib/points-ledger';
 import { utcDateString } from '@/lib/points-rules';
 
 export type GuestMergePayload = {
@@ -21,8 +20,6 @@ export type GuestMergePayload = {
     lessonsCleared?: number;
     seenDeadEnd?: boolean;
   };
-  /** Guest hub points earned on-device before login. */
-  points?: number;
 };
 
 function clampItem(n: unknown): number {
@@ -40,26 +37,7 @@ export async function mergeGuestIntoUser(
     select: { id: true }
   });
 
-  const guestPoints = Math.max(
-    0,
-    Math.min(50_000, Math.floor(Number(payload.points) || 0))
-  );
-
   if (already) {
-    if (guestPoints > 0) {
-      await prisma.$transaction(async (tx) => {
-        const alreadyPoints = await tx.pointTransaction.findFirst({
-          where: { userId, reason: 'guest_points_merge' },
-          select: { id: true }
-        });
-        if (!alreadyPoints) {
-          await tx.pointTransaction.create({
-            data: { userId, amount: guestPoints, reason: 'guest_points_merge' }
-          });
-          await syncCachedTotal(tx, userId);
-        }
-      });
-    }
     return { merged: false, already: true };
   }
 
@@ -108,19 +86,6 @@ export async function mergeGuestIntoUser(
           reason: 'guest_merge_item'
         }))
       });
-    }
-
-    if (guestPoints > 0) {
-      const alreadyPoints = await tx.pointTransaction.findFirst({
-        where: { userId, reason: 'guest_points_merge' },
-        select: { id: true }
-      });
-      if (!alreadyPoints) {
-        await tx.pointTransaction.create({
-          data: { userId, amount: guestPoints, reason: 'guest_points_merge' }
-        });
-        await syncCachedTotal(tx, userId);
-      }
     }
 
     const meta = await tx.solitaireStreak.findUnique({ where: { userId } });

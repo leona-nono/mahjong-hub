@@ -6,22 +6,20 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth';
 import { setPendingCheckIn } from '@/lib/appearance';
 import { usePoints, claimDailyCheckIn } from '@/lib/points';
-import { CHECKIN_REWARDS } from '@/lib/points-rules';
+import { CHECKIN_CYCLE_DAYS } from '@/lib/points-rules';
 
 export default function DailyCheckIn({ compact = false }: { compact?: boolean }) {
   const t = useTranslations('daily');
   const { status } = useSession();
   const { openLogin } = useAuth();
-  const { points, checkIn, hydrated } = usePoints();
+  const { checkIn, hydrated } = usePoints();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const loggedIn = status === 'authenticated';
 
   const streak = checkIn?.streak ?? 1;
   const claimedToday = checkIn?.claimedToday ?? false;
-  const todayReward = checkIn?.todayReward ?? CHECKIN_REWARDS[0];
-  const nextReward = checkIn?.nextReward ?? CHECKIN_REWARDS[1];
-  const cycleDay = ((streak - 1) % 7) + 1;
+  const cycleDay = checkIn?.cycleDay ?? ((streak - 1) % CHECKIN_CYCLE_DAYS) + 1;
   const filledInCycle = claimedToday ? cycleDay : Math.max(0, cycleDay - 1);
 
   const claim = async () => {
@@ -63,17 +61,12 @@ export default function DailyCheckIn({ compact = false }: { compact?: boolean })
             </div>
             <p className="mt-0.5 text-xs text-portal-muted">
               {claimedToday
-                ? t('claimedRewardShort', { n: todayReward })
-                : t('todayRewardShort', { n: todayReward })}
-              {claimedToday
-                ? ` · ${t('streakLineShort', { days: streak, n: nextReward })}`
-                : null}
+                ? t('streakLineShort', { days: streak })
+                : t('streakLine', { days: streak })}
+              {!claimedToday ? ` · ${t('achievementHint')}` : null}
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <p className="text-xs font-semibold text-portal-muted">
-              {t('yourPoints', { n: points })}
-            </p>
             <button
               type="button"
               onClick={() => void claim()}
@@ -92,11 +85,10 @@ export default function DailyCheckIn({ compact = false }: { compact?: boolean })
         {error && <p className="mt-2 text-xs text-rose-400">{error}</p>}
 
         <ol className="mt-3 grid grid-cols-7 gap-1.5" aria-label={t('weekAria')}>
-          {CHECKIN_REWARDS.map((r, i) => {
+          {Array.from({ length: CHECKIN_CYCLE_DAYS }, (_, i) => {
             const day = i + 1;
             const isToday = day === cycleDay;
             const isDone = claimedToday ? day <= cycleDay : day < cycleDay;
-            const isMilestone = day === 7;
             return (
               <li
                 key={day}
@@ -121,14 +113,10 @@ export default function DailyCheckIn({ compact = false }: { compact?: boolean })
                 </span>
                 <span
                   className={`mt-0.5 text-[11px] font-bold tabular-nums ${
-                    isDone
-                      ? 'text-emerald-300'
-                      : isMilestone
-                        ? 'text-portal-amber'
-                        : 'text-portal-text'
+                    isDone ? 'text-emerald-300' : 'text-portal-text'
                   }`}
                 >
-                  {isDone ? t('doneMark') : r}
+                  {isDone ? t('doneMark') : t('dayShort', { day })}
                 </span>
                 {isToday && (
                   <span

@@ -68,9 +68,9 @@
     "seoLinkPlay": "玩經典接龍遊戲",
     "seoLinkBeginners": "麻將新人教學",
     "featuredHall": "精選遊戲",
-    "seasonalTitle": "Seasonal table collection",
-    "seasonalBody": "Choose a free table mood and matching tile back for every game.",
-    "openWardrobe": "Open wardrobe"
+    "seasonalTitle": "季節牌桌合集",
+    "seasonalBody": "為每款遊戲挑選免費桌布氛圍與配套牌背。",
+    "openWardrobe": "開啟衣櫥"
   },
   "game": {
     "play": "開始遊戲",
@@ -90,10 +90,10 @@
     "beginnersCtaLead": "準備好實戰練習了嗎？",
     "beginnersCtaLink": "去玩一局真麻將",
     "beginnersCtaTail": "與三位電腦對手對戰。",
-    "features": "Game features",
-    "supportedDevices": "Supported devices",
-    "startGame": "Start Game",
-    "startBlurb": "Tap Start Game to load the board. The rules and tips below are always visible — no account required."
+    "features": "遊戲特色",
+    "supportedDevices": "支援的裝置",
+    "startGame": "開始遊戲",
+    "startBlurb": "點「開始遊戲」載入牌桌。下方規則與提示始終可見，無需帳號。"
   },
   "collection": {
     "title": "麻將消除遊戲合集",
@@ -481,6 +481,7 @@
     "itemPrice": "需要 {n} 積分",
     "pointsBalance": "目前積分：{n}",
     "buyWithPoints": "花 {n} 積分",
+    "useDailyFree": "使用今日免費（剩 {n}）",
     "watchAdOnce": "看短影片試用 1 次（示範）",
     "watchAdRescue": "看影片解圍（示範）",
     "giveUp": "認輸重開",
@@ -529,23 +530,17 @@
   },
   "daily": {
     "title": "每日簽到",
-    "todayReward": "今日可領取：{n} 積分（Day {day}）",
-    "claimedReward": "簽到成功！+{n} 積分（Day {day}）",
-    "todayRewardShort": "今日 +{n}",
-    "claimedRewardShort": "已領 +{n}",
     "claim": "簽到",
-    "claimed": "已簽",
-    "streakLine": "連續簽到 {days} 天，明天可得 {n} 積分",
-    "streakLineShort": "連簽 {days} 天 · 明日 +{n}",
+    "claimed": "已完成",
     "cycleProgress": "本週 {filled}/7",
-    "dayShort": "D{day}",
+    "dayShort": "第 {day} 天",
     "doneMark": "✓",
-    "weekAria": "七天簽到進度",
-    "pointsTip": "積分有什麼用？",
-    "tipBody": "積分可兌換精美牌背、牌桌皮膚、特效！即將上線。",
-    "yourPoints": "{n} 積分",
-    "guestNote": "请点击登录 —— 将会使用邮箱进行注册",
-    "claimFailed": "簽到未能入帳，請重新整理後再試。"
+    "weekAria": "七日簽到進度",
+    "streakLine": "已連續 {days} 天 — 明天再來保持連續",
+    "streakLineShort": "連續 {days} 天",
+    "guestNote": "訪客也可簽到 —— 我們會先請你用電子郵件註冊。",
+    "claimFailed": "簽到未能儲存，請重新整理後再試。",
+    "achievementHint": "連續簽到 7 天可解鎖成就"
   },
   "challenge": {
     "eyebrow": "今日",
@@ -596,8 +591,8 @@
     "playSecond": "進行第二輪",
     "skip": "跳過",
     "mahJongg": "和牌",
-    "pung": "Pung",
-    "kong": "Kong",
+    "pung": "碰",
+    "kong": "槓",
     "declareMahJongg": "宣告和牌",
     "lastDiscard": "最後打出的牌：",
     "noCall": "不叫牌",
@@ -677,10 +672,10 @@
     "homeTitle": "免費線上麻將 | Mahjong Hub",
     "homeDescription": "免費線上玩麻將消消樂、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。",
     "wardrobeTitle": "牌背與桌布外觀 | Mahjong Hub",
-    "blogTitle": "Mahjong Guides & Rules for Beginners | Mahjong Hub",
-    "gamesTitle": "Free Online Mahjong Games – Solitaire & 4-Player | Mahjong Hub",
-    "privacyTitle": "Privacy Policy | Mahjong Hub",
-    "aboutTitle": "About Mahjong Hub — Free Mahjong Games & Beginner Guides"
+    "blogTitle": "麻將入門指南與規則 | Mahjong Hub",
+    "gamesTitle": "免費線上麻將遊戲 — 消除與四人麻將 | Mahjong Hub",
+    "privacyTitle": "隱私權政策 | Mahjong Hub",
+    "aboutTitle": "關於麻將樂園 — 免費麻將遊戲與入門指南"
   },
   "notFound": {
     "title": "頁面不存在",
@@ -718,78 +713,76 @@
     "scoreSichuanDraw": "流局時執行查叫、查花豬與槓分回退；胡牌番數依本桌封頂基線結算。"
   },
   "wardrobe": {
-    "eyebrow": "Looks & unlocks",
-    "title": "Table wardrobe",
-    "subtitle": "Free Foundation looks, seasonal check-in unlocks, Premium skins for points, and Limited editions from weekly fragments.",
-    "collection": "Your collection",
-    "freeNote": "Foundation looks are free. Premium and Limited need points or fragments.",
-    "tierNote": "Foundation free · Seasonal check-in · Premium points · Limited fragments",
-    "balance": "{n} pts",
-    "preview": "Preview",
-    "equipped": "Equipped",
-    "owned": "Owned · ready to use",
-    "locked": "Locked",
-    "apply": "Apply this look",
-    "working": "Working…",
-    "permanent": "Permanent",
-    "active": "In season",
-    "upcoming": "Coming soon",
-    "archive": "Collection archive",
-    "seasonalEnded": "Season ended",
-    "unlockCheckIn": "Check-in unlock",
-    "checkInToUnlock": "Check in to unlock",
-    "pricePoints": "{n} pts",
-    "limitedBadge": "Limited",
-    "fragmentProgress": "{have}/{need} fragments",
-    "redeemFor": "Redeem for {n} pts",
-    "craftFor": "Craft ({n} fragments)",
-    "needMorePoints": "Not enough points yet — keep playing or check in.",
-    "needMoreFragments": "Need more weekly check-in fragments.",
-    "unlockFailed": "Could not unlock. Try again.",
-    "buyMatchingSet": "Buy matching real mahjong set →",
-    "shopDisclaimer": "As an Amazon Associate we earn from qualifying purchases. Links open Amazon or our shop.",
+    "eyebrow": "外觀與解鎖",
+    "title": "牌桌衣櫥",
+    "subtitle": "免費基礎款、簽到解鎖季節款，以及透過成就解鎖的 Premium 與限定款。",
+    "collection": "我的收藏",
+    "freeNote": "基礎款免費；Premium 與限定款透過成就解鎖。",
+    "tierNote": "基礎免費 · 季節簽到 · Premium 與限定靠成就",
+    "balance": "{n} 積分",
+    "preview": "預覽",
+    "equipped": "使用中",
+    "owned": "已擁有 · 可立即使用",
+    "locked": "未解鎖",
+    "unlockAchievement": "透過成就解鎖",
+    "unlockAchievementNamed": "完成「{name}」解鎖",
+    "apply": "套用此外觀",
+    "working": "處理中…",
+    "permanent": "常駐",
+    "active": "當季",
+    "upcoming": "即將上線",
+    "archive": "往期收藏",
+    "seasonalEnded": "賽季已結束",
+    "unlockCheckIn": "簽到解鎖",
+    "checkInToUnlock": "簽到解鎖",
+    "pricePoints": "{n} 積分",
+    "redeemFor": "用 {n} 積分兌換",
+    "needMorePoints": "積分不足——繼續遊玩或簽到。",
+    "unlockFailed": "解鎖失敗，請重試。",
+    "buyMatchingSet": "購買同款實體麻將 →",
+    "shopDisclaimer": "作為 Amazon Associates 聯盟成員，符合條件的購買我們可能獲得佣金。連結將開啟 Amazon 或商店。",
     "chapters": {
       "foundation": {
-        "title": "Foundation",
-        "body": "Five free starter tables and tile backs."
+        "title": "基礎款",
+        "body": "五款免費入門桌布與牌背。"
       },
       "seasonal": {
-        "title": "Seasonal",
-        "body": "Time-limited free looks unlocked with daily check-in."
+        "title": "季節款",
+        "body": "限時免費，每日簽到解鎖。"
       },
       "premium": {
-        "title": "Premium Collection",
-        "body": "High-end tile backs unlocked with points."
+        "title": "高級",
+        "body": "高端牌背，由學習成就解鎖。"
       },
       "limited": {
-        "title": "Limited Edition",
-        "body": "Craft from seven weekly check-in fragments."
+        "title": "限定",
+        "body": "長期成就解鎖的稀有外觀。"
       },
       "solar": {
-        "title": "Seasonal",
-        "body": "Time-limited free looks unlocked with daily check-in."
+        "title": "季節款",
+        "body": "限時免費，每日簽到解鎖。"
       },
       "festival": {
-        "title": "Limited Edition",
-        "body": "Festival and limited looks."
+        "title": "限定",
+        "body": "節日與限定外觀。"
       }
     },
     "items": {
-      "jade": "Jade Moon Gate",
-      "ivory-classic": "Ivory Classic",
-      "charcoal-night": "Charcoal Night",
-      "coral-dawn": "Coral Dawn",
-      "mist-lilac": "Mist Lilac",
-      "lunar": "Lunar New Year",
-      "spring": "Spring Equinox",
-      "summer": "Summer Solstice",
-      "autumn": "Autumn Equinox",
-      "winter": "Winter Solstice",
-      "deep-sea-blue": "Deep Sea Blue",
-      "sakura-pink": "Sakura Pink",
-      "bamboo-green": "Bamboo Green",
-      "gold-dynasty": "Gold Dynasty",
-      "ink-wash": "Ink Wash"
+      "jade": "碧玉月門",
+      "ivory-classic": "象牙白典",
+      "charcoal-night": "墨炭夜色",
+      "coral-dawn": "珊瑚破曉",
+      "mist-lilac": "薄霧丁香",
+      "lunar": "新春朱紅",
+      "spring": "春分",
+      "summer": "夏至",
+      "autumn": "秋分",
+      "winter": "冬至",
+      "deep-sea-blue": "深藍海",
+      "sakura-pink": "櫻花粉",
+      "bamboo-green": "竹韻綠",
+      "gold-dynasty": "鎏金歲月",
+      "ink-wash": "水墨山河"
     }
   },
   "learn": {
@@ -857,5 +850,54 @@
     "crak": "萬",
     "dot": "筒",
     "bam": "條"
+  },
+  "achievements": {
+    "title": "學習成就",
+    "progress": "{done} / {total}",
+    "tiers": {
+      "bronze": "青銅",
+      "silver": "白銀",
+      "gold": "黃金",
+      "platinum": "白金"
+    },
+    "loginValue": {
+      "title": "儲存你的進度",
+      "body": "註冊後成就與統計可跨裝置同步。無需下載，也無需密碼——只用信箱即可。",
+      "cta": "儲存我的進度"
+    },
+    "items": {
+      "first-hand": { "name": "初上手", "desc": "打完第一局有教練的牌。" },
+      "first-win": { "name": "首勝", "desc": "第一次和牌。" },
+      "ten-hands": { "name": "十局", "desc": "累計打完 10 局。" },
+      "fifty-hands": { "name": "五十局", "desc": "累計打完 50 局。" },
+      "fifty-discards": { "name": "五十手", "desc": "累計完成 50 次教練出牌。" },
+      "sharp-eye": { "name": "慧眼", "desc": "打出一次最佳牌。" },
+      "clean-hand": { "name": "乾淨一手", "desc": "整局出牌全部最佳。" },
+      "no-regrets": { "name": "無悔", "desc": "整局沒有打出向聽變差的牌。" },
+      "streak-ten": { "name": "十連佳", "desc": "同一局連續 10 次最佳。" },
+      "streak-thirty": { "name": "三十連佳", "desc": "跨局累計連續 30 次最佳。" },
+      "efficient": { "name": "高效", "desc": "整局平均進張保持優秀。" },
+      "comeback": { "name": "翻盤", "desc": "打出向聽變差後仍和牌。" },
+      "coach-graduate": { "name": "教練結業", "desc": "累計收到 50 次教練回饋。" },
+      "chicken": { "name": "雞胡", "desc": "完成一次最低門檻和牌。" },
+      "all-sequences": { "name": "平胡", "desc": "做出一次全順子和牌。" },
+      "all-triplets": { "name": "碰碰胡", "desc": "做出一次全刻子和牌。" },
+      "seven-pairs": { "name": "七對", "desc": "做出一次七對子。" },
+      "pure-straight": { "name": "一氣通貫", "desc": "同花色做出 123·456·789。" },
+      "mixed-triple": { "name": "三色同順", "desc": "三門同數順子和牌。" },
+      "half-flush": { "name": "混一色", "desc": "一門花色加字牌和牌。" },
+      "full-flush": { "name": "清一色", "desc": "只用一門花色和牌。" },
+      "little-dragons": { "name": "小三元", "desc": "做出一次小三元。" },
+      "big-dragons": { "name": "大三元", "desc": "做出一次大三元。" },
+      "thirteen-orphans": { "name": "十三么", "desc": "做出一次十三么。" },
+      "nine-gates": { "name": "九蓮寶燈", "desc": "做出一次九蓮寶燈。" },
+      "hk-casual": { "name": "港麻休閒", "desc": "打完一局港式休閒。" },
+      "hk-standard": { "name": "港麻標準", "desc": "打完一局港式標準。" },
+      "riichi-declare": { "name": "立直宣言", "desc": "成功立直一次。" },
+      "riichi-win": { "name": "立直和了", "desc": "立直後和牌。" },
+      "mcr-qualified": { "name": "國標達標", "desc": "國標和牌達到番數門檻。" },
+      "daily-seven": { "name": "七日簽到", "desc": "連續簽到 7 天。" },
+      "daily-thirty": { "name": "三十日簽到", "desc": "連續簽到 30 天。" }
+    }
   }
 }

@@ -68,9 +68,9 @@
     "seoLinkClassic": "四人麻将",
     "seoLinkPlay": "玩经典消除",
     "seoLinkBeginners": "麻将入门",
-    "seasonalTitle": "Seasonal table collection",
-    "seasonalBody": "Choose a free table mood and matching tile back for every game.",
-    "openWardrobe": "Open wardrobe"
+    "seasonalTitle": "季节牌桌合集",
+    "seasonalBody": "为每款游戏挑选免费桌布氛围与配套牌背。",
+    "openWardrobe": "打开衣橱"
   },
   "game": {
     "play": "开始游戏",
@@ -90,10 +90,10 @@
     "beginnersCtaLead": "准备好实战练习了吗？",
     "beginnersCtaLink": "去玩一局真麻将",
     "beginnersCtaTail": "与三位电脑对手对战。",
-    "features": "Game features",
-    "supportedDevices": "Supported devices",
-    "startGame": "Start Game",
-    "startBlurb": "Tap Start Game to load the board. The rules and tips below are always visible — no account required."
+    "features": "游戏特色",
+    "supportedDevices": "支持的设备",
+    "startGame": "开始游戏",
+    "startBlurb": "点「开始游戏」加载牌桌。下方规则与提示始终可见，无需账号。"
   },
   "collection": {
     "title": "麻将消除游戏合集",
@@ -481,6 +481,7 @@
     "itemPrice": "需要 {n} 积分",
     "pointsBalance": "当前积分：{n}",
     "buyWithPoints": "花 {n} 积分",
+    "useDailyFree": "使用今日免费（剩 {n}）",
     "watchAdOnce": "看短视频试用 1 次（演示）",
     "watchAdRescue": "看视频解围（演示）",
     "giveUp": "认输重开",
@@ -529,23 +530,17 @@
   },
   "daily": {
     "title": "每日签到",
-    "todayReward": "今日可领取：{n} 积分（Day {day}）",
-    "claimedReward": "签到成功！+{n} 积分（Day {day}）",
-    "todayRewardShort": "今日 +{n}",
-    "claimedRewardShort": "已领 +{n}",
     "claim": "签到",
-    "claimed": "已签",
-    "streakLine": "连续签到 {days} 天，明天可得 {n} 积分",
-    "streakLineShort": "连签 {days} 天 · 明日 +{n}",
+    "claimed": "已完成",
     "cycleProgress": "本周 {filled}/7",
-    "dayShort": "D{day}",
+    "dayShort": "第 {day} 天",
     "doneMark": "✓",
-    "weekAria": "七天签到进度",
-    "pointsTip": "积分有什么用？",
-    "tipBody": "积分可兑换精美牌背、牌桌皮肤、特效！即将上线。",
-    "yourPoints": "{n} 积分",
-    "guestNote": "您可以点击登录——请您使用邮箱完成注册。",
-    "claimFailed": "签到未能入账，请刷新后重试。"
+    "weekAria": "七日签到进度",
+    "streakLine": "已连续 {days} 天 — 明天再来保持连续",
+    "streakLineShort": "连续 {days} 天",
+    "guestNote": "游客也可签到 —— 我们会先请你用邮箱注册。",
+    "claimFailed": "签到未能保存，请刷新后重试。",
+    "achievementHint": "连续签到 7 天可解锁成就"
   },
   "challenge": {
     "eyebrow": "今日",
@@ -596,8 +591,8 @@
     "playSecond": "进行第二轮",
     "skip": "跳过",
     "mahJongg": "和牌",
-    "pung": "Pung",
-    "kong": "Kong",
+    "pung": "碰",
+    "kong": "杠",
     "declareMahJongg": "宣告和牌",
     "lastDiscard": "最后打出的牌：",
     "noCall": "不叫牌",
@@ -677,10 +672,10 @@
     "homeTitle": "免费在线麻将 | Mahjong Hub",
     "homeDescription": "免费在线玩麻将消除、连连看与经典四人麻将。浏览器即开即玩，无需下载，支持每日挑战与多语界面。",
     "wardrobeTitle": "牌背与桌布皮肤 | Mahjong Hub",
-    "blogTitle": "Mahjong Guides & Rules for Beginners | Mahjong Hub",
-    "gamesTitle": "Free Online Mahjong Games – Solitaire & 4-Player | Mahjong Hub",
-    "privacyTitle": "Privacy Policy | Mahjong Hub",
-    "aboutTitle": "About Mahjong Hub — Free Mahjong Games & Beginner Guides"
+    "blogTitle": "麻将入门指南与规则 | Mahjong Hub",
+    "gamesTitle": "免费在线麻将游戏 — 消除与四人麻将 | Mahjong Hub",
+    "privacyTitle": "隐私政策 | Mahjong Hub",
+    "aboutTitle": "关于麻将乐园 — 免费麻将游戏与入门指南"
   },
   "notFound": {
     "title": "页面不存在",
@@ -720,15 +715,17 @@
   "wardrobe": {
     "eyebrow": "外观与解锁",
     "title": "牌桌衣橱",
-    "subtitle": "免费基础款、签到解锁季节款、积分兑换 Premium，以及周签到碎片合成的限定款。",
+    "subtitle": "免费基础款、签到解锁季节款，以及通过成就解锁的 Premium 与限定款。",
     "collection": "我的收藏",
-    "freeNote": "基础款免费；Premium 与限定款需积分或碎片。",
-    "tierNote": "基础免费 · 季节签到 · Premium 积分 · 限定碎片",
+    "freeNote": "基础款免费；Premium 与限定款通过成就解锁。",
+    "tierNote": "基础免费 · 季节签到 · Premium 与限定靠成就",
     "balance": "{n} 积分",
     "preview": "预览",
     "equipped": "使用中",
     "owned": "已拥有 · 可立即使用",
     "locked": "未解锁",
+    "unlockAchievement": "通过成就解锁",
+    "unlockAchievementNamed": "完成「{name}」解锁",
     "apply": "应用此外观",
     "working": "处理中…",
     "permanent": "常驻",
@@ -739,12 +736,8 @@
     "unlockCheckIn": "签到解锁",
     "checkInToUnlock": "签到解锁",
     "pricePoints": "{n} 积分",
-    "limitedBadge": "限定",
-    "fragmentProgress": "碎片 {have}/{need}",
     "redeemFor": "用 {n} 积分兑换",
-    "craftFor": "合成（需 {n} 碎片）",
     "needMorePoints": "积分不足——继续游玩或签到。",
-    "needMoreFragments": "周签到碎片不足。",
     "unlockFailed": "解锁失败，请重试。",
     "buyMatchingSet": "购买同款实体麻将 →",
     "shopDisclaimer": "作为 Amazon Associates 联盟成员，符合条件的购买我们可能获得佣金。链接将打开 Amazon 或商店。",
@@ -759,11 +752,11 @@
       },
       "premium": {
         "title": "高级",
-        "body": "高端牌背，用积分兑换。"
+        "body": "高端牌背，由学习成就解锁。"
       },
       "limited": {
         "title": "Limited Edition 限定",
-        "body": "收集 7 周签到碎片合成。"
+        "body": "长期成就解锁的稀有外观。"
       },
       "solar": {
         "title": "Seasonal 季节款",
@@ -857,6 +850,55 @@
     "crak": "万",
     "dot": "筒",
     "bam": "条"
+  },
+  "achievements": {
+    "title": "学习成就",
+    "progress": "{done} / {total}",
+    "tiers": {
+      "bronze": "青铜",
+      "silver": "白银",
+      "gold": "黄金",
+      "platinum": "白金"
+    },
+    "loginValue": {
+      "title": "保存你的进度",
+      "body": "注册后成就与统计可跨设备同步。无需下载，也无需密码——只用邮箱即可。",
+      "cta": "保存我的进度"
+    },
+    "items": {
+      "first-hand": { "name": "初上手", "desc": "打完第一局有教练的牌。" },
+      "first-win": { "name": "首胜", "desc": "第一次和牌。" },
+      "ten-hands": { "name": "十局", "desc": "累计打完 10 局。" },
+      "fifty-hands": { "name": "五十局", "desc": "累计打完 50 局。" },
+      "fifty-discards": { "name": "五十手", "desc": "累计完成 50 次教练出牌。" },
+      "sharp-eye": { "name": "慧眼", "desc": "打出一次最佳牌。" },
+      "clean-hand": { "name": "干净一手", "desc": "整局出牌全部最佳。" },
+      "no-regrets": { "name": "无悔", "desc": "整局没有打出向听变差的牌。" },
+      "streak-ten": { "name": "十连佳", "desc": "同一局连续 10 次最佳。" },
+      "streak-thirty": { "name": "三十连佳", "desc": "跨局累计连续 30 次最佳。" },
+      "efficient": { "name": "高效", "desc": "整局平均进张保持优秀。" },
+      "comeback": { "name": "翻盘", "desc": "打出向听变差后仍和牌。" },
+      "coach-graduate": { "name": "教练结业", "desc": "累计收到 50 次教练反馈。" },
+      "chicken": { "name": "鸡胡", "desc": "完成一次最低门槛和牌。" },
+      "all-sequences": { "name": "平胡", "desc": "做出一次全顺子和牌。" },
+      "all-triplets": { "name": "碰碰胡", "desc": "做出一次全刻子和牌。" },
+      "seven-pairs": { "name": "七对", "desc": "做出一次七对子。" },
+      "pure-straight": { "name": "一气通贯", "desc": "同花色做出 123·456·789。" },
+      "mixed-triple": { "name": "三色同顺", "desc": "三门同数顺子和牌。" },
+      "half-flush": { "name": "混一色", "desc": "一门花色加字牌和牌。" },
+      "full-flush": { "name": "清一色", "desc": "只用一门花色和牌。" },
+      "little-dragons": { "name": "小三元", "desc": "做出一次小三元。" },
+      "big-dragons": { "name": "大三元", "desc": "做出一次大三元。" },
+      "thirteen-orphans": { "name": "十三幺", "desc": "做出一次十三幺。" },
+      "nine-gates": { "name": "九莲宝灯", "desc": "做出一次九莲宝灯。" },
+      "hk-casual": { "name": "港麻休闲", "desc": "打完一局港式休闲。" },
+      "hk-standard": { "name": "港麻标准", "desc": "打完一局港式标准。" },
+      "riichi-declare": { "name": "立直宣言", "desc": "成功立直一次。" },
+      "riichi-win": { "name": "立直和了", "desc": "立直后和牌。" },
+      "mcr-qualified": { "name": "国标达标", "desc": "国标和牌达到番数门槛。" },
+      "daily-seven": { "name": "七日签到", "desc": "连续签到 7 天。" },
+      "daily-thirty": { "name": "三十日签到", "desc": "连续签到 30 天。" }
+    }
   },
   "_meta": {
     "overrides": {

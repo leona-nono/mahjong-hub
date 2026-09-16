@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  clearGuestPoints,
-  readGuestPoints
-} from '@/lib/guest-points';
+import { ensureGuestId } from '@/lib/guest-points';
 import {
   getLocalInventory,
   readGuestDaily,
@@ -15,7 +12,7 @@ const MERGED_KEY = 'mh.guest-merged.v1';
 export async function mergeGuestProgressOnLogin(): Promise<void> {
   try {
     if (sessionStorage.getItem(MERGED_KEY) === '1') return;
-    const guestPoints = readGuestPoints();
+    ensureGuestId();
     const res = await fetch('/api/account/merge', {
       method: 'POST',
       credentials: 'same-origin',
@@ -23,14 +20,10 @@ export async function mergeGuestProgressOnLogin(): Promise<void> {
       body: JSON.stringify({
         inventory: getLocalInventory(),
         daily: readGuestDaily(),
-        progress: readProgress(),
-        points: guestPoints
+        progress: readProgress()
       })
     });
-    if (res.ok) {
-      sessionStorage.setItem(MERGED_KEY, '1');
-      if (guestPoints > 0) clearGuestPoints();
-    } else if (res.status === 401) {
+    if (res.ok || res.status === 401) {
       sessionStorage.setItem(MERGED_KEY, '1');
     }
   } catch {

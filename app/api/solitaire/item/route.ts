@@ -3,9 +3,7 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/db';
 import { verifyGrant } from '@/lib/reward-token';
 import { adsEnabled } from '@/lib/flags';
-import { ledgerTotal, syncCachedTotal } from '@/lib/points-ledger';
 import {
-  ITEM_PRICE,
   ITEM_TYPES,
   STARTER_PACK,
   emptyInventory,
@@ -68,7 +66,7 @@ export async function GET() {
   }
 }
 
-type Action = 'buy' | 'consume' | 'ad_grant';
+type Action = 'consume' | 'ad_grant';
 
 export async function POST(req: NextRequest) {
   const userId = await requireUserId();
@@ -88,8 +86,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'invalid itemType' }, { status: 400 });
   }
   const itemType = b.itemType;
-  const action = b.action as Action;
-  if (action !== 'buy' && action !== 'consume' && action !== 'ad_grant') {
+  const action = b.action as Action | 'buy';
+  if (action === 'buy') {
+    return NextResponse.json({ error: 'not_purchasable' }, { status: 410 });
+  }
+  if (action !== 'consume' && action !== 'ad_grant') {
     return NextResponse.json({ error: 'invalid action' }, { status: 400 });
   }
 
@@ -127,47 +128,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, inventory, sessionUse: true });
     }
 
-    if (action === 'buy') {
-      const price = ITEM_PRICE[itemType];
-      const result = await prisma.$transaction(async (tx) => {
-        const total = await ledgerTotal(tx, userId);
-        if (total < price) {
-          return { error: 'insufficient_points' as const, total };
-        }
-        await tx.pointTransaction.create({
-          data: {
-            userId,
-            amount: -price,
-            reason: `item_buy_${itemType}`,
-            gameSlug: 'mahjong-solitaire'
-          }
-        });
-        await tx.itemLedger.create({
-          data: {
-            userId,
-            itemType,
-            delta: 1,
-            reason: 'buy'
-          }
-        });
-        const next = await syncCachedTotal(tx, userId);
-        return { error: null as null, total: next };
-      });
-
-      if (result.error) {
-        return NextResponse.json(
-          { error: result.error, total: result.total },
-          { status: 402 }
-        );
-      }
-      const inventory = await balanceForUser(userId);
-      return NextResponse.json({
-        ok: true,
-        inventory,
-        points: result.total
-      });
-    }
-
     // consume
     const inv = await balanceForUser(userId);
     if ((inv[itemType] ?? 0) < 1) {
@@ -181,10 +141,7 @@ export async function POST(req: NextRequest) {
     });
     const inventory = await balanceForUser(userId);
     return NextResponse.json({ ok: true, inventory });
-  } catch (e) {
-    if (e instanceof Error && e.message === 'insufficient_points') {
-      return NextResponse.json({ error: 'insufficient_points' }, { status: 402 });
-    }
+  } catch {
     return NextResponse.json({ error: 'unavailable' }, { status: 503 });
   }
 }

@@ -1,9 +1,6 @@
 /** Server-authoritative check-in cycle. Client must not invent these amounts. */
-export const CHECKIN_REWARDS = [50, 80, 120, 100, 150, 200, 300] as const;
-
-export const FIRST_LOGIN_BONUS = 500;
-export const START_GAME_POINTS = 10;
-export const GAME_WIN_MAX = 50;
+// Points currency removed — check-in only continues the streak (see progression redesign).
+export const CHECKIN_CYCLE_DAYS = 7;
 
 export function utcDateString(date = new Date()): string {
   return date.toISOString().slice(0, 10);
@@ -15,13 +12,9 @@ export function addUtcDays(dateStr: string, days: number): string {
   return utcDateString(d);
 }
 
-export function checkinRewardForStreak(streak: number): number {
-  const cycle = ((Math.max(1, streak) - 1) % CHECKIN_REWARDS.length);
-  return CHECKIN_REWARDS[cycle];
-}
-
-export function nextCheckinReward(streak: number): number {
-  return checkinRewardForStreak(streak + 1);
+/** Which day of the 7-day cycle a streak lands on. 1-based. */
+export function checkinDayForStreak(streak: number): number {
+  return ((Math.max(1, streak) - 1) % CHECKIN_CYCLE_DAYS) + 1;
 }
 
 /** Noon UTC for a YYYY-MM-DD so the calendar day survives Date round-trips. */
@@ -36,24 +29,16 @@ export function checkinPlan(
 ): {
   claimedToday: boolean;
   streak: number;
-  todayReward: number;
-  nextReward: number;
+  cycleDay: number;
 } {
   const safeStored = Math.max(1, storedStreak);
   if (lastClaimDate === today) {
     return {
       claimedToday: true,
       streak: safeStored,
-      todayReward: checkinRewardForStreak(safeStored),
-      nextReward: nextCheckinReward(safeStored)
+      cycleDay: checkinDayForStreak(safeStored)
     };
   }
-  const streak =
-    lastClaimDate === addUtcDays(today, -1) ? safeStored + 1 : 1;
-  return {
-    claimedToday: false,
-    streak,
-    todayReward: checkinRewardForStreak(streak),
-    nextReward: nextCheckinReward(streak)
-  };
+  const streak = lastClaimDate === addUtcDays(today, -1) ? safeStored + 1 : 1;
+  return { claimedToday: false, streak, cycleDay: checkinDayForStreak(streak) };
 }

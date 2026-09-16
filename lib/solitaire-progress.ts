@@ -1,12 +1,10 @@
 import 'server-only';
 
 import { prisma } from '@/lib/db';
-import { ledgerTotal, syncCachedTotal } from '@/lib/points-ledger';
 import { utcDateString } from '@/lib/points-rules';
 import { parseCampaignLevel } from '@/lib/mahjong-solitaire/levels';
 import {
   DAILY_CLEAR_POINTS,
-  levelKind,
   parseDailyLevelId,
   planDailyStreak,
   streakCycleBonus,
@@ -117,14 +115,13 @@ export async function completeSolitaireForUser(
 
   const check = validateSolitaireComplete(input, expected, today);
   if (!check.ok) {
-    const total = await ledgerTotal(prisma, userId);
     return {
       ok: false,
       error: check.error,
       awarded: false,
       alreadyCleared: false,
       amount: 0,
-      total,
+      total: 0,
       stars: 0
     };
   }
@@ -133,24 +130,18 @@ export async function completeSolitaireForUser(
   const dailyDay = parseDailyLevelId(input.levelId);
 
   return prisma.$transaction(async (tx) => {
-    const cachedTotal = async (extra: number) => {
-      if (extra <= 0) return ledgerTotal(tx, userId);
-      return syncCachedTotal(tx, userId);
-    };
-
     if (kind === 'daily' && dailyDay) {
       const existing = await tx.solitaireDaily.findUnique({
         where: { userId_utcDate: { userId, utcDate: dailyDay } }
       });
       if (existing?.awarded) {
-        const total = await cachedTotal(0);
         const meta = await tx.solitaireStreak.findUnique({ where: { userId } });
         return {
           ok: true,
           awarded: false,
           alreadyCleared: true,
           amount: 0,
-          total,
+          total: 0,
           stars: Math.max(existing.stars, check.stars),
           streak: meta?.dailyStreak ?? 0
         };
@@ -163,8 +154,6 @@ export async function completeSolitaireForUser(
         freezeWeekKey: meta?.freezeWeekKey ?? null,
         today
       });
-      const bonus = streakCycleBonus(plan.streak);
-      const amount = check.points + bonus;
 
       await tx.solitaireDaily.upsert({
         where: { userId_utcDate: { userId, utcDate: dailyDay } },
@@ -201,21 +190,12 @@ export async function completeSolitaireForUser(
         }
       });
 
-      await tx.pointTransaction.create({
-        data: {
-          userId,
-          amount,
-          reason: bonus ? 'solitaire_daily_streak' : 'solitaire_daily',
-          gameSlug: 'mahjong-solitaire'
-        }
-      });
-      const total = await cachedTotal(amount);
       return {
         ok: true,
         awarded: true,
         alreadyCleared: false,
-        amount,
-        total,
+        amount: 0,
+        total: 0,
         stars: check.stars,
         streak: plan.streak,
         usedFreeze: plan.consumeFreeze
@@ -226,7 +206,6 @@ export async function completeSolitaireForUser(
       where: { userId_levelId: { userId, levelId: input.levelId } }
     });
     const firstClear = !prev?.clearedAt;
-    const amount = firstClear ? check.points : 0;
 
     await tx.solitaireProgress.upsert({
       where: { userId_levelId: { userId, levelId: input.levelId } },
@@ -266,24 +245,12 @@ export async function completeSolitaireForUser(
       }
     });
 
-    if (amount > 0) {
-      await tx.pointTransaction.create({
-        data: {
-          userId,
-          amount,
-          reason: kind === 'teach' ? 'solitaire_teach' : 'solitaire_clear',
-          gameSlug: 'mahjong-solitaire'
-        }
-      });
-    }
-
-    const total = await cachedTotal(amount);
     return {
       ok: true,
-      awarded: amount > 0,
+      awarded: firstClear,
       alreadyCleared: !firstClear,
-      amount,
-      total,
+      amount: 0,
+      total: 0,
       stars: Math.max(prev?.stars ?? 0, check.stars)
     };
   });

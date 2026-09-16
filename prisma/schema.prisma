@@ -1,9 +1,10 @@
 // Prisma schema for the mahjong-hub backend.
 // Models follow the standard Auth.js (NextAuth v5) Prisma adapter contract
 // (User / Account / Session / VerificationToken) plus our domain extensions:
-//   • UserPoint       – running total per user (single row per user)
-//   • PointTransaction– append-only ledger for audit + anti-cheat limits
-//   • DailyBonus      – "claimed today" marker for the daily reward
+//   • ActionLog         – append-only behavior log (maps to legacy PointTransaction table)
+//   • DailyBonus        – "claimed today" marker for the daily check-in
+//   • LearningStat      – career learning counters (not a currency)
+//   • AchievementUnlock – badge ownership; rewards grant AppearanceUnlock rows
 //
 // On Vercel, set DATABASE_URL to a Neon Postgres connection string
 // (Neon's free tier is sufficient for this workload). Schema is Postgres-only
@@ -30,17 +31,17 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts     Account[]
-  sessions     Session[]
-  point        UserPoint?
-  transactions PointTransaction[]
-  dailyBonus   DailyBonus?
-  itemLedger   ItemLedger[]
+  accounts          Account[]
+  sessions          Session[]
+  actionLogs        ActionLog[]
+  dailyBonus        DailyBonus?
+  itemLedger        ItemLedger[]
   solitaireProgress SolitaireProgress[]
   solitaireDaily    SolitaireDaily[]
   solitaireStreak   SolitaireStreak?
   appearanceUnlocks AppearanceUnlock[]
-  fragmentLedger    FragmentLedger[]
+  learningStat      LearningStat?
+  achievements      AchievementUnlock[]
 }
 
 model Account {
@@ -82,28 +83,24 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// ── Domain extensions (points ledger + daily bonus) ───────────────────────
+// ── Domain extensions (behavior log + daily bonus + achievements) ─────────
 
-model UserPoint {
-  userId    String   @id
-  total     Int      @default(0)
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model PointTransaction {
+/// Append-only behavior log. Not a currency ledger.
+/// Maps to the legacy PointTransaction table (reason→action, amount→value).
+model ActionLog {
   id        String   @id @default(cuid())
   userId    String
-  amount    Int
-  reason    String
+  action    String   @map("reason")
+  value     Int      @map("amount") // keep NOT NULL; write 0 when unused
+  meta      Json?
   gameSlug  String?
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId, createdAt])
-  @@index([reason, createdAt])
+  @@index([userId, action, createdAt])
+  @@index([action, createdAt])
+  @@map("PointTransaction")
 }
 
 model DailyBonus {
@@ -129,13 +126,17 @@ model SolitaireProgress {
 }
 
 model SolitaireDaily {
-  userId    String
-  utcDate   String
-  cleared   Boolean  @default(false)
-  score     Int      @default(0)
-  stars     Int      @default(0)
-  awarded   Boolean  @default(false)
-  updatedAt DateTime @updatedAt
+  userId      String
+  utcDate     String
+  cleared     Boolean  @default(false)
+  score       Int      @default(0)
+  stars       Int      @default(0)
+  awarded     Boolean  @default(false)
+  hintUsed    Int      @default(0)
+  undoUsed    Int      @default(0)
+  shuffleUsed Int      @default(0)
+  rescueUsed  Int      @default(0)
+  updatedAt   DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -174,7 +175,7 @@ model ItemLedger {
 model AppearanceUnlock {
   userId       String
   appearanceId String
-  source       String // seasonal_checkin | points | fragments | grant
+  source       String // seasonal_checkin | achievement | legacy | grant
   createdAt    DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -183,18 +184,27 @@ model AppearanceUnlock {
   @@index([userId])
 }
 
-/// Limited-edition fragment ledger. Balance = SUM(delta) per (userId, fragmentId).
-model FragmentLedger {
-  id         String   @id @default(cuid())
-  userId     String
-  fragmentId String
-  delta      Int
-  reason     String // checkin_week | craft | grant
-  weekKey    String?
-  createdAt  DateTime @default(now())
+/// Per-user learning counters. NOT a currency — there is no spendable balance.
+/// Streak lives on SolitaireStreak / DailyBonus — intentionally absent here.
+model LearningStat {
+  userId         String   @id
+  handsPlayed    Int      @default(0)
+  discardsPlayed Int      @default(0)
+  coachFeedbacks Int      @default(0)
+  bestGrades     Int      @default(0)
+  patternsSeen   Json?
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AchievementUnlock {
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId, fragmentId])
-  @@unique([userId, fragmentId, weekKey, reason])
+  @@id([userId, achievementId])
+  @@index([userId])
 }

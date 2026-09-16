@@ -7,16 +7,18 @@ import { openLogin, useAuth } from '@/lib/auth';
 import { setPendingCheckIn } from '@/lib/appearance';
 import { claimDailyCheckIn, usePoints } from '@/lib/points';
 import { ensureGuestId } from '@/lib/guest-points';
-import { CHECKIN_REWARDS, FIRST_LOGIN_BONUS } from '@/lib/points-rules';
+import { CHECKIN_CYCLE_DAYS } from '@/lib/points-rules';
+import AchievementsWall from '@/components/AchievementsWall';
 import { useState } from 'react';
 
 const SOLITAIRE_HREF = '/games/mahjong-solitaire-classic';
 
 export default function HomeHero() {
   const t = useTranslations('home');
+  const td = useTranslations('daily');
   const { data: session, status } = useSession();
   const { user: localUser } = useAuth();
-  const { points, checkIn, hydrated } = usePoints();
+  const { checkIn, hydrated } = usePoints();
   const [claiming, setClaiming] = useState(false);
   const signedIn = Boolean(session?.user || localUser);
   const name =
@@ -27,10 +29,8 @@ export default function HomeHero() {
     '';
 
   const claimedToday = checkIn?.claimedToday ?? false;
-  const todayReward = checkIn?.todayReward ?? CHECKIN_REWARDS[0];
   const streak = checkIn?.streak ?? 1;
-  const cycleDay = ((streak - 1) % 7) + 1;
-  const displayDay = claimedToday ? cycleDay : cycleDay;
+  const cycleDay = checkIn?.cycleDay ?? ((streak - 1) % CHECKIN_CYCLE_DAYS) + 1;
 
   const onCheckIn = async () => {
     if (claiming || claimedToday) return;
@@ -79,12 +79,12 @@ export default function HomeHero() {
       <div className="mt-8 space-y-4 border-t border-portal-border/80 pt-6">
         <div className="rounded-2xl border border-portal-border/80 bg-black/20 px-4 py-4">
           <p className="font-display text-base font-semibold text-portal-text">
-            {t('checkInTitle', { day: displayDay })}
+            {t('checkInTitle', { day: cycleDay })}
           </p>
           <p className="mt-1 text-sm text-portal-accent">
             {claimedToday
-              ? t('checkInClaimed', { n: todayReward })
-              : t('checkInToday', { n: todayReward })}
+              ? td('streakLineShort', { days: streak })
+              : `${td('streakLine', { days: streak })} · ${td('achievementHint')}`}
           </p>
           <button
             type="button"
@@ -103,7 +103,7 @@ export default function HomeHero() {
                 {t('welcomeBack', { name: name || 'player' })}
               </p>
               <p className="mt-1 text-sm text-portal-accent">
-                {t('pointsBalance', { n: points })}
+                {td('streakLineShort', { days: streak })}
               </p>
             </div>
             <Link
@@ -115,9 +115,7 @@ export default function HomeHero() {
           </div>
         ) : (
           <div className="rounded-2xl border border-portal-border/60 bg-portal-panel/40 px-4 py-4">
-            <p className="text-sm text-portal-text">
-              {t('emailBonusHint', { n: FIRST_LOGIN_BONUS })}
-            </p>
+            <p className="text-sm text-portal-text">{t('signInRegister')}</p>
             <button
               type="button"
               onClick={() => {
@@ -130,6 +128,10 @@ export default function HomeHero() {
             </button>
           </div>
         )}
+      </div>
+
+      <div className="mt-8">
+        <AchievementsWall />
       </div>
     </section>
   );

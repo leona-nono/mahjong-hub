@@ -27,8 +27,7 @@ import {
   parseCampaignLevel
 } from '@/lib/mahjong-solitaire/levels';
 import {
-  parseDailyLevelId,
-  DAILY_CLEAR_POINTS
+  parseDailyLevelId
 } from '@/lib/mahjong-solitaire/progress-rules';
 import { recordGuestDailyClear } from '@/features/guest/guest-store';
 import { useSolitaireTilePreload, warmSolitaireTileArt } from '@/features/solitaire/tile-preload';
@@ -36,8 +35,7 @@ import { trackSolitaireEvent } from '@/features/solitaire/telemetry';
 import { adsEnabled } from '@/lib/flags';
 import { starsForLevel } from '@/lib/mahjong-solitaire/items';
 import { useSolitaireItems } from '@/lib/solitaire-items';
-import { applyLedgerTotal, usePoints } from '@/lib/points';
-import { awardGuestPoints, ensureGuestId } from '@/lib/guest-points';
+import { ensureGuestId } from '@/lib/guest-points';
 import { openLogin } from '@/lib/auth';
 import MahjongAccessibilityPanel, {
   useMahjongPreferences
@@ -61,7 +59,6 @@ export default function MahjongSolitaire({
   autoStart = false
 }: MahjongSolitaireProps) {
   const t = useTranslations('solitaire');
-  const { points } = usePoints();
   const items = useSolitaireItems();
   const { preferences, setPreference } = useMahjongPreferences();
   const [a11yOpen, setA11yOpen] = useState(false);
@@ -204,14 +201,12 @@ export default function MahjongSolitaire({
       });
       if (res.status === 401) {
         ensureGuestId();
-        const guestAward = parseDailyLevelId(level.id) ? DAILY_CLEAR_POINTS : 50;
-        const total = awardGuestPoints(guestAward, 'solitaire_clear');
         if (parseDailyLevelId(level.id)) {
           const g = recordGuestDailyClear();
           markDailyCleared(g.streak);
         }
-        setStatusMsg(t('savePointsPrompt', { n: total }));
-        setSavePromptPts(total);
+        setStatusMsg(t('guestClear'));
+        setSavePromptPts(1);
         return;
       }
       const data = (await res.json()) as {
@@ -221,16 +216,8 @@ export default function MahjongSolitaire({
         total?: number;
         streak?: number;
       };
-      if (typeof data.total === 'number') {
-        applyLedgerTotal(
-          data.total,
-          data.awarded && data.amount
-            ? { amount: data.amount, reason: 'solitaire_clear' }
-            : undefined
-        );
-      }
       if (data.alreadyCleared) setStatusMsg(t('alreadyCleared'));
-      else if (data.awarded) setStatusMsg(t('awardedPoints', { n: data.amount ?? 0 }));
+      else if (data.awarded) setStatusMsg(t('cleared', { n: score }));
       if (typeof data.streak === 'number') {
         markDailyCleared(data.streak);
       } else if (parseDailyLevelId(level.id)) {
@@ -492,17 +479,15 @@ export default function MahjongSolitaire({
       {(statusMsg || items.msg || savePromptPts) && (
         <div className="mb-3 rounded-2xl border border-amber-300/30 bg-amber-500/10 px-4 py-3 text-center">
           <p className="text-sm font-semibold text-amber-100">
-            {savePromptPts != null
-              ? t('savePointsPrompt', { n: savePromptPts })
-              : statusMsg || items.msg}
+            {savePromptPts != null ? t('guestClear') : statusMsg || items.msg}
           </p>
-          {savePromptPts != null && savePromptPts > 0 && (
+          {savePromptPts != null && (
             <button
               type="button"
               onClick={() => openLogin()}
               className="mt-2 rounded-full bg-amber-300 px-4 py-1.5 text-xs font-black text-emerald-950"
             >
-              {t('savePointsPrompt', { n: savePromptPts })}
+              {t('guestClear')}
             </button>
           )}
         </div>
@@ -512,16 +497,18 @@ export default function MahjongSolitaire({
         <div className="mb-3 rounded-2xl border border-violet-400/40 bg-violet-500/10 p-4 text-sm text-violet-50">
           <p className="font-semibold">{t('needItem', { item: t(offer.item) })}</p>
           <p className="mt-1 text-xs text-violet-100/80">
-            {t('pointsBalance', { n: points })} · {t('itemPrice', { n: items.prices[offer.item] })}
+            {t('useDailyFree', { n: items.dailyFreeLeft[offer.item] })}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => void offer.run('points')}
-              className="rounded-full bg-violet-500 px-4 py-2 font-bold text-white"
-            >
-              {t('buyWithPoints', { n: items.prices[offer.item] })}
-            </button>
+            {items.dailyFreeLeft[offer.item] > 0 ? (
+              <button
+                type="button"
+                onClick={() => void offer.run('daily_free')}
+                className="rounded-full bg-violet-500 px-4 py-2 font-bold text-white"
+              >
+                {t('useDailyFree', { n: items.dailyFreeLeft[offer.item] })}
+              </button>
+            ) : null}
             {adsEnabled() && (
               <button
                 type="button"
@@ -608,13 +595,15 @@ export default function MahjongSolitaire({
             >
               {t('rescue')} ×{items.inventory.rescue}
             </button>
-            <button
-              type="button"
-              onClick={() => void runRescue('points')}
-              className="rounded-full border border-amber-300 px-4 py-2 font-medium"
-            >
-              {t('buyWithPoints', { n: items.prices.rescue })}
-            </button>
+            {items.dailyFreeLeft.rescue > 0 ? (
+              <button
+                type="button"
+                onClick={() => void runRescue('daily_free')}
+                className="rounded-full border border-amber-300 px-4 py-2 font-medium"
+              >
+                {t('useDailyFree', { n: items.dailyFreeLeft.rescue })}
+              </button>
+            ) : null}
             {adsEnabled() && (
               <button
                 type="button"

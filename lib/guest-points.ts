@@ -1,13 +1,11 @@
 /**
- * Silent guest identity + local points ledger.
- * Storage lives in features/guest; this module keeps the public API stable.
+ * Silent guest identity. Points ledger stubs kept for transitional imports.
+ * Storage lives in features/guest.
  */
 
 import {
   LEGACY_GUEST_POINTS_KEY,
   clearGuestPointsSlice,
-  getGuestPoints,
-  setGuestPoints,
   type GuestPointsLedger
 } from '@/features/guest/guest-store';
 
@@ -30,29 +28,22 @@ export function ensureGuestId(): string {
   return id;
 }
 
+/** @deprecated Points currency removed. */
 export function readGuestPoints(): number {
-  return getGuestPoints().total;
+  return 0;
 }
 
+/** @deprecated Points currency removed. */
 export function readGuestPointsLedger(): GuestPointsLedger {
-  return getGuestPoints();
+  return { total: 0, entries: [] };
 }
 
-/** Award points to the guest ledger. Returns the new total. */
-export function awardGuestPoints(amount: number, reason: string): number {
-  if (typeof window === 'undefined') return 0;
-  const n = Math.max(0, Math.floor(amount));
-  if (!n) return getGuestPoints().total;
-  ensureGuestId();
-  const current = getGuestPoints();
-  const next: GuestPointsLedger = {
-    total: current.total + n,
-    entries: [{ amount: n, reason, at: Date.now() }, ...current.entries].slice(0, 50)
-  };
-  setGuestPoints(next);
-  return next.total;
+/** @deprecated Points currency removed — no-op. */
+export function awardGuestPoints(_amount: number, _reason: string): number {
+  return 0;
 }
 
+/** @deprecated Points currency removed. */
 export function clearGuestPoints() {
   if (typeof window === 'undefined') return;
   clearGuestPointsSlice();

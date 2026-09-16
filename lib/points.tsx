@@ -3,57 +3,33 @@
 import { useSyncExternalStore } from 'react';
 import { APPEARANCES, markLocalOwned, type AppearanceId } from './appearance';
 import { getAuthState, openLogin } from './auth';
-import { FIRST_LOGIN_BONUS } from './points-rules';
-import {
-  awardGuestPoints,
-  ensureGuestId,
-  readGuestPoints
-} from './guest-points';
 
-interface AwardResult {
+interface ClaimResult {
   granted: boolean;
   needLogin: boolean;
-}
-
-interface AwardEvent {
-  amount: number;
-  reason?: string;
-  at: number;
+  alreadyClaimed?: boolean;
+  error?: string;
 }
 
 export interface CheckInState {
   claimedToday: boolean;
   streak: number;
-  todayReward: number;
-  nextReward: number;
-}
-
-export interface LedgerEntry {
-  amount: number;
-  reason: string;
-  createdAt: string;
+  cycleDay: number;
 }
 
 interface PointsState {
-  points: number;
-  recentAwards: AwardEvent[];
   checkIn: CheckInState | null;
-  ledger: LedgerEntry[];
   hydrated: boolean;
 }
 
 const DEFAULT_CHECKIN: CheckInState = {
   claimedToday: false,
   streak: 1,
-  todayReward: 50,
-  nextReward: 80
+  cycleDay: 1
 };
 
 let state: PointsState = {
-  points: 0,
-  recentAwards: [],
   checkIn: null,
-  ledger: [],
   hydrated: false
 };
 const listeners = new Set<() => void>();
@@ -70,7 +46,7 @@ function setState(next: Partial<PointsState>) {
 export function initPoints() {
   if (typeof window === 'undefined') return;
   if (!getAuthState().user) {
-    setState({ points: readGuestPoints(), hydrated: true });
+    setState({ hydrated: true });
   }
 }
 
@@ -78,32 +54,16 @@ export async function hydratePointsFromServer(): Promise<void> {
   try {
     const res = await fetch('/api/points', { credentials: 'same-origin' });
     if (res.status === 401) {
-      setState({ points: readGuestPoints(), checkIn: null, ledger: [], hydrated: true });
+      setState({ checkIn: null, hydrated: true });
       return;
     }
     if (!res.ok) {
       setState({ hydrated: true });
       return;
     }
-    const data = (await res.json()) as {
-      total?: number;
-      checkIn?: CheckInState;
-      firstLoginGranted?: boolean;
-      ledger?: LedgerEntry[];
-    };
-    const ledger = Array.isArray(data.ledger) ? data.ledger : state.ledger;
-    const nextAwards =
-      data.firstLoginGranted
-        ? [
-            { amount: FIRST_LOGIN_BONUS, reason: 'first_login', at: Date.now() },
-            ...state.recentAwards
-          ].slice(0, 50)
-        : state.recentAwards;
+    const data = (await res.json()) as { checkIn?: CheckInState; streak?: number };
     setState({
-      points: Number(data.total) || 0,
       checkIn: data.checkIn ?? DEFAULT_CHECKIN,
-      ledger,
-      recentAwards: nextAwards,
       hydrated: true
     });
   } catch {
@@ -111,79 +71,19 @@ export async function hydratePointsFromServer(): Promise<void> {
   }
 }
 
-export function applyLedgerTotal(
-  total: number,
-  award?: { amount: number; reason: string }
-) {
-  const nextAwards =
-    award && award.amount > 0
-      ? [{ amount: award.amount, reason: award.reason, at: Date.now() }, ...state.recentAwards].slice(
-          0,
-          50
-        )
-      : state.recentAwards;
-  setState({ points: total, recentAwards: nextAwards });
+/** @deprecated No currency balance — kept as no-op for transitional call sites. */
+export function applyLedgerTotal(_total: number, _award?: { amount: number; reason: string }) {
+  /* no-op */
 }
 
 export function resetPointsForGuest() {
   setState({
-    points: readGuestPoints(),
-    recentAwards: [],
     checkIn: null,
-    ledger: [],
     hydrated: true
   });
 }
 
-export async function awardPoints(
-  amount: number,
-  reason: 'start_game',
-  gameSlug?: string
-): Promise<AwardResult> {
-  if (!getAuthState().user) {
-    ensureGuestId();
-    const total = awardGuestPoints(amount, reason);
-    setState({
-      points: total,
-      recentAwards: [{ amount, reason, at: Date.now() }, ...state.recentAwards].slice(0, 50),
-      hydrated: true
-    });
-    return { granted: true, needLogin: false };
-  }
-
-  try {
-    const res = await fetch('/api/points', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount, reason, gameSlug })
-    });
-    if (res.status === 401) {
-      ensureGuestId();
-      const total = awardGuestPoints(amount, reason);
-      setState({
-        points: total,
-        recentAwards: [{ amount, reason, at: Date.now() }, ...state.recentAwards].slice(0, 50),
-        hydrated: true
-      });
-      return { granted: true, needLogin: false };
-    }
-    const data = (await res.json()) as { total?: number; granted?: boolean };
-    if (typeof data.total === 'number') {
-      const nextAwards = data.granted
-        ? [{ amount, reason, at: Date.now() }, ...state.recentAwards].slice(0, 50)
-        : state.recentAwards;
-      setState({ points: data.total, recentAwards: nextAwards });
-    }
-    return { granted: !!data.granted, needLogin: false };
-  } catch {
-    return { granted: false, needLogin: false };
-  }
-}
-
-export async function claimDailyCheckIn(): Promise<
-  AwardResult & { alreadyClaimed?: boolean; error?: string }
-> {
+export async function claimDailyCheckIn(): Promise<ClaimResult> {
   try {
     const res = await fetch('/api/points/check-in', {
       method: 'POST',
@@ -196,8 +96,6 @@ export async function claimDailyCheckIn(): Promise<
     const data = (await res.json()) as {
       granted?: boolean;
       alreadyClaimed?: boolean;
-      total?: number;
-      amount?: number;
       checkIn?: CheckInState;
       error?: string;
       cosmetics?: { unlocked?: string[] };
@@ -209,30 +107,8 @@ export async function claimDailyCheckIn(): Promise<
         error: data.error ?? 'unavailable'
       };
     }
-    if (typeof data.total === 'number') {
-      const nextAwards =
-        data.granted && data.amount
-          ? [
-              { amount: data.amount, reason: 'daily_checkin', at: Date.now() },
-              ...state.recentAwards
-            ].slice(0, 50)
-          : state.recentAwards;
-      setState({
-        points: data.total,
-        checkIn: data.checkIn ?? state.checkIn,
-        recentAwards: nextAwards,
-        ledger:
-          data.granted && data.amount
-            ? [
-                {
-                  amount: data.amount,
-                  reason: 'daily_checkin',
-                  createdAt: new Date().toISOString()
-                },
-                ...state.ledger
-              ].slice(0, 20)
-            : state.ledger
-      });
+    if (data.checkIn) {
+      setState({ checkIn: data.checkIn });
     }
     if (data.cosmetics?.unlocked?.length) {
       for (const id of data.cosmetics.unlocked) {
@@ -261,10 +137,7 @@ function snapshot() {
 }
 
 const SERVER_POINTS_STATE: PointsState = {
-  points: 0,
-  recentAwards: [],
   checkIn: null,
-  ledger: [],
   hydrated: false
 };
 
@@ -272,6 +145,7 @@ function serverSnapshot(): PointsState {
   return SERVER_POINTS_STATE;
 }
 
+/** Check-in / streak store (name kept for fewer call-site renames). */
 export function usePoints() {
   return useSyncExternalStore(subscribe, snapshot, serverSnapshot);
 }
