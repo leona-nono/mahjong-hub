@@ -5,7 +5,8 @@
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { GLOSSARY, type GlossaryLocale } from '../../data/glossary';
+import type { GlossaryLocale } from '../../data/glossary';
+import { buildLocalePrompt, LOCALE_SHEETS, SPEC_VERSION } from './localization-spec';
 
 const MEMORY_PATH = path.join(process.cwd(), '.cache', 'i18n-memory.json');
 const DEEPSEEK_URL = 'https://api.deepseek.com/chat/completions';
@@ -13,9 +14,22 @@ const MODEL = 'deepseek-chat';
 
 export type MemoryStore = Record<string, string>;
 
-function memoryKey(locale: string, source: string): string {
-  return createHash('sha256').update(`${locale}\n${source}`).digest('hex');
+/**
+ * The cache is keyed by prompt version + locale + source. The version comes from
+ * `localization-spec.ts` rather than living here, because a local copy drifts: the spec
+ * can be rewritten while this file still claims an old version, and every cached string
+ * keeps answering with its pre-change wording — a rewrite that appears to have no effect.
+ * Bump `SPEC_VERSION` in the spec and the whole cache is retired at once.
+ */
+function memoryKey(locale: string, source: string, prose: boolean): string {
+  return createHash('sha256')
+    .update(`${SPEC_VERSION}\n${prose ? 'prose' : 'label'}\n${locale}\n${source}`)
+    .digest('hex');
 }
+
+/** Prose decodes differently every time, so it samples warmer than a locked label. */
+const PROSE_TEMPERATURE = 0.35;
+const LABEL_TEMPERATURE = 0.1;
 
 export function loadMemory(): MemoryStore {
   if (!existsSync(MEMORY_PATH)) return {};
@@ -27,45 +41,53 @@ export function saveMemory(store: MemoryStore) {
   writeFileSync(MEMORY_PATH, `${JSON.stringify(store, null, 2)}\n`, 'utf8');
 }
 
-export function glossaryLockTable(locale: GlossaryLocale): string {
-  return Object.entries(GLOSSARY)
-    .map(([key, entry]) => {
-      const locked = entry.i18n[locale] ?? entry.source;
-      return `- ${key}: EN "${entry.source}" → ${locale} "${locked}"`;
-    })
-    .join('\n');
+/**
+ * Locale labels live in the spec, next to the rules that use them — one list, not two.
+ */
+export const LOCALE_NAMES = Object.fromEntries(
+  Object.entries(LOCALE_SHEETS).map(([locale, sheet]) => [locale, sheet.label])
+) as Record<GlossaryLocale, string>;
+
+/**
+ * Fields whose job is to read well. Long-form prose is localized with a
+ * rewrite-oriented brief and a higher sampling temperature; short labels keep the
+ * conservative settings that suit terminology-locked strings.
+ */
+const PROSE_KEYS = new Set([
+  'title',
+  'description',
+  'heading',
+  'body',
+  'question',
+  'answer',
+  'intro',
+  'howToPlay',
+  'tips'
+]);
+
+export function isProseKey(keyHint: string): boolean {
+  return PROSE_KEYS.has(keyHint);
 }
 
-function systemPrompt(locale: GlossaryLocale): string {
-  const names: Record<GlossaryLocale, string> = {
-    zh: 'Simplified Chinese',
-    'zh-TW': 'Traditional Chinese (Taiwan)',
-    ja: 'Japanese',
-    ko: 'Korean',
-    es: 'Spanish (Spain / LatAm web formal)',
-    fr: 'French',
-    de: 'German',
-    'pt-BR': 'Brazilian Portuguese'
-  };
-  return [
-    `You translate Mahjong Hub marketing and rules copy from English into ${names[locale]}.`,
-    'English is the only source language. Never reverse-translate from Chinese.',
-    'Output ONLY the translated text. Preserve JSON structure, href paths, punctuation used as UI separators (→), and brand name "Mahjong Hub".',
-    'Locked mahjong terminology — use these exact strings, never synonyms:',
-    glossaryLockTable(locale),
-    'Tone: clear written game-site copy, not slang. Keep link labels natural for the locale.'
-  ].join('\n');
+/**
+ * The prompt is owned by localization-spec.ts, next to the linter's copy of the
+ * same rules — a calibration sentence that the translator follows but the gate
+ * does not know about is how translationese shipped in the first place.
+ */
+function systemPrompt(locale: GlossaryLocale, prose = false): string {
+  return buildLocalePrompt(locale, prose);
 }
 
 export async function translateText(
   source: string,
   locale: GlossaryLocale,
-  opts: { memory: MemoryStore; apiKey?: string; dryRun?: boolean }
+  opts: { memory: MemoryStore; apiKey?: string; dryRun?: boolean; prose?: boolean }
 ): Promise<string> {
   const trimmed = source.trim();
   if (!trimmed) return source;
 
-  const key = memoryKey(locale, source);
+  const prose = opts.prose ?? false;
+  const key = memoryKey(locale, source, prose);
   if (opts.memory[key]) return opts.memory[key];
 
   // Identity for locked glossary English sources
@@ -90,9 +112,9 @@ export async function translateText(
     },
     body: JSON.stringify({
       model: MODEL,
-      temperature: 0.1,
+      temperature: prose ? PROSE_TEMPERATURE : LABEL_TEMPERATURE,
       messages: [
-        { role: 'system', content: systemPrompt(locale) },
+        { role: 'system', content: systemPrompt(locale, prose) },
         { role: 'user', content: source }
       ]
     })
@@ -126,7 +148,7 @@ export async function translateTree(
     }
     // Keep pure separators / arrows
     if (/^[\s→\-—,./]*$/.test(value)) return value;
-    return translateText(value, locale, opts);
+    return translateText(value, locale, { ...opts, prose: isProseKey(keyHint) });
   }
   if (Array.isArray(value)) {
     const out = [];
