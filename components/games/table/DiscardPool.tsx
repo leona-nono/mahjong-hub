@@ -7,16 +7,23 @@ export interface DiscardPoolProps {
   state: GameState;
   seat: Seat;
   className: string;
+  /** Seat 0 melds are shown beside the hand rack instead — avoid a second copy mid-table. */
+  showMelds?: boolean;
 }
 
 /**
  * One player's discard river (and exposed melds above it) on the table.
  */
-export default function DiscardPool({ state, seat, className }: DiscardPoolProps) {
+export default function DiscardPool({
+  state,
+  seat,
+  className,
+  showMelds = true
+}: DiscardPoolProps) {
   const player = state.players[seat];
   return (
     <div className={`absolute z-[5] w-[190px] ${className}`}>
-      {player.melds.length > 0 && (
+      {showMelds && player.melds.length > 0 && (
         <div className="mb-1 flex justify-center gap-1">
           {player.melds.map((meld, meldIndex) => (
             <div key={meldIndex} className="flex gap-px bg-black/10 p-0.5">

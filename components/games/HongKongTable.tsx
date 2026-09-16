@@ -338,7 +338,7 @@ export default function HongKongTable({
           <DiscardPool state={state} seat={3} className="left-1/2 top-[22%] -translate-x-1/2" />
           <DiscardPool state={state} seat={2} className="left-[27%] top-[32%]" />
           <DiscardPool state={state} seat={1} className="right-[27%] top-[32%]" />
-          <DiscardPool state={state} seat={0} className="bottom-[24%] left-1/2 -translate-x-1/2" />
+          <DiscardPool state={state} seat={0} className="bottom-[24%] left-1/2 -translate-x-1/2" showMelds={false} />
 
           <div className="absolute left-1/2 top-[45%] z-10 h-44 w-52 -translate-x-1/2 -translate-y-1/2 rounded-xl border-[5px] border-[#20222d] bg-[#11121a] shadow-[0_12px_20px_rgba(0,0,0,.45)]">
             <div className="absolute inset-5 flex flex-col items-center justify-center bg-[#07090d] text-center">

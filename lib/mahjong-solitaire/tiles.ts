@@ -97,7 +97,7 @@ export function artKeyForTile(tile: Tile): string {
 }
 
 /** Bump when replacing face/back PNGs so CDN + SW pick up new bytes. */
-export const TILE_ART_VERSION = '20260911';
+export const TILE_ART_VERSION = '20260916';
 
 export function tileArtSrc(tile: Tile): string {
   const key = artKeyForTile(tile);

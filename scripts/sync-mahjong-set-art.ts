@@ -29,20 +29,21 @@ for (let i = 1; i <= 9; i++) {
     hk: String(i).padStart(3, '0') + '.png'
   });
 }
+// Mahjong-set naming: T = 条 (bamboo), B = 饼 (circles). Not English pin/sou initials.
 for (let i = 1; i <= 9; i++) {
   const n = String(i).padStart(2, '0');
   faceMap.push({
     src: `PaiT${n}.png`,
-    sol: `pin-${n}.png`,
-    hk: String(i + 9).padStart(3, '0') + '.png'
+    sol: `sou-${n}.png`,
+    hk: String(i + 18).padStart(3, '0') + '.png'
   });
 }
 for (let i = 1; i <= 9; i++) {
   const n = String(i).padStart(2, '0');
   faceMap.push({
     src: `PaiB${n}.png`,
-    sol: `sou-${n}.png`,
-    hk: String(i + 18).padStart(3, '0') + '.png'
+    sol: `pin-${n}.png`,
+    hk: String(i + 9).padStart(3, '0') + '.png'
   });
 }
 faceMap.push(
