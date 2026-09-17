@@ -3,19 +3,16 @@ import { INDEXABLE_LOCALES } from '@/lib/locales';
 import { brandName, type PublicSiteSettings } from '@/lib/site-settings';
 
 /**
- * Homepage JSON-LD: WebSite + Organization + SoftwareApplication (+ optional FAQ).
- * Helps rich results / knowledge panels for brand identity and free web game offers.
+ * Shared Organization node (@id = SITE_BASE_URL/#organization).
+ * Homepage and Article pages must emit the same entity so publisher @id resolves.
  */
-export function homeJsonLd(opts: {
+export function siteOrganizationJsonLd(opts: {
   site: PublicSiteSettings;
-  locale: string;
-  /** Locale-aware site description (prefer translated meta over CMS English). */
+  /** Locale-aware description; falls back to site.siteDescription. */
   description?: string;
-  faq?: Record<string, unknown>;
-}): Record<string, unknown>[] {
+}): Record<string, unknown> {
   const brand = brandName(opts.site);
   const description = opts.description || opts.site.siteDescription;
-  const homeUrl = absoluteUrl(`/${opts.locale}`);
   const logo = absoluteUrl('/icons/icon-512.svg');
   const sameAs = [opts.site.facebook, opts.site.x, opts.site.instagram, opts.site.tiktok].filter(
     Boolean
@@ -34,6 +31,28 @@ export function homeJsonLd(opts: {
     description
   };
   if (sameAs.length) organization.sameAs = sameAs;
+  return organization;
+}
+
+/**
+ * Homepage JSON-LD: WebSite + Organization + SoftwareApplication (+ optional FAQ).
+ * Helps rich results / knowledge panels for brand identity and free web game offers.
+ */
+export function homeJsonLd(opts: {
+  site: PublicSiteSettings;
+  locale: string;
+  /** Locale-aware site description (prefer translated meta over CMS English). */
+  description?: string;
+  faq?: Record<string, unknown>;
+}): Record<string, unknown>[] {
+  const brand = brandName(opts.site);
+  const description = opts.description || opts.site.siteDescription;
+  const homeUrl = absoluteUrl(`/${opts.locale}`);
+
+  const organization = siteOrganizationJsonLd({
+    site: opts.site,
+    description
+  });
 
   const software: Record<string, unknown> = {
     '@context': 'https://schema.org',

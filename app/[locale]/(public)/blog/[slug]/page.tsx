@@ -4,13 +4,14 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ArticleTiles from '@/components/blog/ArticleTiles';
-import { pageMeta, SITE_BASE_URL } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
 import { UI_LOCALES } from '@/lib/locales';
 import { getBlogPosts, getLocalizedBlogPost } from '@/data/blog';
 import { clusterOf, ctaHrefFor, relatedSlugs } from '@/data/blog-clusters';
 import { articleWordCount, linkArticleSections } from '@/lib/article-links';
 import { RichParagraph } from '@/lib/rich-text';
 import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
+import { blogArticleJsonLd } from '@/lib/blog-jsonld';
 
 /** Pure SSG from data/blog + blog-i18n JSON. Redeploy to refresh. */
 export const dynamic = 'force-static';
@@ -57,10 +58,6 @@ export default async function BlogPostPage({
   const nav = await getTranslations('nav');
   const learn = await getTranslations('learn');
   const site = getPublicSiteSettings();
-  const brand = brandName(site);
-  const pageUrl = `${SITE_BASE_URL}/${locale}/blog/${slug}`;
-  const publishedAt = post.publishedAt ?? '2026-08-18';
-  const updatedAt = post.updatedAt ?? publishedAt;
   const sections = linkArticleSections(post.sections, slug, locale);
   const cluster = clusterOf(slug);
   const related = relatedSlugs(slug)
@@ -69,34 +66,17 @@ export default async function BlogPostPage({
   const ctaHref = ctaHrefFor(slug, post.cta?.href ?? '/games/classic');
   const ctaLabel = post.cta?.label ?? t('playNow');
 
-  const jsonLd = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: post.title,
-      description: post.description,
-      url: pageUrl,
-      inLanguage: locale,
-      isAccessibleForFree: true,
-      author: { '@type': 'Organization', name: brand, url: SITE_BASE_URL },
-      publisher: { '@id': `${SITE_BASE_URL}/#organization` },
-      datePublished: publishedAt,
-      dateModified: updatedAt,
-      mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
-      wordCount: articleWordCount(post.sections)
-    },
-    ...(post.faq.length
-      ? [{
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: post.faq.map((item) => ({
-            '@type': 'Question',
-            name: item.question,
-            acceptedAnswer: { '@type': 'Answer', text: item.answer }
-          }))
-        }]
-      : [])
-  ];
+  const jsonLd = blogArticleJsonLd({
+    site,
+    locale,
+    slug,
+    title: post.title,
+    description: post.description,
+    publishedAt: post.publishedAt,
+    updatedAt: post.updatedAt,
+    wordCount: articleWordCount(post.sections),
+    faq: post.faq
+  });
 
   const crumbs = [
     { name: nav('home'), path: '/' },

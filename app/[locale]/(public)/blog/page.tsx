@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { hubPageMeta } from '@/lib/hub-seo';
+import { hubCollectionJsonLd } from '@/lib/hub-jsonld';
 import { getBlogPosts, getLocalizedBlogPosts } from '@/data/blog';
 import { BLOG_CLUSTERS, clusterSlugs } from '@/data/blog-clusters';
 
@@ -36,9 +37,23 @@ export default async function BlogPage({
   const learn = await getTranslations('learn');
   const posts = getLocalizedBlogPosts(getBlogPosts(), locale);
   const bySlug = new Map(posts.map((post) => [post.slug, post]));
+  const collectionLd = hubCollectionJsonLd({
+    locale,
+    path: '/blog',
+    name: t('beginners'),
+    description: t('beginnersSubtitle'),
+    items: posts.map((post) => ({
+      urlPath: `/blog/${post.slug}`,
+      name: post.title
+    }))
+  });
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }}
+      />
       <Breadcrumbs
         locale={locale}
         crumbs={[

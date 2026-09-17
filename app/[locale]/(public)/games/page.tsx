@@ -5,6 +5,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import GameCard from '@/components/GameCard';
 import HomeCategoryCards from '@/components/HomeCategoryCards';
 import { hubPageMeta } from '@/lib/hub-seo';
+import { hubCollectionJsonLd } from '@/lib/hub-jsonld';
+import { isGamePageIndexable } from '@/lib/game-seo';
 
 export const dynamic = 'force-static';
 
@@ -37,9 +39,24 @@ export default async function GamesHallPage({
   const th = await getTranslations('home');
   const all = getLocalizedGames(getGames(), locale);
   const wall = all.filter((g) => g.gameType === 'native');
+  const indexable = all.filter(isGamePageIndexable);
+  const collectionLd = hubCollectionJsonLd({
+    locale,
+    path: '/games',
+    name: t('gameHall'),
+    description: th('seoBody'),
+    items: indexable.map((game) => ({
+      urlPath: `/games/${game.slug}`,
+      name: game.title
+    }))
+  });
 
   return (
     <div className="mx-auto max-w-[1400px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }}
+      />
       <Breadcrumbs
         locale={locale}
         crumbs={[
