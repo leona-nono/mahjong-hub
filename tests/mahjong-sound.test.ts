@@ -11,6 +11,16 @@ describe('Hong Kong discard voice labels', () => {
     expect(cantoneseTileLabel('z6')).toBe('\u767c\u8ca1');
     expect(cantoneseTileLabel('z7')).toBe('\u7d05\u4e2d');
   });
+
+  // Guard against the PaiT/PaiB art swap regressing into "circles face + 索 voice".
+  it('keeps pin voice on 筒 and sou voice on 索 (not swapped)', () => {
+    expect(cantoneseTileLabel('p1')).toContain('\u7b52'); // 筒
+    expect(cantoneseTileLabel('p1')).not.toContain('\u7d22'); // 索
+    expect(cantoneseTileLabel('s1')).toContain('\u7d22');
+    expect(cantoneseTileLabel('s1')).not.toContain('\u7b52');
+    expect(mandarinTileLabel('p1')).toBe('一筒');
+    expect(mandarinTileLabel('s1')).toBe('一条');
+  });
 });
 
 describe('Riichi discard voice labels', () => {

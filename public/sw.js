@@ -1,5 +1,5 @@
 /* Mahjong Hub service worker — cache tile art + soft app shell. Never cache auth/API. */
-const CACHE_VERSION = 'mh-pwa-v2-mahjong-set';
+const CACHE_VERSION = 'mh-pwa-v3-pin-sou-20260917';
 const SHELL_URLS = ['/manifest.webmanifest', '/icons/icon-192.svg', '/icons/icon-512.svg'];
 
 self.addEventListener('install', (event) => {
@@ -25,7 +25,10 @@ function isApiOrAuth(url) {
 }
 
 function isTileAsset(url) {
-  return url.pathname.startsWith('/assets/mahjong-solitaire/');
+  return (
+    url.pathname.startsWith('/assets/mahjong-solitaire/') ||
+    url.pathname.startsWith('/assets/mahjong-hongkong/')
+  );
 }
 
 self.addEventListener('fetch', (event) => {

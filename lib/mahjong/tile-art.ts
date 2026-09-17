@@ -12,7 +12,7 @@
 import { isBonusTile, normalTile, type Tile } from './tiles';
 
 /** Cache-buster for the exported artwork files. Bump when the art is re-cut. */
-export const TILE_ART_VERSION = '20260916';
+export const TILE_ART_VERSION = '20260917';
 
 /**
  * Photo tiles already include their own rim, so the rendered box must stay at
