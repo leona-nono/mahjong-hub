@@ -1150,5 +1150,364 @@
         "answer": "Alrededor de 150 años. Surgió en la China de mediados del siglo XIX y ha sido reinventado por cada cultura que lo adoptó."
       }
     ]
+  },
+  "how-to-play-american-mahjong": {
+    "title": "How to Play American Mahjong: Complete Beginner Guide",
+    "description": "American mahjong is not the game in Chinese mahjong guides. Learn the 152-tile set, the Charleston, jokers, the annual NMJL card, dead hands and how scoring really works — with a full walkthrough of your first hand.",
+    "sections": [
+      {
+        "heading": "American Mahjong Is a Different Game",
+        "body": [
+          "American mahjong uses the same tiles you have seen in Chinese mahjong, and almost none of the same rules. In the Chinese game you win by building four sets and a pair. In the American game you win by matching one exact hand printed on a card that the National Mah Jongg League reissues every spring — and if your fourteen tiles do not match a line on that card, they are worth nothing at all.",
+          "Three things separate the two games. The card decides what is legal this year. Jokers, eight wild tiles that exist in no other variant, stand in for tiles inside a group of three or more. And the Charleston — a round of passing tiles before the first draw — lets every player steer their hand before luck takes over. Everything else in this guide grows out of those three."
+        ]
+      },
+      {
+        "heading": "The Tiles: 152, Not 144",
+        "body": [
+          "An American set holds 152 tiles. The numbered tiles are the same as everywhere else: three suits — craks (characters), bams (bamboo) and dots — each running from one to nine with four copies of every tile, 108 in total. American players almost always use the short names, so a \"three bam\" is what a Chinese player calls a three of bamboo. The suits are colour-coded on the tile faces themselves — characters in red and black, bamboo in green, dots in a mix of blues and reds — but the colours printed on the card mean something else entirely, and mixing the two up is a standard first-week mistake.",
+          "The count changes in the honours. Sixteen winds (four each of East, South, West and North), twelve dragons (four Red, four Green, four White), eight flowers and eight jokers. Sixteen plus twelve plus eight plus eight is forty-four, and 108 plus 44 is 152 — the jokers are the eight tiles a Chinese set does not have at all.",
+          "Two of those tiles change how the game feels. Flowers are not set aside and scored the way they are in Chinese play; they are passed during the Charleston and used inside the hands that call for them. And jokers are wild, but only inside groups. There is also no chow in American mahjong — no runs of three consecutive tiles. Chinese players reach for that move by habit in their first American game, and it is not there. What replaces it is the quint: five identical tiles in a single group, a shape that cannot be completed without jokers and that gets its own section of the card."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "bamboo",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "You Cannot Win Without the Card",
+        "body": [
+          "Every spring the National Mah Jongg League publishes a new card, and every spring it is different. A card lists somewhere between 65 and 75 legal hands, grouped into sections by theme — the year itself, 2468, Quints, Consecutive Run, 13579, Winds and Dragons, 369, and Singles and Pairs. You may build any hand on that card. You may build nothing else. The card is published by the league and sold each spring rather than shipped with any set, which is why a second-hand set on a resale site so often has everything except the one thing you actually need.",
+          "Read a line the way you read a recipe. Numbers are literal, with one exception: a zero stands for the White Dragon, which American players call the soap. The letter F is a flower and D is a dragon. Colour carries meaning — two tiles printed in the same colour must come from the same suit, and two tiles in different colours must come from different suits. You choose which suits to use, and that choice is most of your strategy.",
+          "This is why American players say the game is relearned every year. A hand that was legal last April may not exist this April. For your first session, do not try to learn the card. Pick two lines that use three or four groups, prop the card next to your rack, and play only those."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          },
+          {
+            "suit": "dot",
+            "rank": 6
+          },
+          {
+            "suit": "dot",
+            "rank": 6
+          },
+          {
+            "suit": "dot",
+            "rank": 6
+          }
+        ]
+      },
+      {
+        "heading": "The Charleston: Three Passes Before Anyone Draws",
+        "body": [
+          "Before the first draw, every player passes tiles. The first Charleston is mandatory and always runs in the same direction: three tiles to the player on your right, three across the table, three to the player on your left. Nine tiles leave your hand and nine arrive before a single tile is drawn from the wall. In practice you pass the three tiles that fit nothing you are holding, and you hope the nine coming back are less random than the nine going out.",
+          "A second Charleston may follow in the reverse direction — left, across, right — but any player may stop it, and in most groups someone does. During that second pass you may also make a blind pass, sending on tiles you have just received without looking at them, which helps when everything you have been handed is wrong for the hand you are chasing.",
+          "One rule catches everybody: jokers cannot be passed. They stay in your rack through the whole exchange. After the Charleston you and the player opposite may agree a courtesy pass of up to three tiles, and that number is negotiated rather than fixed — you may ask for three and receive none. The Charleston exists only in American mahjong, and it is the reason two players who start with similar tiles can end up in completely different hands."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 3
+          },
+          {
+            "suit": "char",
+            "rank": 4
+          },
+          {
+            "suit": "char",
+            "rank": 5
+          }
+        ]
+      },
+      {
+        "heading": "Setting Up: Walls, Dice and Racks",
+        "body": [
+          "All 152 tiles go face down and get shuffled, then each player builds a wall in front of their rack — nineteen tiles long and two tiles high, 38 to a side. Dice decide who is East, and East rolls again to decide where the wall is broken. Two dice produce the total, and that total fixes both who deals and where the wall is broken. Online it happens without you noticing; in person it is the moment everyone leans in to check the count.",
+          "Tiles are dealt from the broken wall in fours. East ends up with fourteen and everyone else with thirteen, and each player stands their tiles on a rack with the faces toward them. The rack is not decoration: it keeps a hand private in a game whose tiles are tall enough to be read from across the table.",
+          "East discards first, and play then moves counter-clockwise around the table. A turn is a draw and a discard, exactly as in Chinese mahjong. What differs is what you are allowed to do with the tiles other people throw away, and that is where the game turns."
+        ]
+      },
+      {
+        "heading": "Jokers: Where They Fit and Where They Never Fit",
+        "body": [
+          "A joker is a wild tile, and it is the most misused tile in the game. It can stand in for any tile you need inside a group of three or more — a pung of three, a kong of four, a quint of five. Where a hand offers you a choice of suits, the joker takes whichever suit you choose.",
+          "What a joker cannot do is just as firm. It cannot stand in for a pair. It cannot stand in for a single tile. It cannot be used inside NEWS, the grouping of one of each wind, or inside the year numbers, because those groupings are about specific tiles rather than interchangeable ones. This one restriction kills more beginner hands than any other rule, because a pair looks exactly like a group that is one tile short. Picture two Red Dragons in your rack with a joker beside them. That is a pair plus a spare tile, not a pung — and if you lay it down as one, you have exposed a group the card does not recognise.",
+          "There is one escape hatch, and you should know it before somebody uses it on you. If a player exposes a group containing a joker, any player may swap for it: you hand over the real tile the joker is standing in for, add one extra tile from your hand as compensation, and the joker comes to you. You cannot take a joker out of a group just to keep it. The swap has to be paid for."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dot",
+            "rank": 5
+          }
+        ]
+      },
+      {
+        "heading": "Exposing a Hand: Calling and the C on the Card",
+        "body": [
+          "You may claim a discard to complete a group of three or more, and you must then lay that group face-up on your rack. You cannot claim a discard to make a pair — with one exception, which is claiming the tile that wins the hand outright.",
+          "Every hand on the card is marked either X or C. X means exposed: you may call discards freely while building it. C means concealed: you may not call anything except the tile that completes your hand, and the rest stays hidden on your rack until the end. Concealed hands are harder to finish and they pay more. The gap is deliberate: a C hand cannot be fed by the table, so the card pays you for building it blind.",
+          "Exposure is a commitment, not a convenience. The moment you lay a group down it is fixed, the table can see what you are chasing, and any joker inside it becomes available to whoever wants to pay for the swap. If that group turns out to belong to no line on the card, you have not simply given away information — you have killed the hand."
+        ],
+        "tiles": [
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "green"
+          }
+        ]
+      },
+      {
+        "heading": "Dead Hands and the Two Ways Beginners Reach Them",
+        "body": [
+          "A dead hand is a hand that can no longer win, whatever you draw. It happens when the tiles you have exposed match no line on the card, or when your hand holds the wrong number of tiles. A dead hand keeps drawing and discarding until somebody else wins, but it cannot win itself.",
+          "Beginners reach a dead hand the same two ways almost every time. The first is exposing a group that fits no line — usually because two lines were being chased at once and the group belonged to neither. The second is declaring a win with the wrong count: fourteen tiles for most hands, more for hands built on kongs or quints, and a hand that is one tile off is simply a hand that has not won.",
+          "The cure is boring and it works. Before you lay a group down, put a finger on the line you are building and read it back. If the group is on that line, expose it. If you cannot find it in three seconds, do not. Experienced players do this without thinking, which is why they rarely go dead. And if you do go dead, the hand is not over — you keep drawing and discarding, and your job becomes making sure nobody wins off you. A dead hand that folds safely costs you nothing but time."
+        ]
+      },
+      {
+        "heading": "Scoring: Who Pays What",
+        "body": [
+          "Every hand on the card carries a value, and the values run from roughly twenty-five to roughly seventy-five. That number is the size of the pot for that hand. The card decides it — not how well you played.",
+          "Only three things change what each player actually pays. Who threw the winning tile. Whether you drew it yourself. And whether your hand is jokerless.",
+          "Win on a discard and the player who threw it pays double while the other two pay face value. Draw the tile yourself and every player pays double. The total settles between you and each opponent rather than out of a central pot, which is why American players keep score on a slip of paper instead of stacking chips. Run it once and the shape of the game becomes clear: a thirty-point hand won on a discard pays sixty from the thrower and thirty from each of the other two, a hundred and twenty in total. Win the same hand on your own draw and all three opponents pay sixty, which comes to a hundred and eighty.",
+          "A jokerless hand — one built with no wild tiles at all — doubles what every opponent pays, except in the Singles and Pairs section, where jokers are barred anyway and the bonus would mean nothing. If the wall runs out before anyone completes a hand, that is a wall game: nobody wins, nobody pays, and the deal passes on."
+        ]
+      },
+      {
+        "heading": "Your First Session",
+        "body": [
+          "Set the card where you can see it and pick two X hands that use three or four groups. X hands let you call tiles, which keeps the game moving while you learn. Ignore the point values on the first night and ignore Singles and Pairs completely — those hands are hard, and jokers are banned inside them. If you are learning alone, pick hands you can picture finishing in five turns. If you are learning at a table, say your target hand out loud for the first few deals — hearing a hand named is how most American players learned the card in the first place.",
+          "Play three or four hands before you decide anything about the game. The Charleston will feel chaotic for two of them, you will probably expose a group you should not have, and the card will take longer to read than you expect. After one evening it stops being a puzzle and becomes a shape you recognise."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "How many tiles are in an American mahjong set?",
+        "answer": "American mahjong is played with 152 tiles: 108 numbered tiles across three suits, 16 winds, 12 dragons, 8 flowers and 8 jokers. The eight jokers and eight flowers are what make an American set larger than the 144-tile Chinese set."
+      },
+      {
+        "question": "What is the Charleston in American mahjong?",
+        "answer": "The Charleston is a mandatory round of passing tiles before the first draw. Each player passes three tiles to the right, three across and three to the left. A second Charleston in reverse is optional and any player may stop it. Jokers can never be passed."
+      },
+      {
+        "question": "Can I use a joker for a pair in American mahjong?",
+        "answer": "No. A joker can only stand in for a tile inside a group of three or more — a pung, kong or quint. It can never substitute for a pair, a single tile, one of the four winds in NEWS, or a tile in the year numbers."
+      },
+      {
+        "question": "Do I need a new mahjong card every year?",
+        "answer": "Yes. The National Mah Jongg League publishes a new card each spring with a different set of legal hands, and only the current card is valid. Older cards describe hands that no longer exist, so they cannot be used at a table playing the current year."
+      },
+      {
+        "question": "What is a dead hand?",
+        "answer": "A dead hand cannot win, no matter what you draw. It usually comes from exposing a group that matches no line on the card, or from holding the wrong number of tiles. You keep playing the hand out, but you cannot win it yourself."
+      },
+      {
+        "question": "Is American mahjong harder than Chinese mahjong?",
+        "answer": "It is harder to start and easier to master. You cannot win by building any sensible shape — you have to match a line on the card, which takes a few sessions to read fluently. But with no chows and a fixed list of hands, there are fewer patterns to learn than in Chinese play."
+      },
+      {
+        "question": "Can I play American mahjong online for free?",
+        "answer": "Yes. Our tables deal a full hand against computer opponents, track the wall and score every win for you, so you can learn the card and the Charleston without needing three other players at the table."
+      }
+    ]
+  },
+  "how-many-players-mahjong": {
+    "title": "How Many Players Can Play Mahjong? 2, 3 and 4-Player Setups",
+    "description": "Mahjong is built for four players, but you can play tonight with two or three. Learn exactly what changes: the wall, claiming, the Charleston, sanma, Siamese racks, which tiles to remove, and how scoring adjusts.",
+    "sections": [
+      {
+        "heading": "Why Four Players Became the Standard",
+        "body": [
+          "Mahjong is written for four. The wall is built in four sides, the seats are named after the four winds, and the rule that a hand needs four sets and a pair quietly assumes there are four hands in play. Four is also the number the game needs to work as a game of information: with three opponents reading a shared discard pile, every tile you throw away is a signal and every tile you keep is a hint you cannot help giving. Change the count and you change how much information is in the room, which is the real variable in every adaptation below.",
+          "None of that makes four mandatory. Mahjong adapts to two, three or five players with small mechanical changes — you remove tiles or seats, you change who may claim a discard, and occasionally you change what counts as a win. What follows is exactly what moves in each case, so you can sit down tonight with whoever is actually available."
+        ]
+      },
+      {
+        "heading": "What Actually Changes When a Seat Is Empty",
+        "body": [
+          "Four things move when a seat goes empty, and only one of them is obvious. The tiles that seat would have drawn stay in the wall. Whoever would have passed you tiles in the Charleston is gone. The number of players who can claim a discard drops. And the number of people who pay you when you win drops with it.",
+          "The wall is the change players feel first. Four players take 52 tiles into their hands before play begins; three players take 39. That leaves more tiles in the wall, which sounds like an advantage and mostly is — hands finish instead of stalling, because the wall runs dry far less often. Three-player games end in an actual win more frequently than four-player ones, and they end sooner. Do the division and the reason is plain: a four-player hand gives each player roughly twenty-one draws, and a three-player hand gives each of them about thirty.",
+          "The change you notice last is the information. Three opponents means three people reading your discards and three hands competing for the tiles you need; two opponents means half as many eyes on you and the tiles you want concentrated in fewer hands. Fewer players does not make the game easier. It makes it more direct, which is why three-handed mahjong is usually faster and more aggressive than the game you are used to."
+        ]
+      },
+      {
+        "heading": "Three Players, American Style",
+        "body": [
+          "American mahjong allows three-handed play, and the simplest adaptation is to skip the Charleston entirely. There are no passes at all, the dealer discards first, and play begins immediately. For a game whose opening ritual is a nine-tile exchange, dropping it changes more than it sounds — you start with the hand you were dealt and no chance to repair it.",
+          "The alternative that most groups actually use is a ghost seat. A fourth hand is dealt face down and never played, but it still takes part in the Charleston, with tiles passing to and from a wall nobody draws from. This keeps the exchange intact and keeps the table’s rhythm, at the cost of three passes’ worth of tiles that vanish out of the game. Setup takes one extra step: deal the ghost hand as though a fourth player were sitting there, leave it face down in front of the empty space, and pass to it on every leg of the Charleston. Nobody looks at it, and it never draws or discards.",
+          "Choose between them by what your table wants. Skip the Charleston if you want speed, a clean start and no bookkeeping. Use the ghost seat if the ritual is part of why you play — the passing, the reading of who gave you what, the small politics of a courtesy pass. Both are legal, and both are played in American clubs."
+        ]
+      },
+      {
+        "heading": "Three Players, Japanese Style: Sanma",
+        "body": [
+          "Japanese three-player mahjong has a name, sanma, and it is not a house rule. It is a recognised variant with its own competitive scene, and in some parts of Japan it is played more than the four-player game.",
+          "Sanma removes the 2 through 8 of one suit — 28 tiles in total — leaving 108. The suit that gets cut is normally characters, which leaves the one and the nine sitting in a suit where nobody can build a run. What is left is a faster, more aggressive game: fewer tiles to read, more turns that matter, and a higher chance that any given discard is genuinely dangerous. A three-handed wall also stretches further per player than a four-handed one, which sounds like it should slow things down and does the opposite — more draws means more chances to complete, so sanma players push thinner hands than they would with four at the table.",
+          "Sanma also changes the furniture of the game. A drawn north wind often counts as a bonus tile rather than a usable seat wind, riichi gets declared more often because scoring is compressed, and hands run shorter from start to finish. If your group knows Japanese mahjong and is one player short, this is the variant to play — the rules are settled, so nobody has to argue about house rules at the table."
+        ],
+        "tiles": [
+          {
+            "suit": "wind",
+            "wind": "east"
+          },
+          {
+            "suit": "wind",
+            "wind": "south"
+          },
+          {
+            "suit": "wind",
+            "wind": "west"
+          }
+        ]
+      },
+      {
+        "heading": "Two Players: The Draw-Only Duel",
+        "body": [
+          "The simplest two-player game removes claiming altogether. Each player draws from the wall, decides, and discards. Nobody may pong, kong or chow another player’s discard. You are not so much playing against your opponent as racing them, and the first player to complete a hand wins it. Set it up by dealing thirteen tiles each and leaving the rest of the set in the wall; you need no ghost hand and no rulebook, because the only thing you removed is the right to claim.",
+          "This version is slower per hand and much better for learning. Because no discard can be claimed, every tile you need has to come off the wall, which means you spend the whole game reading your own hand and counting tiles instead of watching three discard rows. It is the fastest way to find out which shapes actually connect and which ones stall forever.",
+          "It also has a quiet tactical layer that four-player games rarely offer. With one opponent and no calling, the discards in front of them are the only information you have — and that information is complete. If both copies of a tile you need are already lying in their pile, you can abandon that hand before you waste ten turns chasing it."
+        ]
+      },
+      {
+        "heading": "Two Players: Siamese Racks",
+        "body": [
+          "American mahjong has its own two-player format, usually called Siamese mah jongg, and it does not shrink the game — it doubles it. Each player runs two racks, 27 tiles in total, and has to complete two hands rather than one. There is no Charleston; you start from what you were dealt. Set the two racks one above the other and deal 27 tiles to each player — two hands’ worth — and the wall still holds close to a hundred tiles, so the game does not run dry before somebody finishes.",
+          "The interest is in choosing what to build. Before your first discard you are looking at 27 tiles and picking two lines off the card, and the temptation is to pick the two hands you like best. The better play is to pick two hands that share as few tiles as possible, so that a tile which helps one rack is not sitting useless in the other. You may move tiles between your racks freely while both are concealed; once a group is exposed, it belongs to that rack for good.",
+          "Two racks also change the endgame. You declare each completed hand separately, and the first declaration locks in its jokers — nobody can swap a joker out of a hand you have already declared. Winning both racks is the goal, and finishing one while your opponent finishes neither is usually enough to take the game."
+        ]
+      },
+      {
+        "heading": "What to Remove From the Set",
+        "body": [
+          "Some variants take tiles out, and the arithmetic is worth knowing before you start pulling tiles off the table. Chinese three-player play usually drops the North wind: remove all four north tiles and you are down to 132, with the north seat simply not existing and north often treated as a bonus for whoever holds it.",
+          "Japanese sanma cuts far deeper, removing 28 tiles — the 2 through 8 of one suit — and leaving 108. The trade is that the wall gets thin relative to the number of players, which is part of why sanma hands run fast and finish often. You are not removing tiles to make the game harder; you are removing them to keep three hands from drawing dead. The rule of thumb is that tiles come out in multiples of four: four winds, or seven ranks across one suit. That is why the Chinese adjustment is four tiles and the Japanese one is twenty-eight.",
+          "Two-player games usually remove nothing at all. With half the hands in play, a standard set already leaves an unusually deep wall — 110 tiles against 26 held — so the game plays out instead of stalling, and cutting tiles would only make it end faster than it needs to."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 2
+          },
+          {
+            "suit": "char",
+            "rank": 5
+          },
+          {
+            "suit": "char",
+            "rank": 8
+          }
+        ]
+      },
+      {
+        "heading": "Five Players and Beyond: Passing the Seat",
+        "body": [
+          "Five players is easier than three, because nothing about the game changes. Four play a standard hand while one sits out, and the seat rotates so nobody sits out twice before everybody has. Many groups send out the player who came second in the previous hand; some send out the last-place finisher as a gentler penalty. The seated four play entirely normal mahjong — same wall, same Charleston, same claims, same scoring — and nothing at the table tells the fifth player they are not in a standard game.",
+          "Six players works the same way with two seats moving. The alternative — a five-player table where everybody plays — usually goes badly: five hands competing for the same 136 tiles means the wall runs down faster, draws get more frequent, and two players will spend most hands holding nothing that connects.",
+          "Rotating a seat is the only adaptation that changes no rule at all. Nobody removes tiles, nobody changes how claiming works, and the Charleston still runs with four players, because there are four. If your group is larger than four, this is the answer. The game was designed for exactly four people, and it rewards you for keeping it there."
+        ]
+      },
+      {
+        "heading": "How Scoring and Minimums Adjust",
+        "body": [
+          "Fewer players means fewer people paying, and that changes the shape of a session more than any single rule. In a four-player game a win collects from three opponents. In a three-player game it collects from two, so the same card value moves a third less on the scorepad.",
+          "The honest fix is not to inflate the values but to count hands instead of a running total. Ten hands of three-player play is a session; ten hands of four-player play is a session too, and both are worth playing. Comparing raw totals across the two formats is the mistake, not the scoring.",
+          "The other lever is the minimum. Chinese and Japanese rulesets set a floor — three faan in Hong Kong, one yaku in riichi, eight points in Chinese Official — and that floor exists to stop players winning with a hand that is technically complete but strategically empty. With fewer players the same floor bites harder, because the wall is deeper and cheap hands are easier to assemble. If your three-player sessions feel slow, lower the minimum before you change anything else. One concrete version: drop the Hong Kong floor from three faan to two for a few hands and watch what happens — cheap hands start finishing, the wall stops running out, and hands per hour roughly doubles. That is a better trade than inflating every card value, which changes the arithmetic without changing how often anybody wins."
+        ]
+      },
+      {
+        "heading": "Which Setup Should You Play Tonight?",
+        "body": [
+          "Two players: play the draw-only duel while you are learning, and Siamese racks once you know the card and want a real game. Three players: use a ghost seat if you are playing American and want the Charleston, sanma if you are playing Japanese and want a settled ruleset, or skip the Charleston if you simply want to start. Four players: play the standard game. Five or more: rotate the seat and play the standard game.",
+          "The player count was never the hard part. Every version above uses the same 136 or 152 tiles, the same draw-and-discard turn and the same four-sets-and-a-pair target. What changes is how much information you have and how many people are paying when somebody finally wins. If you are not sure which ruleset to learn first, Hong Kong mahjong is the gentlest entry point for a small table — its three-faan minimum lets you win with the shapes you are already building by accident. Pick the version that fits who is actually in the room, and play."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "How many players do you need for mahjong?",
+        "answer": "Four is standard, and it is what every ruleset assumes. You can play with two or three by adapting the setup, and with five or more by rotating one seat out between hands so that four players are always at the table."
+      },
+      {
+        "question": "Can you play mahjong with 3 players?",
+        "answer": "Yes. In American mahjong the Charleston is usually skipped, or a ghost fourth hand is dealt to keep the passing sequence intact. Japanese mahjong has a formal three-player variant, sanma, that removes 28 tiles and is played competitively."
+      },
+      {
+        "question": "Can 2 people play mahjong?",
+        "answer": "Yes. The simplest version lets players draw and discard only, with no claiming at all. American mahjong has its own two-player format called Siamese mah jongg, where each player runs two racks of 27 tiles and must complete two hands."
+      },
+      {
+        "question": "What is sanma?",
+        "answer": "Sanma is Japanese three-player mahjong. It removes the 2 through 8 of one suit — 28 tiles — leaving 108 in play. The result is a faster, more aggressive game that is played competitively in Japan rather than treated as a casual workaround."
+      },
+      {
+        "question": "Do you remove tiles in three-player mahjong?",
+        "answer": "Not always. American three-handed play keeps all 152 tiles and simply skips the Charleston or deals a ghost hand. Chinese three-player play commonly removes the four North wind tiles, leaving 132. Japanese sanma removes 28 tiles, leaving 108."
+      },
+      {
+        "question": "Can 5 people play mahjong?",
+        "answer": "Yes, by rotating the seat. Four players play a standard hand while the fifth sits out, and the seat moves each hand so nobody sits out twice in a row. This changes no rule at all, which is why it works better than trying to play with five hands."
+      },
+      {
+        "question": "Does the Charleston change with fewer players?",
+        "answer": "In American mahjong, yes. With three players you either skip the Charleston entirely or deal a ghost hand that takes part in the passing. Two-player Siamese mah jongg has no Charleston at all. Japanese and Chinese rulesets have no Charleston in any format."
+      }
+    ]
   }
 }

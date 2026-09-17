@@ -16,13 +16,14 @@ export const BLOG_CLUSTERS: BlogCluster[] = [
       'how-to-play-mahjong',
       'mahjong-rules-beginners-complete-guide',
       'mahjong-tiles-meaning-guide',
-      'mahjong-scoring-system-explained'
+      'mahjong-scoring-system-explained',
+      'how-many-players-mahjong'
     ]
   },
   {
     id: 'variants',
     pillar: 'types-of-mahjong-games',
-    members: ['american-vs-chinese-mahjong']
+    members: ['american-vs-chinese-mahjong', 'how-to-play-american-mahjong']
   },
   {
     id: 'play',
@@ -67,7 +68,9 @@ const BRIDGE: Record<string, string> = {
   'mahjong-history-cultural-guide': 'what-is-mahjong',
   'mahjong-etiquette-tips': 'how-to-play-mahjong',
   'best-mahjong-sets-for-beginners': 'mahjong-tiles-meaning-guide',
-  'where-to-buy-mahjong-set': 'best-mahjong-sets-for-beginners'
+  'where-to-buy-mahjong-set': 'best-mahjong-sets-for-beginners',
+  'how-to-play-american-mahjong': 'mahjong-rules-beginners-complete-guide',
+  'how-many-players-mahjong': 'types-of-mahjong-games'
 };
 
 export function clusterOf(slug: string): BlogCluster | undefined {
