@@ -12,7 +12,6 @@ import {
   canWinSichuan,
   canWinTaiwan,
   chooseRegionalDiscard,
-  judgeRegionalDiscard,
   chooseSichuanVoidSuit,
   createRegionalGame,
   declareRegionalTsumo,
@@ -33,7 +32,9 @@ import {
 } from '@/lib/mahjong/regional';
 import { playMahjongSound, primeMahjongAudio } from '@/features/table/sound';
 import { useCoachIntensity } from '@/features/table/coach-prefs';
+import { makeRegionalAdapter, type CoachVerdict } from '@/lib/mahjong/coach';
 import CoachControls from './table/CoachControls';
+import CoachPanel from './table/CoachPanel';
 import { tileFace, tileSuit, type Suit, type Tile } from '@/lib/mahjong/tiles';
 
 const HUMAN = 0 as const;
@@ -57,7 +58,6 @@ export default function RegionalMahjongTable({
 }) {
   const t = useTranslations('mahjong');
   const r = useTranslations('regional');
-  const daily = useTranslations('dailyHand');
   const [state, setState] = useState<RegionalGameState>(() => {
     const fresh = createRegionalGame({ ruleset, humanSeat: HUMAN, seed: 1 });
     if (typeof window === 'undefined') return fresh;
@@ -80,7 +80,8 @@ export default function RegionalMahjongTable({
   const [showHints, setShowHints] = useState(false);
   const [coachIntensity, setCoachIntensity] = useCoachIntensity();
   const [coachAsked, setCoachAsked] = useState(false);
-  const [coachGrade, setCoachGrade] = useState<'best' | 'acceptable' | 'better' | null>(null);
+  const [lastVerdict, setLastVerdict] = useState<CoachVerdict | null>(null);
+  const coachAdapter = useMemo(() => makeRegionalAdapter(ruleset), [ruleset]);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [difficulty, setDifficulty] = useState<'easy' | 'normal' | 'hard'>('normal');
   const [largeTiles, setLargeTiles] = useState(false);
@@ -229,13 +230,13 @@ export default function RegionalMahjongTable({
   const wideHand = human.hand.length > 14;
   const handTileSize = wideHand ? 'lg' as const : 'xl' as const;
   const coachOpen = coachIntensity === 'live' || coachAsked;
-  const suggestedDiscard = (showHints || coachOpen) && isMyDiscard ? chooseRegionalDiscard(state, HUMAN) : null;
+  const suggestedDiscard = showHints && isMyDiscard ? chooseRegionalDiscard(state, HUMAN) : null;
   const playDiscard = (discarded: Tile) => {
     if (readyIntent && !readyDiscards.includes(discarded)) return;
     if (coachIntensity !== 'silent' && coachOpen) {
-      setCoachGrade(judgeRegionalDiscard(state, HUMAN, discarded).grade);
+      setLastVerdict(coachAdapter.judge(state, HUMAN, discarded));
     } else {
-      setCoachGrade(null);
+      setLastVerdict(null);
     }
     setCoachAsked(false);
     announceDiscard(discarded);
@@ -264,6 +265,14 @@ export default function RegionalMahjongTable({
           <TableToolButton tone="green" onClick={reset}>↻ {t('newGame')}</TableToolButton>
           <TableToolButton tone="green" onClick={() => setShowHints((value) => !value)} active={showHints}>◇ {t('hints')}</TableToolButton>
           <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} className="text-emerald-50" />
+          {coachIntensity !== 'silent' && (
+            <CoachPanel
+              verdict={lastVerdict ?? (coachOpen ? { grade: null, capability: 'unsupported' } : null)}
+              level={1}
+              className="max-w-[14rem]"
+              compact
+            />
+          )}
           <TableToolButton tone="green" onClick={() => setSoundEnabled((value) => !value)} active={soundEnabled}>{soundEnabled ? t('soundOn') : t('soundOff')}</TableToolButton>
           <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">{t('rules')}<span className="ml-2 text-emerald-50">{isSichuan ? r('sichuanTitle') : r('taiwanTitle')}</span></label>
           <label className="flex min-h-11 items-center rounded-lg border border-white/10 bg-[#07553b] px-3 text-xs font-bold text-white">{t('ai')}<select value={difficulty} onChange={(event) => setDifficulty(event.target.value as 'easy' | 'normal' | 'hard')} className="ml-2 bg-transparent text-emerald-50 outline-none" aria-label={t('difficultyLabel')}><option className="text-slate-900" value="easy">{t('easy')}</option><option className="text-slate-900" value="normal">{t('normal')}</option><option className="text-slate-900" value="hard">{t('hard')}</option></select></label>
@@ -302,7 +311,6 @@ export default function RegionalMahjongTable({
           <span className="mt-2 text-4xl font-light text-cyan-200">{wallLeft}</span>
         </div>
         {!isSichuan && human.flowers.length > 0 && <div className="absolute right-[12%] top-[57%] z-20 flex items-center gap-1 rounded-lg bg-amber-50/95 px-2 py-1 text-sm font-black text-emerald-950 shadow-lg"><span>{t('flowersLabel')}</span>{human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}</div>}
-        {coachGrade && <p className="absolute bottom-[28%] left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#063d30]/95 px-3 py-1 text-xs font-bold text-amber-100">{coachGrade === 'best' ? daily('best') : coachGrade === 'acceptable' ? daily('ok') : daily('better')}</p>}
         {readyIntent && <p className="absolute bottom-[28%] left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#063d30]/95 px-3 py-1 text-xs font-bold text-amber-100">{r('readyHint')}</p>}
         {actionButtons}
         {state.phase === 'over' && state.result && <div className="absolute left-1/2 top-[56%] z-40 -translate-x-1/2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-center text-slate-800 shadow-xl"><strong>{state.result.kind === 'win' ? r('winner', { seats: state.result.winners.map((seat) => seatNames[seat]).join(', ') }) : r('wallExhausted')}</strong>{state.result.tai !== undefined && <span className="ml-2">{state.result.tai} Tai</span>}<button type="button" onClick={() => setState(startNextRegionalHand)} className="ml-3 rounded-lg bg-emerald-700 px-3 py-2 text-sm font-black text-white">{r('nextHand')}</button></div>}

@@ -900,5 +900,40 @@
       "daily-seven": { "name": "Week of Check-ins", "desc": "Check in on 7 consecutive days." },
       "daily-thirty": { "name": "Month of Check-ins", "desc": "Check in on 30 consecutive days." }
     }
+  },
+  "coachFb": {
+    "title": "Coach",
+    "partialBadge": "Efficiency only",
+    "watchingTitle": "Coach is watching",
+    "watchingBody": "This ruleset’s coach does not grade discards yet.",
+    "gradeBest": "Good choice",
+    "gradeOk": "Fine",
+    "gradeBetter": "Also fine, but…",
+    "suggested": "Suggested",
+    "played": "You played",
+    "shanten": "Shanten {n}",
+    "ukeire": "Ukeire {n}",
+    "gap": "Gap {n}",
+    "riskLow": "Low deal-in risk",
+    "riskMedium": "Medium deal-in risk",
+    "riskHigh": "High deal-in risk",
+    "reasons": {
+      "best-tile": "That discard matches the efficiency top pick.",
+      "same-shanten": "Same shanten as the best line.",
+      "worse-shanten": "That discard leaves you further from ready.",
+      "worse-ukeire": "Fewer useful tiles remain after that discard.",
+      "acceptable-ukeire": "Ukeire is close enough to the best line.",
+      "yaku_gate_pending": "Efficiency tip only — yaku / fan minimum not checked yet.",
+      "unsupported": "No grade for this ruleset yet.",
+      "no-suggestion": "No suggestion right now."
+    },
+    "notes": {
+      "yaku_gate_pending": "Efficiency tip only — yaku / fan minimum not checked yet.",
+      "exposed-group-compatible": "Exposure stays compatible with your current line.",
+      "call-commits-to-line": "Calling here commits you to this line.",
+      "wait-for-mah-jongg": "Prefer waiting for Mah Jongg rather than exposing.",
+      "jokerExchange": "Joker exchange available for {tile}.",
+      "outs": "Outs: {detail}"
+    }
   }
 }

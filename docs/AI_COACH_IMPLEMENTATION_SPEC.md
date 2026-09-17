@@ -36,7 +36,7 @@
 > |---|---|
 > | §0.1 执行顺序 | Phase F 去掉"阻塞"标注 |
 > | §2 红线 4 | 措辞改为"行为记录与成就判定" |
-> | §2 红线 10 | 从"三语齐"改为"**全部 locale 齐**"（仓库实为 9 语） |
+> | §2 红线 10 | 从"三语齐"改为"**全部 locale 齐**"（⚠️ **v3 已更正**：仓库实为 **3 个** locale，v2 此处写的"9 语"是错的，见 v3 块） |
 > | §4.2 `RankedOption` | **扩 `distance` + `metric` 字段**（见 §4.4 修订块） |
 > | §4.4 `american.ts` | **4 处字段映射修正**（详见 doc 内修订块） |
 > | §4.4 `hongkong.ts` / `regional.ts` | 无变化 |
@@ -162,16 +162,31 @@ Phase G  玩法能力补齐（P1/P2）
 
 移动端：**港式/立直/国标 无教练**（`HongKongTable` 渲染 `MobileMahjongTable` 时未传 `coach` prop）；美式/区域有。
 
+> ### 🔴 v3 裁决 · A2 会连带静默立直/国标（原 P1-1）
+>
+> §4.4 的适配器写法是 `if (capability !== 'full') return { grade: null, capability }`。立直/国标是 `partial`，**会被一并静默** —— 从"有（可能不准的）反馈"变成"**零反馈**"，这是玩家可感知的**功能回退**。A1 只声明了"区域桌降级"，未覆盖这条。
+>
+> **裁决：按 capability 分三档行为，不再用 `!== 'full'` 一刀切。**
+>
+> | capability | 玩法 | 反馈行为 | 演出态 |
+> |---|---|---|---|
+> | `full` | 港式 | 完整反馈 | 在场 |
+> | `partial` | 立直 / 国标 / 美式 | **照常出反馈，但附限定语**（立直/国标："⚠️ 未校验役种门槛"；美式：走 `note`） | 在场 |
+> | `unsupported` | 四川 / 台湾 | **零 grade**，只出 L1 记号 | `watching`（在场不评价） |
+>
+> **理由**：诚实 ≠ 沉默。诚实 ＝ **把边界说清**。立直/国标的缺陷维度单一（只缺役种门槛），效率维度的建议仍然有效，说清限定语即可；而四川/台湾是**算法本身会判错**，说了就是误导，必须闭嘴。这与 §1.1"让弱者诚实承认"一致，也保住了 A1 止血建立的信任。
+
 ---
 
-## 2. 硬约束（12 条红线）
+## 2. 硬约束（15 条红线）
 
 > 违反任意一条 = 该 WP 验收失败，无论功能是否"看起来能用"。
+> ⚠️ **编号权威在 §2 表（1–12）+ §2.2 表（13–15），共 15 条**。文末的"红线速记"是**本节的子集**，不是独立清单。
 
 | # | 红线 | 为什么 |
 |---|---|---|
 | 1 | **`lib/mahjong/` 保持零外部依赖** | 它将来要被 Cocos 侧共享。一行 `import { cookies } from 'next/headers'` 会让 Cocos 静默编译失败 |
-| 2 | **`coach.ts` 只做纯函数，不含任何文案** | 返回语义码，措辞在渲染层。否则 3 语言（且将扩语）无法维护 |
+| 2 | **`coach.ts` 只做纯函数，不含任何文案** | 返回语义码，措辞在渲染层。否则多语种（现为 **3 个 locale**）无法维护 |
 | 3 | **`coach.ts` 只追加，不改动现有导出签名** | `rankDiscards` / `judgeDiscard` / `acceptance` / `unseenCounts` 必须原样。改签名会同时炸掉牌桌、工具页、每日一题 |
 | 4 | **所有行为记录 / 成就判定在服务端** | 客户端只上报 `{handId, moves[]}` 或 `{seed, moves[]}`；服务端用确定性引擎重放。⛔ 客户端绝不上报进度或"已解锁"。**⛔ 客户端也不上报任何统计指标**（`handsPlayed` / `grade` 全部服务端自算） |
 | 5 | **🔴 教练永远不显示对手手牌**（含"调试模式"） | 玩家一旦发现他能看穿暗牌，全部信任归零。局末亮牌是唯一例外，且**必须显式声明**（见 E2） |
@@ -185,9 +200,9 @@ Phase G  玩法能力补齐（P1/P2）
 
 ### 2.1 三条最容易被漏的
 
-- **红线 10**：新增 ns（`coachFb` / `tools` / `achievements`）**全部 9 个 locale 必须同批**。只做三语 = 其余 6 语页面 500。
+- **红线 10**：新增 ns（`coachFb` / `tools`）**3 个 locale 必须同批**。⚠️ `achievements` **不是新增 ns**——它已在 `messages/en.json` 里（当前顶层 ns = **29 个**）。缺任一 locale 的 key = 该语种页面 500。
 - **红线 6**：这条最容易被"顺手加个红色"破坏。Code review 时专门看一眼。
-- **红线 3**:`explainDiscard()` 是**追加**，`git diff` 应**只有新增行**。
+- **红线 3**：`explainDiscard()` 是**追加**，`git diff` 应**只有新增行**。
 
 ### 2.2 新增红线（v2 积分重构引入）
 
@@ -216,7 +231,7 @@ git log --oneline -5    # 记下当前 HEAD
 | `components/HomeDailyHand.tsx` 是否被改过 | C1/C2 改它 |
 | `lib/mahjong/engine.ts` → `engine/` 拆分是否已合并 | 影响 C2 的 import 路径（两种写法见 C2） |
 | `messages/*.json` 是否加过 `coachFb` / `tools` / `achievements` | 避免 namespace 冲突 |
-| `prisma/schema.prisma` 是否加过 `AchievementUnlock` / `LearningStat` | F1 |
+| `prisma/schema.prisma` 是否加过 `AchievementUnlock` / `LearningStat` | F1。⚠️ **两者已在 schema 与迁移 `20260916120000` 里** → 先查再动，**已存在则不要重复建** |
 
 **规则**：本文档给的行号**只作定位参考**。找不到行号时，**按 §0.2 的「锚点」字符串搜索**。
 
@@ -381,8 +396,10 @@ export function makeGameStateAdapter(ruleset: string): CoachAdapter<GameState, T
     ruleset,
     capability,
     judge(state, seat, tile): CoachVerdict {
-      // partial: never judge. Let the performance layer stay silent.
-      if (capability !== 'full') {
+      // 🔴 v3: three-way branch, NOT `!== 'full'`. See §1.3 裁决.
+      //   unsupported (sichuan/taiwan) → stay silent: the algorithm itself can be wrong.
+      //   partial (riichi/chinese-official) → DO judge, but disclose the missing gate.
+      if (capability === 'unsupported') {
         return { grade: null, capability };
       }
       const { grade, best, played } = judgeDiscard(state, seat, tile);
@@ -394,6 +411,9 @@ export function makeGameStateAdapter(ruleset: string): CoachAdapter<GameState, T
         gap: played.ukeire - best.ukeire,
         shanten: best.shanten,
         ukeire: best.ukeire,
+        // Semantic code, not copy (红线 2). The renderer maps it to
+        // "⚠️ 本判断只看效率，未校验役种门槛".
+        ...(capability === 'partial' ? { note: 'noYakuGate' } : {}),
       };
     },
     rank(state, seat) {
@@ -654,6 +674,10 @@ export function explainDiscard(state: GameState, seat: Seat, tile: Tile): Discar
 │                                      │     ⚠️ better 用琥珀，⛔ 绝不用红色/❌
 │ 打 7 Dot                             │
 │                                      │
+│ ⚠ 点炮风险 中                          │  ← 🔴 v3 新增：消费 `CoachVerdict.risk`
+│                                      │     低=灰 / 中=琥珀 / 高=琥珀加粗
+│ ⓘ 只看了效率，未校验役种门槛            │  ← 🔴 v3 新增：消费 `CoachVerdict.note`
+│                                      │     语义码 → `coachFb.note.*` 文案
 │ ▸ 为什么不更优                        │  ← 默认折叠；点击展开
 │   打 3 Dot 可多留 5 张改良牌          │
 │   当前进张 7 张 → 12 张               │
@@ -668,17 +692,26 @@ export function explainDiscard(state: GameState, seat: Seat, tile: Tile): Discar
 | `same-tile` | **不显示"为什么不更优"折叠区**（没有更优可讲） |
 | `better` + `worse-shanten` | 折叠区**默认微展开一行摘要**，完整对比需点击 |
 | 其余 | 默认折叠 |
-| `silent`（禅）档 | **完全不出卡** |
+| **`risk` 有值** | 🔴 **必须渲染**："点炮风险 低/中/高"，位置在**牌名下方、折叠区上方**（比解释更紧急，不能藏进折叠区）。**无 `risk` 的玩法不占位、不显示"无数据"** |
+| **`note` 有值** | 🔴 **必须渲染**为一行 `ⓘ` 说明。`note` 是**语义码**（红线 2：不含文案），查 `coachFb.note.*` 取措辞。**未知码** → 原样显示码本身（便于发现遗漏），**不要静默丢弃** |
+| `silent`（禅）档 | **完全不出卡**（教练席此时不存在，见 B3 澄清） |
 | 无障碍 | `role="status"` + `aria-live="polite"`；折叠按钮 `<button aria-expanded>` |
 | 宽度 | ≤ 320px |
+
+> 🔴 **为什么 `risk` / `note` 必须在这张卡里（v3 裁决）**
+> §1.1 定的是"**不让强者（美式）被削平**"。而美式**唯一**能表达差异化的通道就是 `risk`（点炮风险）与 `note`（joker / exposure / 役种门槛）。
+> 卡片不消费它们 → 美式渲染出来和港式一模一样（都是"三个词 + 差多少"）→ **契约里多出来的字段等于白填**，设计原则在演出层退化成最小公分母。
+> 这不是"锦上添花的 UI 细节"，是**契约层存在意义的兑现点**。
 
 **验收清单**
 
 - [ ] 出 `best` → 绿色确认句，**无折叠区**
 - [ ] 出 `acceptable` → 灰色 + 措辞**必须承认差距小**（"但差距很小"）
 - [ ] 出 `better` → 琥珀色（**不是红色**）+ 折叠区可展开，显示 `best.tile` 与两个数字
-- [ ] **9 个 locale** 切换文案跟随（**硬编码英文 = 验收失败**）
-- [ ] 禅档下卡片不出现
+- [ ] **3 个 locale**（`en` / `zh` / `zh-TW`）切换文案跟随（**硬编码英文 = 验收失败**）
+- [ ] 🔴 **`risk` 有值时卡片显示风险行**（用美式桌验证：`americanCoachAdvice` 的 `discardRisk`）
+- [ ] 🔴 **`note` 有值时卡片显示说明行**（用立直桌验证：`noYakuGate`）；未知语义码**原样显示**，⛔ 不静默丢弃
+- [ ] 禅档下卡片不出现（教练席本身也不渲染）
 - [ ] `git diff lib/mahjong/coach.ts` **只有新增行，无修改/删除行**
 - [ ] 6 套主题下卡片颜色跟随（用 `portal-*` 类，⛔ 无硬编码 hex）
 
@@ -742,8 +775,23 @@ i18n(coach): add coachFb namespace (en/zh/zh-TW)
 - [ ] L1 记号**每次出牌都出现**（含 `best`/`acceptable`）
 - [ ] 自动 L3 第 3 次触发时**降级为 L2**，日志可见
 - [ ] L4 音效每局不超过 4 次
-- [ ] **听牌时**（`shanten <= 0`）无 L2/L3
+- [ ] **听牌时**（`shanten <= 0`）**无 L2**；但 `better`（尤其 `worse-shanten`）**仍触发 L3**
 - [ ] 刷新页面局预算归零（预算是 per-hand，不进 localStorage）
+
+> ### 🔴 v3 裁决 · 听牌时到底静不静（原 P1-11）
+>
+> 原规则自相矛盾：L2 的触发条件是"`better` **或**连续 3 次 `best`"，而情绪曲线又写"听牌时教练沉默（除 L1）"。
+>
+> **冲突场景**：玩家已听牌，却打出一张**拆听**的牌（`better` + `worse-shanten`）——**这是整局最该提醒的一手，原规则却要求闭嘴。**
+>
+> | 听牌时的情形 | 原规则 | **v3 裁决** |
+> |---|---|---|
+> | 连续 3 次 `best`（表扬） | 被沉默 ✅ 合理 | **仍沉默**（不表扬） |
+> | `better` + 拆听（`worse-shanten`） | 被沉默 ❌ **有害** | 🔴 **出 L3** |
+> | 玩家点 Ask | 出 L3 | **照常**（主动问，不受沉默约束） |
+>
+> **理由**：沉默的目的是"不在高压时刻**打扰**"。而"一手打丢听牌"不是打扰，是**救火**。把表扬和救火塞进同一条规则，等于为了安静而放弃教学。
+> **代价吸收**：听牌阶段的这次 L3 **消耗已有的自动 L3 预算**（每局 2 次），⛔ 不新增预算项——否则总量失控。
 
 **commit**
 ```
@@ -772,6 +820,21 @@ feat(coach): add L1 always-on marker so silence stays distinguishable
 
 > **为什么必须改名**：`silent / ask / live` 是**技术参数**（静默/询问/实时），玩家无法推出"我要什么体验"。
 > **禅不是"关闭功能"**：它应该是"我想安静练手"——一种**被认可的打法**。给它成就价值（`zen-10`），沉默就有了游戏意义。
+
+> ### 🔴 v3 澄清 · "教练不在"有**三种**，别混（原 P1-10）
+>
+> 全文有四处描述"教练不存在"，它们**不是同一个状态**。原稿三处互相矛盾，实现者无法判断教练席组件到底渲不渲染：
+>
+> | 状态 | 触发条件 | 教练席组件 | 牌桌宽度 | "查看牌型说明"入口 |
+> |---|---|---|---|---|
+> | **`silent`（禅）** | 玩家主动选禅档 | 🚫 **不渲染（离席）** | **980**（恢复满宽，牌变大） | **牌桌内独立按钮** |
+> | **`unsupported`（watching）** | 川/台/立直/国标能力不足 | ✅ **在场**，眨眼点头，不评价 | 1160（教练席占宽） | 教练席内 |
+> | **`absent`（D3 演出态）** | 禅档下的演出层状态 | 同 `silent`，不播任何帧 | 980 | 同上 |
+>
+> **三条裁决**（实现直接照此做）：
+> 1. **禅档 = 离席**。教练席**整个不渲染**，牌桌 `designWidth={980}`（§D1 的"恢复满宽"因此成立）。
+> 2. **`unsupported` = 在场 `watching`**。教练席**照常渲染**（§4.3 的 `watching` 定义成立），只是不出 grade。
+> 3. 🔴 **无教练时的静态入口必须挂在牌桌自己身上**，⛔ 不能挂在教练席里 —— 禅档下教练席根本不存在，挂在里面等于**入口随教练一起消失**（§E2-D7 的"保留玩家获取信息的权利"就落空了）。
 
 **3-2 `live` 档出牌前收紧（🔴 修改已拍板项，必须做）**
 
@@ -1059,10 +1122,13 @@ i18n(daily): add puzzle and full-hand copy
 | `h` | `{ranks}{suit}…`，`m`=Crak 萬 / `p`=Dot 筒 / `s`=Bam 条 / `z`=字牌 |
 | `r` | `hongkong \| riichi \| chinese-official` |
 
-**⛔ 三条硬约束**
+**⛔ 四条硬约束**
 1. 工具页必须用 **`portal-*` 令牌类**，零硬编码色值（否则 6 套主题失效）
 2. **必须显示诚实声明**：*"This tool covers the common patterns. It is not a tournament scorer — always defer to your club's rules."*（E-E-A-T 加分，比假装权威有效）
-3. `tools` ns **全部 9 个 locale 齐**，否则该语种整页 500
+3. 🔴 **v3 新增 —— `r=riichi` / `r=chinese-official` 时必须追加第二行声明**：*"Ranking is by tile efficiency only. Yaku / fan requirements are NOT checked."*
+   **为什么**：教练对这两个玩法是 `partial`（不校验役种门槛）。**同一个站、同一手牌，工具页说"这是最优"，牌桌教练却附限定语** —— 玩家若不理解区别，会认定系统自相矛盾，A1 止血建立的诚实性直接归零。声明的作用是让两者**立场一致**：工具页的"最优"只在效率维度成立。
+   ⛔ 这句不是免责套话，是**产品一致性要求**。
+4. `tools` ns **3 个 locale 齐**（`en` / `zh` / `zh-TW`），否则该语种整页 500
 
 **验收清单**
 - [ ] `/en/tools/waits` 返回 200，**HTML 里没有 `noindex`**
@@ -1163,7 +1229,7 @@ i18n(tools): add tools namespace (en/zh/zh-TW)
 | 教练状态 | designWidth | 效果 |
 |---|---|---|
 | 在场（默认） | 1160 | 牌桌略小，教练在 |
-| **离席（禅模式）** | **980** | **牌桌恢复满宽，牌变大 14%** |
+| **离席（禅模式）** | **980** | **牌桌恢复满宽**。⚠️ 尺寸增幅**以 §D1 v2 补充块的 `xl`→`lg` 为准**（P-7）——"变大 14%"是纯缩放理论值，受手牌宽度上限约束，照字面做会溢出 |
 
 **这让"请教练离席"从关开关变成一个有回报的选择。** 禅模式因此不再是"关掉一个功能"，而是"选一种玩法"——这正是 `zen-10` 成就成立的前提。
 
@@ -1309,7 +1375,7 @@ el.animate(
 
 | 优先级 | 状态 | 行为 |
 |---|---|---|
-| 5 | `absent` | 禅模式，切断一切（连 idle 都不播） |
+| 5 | `absent` | 禅模式，切断一切（连 idle 都不播）。⚠️ 禅档下**教练席整个不渲染**，故此态实际不可观察（见 §B3 v3 澄清）；保留它是为未来的临时隐身需求（如移动端 drawer 打开时） |
 | 4 | `explain` | L3 卡打开期间保持；卡片关闭即释放 |
 | 3 | `note` | 一次性，**抢占** idle/thinking，播完回 idle |
 | 2 | `ack` | 一次性，同 note；与 note 互斥（取先到者） |
@@ -1521,11 +1587,14 @@ export interface ScoreResult {
 
 **`capability` 在结算语境的复用**
 
-| capability | A | B | C | D |
-|---|---|---|---|---|
-| `full`（港/立直/国标） | ✅ | ✅ | ✅ | ✅ |
-| `partial`（美式） | ✅ 牌型匹配 | ✅ NMJL 卡片 | ⚠️ 卡片分值 | ✅ transfers |
-| `unsupported`（川/台） | ✅ | ⚠️ 待确认 | 🔴 **不给** | ✅ tai |
+| capability | 玩法 | A | B | C | D |
+|---|---|---|---|---|---|
+| `full` | 港式 | ✅ | ✅ | ✅ | ✅ |
+| `partial` | **立直 / 国标** | ✅ | ⚠️ **门槛未校验**（教练已带此限定语，见 §1.3 v3 裁决） | ✅ | ✅ |
+| `partial` | **美式** | ✅ 牌型匹配 | ✅ NMJL 卡片 | ⚠️ 卡片分值 | ✅ transfers |
+| `unsupported` | 川 / 台 | ✅ | ⚠️ 待确认 | 🔴 **不给** | ✅ tai |
+
+> ⚠️ **v3 更正**：原表把"立直/国标"并列在 `full` 行 —— 与 §1.3 覆盖矩阵矛盾（两者实为 `partial`，因为**没有役种/番种门槛校验**）。已在结算语境拆成独立行，因为**局末**这个缺陷的表现和局中不同：结构（A）与番种（C）**仍然可信**，只有门槛（B）需要标注"未校验"。
 
 > **同一个字段，局中控制"判不判级"，局末控制"讲不讲番种"。** 区域桌可以诚实地说"结构是这样、值 3 台"，但不假装在做番种评价。
 
@@ -1583,7 +1652,7 @@ export interface ScoreResult {
 |---|---|---|
 | 首次（未完成引导） | A + B | 新手最需要"什么能胡" |
 | 常规 | A + C | 结构已会，关心值多少 |
-| 禅档 | 无入口气泡，静态入口默认折叠 | D7 |
+| 禅档 | 无入口气泡（教练席不渲染），**牌桌内**静态入口默认折叠 | D7 |
 
 **状态机衔接**：新增 `explainingScope: 'turn' | 'settlement'`。
 - 局中 `explaining`：受预算约束，**可被 `Interrupted` 冻结**
@@ -1665,9 +1734,9 @@ export interface ScoreResult {
 | 已有 | 复用方式 |
 |---|---|
 | `AppearanceUnlock` 表 | **新增结构同形的 `AchievementUnlock`**，不改已有表 |
-| `AppearanceUnlock.source` | **新增枚举值 `'achievement'`**（现为 `seasonal_checkin` / `points` / `fragments` / `grant`）。⚠️ 该列在 Prisma 里是 `String`，**无需 migration**，只改注释 |
+| `AppearanceUnlock.source` | **枚举值现为 `seasonal_checkin` / `achievement` / `legacy` / `grant`**（v3 更正）。⚠️ 该列在 Prisma 里是 `String`，**无需 migration**，只改注释。🔴 `legacy` 是迁移 `20260916120000` **新造的值**（`UPDATE "AppearanceUnlock" SET "source"='legacy' WHERE "source"='points'`），原稿完全没提；`points` / `fragments` **已不存在**，⛔ 不要再用 |
 | ~~`points-ledger.ts` append-only 账本~~ | **⛔ 不再复用** —— 无货币即无账本。行为记录改走 `ActionLog`（见 Phase A2） |
-| ~~`UnlockRule: 'points' / 'fragments'`~~ | **删除这两个值**，改为 `'free' \| 'seasonal_checkin' \| 'achievement'` |
+| ~~`UnlockRule: 'points' / 'fragments'`~~ | **删除这两个值**。v3 更正后的完整值集 = `'seasonal_checkin' \| 'achievement' \| 'legacy' \| 'grant'`（⚠️ **没有 `'free'`** —— 原稿写错了） |
 
 **F1.2 Prisma（新增 2 张表）**
 
@@ -1678,30 +1747,48 @@ export interface ScoreResult {
 > ⚠️ **必须在建表之前确定**，否则要写 migration 改表。
 
 ```prisma
-model AchievementUnlock {
-  id          String   @id @default(cuid())
-  userId      String
-  achievement String   // 'first-win' 等
-  unlockedAt  DateTime @default(now())
-  evidence    Json?    // 局 id / 番种 id / streak 数，用于追溯与反作弊
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@unique([userId, achievement])
-  @@index([userId])
+/// v3 校正：以下 DDL 已与 `prisma/schema.prisma` 逐字对齐。
+/// Per-user learning counters. NOT a currency — there is no spendable balance.
+/// Streak lives on SolitaireStreak / DailyBonus — intentionally absent here.
+model LearningStat {
+  userId         String   @id
+  handsPlayed    Int      @default(0)
+  discardsPlayed Int      @default(0)
+  coachFeedbacks Int      @default(0)
+  bestGrades     Int      @default(0)
+  patternsSeen   Json?
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-/// Per-user learning counters. NOT a currency — there is no spendable balance.
-/// 🔴 streak fields are intentionally ABSENT: read SolitaireStreak instead.
-model LearningStat {
-  userId           String   @id
-  handsPlayed      Int      @default(0)
-  discardsPlayed   Int      @default(0)
-  coachFeedbacks   Int      @default(0)
-  bestGrades       Int      @default(0)
-  patternsSeen     String[] @default([])
-  updatedAt        DateTime @updatedAt
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model AchievementUnlock {
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, achievementId])
+  @@index([userId])
 }
 ```
+
+> 🔴 **v3 校正 · 上面这块 DDL 原稿有 4 处与实现不符（原 P0-2 / P0-3）**
+>
+> | 项 | 原稿写法 | 仓库实际 |
+> |---|---|---|
+> | `AchievementUnlock` 主键 | `id String @id @default(cuid())` | **无 `id`**，用 `@@id([userId, achievementId])` **复合主键** |
+> | 字段名 | `achievement` | **`achievementId`** |
+> | 唯一约束 | `@@unique([userId, achievement])` | **无**（复合主键已保证唯一） |
+> | `evidence` 列 | `evidence Json?` | **不存在** |
+> | `LearningStat.patternsSeen` | `String[] @default([])` | **`Json?`**（迁移里是 `JSONB`），存 `string[]` 的 JSON |
+>
+> 🔑 **复合主键是刻意的设计**，不是简化：`unlockAchievement()` 靠**主键冲突**返回 `false` 实现幂等（`lib/achievements.ts:124`）。⛔ **不要"改回"自增 id + 唯一约束** —— 那会让幂等逻辑失去依赖。
+>
+> 🔑 **`evidence` 列不存在也是刻意的**：原稿想用它做"反作弊追溯"，但实现走的是**服务端重放**（见 F1.6）——重放本身就是证据，且比"存一个自报的 evidence 字段"强得多（后者可被伪造）。⛔ **不要为了"补上 evidence"去加列**：本仓库的生产迁移成本极高（见 §3 与修订块），而反作弊已有更强机制。
+>
+> ⚠️ **`patternsSeen` 写的是 JSON 数组里的 `string[]`**，⛔ 不是 Prisma 的 `String[]` 语法 —— 写错会在 `generate` 阶段失败。
 
 **迁移注意**：给 `User` 加两个反向关系字段（`achievements AchievementUnlock[]`、`learningStat LearningStat?`）。
 
@@ -1772,10 +1859,22 @@ export async function recordHandOutcome(userId: string, payload: {
 
 | 档 | 名称 | 数量 | 回报 | rationale |
 |---|---|---|---|---|
-| B | Bronze | 10 | 徽章 + 进度条 | "你来了"的确认。签到已在奖励"来"了，成就不再重复 |
-| S | Silver | 12 | 徽章 + 进度条 | "你入门了"的确认 |
-| G | Gold | 7 | 徽章 + **1 件 premium 皮肤** | 见下方对应表 |
-| P | Platinum | 3 | 徽章 + **限定皮肤** | `big-dragons` / `daily-thirty` |
+| B | Bronze | 10 | 徽章 + 进度条（**无皮肤**） | "你来了"的确认。签到已在奖励"来"了，成就不再重复 |
+| S | Silver | 12 | 徽章 + 进度条（**无皮肤**） | "你入门了"的确认 |
+| G | Gold | 7 | 徽章 + 进度条；其中 **3 项**另发 premium 皮肤 | ⚠️ **不是每项都发皮肤** —— 见下方对应表 |
+| P | Platinum | 3 | 徽章 + 进度条；其中 **2 项**另发限定皮肤 | ⚠️ **3 项里只有 2 项有皮肤** |
+
+> 🔴 **v3 更正 · 回报列原写法会误导（原 P1-5）**
+> 原表 Gold 写"徽章 + 1 件 premium 皮肤"、Platinum 写"徽章 + 限定皮肤"，读起来像"**每项都发**"。
+> 实际可发皮肤只有 **5 件**——`ACHIEVEMENT_REWARDS` 是 `Partial<Record<AchievementId, AppearanceId>>`，**刻意只映射 5 项**：
+>
+> | 档 | 项数 | 有皮肤 | 只有徽章+进度条 |
+> |---|---|---|---|
+> | Gold | 7 | **3**（`clean-hand` / `all-sequences` / `half-flush`） | 4 |
+> | Platinum | 3 | **2**（`big-dragons` / `daily-thirty`） | 1（`thirteen-orphans`） |
+> | **合计** | 32 | **5** | **27** |
+>
+> 这是**有意设计**，不是遗漏：支柱 P1 规定"零新增美术"，只能用现存的 5 件皮肤。⛔ **不要为了"让每项都有奖励"去补画皮肤**（违反红线 14）。没有皮肤的项，其回报就是**徽章 + 进度条**本身——这在成就系统里是成立的回报。
 
 **皮肤 ↔ 成就对应表**（给文案用）
 
@@ -1815,6 +1914,29 @@ export async function recordHandOutcome(userId: string, payload: {
 | 每日一题改系统时间 | 种子由**服务端 UTC 时间**决定 |
 
 > **技术前提**：`lib/mahjong/ai.ts` 中**零 `Math.random`**，`GameState` 是纯可序列化对象 → **服务端只存 `{seed, moves[]}` 就能完整重放任何一局**。这意味着防刷**不需要信任客户端任何指标**。
+
+> 🔴 **v3 注 · `guest_merge` 的幂等怎么真正成立（原 P1-9）**
+>
+> 原方案"以 `action: 'guest_merge'` 作**哨兵行**保证幂等"**不成立**。理由：`PointTransaction`（`ActionLog` 的物理表）**没有唯一约束** —— 主键是 `id`（cuid，每次新建都不同），索引只有 `[userId, reason, createdAt]` 与 `[reason, createdAt]`。**多条 `guest_merge` 行无法被识别为"同一批"**，重复上报就会重复计数。
+>
+> **改用主键作幂等键**（零 schema 变更、零竞态）：
+>
+> ```ts
+> // 客户端在开始合并时生成一次 mergeKey（同一批事件共用一个）
+> const id = `guest_merge_${mergeKey}`;
+> try {
+>   await tx.actionLog.create({
+>     data: { id, userId, action: 'guest_merge', value: 0, meta: { events } },
+>   });
+> } catch (e) {
+>   if (isUniqueViolation(e)) return;   // P2002 → 这批已经合并过了
+>   throw e;
+> }
+> ```
+>
+> **为什么这样成立**：`id` 是 `@id`，**天然有唯一约束**。重复请求 → 主键冲突 → 直接 return。**在数据库层保证幂等**，不依赖"先查后写"（那有竞态窗口，两个并发重试会同时通过检查）。
+> `mergeKey` 由客户端生成（UUID），**服务端不信任其内容**，只当去重键用 —— 伪造 `mergeKey` 只会让自己少合并一次，无法刷分。
+> ⛔ **不要退回"查 `action='guest_merge'` 判重"** —— 那是这次被否掉的方案。
 
 **F1.7 成就墙 UI**
 

@@ -901,6 +901,41 @@
       "daily-thirty": { "name": "三十日签到", "desc": "连续签到 30 天。" }
     }
   },
+  "coachFb": {
+    "title": "教练",
+    "partialBadge": "仅效率",
+    "watchingTitle": "教练旁观中",
+    "watchingBody": "此规则暂不对弃牌评分。",
+    "gradeBest": "好选择",
+    "gradeOk": "可以",
+    "gradeBetter": "也不错，但…",
+    "suggested": "建议",
+    "played": "你打了",
+    "shanten": "向听 {n}",
+    "ukeire": "进张 {n}",
+    "gap": "差距 {n}",
+    "riskLow": "点炮风险低",
+    "riskMedium": "点炮风险中",
+    "riskHigh": "点炮风险高",
+    "reasons": {
+      "best-tile": "这张弃牌与效率首选一致。",
+      "same-shanten": "向听数与最佳线相同。",
+      "worse-shanten": "这张弃牌会让你离听牌更远。",
+      "worse-ukeire": "打出后有用的进张更少。",
+      "acceptable-ukeire": "进张与最佳线接近。",
+      "yaku_gate_pending": "仅供效率参考——役种 / 番数门槛尚未校验。",
+      "unsupported": "此规则暂不评分。",
+      "no-suggestion": "暂时没有建议。"
+    },
+    "notes": {
+      "yaku_gate_pending": "仅供效率参考——役种 / 番数门槛尚未校验。",
+      "exposed-group-compatible": "副露仍与当前牌路兼容。",
+      "call-commits-to-line": "此时鸣牌会锁定这条牌路。",
+      "wait-for-mah-jongg": "更宜等待和牌，而非过早副露。",
+      "jokerExchange": "可用 {tile} 换出癞子。",
+      "outs": "进张：{detail}"
+    }
+  },
   "_meta": {
     "overrides": {
       "seo.homeDescription": {

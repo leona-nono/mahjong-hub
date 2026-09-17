@@ -34,9 +34,17 @@ import {
   type Seat
 } from '@/lib/mahjong/engine';
 import { chooseClaim, chooseMove, type Difficulty } from '@/lib/mahjong/ai';
-import { judgeDiscard, rankDiscards, type DiscardGrade } from '@/lib/mahjong/coach';
+import { makeGameStateAdapter, type CoachVerdict } from '@/lib/mahjong/coach';
+import {
+  advanceCoachBudget,
+  EMPTY_COACH_BUDGET,
+  resolveCoachLevel,
+  type CoachBudgetState,
+  type CoachOutputLevel
+} from '@/features/table/coach-stage';
 import { useCoachIntensity } from '@/features/table/coach-prefs';
 import CoachControls from './table/CoachControls';
+import CoachPanel from './table/CoachPanel';
 import { describeScore } from '@/lib/mahjong/scoring';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 import { trackMahjongEvent } from '@/features/table/telemetry';
@@ -72,7 +80,6 @@ export default function MahjongTable({
   onHandOver
 }: MahjongTableProps) {
   const t = useTranslations('mahjong');
-  const daily = useTranslations('dailyHand');
   const [ruleset, setRuleset] = useState<Ruleset>(defaultRuleset);
   const isMcr = ruleset === 'chinese-official';
   const traditional = ruleset === 'hongkong' || ruleset === 'chinese-official';
@@ -91,12 +98,17 @@ export default function MahjongTable({
   );
   const [coachIntensity, setCoachIntensity] = useCoachIntensity();
   const [coachAsked, setCoachAsked] = useState(false);
-  const [coachGrade, setCoachGrade] = useState<DiscardGrade | null>(null);
+  const [lastVerdict, setLastVerdict] = useState<CoachVerdict | null>(null);
+  const [coachLevel, setCoachLevel] = useState<CoachOutputLevel>(0);
+  const [coachBudget, setCoachBudget] = useState<CoachBudgetState>(EMPTY_COACH_BUDGET);
   const reportedOver = useRef<GameState | null>(null);
+  const coachAdapter = useMemo(() => makeGameStateAdapter(ruleset), [ruleset]);
 
   const newGame = useCallback(
     (nextRuleset: Ruleset = ruleset, nextHongKongMode: HongKongMode = hongKongMode, nextVariant: RiichiVariant = riichiVariant) => {
-      setCoachGrade(null);
+      setLastVerdict(null);
+      setCoachLevel(0);
+      setCoachBudget(EMPTY_COACH_BUDGET);
       setCoachAsked(false);
       reportedOver.current = null;
       setState(createGame({
@@ -228,10 +240,23 @@ export default function MahjongTable({
 
   const handleDiscard = (tile: Tile) => {
     if (!myTurn) return;
-    if (coachIntensity !== 'silent' && (coachIntensity === 'live' || coachAsked)) {
-      setCoachGrade(judgeDiscard(state, HUMAN, tile).grade);
+    if (coachIntensity === 'silent') {
+      setLastVerdict(null);
+      setCoachLevel(0);
+    } else if (coachIntensity === 'live' || coachAsked) {
+      const verdict = coachAdapter.judge(state, HUMAN, tile);
+      const tenpai = (hints?.shanten ?? 99) <= 0;
+      const level = resolveCoachLevel(verdict, coachBudget, {
+        intensity: coachIntensity,
+        asked: coachAsked,
+        tenpai
+      });
+      setLastVerdict(verdict);
+      setCoachLevel(level);
+      setCoachBudget(advanceCoachBudget(coachBudget, level, verdict.grade));
     } else {
-      setCoachGrade(null);
+      setLastVerdict(null);
+      setCoachLevel(0);
     }
     setCoachAsked(false);
     setState((current) => discard(current, tile));
@@ -278,29 +303,27 @@ export default function MahjongTable({
         onNewGame={() => newGame(ruleset, hongKongMode)}
         onNextHand={() => setState((current) => startNextHand(current))}
         coach={
-          <div className="flex flex-wrap items-center gap-2 rounded-lg bg-black/35 px-2 py-1 text-emerald-50">
-            <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} />
-            {(coachIntensity === 'live' || coachAsked) && myTurn && (() => {
-              const best = rankDiscards(state, HUMAN)[0];
-              if (!best) return null;
-              return (
-                <span className="text-xs">
-                  {daily('shanten', { n: hints?.shanten ?? best.shanten })}
-                  {' · '}
-                  {daily('ukeire', { n: best.ukeire })}
-                  {' · '}
-                  {daily('waits', { n: hints?.waits.length ?? 0 })}
-                  {' · '}
-                  {daily('best')}: {tileFace(best.tile)}
-                </span>
-              );
-            })()}
-            {coachGrade && (
-              <span className="text-xs font-semibold">
-                {coachGrade === 'best' ? daily('best') : coachGrade === 'acceptable' ? daily('ok') : daily('better')}
-              </span>
-            )}
-          </div>
+          coachIntensity === 'silent' ? null : (
+            <div className="flex flex-col gap-2 rounded-lg bg-black/35 px-2 py-1 text-emerald-50">
+              <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} />
+              <CoachPanel
+                verdict={lastVerdict}
+                level={coachLevel}
+                hint={
+                  (coachIntensity === 'live' || coachAsked) && myTurn
+                    ? (() => {
+                        const top = coachAdapter.rank(state, HUMAN)[0];
+                        return top
+                          ? { suggested: top.tile, shanten: top.shanten, ukeire: top.ukeire }
+                          : null;
+                      })()
+                    : null
+                }
+                compact={coachLevel < 2 && !lastVerdict?.risk}
+                className="max-w-xs"
+              />
+            </div>
+          )
         }
         onDiscard={handleDiscard}
         onClaim={handleClaim}

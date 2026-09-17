@@ -900,5 +900,40 @@
       "daily-seven": { "name": "七日簽到", "desc": "連續簽到 7 天。" },
       "daily-thirty": { "name": "三十日簽到", "desc": "連續簽到 30 天。" }
     }
+  },
+  "coachFb": {
+    "title": "教練",
+    "partialBadge": "僅效率",
+    "watchingTitle": "教練旁觀中",
+    "watchingBody": "此規則暫不對棄牌評分。",
+    "gradeBest": "好選擇",
+    "gradeOk": "可以",
+    "gradeBetter": "也不錯，但…",
+    "suggested": "建議",
+    "played": "你打了",
+    "shanten": "向聽 {n}",
+    "ukeire": "進張 {n}",
+    "gap": "差距 {n}",
+    "riskLow": "放銃風險低",
+    "riskMedium": "放銃風險中",
+    "riskHigh": "放銃風險高",
+    "reasons": {
+      "best-tile": "這張棄牌與效率首選一致。",
+      "same-shanten": "向聽數與最佳線相同。",
+      "worse-shanten": "這張棄牌會讓你離聽牌更遠。",
+      "worse-ukeire": "打出後有用的進張更少。",
+      "acceptable-ukeire": "進張與最佳線接近。",
+      "yaku_gate_pending": "僅供效率參考——役種 / 番數門檻尚未校驗。",
+      "unsupported": "此規則暫不評分。",
+      "no-suggestion": "暫時沒有建議。"
+    },
+    "notes": {
+      "yaku_gate_pending": "僅供效率參考——役種 / 番數門檻尚未校驗。",
+      "exposed-group-compatible": "副露仍與當前牌路相容。",
+      "call-commits-to-line": "此時鳴牌會鎖定這條牌路。",
+      "wait-for-mah-jongg": "更宜等待和牌，而非過早副露。",
+      "jokerExchange": "可用 {tile} 換出癩子。",
+      "outs": "進張：{detail}"
+    }
   }
 }

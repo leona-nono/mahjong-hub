@@ -950,21 +950,16 @@ export function chooseRegionalDiscard(state: RegionalGameState, seat: Seat): Til
   )[0];
 }
 
+/**
+ * Player-facing regional coach is unsupported (Phase A1).
+ * Bot discards still use chooseRegionalDiscard; do not grade humans here.
+ */
 export function judgeRegionalDiscard(
-  state: RegionalGameState,
-  seat: Seat,
-  tile: Tile
-): { grade: 'best' | 'acceptable' | 'better'; suggested: Tile } {
-  const player = state.players[seat];
-  const suggested = chooseRegionalDiscard(state, seat);
-  if (player.voidSuit && tileSuit(tile) === player.voidSuit) {
-    return { grade: 'best', suggested: tile };
-  }
-  if (tile === suggested) return { grade: 'best', suggested };
-  const played = regionalKeepValue(player.hand, tile, player.voidSuit);
-  const best = regionalKeepValue(player.hand, suggested, player.voidSuit);
-  if (played - best <= 1) return { grade: 'acceptable', suggested };
-  return { grade: 'better', suggested };
+  _state: RegionalGameState,
+  _seat: Seat,
+  _tile: Tile
+): { grade: null; capability: 'unsupported' } {
+  return { grade: null, capability: 'unsupported' };
 }
 
 export type RegionalDiscardRisk = 'low' | 'medium' | 'high';

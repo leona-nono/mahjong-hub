@@ -36,24 +36,22 @@ describe('hong kong coach', () => {
 });
 
 describe('regional coach', () => {
-  it('treats discarding the void suit as the best Sichuan choice', () => {
+  it('does not grade Sichuan / Taiwan human discards', () => {
     const state = createRegionalGame({ ruleset: 'sichuan', seed: 3, humanSeat: 0 });
     state.phase = 'discard';
     state.turn = 0;
     state.players[0].voidSuit = 'm';
     state.players[0].hand = ['m1', 'p2', 'p3', 'p4'] as Tile[];
-    expect(judgeRegionalDiscard(state, 0, 'm1').grade).toBe('best');
-    expect(judgeRegionalDiscard(state, 0, 'p2').grade).toBe('better');
+    expect(judgeRegionalDiscard(state, 0, 'm1')).toEqual({ grade: null, capability: 'unsupported' });
+    expect(judgeRegionalDiscard(state, 0, 'p2')).toEqual({ grade: null, capability: 'unsupported' });
   });
 
-  it('keeps a connected Taiwan tile and discards the isolated honour', () => {
+  it('still picks a bot discard for Taiwan', () => {
     const state = createRegionalGame({ ruleset: 'taiwan', seed: 4, humanSeat: 0 });
     state.phase = 'discard';
     state.turn = 0;
     state.players[0].hand = ['z1', 'p2', 'p2', 'p3'] as Tile[];
     expect(chooseRegionalDiscard(state, 0)).toBe('z1');
-    expect(judgeRegionalDiscard(state, 0, 'z1').grade).toBe('best');
-    expect(judgeRegionalDiscard(state, 0, 'p2').grade).toBe('better');
   });
 });
 

@@ -81,3 +81,25 @@ export function judgeDiscard(
   }
   return { grade: 'better', best, played };
 }
+
+// Phase A–B surface: adapters + contract live under ./coach/ (directory).
+// Existing judgeDiscard / rankDiscards signatures above stay unchanged.
+export type {
+  CoachGrade,
+  CoachCapability,
+  CoachRisk,
+  CoachVerdict,
+  CoachAdapter,
+  RankedOption,
+  CoachRuleset,
+  DiscardExplainCode,
+  DiscardExplanation
+} from './coach/index';
+export {
+  COACH_CAPABILITIES,
+  resolveCoachCapability,
+  explainDiscard,
+  makeGameStateAdapter,
+  makeAmericanAdapter,
+  makeRegionalAdapter
+} from './coach/index';

@@ -6,10 +6,19 @@ import { useTranslations } from 'next-intl';
 import TileFace, { TileBack, useTraditionalTilePreload } from './TileFace';
 import BoardScaleFrame from './BoardScaleFrame';
 import { sortTiles, tileFace, type Tile } from '@/lib/mahjong/tiles';
-import { AMERICAN_PRACTICE_SEASONS, americanBotStyleForSeat, americanClosestLine, americanCoachAdvice, applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, exchangeAmericanJoker, getPracticeCard, legalAmericanClaims, lockAmericanPracticeCard, passAmericanClaims, playAmericanDiscard, practiceGroupCount, previewPracticeGroups, rankAmericanLines, withAmericanReplayAction, type AmericanGameState, type AmericanReplayAction } from '@/lib/mahjong/american';
+import { AMERICAN_PRACTICE_SEASONS, americanBotStyleForSeat, americanClosestLine, applyAmericanPass, canExchangeJoker, claimAmericanDiscard, claimAmericanMahJong, createAmericanGame, decideSecondCharleston, declareAmericanMahJong, exchangeAmericanJoker, getPracticeCard, legalAmericanClaims, lockAmericanPracticeCard, passAmericanClaims, playAmericanDiscard, practiceGroupCount, previewPracticeGroups, rankAmericanLines, withAmericanReplayAction, type AmericanGameState, type AmericanReplayAction } from '@/lib/mahjong/american';
 import { playMahjongOpeningSequence, playMahjongSound, primeMahjongAudio, stopMahjongSpeech } from '@/features/table/sound';
 import { useCoachIntensity } from '@/features/table/coach-prefs';
+import {
+  EMPTY_COACH_BUDGET,
+  advanceCoachBudget,
+  resolveCoachLevel,
+  type CoachBudgetState,
+  type CoachOutputLevel
+} from '@/features/table/coach-stage';
+import { makeAmericanAdapter, type CoachVerdict } from '@/lib/mahjong/coach';
 import CoachControls from './table/CoachControls';
+import CoachPanel from './table/CoachPanel';
 import MahjongAccessibilityPanel, { useMahjongPreferences } from './MahjongAccessibilityPanel';
 import { trackMahjongEvent } from '@/features/table/telemetry';
 import { AMERICAN_LESSONS, startAmericanLesson } from '@/lib/mahjong/american-learning';
@@ -70,6 +79,10 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   const [lessonGoal, setLessonGoal] = useState<string | null>(null);
   const [coachIntensity, setCoachIntensity] = useCoachIntensity();
   const [coachAsked, setCoachAsked] = useState(false);
+  const [lastVerdict, setLastVerdict] = useState<CoachVerdict | null>(null);
+  const [coachLevel, setCoachLevel] = useState<CoachOutputLevel>(0);
+  const [coachBudget, setCoachBudget] = useState<CoachBudgetState>(EMPTY_COACH_BUDGET);
+  const coachAdapter = useMemo(() => makeAmericanAdapter(), []);
   const soundEnabled = preferences.soundEnabled;
 
   useEffect(() => {
@@ -150,7 +163,14 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
   const exchangeMeld = jokerExchangeTarget === null ? null : game.players[jokerExchangeTarget.seat].melds[jokerExchangeTarget.meldIndex];
   const exchangeNatural = exchangeMeld?.tile;
   const canConfirmJokerExchange = Boolean(exchangeMeld && exchangeNatural && canExchangeJoker(exchangeMeld, exchangeNatural) && game.players[0].hand.includes(exchangeNatural));
-  const coach = useMemo(() => americanCoachAdvice(game), [game]);
+  const liveHint = useMemo(() => {
+    if (coachIntensity === 'silent') return null;
+    if (!(coachIntensity === 'live' || coachAsked)) return null;
+    const ranked = coachAdapter.rank(game, 0);
+    const top = ranked[0];
+    if (!top) return null;
+    return { suggested: top.tile, shanten: top.shanten, ukeire: top.ukeire };
+  }, [coachAdapter, coachAsked, coachIntensity, game]);
   const botStatus = (seat: 1 | 2 | 3) => {
     if (game.phase === 'ended' && game.settlement?.winner === seat) return 'Mah Jongg!';
     if (game.phase === 'claim' && game.lastDiscard?.seat !== seat) return americanBotStyleForSeat(seat) === 'speed' ? 'Fast call' : americanBotStyleForSeat(seat) === 'steady' ? 'Checking' : 'Defending';
@@ -194,6 +214,10 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
     setStep(0);
     setLastDiscard(null);
     setJokerExchangeTarget(null);
+    setLastVerdict(null);
+    setCoachLevel(0);
+    setCoachBudget(EMPTY_COACH_BUDGET);
+    setCoachAsked(false);
     setNotice(t('chooseThreeTiles'));
     trackMahjongEvent('mahjong_game_started', { variant: 'american', card: next.cardId, source: 'new_hand' });
   };
@@ -318,6 +342,25 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
     }
     const tile = hand[index];
     try {
+      if (coachIntensity === 'silent') {
+        setLastVerdict(null);
+        setCoachLevel(0);
+      } else if (coachIntensity === 'live' || coachAsked) {
+        const verdict = coachAdapter.judge(game, 0, tile);
+        const tenpai = (coachAdapter.rank(game, 0)[0]?.shanten ?? 99) <= 0;
+        const level = resolveCoachLevel(verdict, coachBudget, {
+          intensity: coachIntensity,
+          asked: coachAsked,
+          tenpai
+        });
+        setLastVerdict(verdict);
+        setCoachLevel(level);
+        setCoachBudget(advanceCoachBudget(coachBudget, level, verdict.grade));
+      } else {
+        setLastVerdict(null);
+        setCoachLevel(0);
+      }
+      setCoachAsked(false);
       const next = playAmericanDiscard(game, tile);
       primeMahjongAudio(); if (soundEnabled) playMahjongSound('discard', tile as Tile, 'english'); setGame(record(next, { type: 'discard', tile })); setLastDiscard(tile); setNotice(describeTableTurn(next, t));
       setNotice(t('youDiscarded', { tile: tile.startsWith('j') ? 'Joker' : tileFace(tile as Tile) }));
@@ -394,7 +437,15 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           </div>
           <div className="absolute left-[2%] top-[52%] z-20 w-56">
             <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} className="mb-2 text-emerald-50" />
-            {coachIntensity === 'live' || coachAsked ? <CoachPanel coach={coach} t={t} className="w-56" /> : null}
+            {coachIntensity !== 'silent' && (coachIntensity === 'live' || coachAsked || lastVerdict) ? (
+              <CoachPanel
+                verdict={lastVerdict}
+                level={coachLevel}
+                hint={liveHint}
+                className="w-56"
+                compact={coachLevel < 2 && !lastVerdict?.risk}
+              />
+            ) : null}
           </div>
 
           <div className="absolute bottom-[20%] left-1/2 z-30 flex -translate-x-1/2 items-center gap-4 rounded-xl bg-transparent p-3">
@@ -431,7 +482,15 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
         <div className="mt-4 rounded-2xl border border-white/10 bg-[#003b2d]/90 p-4 text-center"><p className="text-lg font-black">{game.phase === 'second-charleston-choice' ? t('secondCharlestonQ') : game.phase === 'courtesy' ? t('courtesyPass') : inCharleston ? `${t('charleston')} ${game.charlestonRound}-${step + 1}` : t('yourTurn')}</p><p className="mt-1 text-sm text-emerald-100">{notice}</p><p className="mt-2 text-[10px] text-emerald-200">{t('cardHint', { card: card.title })}</p></div>
         <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-emerald-100"><Opponent label="P4" portrait={3} status={botStatus(3)} /><Opponent label="P3" portrait={2} status={botStatus(2)} /><Opponent label="P2" portrait={1} status={botStatus(1)} /></div>
         <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} className="mt-4 text-emerald-50" />
-        {(coachIntensity === 'live' || coachAsked) && <CoachPanel coach={coach} t={t} className="mt-2" compact />}
+        {coachIntensity !== 'silent' && (coachIntensity === 'live' || coachAsked || lastVerdict) && (
+          <CoachPanel
+            verdict={lastVerdict}
+            level={coachLevel}
+            hint={liveHint}
+            className="mt-2"
+            compact={coachLevel < 2 && !lastVerdict?.risk}
+          />
+        )}
         <div className="mt-5 rounded-xl bg-black/25 p-3"><p className="text-center text-xs font-black">{inCharleston ? t('tap3Tiles', { n: selected.length }) : t('tapTileDiscard')}</p><div className="mt-3 flex flex-wrap justify-center gap-1">{hand.map((tile, index) => <AmericanTile key={`${tile}-${index}`} tile={tile} selected={selected.includes(index)} onClick={() => discard(index)} highlight={!inCharleston && index === hand.length - 1} compact />)}</div></div>
         {inCharleston && <button type="button" onClick={pass} className="mt-4 w-full rounded-xl bg-amber-300 py-3 text-lg font-black text-emerald-950">{t('pass3Tiles')}</button>}
         {game.phase === 'second-charleston-choice' && <div className="mt-4 flex gap-2"><button type="button" onClick={() => secondCharleston(true)} className="flex-1 rounded-xl bg-amber-300 py-3 font-black text-emerald-950">{t('playSecond')}</button><button type="button" onClick={() => secondCharleston(false)} className="flex-1 rounded-xl bg-white/80 py-3 font-black text-emerald-950">{t('skip')}</button></div>}
@@ -467,21 +526,6 @@ function Wall({ className, count, orientation }: { className: string; count: num
   return <div className={`absolute ${className}`}><div className={`mahjong-standing-rack mahjong-standing-rack--${orientation} flex ${vertical ? 'flex-col' : ''}`} aria-label={`Concealed American Mahjong hand: ${count} tiles`}>{Array.from({ length: count }, (_, index) => <span key={index} className={`mahjong-standing-tile mahjong-standing-tile--${orientation} ${vertical ? '-my-[5px]' : '-mx-[2px]'}`}><span className={`mahjong-standing-tile__back mahjong-standing-tile__back--${orientation}`} /></span>)}</div></div>;
 }
 function CharlestonReserve({ className, vertical = false }: { className: string; vertical?: boolean }) { return <div className={`absolute z-[3] flex ${vertical ? 'flex-col' : ''} gap-4 ${className}`}>{Array.from({ length: 3 }, (_, index) => <span key={index} className="inline-block"><TileBack size="xl" /></span>)}</div>; }
-function CoachPanel({ coach, t, className, compact = false }: { coach: ReturnType<typeof americanCoachAdvice>; t: (key: string, values?: Record<string, string | number>) => string; className: string; compact?: boolean }) {
-  const exposureKey = coach.exposure === 'wait-for-mah-jongg' ? 'coachExposureWait' : coach.exposure === 'call-commits-to-line' ? 'coachExposureCommit' : 'coachExposureCompatible';
-  const tileRow = (label: string, tiles: string[]) => <div className="mt-2"><p className="text-[10px] font-black uppercase tracking-wide text-amber-200">{label}</p><div className="mt-1 flex gap-1">{tiles.map((tile, index) => <AmericanTile key={`${tile}-${index}`} tile={tile} compact />)}</div></div>;
-  return <aside className={`rounded-xl border border-emerald-100/15 bg-[#002f24]/90 p-3 text-xs text-emerald-50 shadow-xl ${className}`} aria-label={t('coachTitle')}>
-    <p className="font-black uppercase tracking-[.13em] text-amber-200">{t('coachTitle')}</p>
-    <div className="mt-2 space-y-1"><p className="text-[10px] font-black text-emerald-100/70">{t('coachRankings')}</p>{coach.rankings.map(({ card, distance }) => <div key={card.id} className="flex justify-between gap-2"><span className="truncate">{card.title}</span><strong className="text-amber-100">{t('awayN', { n: distance })}</strong></div>)}</div>
-    {tileRow(t('coachKeep'), coach.keep)}
-    {(compact || coach.pass.length > 0) && tileRow(t('coachPass'), coach.pass)}
-    {coach.discard && <p className="mt-2 border-t border-white/10 pt-2 text-emerald-100/80"><strong>{t('coachDiscard')}:</strong> {coach.discard}</p>}
-    {coach.outs.length > 0 && <div className="mt-2 border-t border-white/10 pt-2"><p className="text-[10px] font-black uppercase tracking-wide text-amber-200">{t('coachOuts')}</p><p className="mt-1 text-emerald-100/80">{coach.outs.map((out) => `${out.tile} ×${out.remaining}`).join(' · ')}</p></div>}
-    {coach.discardRisk && <p className={`mt-2 rounded-md p-2 leading-snug ${coach.discardRisk.level === 'high' ? 'bg-rose-400/15 text-rose-100' : coach.discardRisk.level === 'low' ? 'bg-emerald-300/15 text-emerald-100' : 'bg-white/10 text-emerald-100'}`}>{t(coach.discardRisk.level === 'high' ? 'coachRiskHigh' : coach.discardRisk.level === 'low' ? 'coachRiskLow' : 'coachRiskMedium', { tile: coach.discardRisk.tile })}</p>}
-    <p className="mt-2 border-t border-white/10 pt-2 leading-snug text-emerald-100/80">{t(exposureKey)}</p>
-    {coach.jokerExchange && <p className="mt-2 rounded-md bg-amber-300/15 p-2 font-bold text-amber-100">{t('coachJokerExchange', { tile: coach.jokerExchange })}</p>}
-  </aside>;
-}
 function Portrait({ index, label, compact = false }: { index: 0 | 1 | 2 | 3; label: string; compact?: boolean }) {
   const row = index > 1 ? 1 : 0;
   const column = index % 2;
