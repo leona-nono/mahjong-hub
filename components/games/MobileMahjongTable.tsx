@@ -130,27 +130,27 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
       </div>
 
       <div className="relative min-h-0 flex-1 overflow-hidden bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_58%,#003c2d_100%)] landscape:h-[calc(100dvh-3rem)]">
-        <p className="absolute left-1/2 top-1 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#003d2f]/85 px-2 py-0.5 text-xs font-bold text-emerald-50">{t('allOpponentsAI')}</p>
-        <Opponent state={state} seat={3} className="left-1/2 top-2 -translate-x-1/2" />
-        <Opponent state={state} seat={2} className="left-1 top-[24%]" />
-        <Opponent state={state} seat={1} className="right-1 top-[24%]" />
+        <p className="pointer-events-none absolute left-1/2 top-1 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#003d2f]/85 px-2 py-0.5 text-[10px] font-bold text-emerald-50">{t('allOpponentsAI')}</p>
+        <Opponent state={state} seat={3} className="left-1/2 top-7 -translate-x-1/2" />
+        <Opponent state={state} seat={2} className="left-1 top-[26%]" />
+        <Opponent state={state} seat={1} className="right-1 top-[26%]" />
 
-        <Rack count={state.players[3].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[3].hand : undefined} className="left-1/2 top-[18%] -translate-x-1/2" />
-        <Rack count={state.players[2].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[2].hand : undefined} vertical className="left-2 top-[37%]" />
-        <Rack count={state.players[1].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[1].hand : undefined} vertical className="right-2 top-[37%]" />
+        <Rack count={state.players[3].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[3].hand : undefined} className="left-1/2 top-[15%] -translate-x-1/2" />
+        <Rack count={state.players[2].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[2].hand : undefined} vertical className="left-1.5 top-[38%]" />
+        <Rack count={state.players[1].hand.length} tiles={state.phase === 'over' && state.result?.kind === 'win' ? state.players[1].hand : undefined} vertical className="right-1.5 top-[38%]" />
 
         {/* Mobile-safe discard lanes: left/right discards sit outside the
             scoreboard footprint, so no opponent tile is hidden behind it. */}
-        <Discards state={state} seat={3} className="left-1/2 top-[29%] -translate-x-1/2" />
-        <Discards state={state} seat={2} className="left-[15%] top-[41%]" />
-        <Discards state={state} seat={1} className="right-[15%] top-[41%]" />
-        <Discards state={state} seat={0} className="bottom-[27%] left-1/2 -translate-x-1/2" />
+        <Discards state={state} seat={3} className="left-1/2 top-[27%] -translate-x-1/2" />
+        <Discards state={state} seat={2} className="left-[12%] top-[42%]" />
+        <Discards state={state} seat={1} className="right-[12%] top-[42%]" />
+        <Discards state={state} seat={0} className="bottom-[26%] left-1/2 -translate-x-1/2" />
 
-        <div className="absolute left-1/2 top-[47%] z-10 flex h-20 w-[5.4rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-4 border-[#242632] bg-[#080b10] shadow-xl">
-          <span className="text-xs font-bold tracking-[.2em] text-cyan-300">{isRiichi ? 'RIICHI' : isMcr ? 'CHINESE MCR' : 'HONG KONG'}</span>
-          <strong className="text-base font-medium text-cyan-100">{roundLabel}</strong>
-          <span className="text-xl font-light text-cyan-200">{tilesRemaining(state)}</span>
-          <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-xs font-black">{seatName(state.turn)}</span>
+        <div className="absolute left-1/2 top-[48%] z-10 flex h-[4.6rem] w-[5.2rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-4 border-[#242632] bg-[#080b10] shadow-xl">
+          <span className="text-[9px] font-bold tracking-[.16em] text-cyan-300">{isRiichi ? 'RIICHI' : isMcr ? 'MCR' : 'HK'}</span>
+          <strong className="text-sm font-medium text-cyan-100">{roundLabel}</strong>
+          <span className="text-lg font-light text-cyan-200">{tilesRemaining(state)}</span>
+          <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-[10px] font-black">{seatName(state.turn)}</span>
         </div>
 
         {isRiichi && (
@@ -215,27 +215,29 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
               {human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
             </div>
           )}
-          <div className="flex w-max min-w-full items-end justify-center px-0.5">
-            {human.hand.map((tile, index) => (
-              <span key={tile + index} className={index === human.hand.length - 1 ? 'ml-1' : '-ml-px'}>
-                <TileFace
-                  tile={tile}
-                  size="xs"
-                  traditional
-                  onClick={(selected) => {
-                    primeMahjongAudio();
-                    if (!human.riichiPending || riichiDiscards.includes(selected)) {
-                      // Speech must run inside the tap gesture on mobile;
-                      // deferred React effects are often blocked by the browser.
-                      if (soundEnabled) playMahjongSound('discard', selected, voiceLocale);
-                      onDiscard(selected);
-                    }
-                  }}
-                  disabled={!myTurn || paused || (human.riichiPending && !riichiDiscards.includes(tile))}
-                  highlight={(myTurn && index === human.hand.length - 1) || (human.riichiPending && riichiDiscards.includes(tile))}
-                />
-              </span>
-            ))}
+          <div className="overflow-x-auto overscroll-x-contain px-1 pb-0.5 [-webkit-overflow-scrolling:touch]">
+            <div className="mx-auto flex w-max min-w-full items-end justify-center gap-px px-1">
+              {human.hand.map((tile, index) => (
+                <span key={tile + index} className={index === human.hand.length - 1 ? 'ml-1.5' : ''}>
+                  <TileFace
+                    tile={tile}
+                    size="xs"
+                    traditional
+                    onClick={(selected) => {
+                      primeMahjongAudio();
+                      if (!human.riichiPending || riichiDiscards.includes(selected)) {
+                        // Speech must run inside the tap gesture on mobile;
+                        // deferred React effects are often blocked by the browser.
+                        if (soundEnabled) playMahjongSound('discard', selected, voiceLocale);
+                        onDiscard(selected);
+                      }
+                    }}
+                    disabled={!myTurn || paused || (human.riichiPending && !riichiDiscards.includes(tile))}
+                    highlight={(myTurn && index === human.hand.length - 1) || (human.riichiPending && riichiDiscards.includes(tile))}
+                  />
+                </span>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -328,23 +330,36 @@ function Opponent({ state, seat, className }: { state: GameState; seat: Seat; cl
 
 function Rack({ count, tiles, vertical = false, className }: { count: number; tiles?: Tile[]; vertical?: boolean; className: string }) {
   return (
-    <div className={'absolute flex ' + (vertical ? 'flex-col ' : '') + className}>
+    <div className={'absolute flex ' + (vertical ? 'flex-col ' : '') + className} aria-hidden={tiles ? undefined : true}>
       {Array.from({ length: Math.min(count, 14) }, (_, index) => (
-        <span key={index} className={vertical ? '-my-3' : '-mx-2'}>{tiles?.[index] ? <TileFace tile={tiles[index]} size="xs" traditional /> : <TileBack size="sm" />}</span>
+        <span key={index} className={vertical ? '-my-1.5' : '-mx-1'}>
+          {tiles?.[index] ? <TileFace tile={tiles[index]} size="xs" traditional /> : <TileBack size="xs" />}
+        </span>
       ))}
     </div>
   );
 }
 
 function Discards({ state, seat, className }: { state: GameState; seat: Seat; className: string }) {
-  const recent = state.players[seat].discards.slice(-6);
+  const recent = state.players[seat].discards.slice(-9);
+  if (recent.length === 0) return null;
   return (
-    <div className={'absolute z-[15] w-[54px] rounded-md bg-[#003d2f]/70 p-0.5 shadow-[0_1px_5px_rgba(0,0,0,.3)] ' + className}>
-      <span className="mb-px block text-center text-xs font-black tracking-wide text-amber-200">P{seat + 1} DISCARD</span>
-      <div className="grid grid-cols-3 gap-px">
-      {recent.map((tile, index) => (
-        <span key={tile + index} className={index === recent.length - 1 ? 'scale-[.68] rounded ring-1 ring-amber-300' : 'scale-[.68]'}><TileFace tile={tile} size="sm" traditional muted={index !== recent.length - 1} /></span>
-      ))}
+    <div
+      className={
+        'absolute z-[15] min-w-[4.5rem] max-w-[7.5rem] rounded-md bg-[#003d2f]/55 p-0.5 shadow-[0_1px_5px_rgba(0,0,0,.28)] ' +
+        className
+      }
+      aria-label={`P${seat + 1} discards`}
+    >
+      <div className="grid grid-cols-3 justify-items-center gap-px">
+        {recent.map((tile, index) => (
+          <span
+            key={tile + index}
+            className={index === recent.length - 1 ? 'rounded ring-1 ring-amber-300' : 'opacity-90'}
+          >
+            <TileFace tile={tile} size="xs" traditional muted={index !== recent.length - 1} />
+          </span>
+        ))}
       </div>
     </div>
   );

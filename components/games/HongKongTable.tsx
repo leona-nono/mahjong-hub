@@ -207,7 +207,13 @@ export default function HongKongTable({
 
   return (
     <section ref={tableShellRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell relative ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
-      {coach && <div className="absolute right-3 top-14 z-40 max-w-sm">{coach}</div>}
+      {/* Mobile: keep coach in its own strip so it never covers discard rivers. */}
+      {coach && (
+        <div className="relative z-30 border-b border-white/10 bg-[#0b6548] px-2 py-1.5 lg:hidden">
+          {coach}
+        </div>
+      )}
+      {coach && <div className="absolute right-3 top-14 z-40 hidden max-w-sm lg:block">{coach}</div>}
       <MobileMahjongTable
         state={state}
         variant={variant}

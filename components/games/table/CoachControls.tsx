@@ -39,7 +39,7 @@ export default function CoachControls({
       </label>
       {intensity === 'ask' && onAsk && (
         <button type="button" onClick={onAsk} className="rounded bg-amber-300 px-2 py-1 text-xs font-bold text-emerald-950">
-          {t('coachAsk')}
+          {t('coachAskNow')}
         </button>
       )}
     </span>
