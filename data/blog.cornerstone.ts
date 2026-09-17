@@ -11,8 +11,8 @@ export const cornerstonePosts: BlogPost[] = [
     slug: 'mahjong-rules-beginners-complete-guide',
     title: 'Mahjong Rules for Beginners: The Complete Guide',
     description:
-      'The complete beginner-friendly guide to mahjong rules. Learn the tiles, the wall, turns, calling, winning hands and scoring — with a plain-language ruleset comparison.',
-    readMinutes: 12,
+      'The complete beginner-friendly guide to mahjong rules. Learn the tiles, the wall, turns, calling, winning hands and scoring — plus a full hand played turn by turn, what happens when nobody wins, and how to choose your first ruleset.',
+    readMinutes: 11,
     keywords: 'mahjong for beginners, mahjong rules, learn mahjong, mahjong basics',
     heroTiles: [{"suit": 'wind', "wind": 'east'}, {"suit": 'dragon', "dragon": 'red'}, {"suit": 'dot', "rank": 2}, {"suit": 'dot', "rank": 3}, {"suit": 'dot', "rank": 4}],
     cta: { label: 'Play Mahjong Now', href: '/games/classic' },
@@ -28,21 +28,24 @@ export const cornerstonePosts: BlogPost[] = [
         heading: 'The Tiles',
         body: [
           'A standard set has 144 tiles: 108 numbered tiles, 28 honours and 8 bonus tiles. The numbered tiles come in three suits — characters (wàn), bamboo (tiáo) and circles (tóng) — each numbered 1 to 9 with four copies.',
-          'The honours are the four winds (East, South, West, North) and three dragons (Red, Green, White). Bonus tiles (flowers and seasons) appear in some rulesets and usually give a small bonus rather than forming sets.'
+          'The honours are the four winds (East, South, West, North) and three dragons (Red, Green, White). Bonus tiles (flowers and seasons) appear in some rulesets and usually give a small bonus rather than forming sets.',
+          'The arithmetic behind the set is worth memorising, because it explains half of mahjong strategy. Three suits × nine ranks × four copies = 108 number tiles. Seven honour types × four copies = 28. Add eight bonus tiles and you arrive at 144. Every tile exists exactly four times, which means that the moment you can account for three of them — in your hand, in an exposed set, or face-up in the discard pool — the fourth is the only one still live. That single fact is what turns guessing into counting.'
         ]
       },
       {
         heading: 'The Wall and Dealing',
         body: [
           'All tiles are shuffled face-down and stacked into a wall of 17 stacks per player. The dealer (East) rolls two dice to choose where to break the wall, then deals 13 tiles to every player. The dealer takes a 14th tile and discards first.',
-          'Online, the wall is built and dealt for you automatically — you only manage your hand.'
+          'Online, the wall is built and dealt for you automatically — you only manage your hand.',
+          'The wall is not scenery — it is a countdown. After the deal, around ninety tiles remain stacked, which works out to roughly twenty turns per player. Once the wall drops to its last few stacks, every player at the table knows the hand is nearly over, and cautious players stop feeding tiles to opponents. Online tables usually display the live wall count for exactly this reason: it tells you whether you still have time to finish a big hand or should settle for the small one you already have.'
         ]
       },
       {
         heading: 'Your Turn',
         body: [
           'On your turn, draw one tile, study your hand, and discard one tile face-up. You always hold 13 tiles. The discarded tile sits in the middle so everyone can see it — and so everyone can read your strategy.',
-          'The rhythm of draw-and-discard is the same across every ruleset, which is why skills transfer between them.'
+          'The rhythm of draw-and-discard is the same across every ruleset, which is why skills transfer between them.',
+          'Notice what is not a decision: the draw. You do not choose which tile arrives. The only real choice you make each turn is which tile to let go of — and that choice speaks to all three opponents at once. Discarding an honour early tells them you have no use for honours. Switching suits mid-hand announces that you changed direction. Experienced players read the discard pools the way a poker player reads bets: the tiles you threw away describe the hand you are trying to build.'
         ]
       },
       {
@@ -52,25 +55,42 @@ export const cornerstonePosts: BlogPost[] = [
           '• Pong — three identical tiles. Callable from any player.',
           '• Chi — three consecutive tiles in one suit. Callable only from the player on your left.',
           '• Kong — four identical tiles. The most powerful call, worth bonus tiles in some rulesets.',
-          'Calls expose your hand. An open hand is weaker in most scoring systems, so beginners should call sparingly.'
+          'Calls expose your hand. An open hand is weaker in most scoring systems, so beginners should call sparingly.',
+          'The real trade is speed against value. Calling a pong hands you a finished set immediately, which shortens the game and gets you closer to a win. It also announces your target, removes your ability to change plans, and usually costs you the concealed-hand bonuses that make the biggest hands possible. The habit that works in Hong Kong style: call when the tile clearly completes a hand you have already committed to, and let it pass while you are still deciding what to build.'
         ],
         tiles: [{"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}, {"suit": 'bamboo', "rank": 6}, {"suit": 'bamboo', "rank": 7}, {"suit": 'bamboo', "rank": 8}],
+      },
+      {
+        heading: 'Your First Hand, Turn by Turn',
+        body: [
+          'Rules explained in the abstract are hard to remember; a single hand is much easier. Here is how one deal unfolds in the Hong Kong style, from the wall to the winning tile.',
+          'You are East, so you take fourteen tiles and discard first. Your opening thirteen hold a 1-2-3 run of characters, a 6-7-8 run of bamboo, a 4-5-5 in dots, a single East wind and three tiles that belong to nothing: a North wind, a Red dragon and a 9 dot. The fourteenth tile is a stray 8 dot, so it goes straight out. The next few discards are housekeeping rather than strategy — out go the North wind, the Red dragon and the 9 dot, and any junk you draw along the way leaves the same way. You are not choosing between clever plans; you are clearing tiles that cannot help you.',
+          'The hand is really decided in the middle turns. You draw a 3 dot, and the awkward 4-5-5 becomes a 3-4-5 run with a 5 dot left over — now you need one more set and a pair. Two turns later a second 5 dot arrives and the leftover becomes a pair. Then the second and third East winds come in, and the hand is complete: three runs, a triplet of East, and a pair of 5 dots. East is your seat wind, so that triplet is worth points in most rulesets. Across the whole hand, only two decisions mattered — which suits to commit to, and whether to call a discarded tile that would have finished a set but exposed your hand. Everything else was arithmetic and patience.'
+        ],
+        tiles: [{"suit": 'char', "rank": 1}, {"suit": 'char', "rank": 2}, {"suit": 'char', "rank": 3}, {"suit": 'bamboo', "rank": 6}, {"suit": 'bamboo', "rank": 7}, {"suit": 'bamboo', "rank": 8}, {"suit": 'dot', "rank": 3}, {"suit": 'dot', "rank": 4}, {"suit": 'dot', "rank": 5}, {"suit": 'wind', "wind": 'east'}, {"suit": 'wind', "wind": 'east'}, {"suit": 'wind', "wind": 'east'}, {"suit": 'dot', "rank": 5}, {"suit": 'dot', "rank": 5}],
       },
       {
         heading: 'Winning Hands',
         body: [
           'A winning hand is four sets plus a pair. You win by self-draw (tsumo) or by taking another player\u2019s discard (ron).',
-          'Rulesets also require a minimum score: three faan in Hong Kong style, one yaku in Japanese Riichi, eight points in Chinese Official. A complete hand below the minimum is not a winning hand — you keep improving it.'
+          'Rulesets also require a minimum score: three faan in Hong Kong style, one yaku in Japanese Riichi, eight points in Chinese Official. A complete hand below the minimum is not a winning hand — you keep improving it.',
+          'The first real disappointment in mahjong is not losing — it is completing the shape and being told it is not enough. Hong Kong style asks for three faan; Chinese Official asks for eight points; Riichi asks for at least one yaku. Beginners who assemble four sets and a pair out of ordinary tiles discover they hold a valid shape worth nothing. The fix is not to play harder, it is to plan earlier: decide within the first few turns which scoring element you are steering toward — a dragon triplet, your seat wind, a single-suit hand, seven pairs — and then let that decision choose your discards instead of the other way round.'
         ]
       },
       {
-        heading: 'The Main Rulesets Compared',
+        heading: 'When Nobody Wins: Draws, Dead Walls and Fouls',
         body: [
-          '• Hong Kong Mahjong — the easiest entry point. Three-faan minimum, forgiving scoring, the most widely played style outside Japan.',
-          '• Japanese Riichi — competitive standard. Concealed hands and riichi declarations score higher; strict yaku requirements.',
-          '• Chinese Official (MCR) — international tournament rules. An eight-point minimum demands real hand structure.',
-          '• American / Taiwanese / Sichuan — regional variants with jokers, sixteen tiles, or no honours at all.',
-          'Start with Hong Kong. When you can win reliably, try Riichi for depth or Chinese Official for structure.'
+          'Not every hand ends with a winner. When the wall runs out and nobody has completed a hand, the deal ends as an exhaustive draw: the round is abandoned and no score is awarded. In Hong Kong style this is usually treated as a washout and the same dealer continues. Japanese Riichi handles it differently — players who were waiting on a winning tile can still collect small payments, which is why experienced Riichi players watch the wall count as closely as they watch the discards.',
+          'A few special situations can end a deal early. Four players declaring riichi, four kongs on the table at once, or an opening hand holding nine different terminal and honour tiles can all stop play by rule. None of them award a win; they simply reset the round. Treat them as the game telling you that this particular deal had no answer, and that the next one starts fresh.',
+          'Fouls are handled differently. An exposed wrong tile, an incorrect draw, or a hand revealed before it is complete is settled by penalty rather than argument — and the penalty depends entirely on where you are playing. At a physical table, agree the rules before the first tile is dealt, because there is no referee. Online tables remove the problem almost entirely: the software will not let you discard out of turn or draw twice. That is one quiet advantage of learning on a screen — the rules enforce themselves while you concentrate on the play.'
+        ]
+      },
+      {
+        heading: 'Choosing Your First Ruleset',
+        body: [
+          'Every style in this guide shares the paragraph you read at the top: draw a tile, discard a tile, build four sets and a pair. What changes between rulesets is what counts as a good hand, how fast the game moves, and how severely a mistake is punished. That sounds like a small difference. It decides which style you should learn first.',
+          'Start with Hong Kong style. The three-faan minimum is forgiving, the scoring is compact enough to absorb in an afternoon, and it is the style most commonly played outside Japan — so it is the one you are most likely to meet at a real table. Move to Japanese Riichi when you want depth and do not mind losing often while you learn. Move to Chinese Official when you want structure and long-range planning. Sichuan, Taiwanese and American styles each change the shape of the game itself — sixteen tiles, no honours at all, jokers and an annual hand card — and they are better treated as second languages than as starting points.',
+          'One practical note for playing online: pick the table that matches the style you are learning, not the one with the nicest interface. Habits formed in the wrong ruleset are hard to unlearn, and a player who learns to call tiles freely in Sichuan style will find Riichi brutally unforgiving. We keep a separate side-by-side comparison of all six styles if you want the differences collected in one place instead of spread across prose.'
         ]
       },
       {
@@ -84,7 +104,10 @@ export const cornerstonePosts: BlogPost[] = [
       { question: 'How long does it take to learn mahjong rules?', answer: 'You can learn the basic flow — draw, discard, build four sets and a pair — in about an hour. Scoring and strategy take longer, but the Hong Kong ruleset is gentle enough to learn while playing.' },
       { question: 'Do I need four people to play mahjong?', answer: 'In person, yes. Online, you can play against computer opponents anytime — our tables always seat three bots if you play alone.' },
       { question: 'What is the difference between a pong and a chi?', answer: 'A pong is three identical tiles and can be called from any player. A chi is three consecutive tiles in one suit and can only be called from the player on your left.' },
-      { question: 'Is mahjong hard to win?', answer: 'The rules are simple; winning well takes practice. Choosing a hand direction early and not over-calling are the two habits that improve results fastest.' }
+      { question: 'Is mahjong hard to win?', answer: 'The rules are simple; winning well takes practice. Choosing a hand direction early and not over-calling are the two habits that improve results fastest.' },
+      { question: 'What happens if nobody wins a hand?', answer: 'The deal ends in an exhaustive draw. The wall empties, the round is abandoned and no score is awarded. Hong Kong style usually lets the same dealer continue; Japanese Riichi still pays small amounts to players who were waiting on a winning tile.' },
+      { question: 'Do all mahjong styles use the same tiles?', answer: 'Most of them do. A standard 144-tile set covers Hong Kong, Riichi and Chinese Official play. American mahjong adds jokers and uses a 152-tile set, while Sichuan style removes the honour tiles altogether.' },
+      { question: 'Can I play mahjong by myself?', answer: 'Yes. Mahjong needs four seats, not four people. Our Hong Kong table seats three computer opponents, so a single player can learn the whole flow with hints and a full score breakdown after every hand.' }
     ]
   },
   {

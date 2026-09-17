@@ -19,6 +19,7 @@
     "validate:games": "npx tsx scripts/validate-games.ts",
     "verify:en": "npx tsx scripts/verify-en-json-parity.ts",
     "lint:zh-prose": "npx tsx scripts/i18n/lint-zh-prose.ts",
+    "lint:untranslated": "npx tsx scripts/i18n/lint-untranslated.ts",
     "validate:zh-prose": "npx tsx scripts/i18n/lint-zh-prose.ts --errors-only --max-density 3 --min-chars 800",
     "i18n:spec": "npx tsx scripts/i18n/localization-spec.ts --markdown",
     "gate:i18n": "npm run validate:blog-i18n && npm run validate:content-i18n && npm run validate:games && npm run validate:zh-prose && vitest run tests/blog-i18n-structure.test.ts tests/content-i18n-integrity.test.ts tests/article-links.test.ts tests/article-tiles.test.ts",

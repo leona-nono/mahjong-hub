@@ -354,14 +354,37 @@ import { buildLocalePrompt, LOCALE_SHEETS, SPEC_VERSION } from './localization-s
 
 ### 6.1 状态总表
 
-| # | 项 | 状态 | 说明 |
+> **2026-09-16 复核**：以下数字均经脚本实测，非估算。旧数字（63 条未译 / 9 篇短文 / `blog.i18n.ts` 待改）已作废。
+
+| # | 项 | 状态 | 实测说明 |
 |---|---|---|---|
 | 1 | 门禁从 Vercel 构建摘出 | ✅ **已完成** | `build` 已改为纯构建；门禁独立为 `npm run gate`，提交前手动跑（§3.1）|
 | 2 | Studio 对象数组展开 | ✅ **已完成** | 提交 `941723b`：`flattenFields` 按下标展开 + `setAtPath` 数组穿透，成对改好 |
-| 3 | `messages/*.json` 63 条未译 | ⬜ 待办 | zh-TW 50（含整个 `wardrobe.*`）+ zh 13（含 4 条 `seo.*Title`，会渲染进 `<title>`）|
-| 4 | 剩余 9 篇短文未按新规范重写 | ⬜ 待办 | 全站翻译腔残留 3 处（均在这批短文里）|
-| 5 | `translateText()` 一次只发一段 | ⬜ 待办 | 模型看不到标题与上下文 → 跨段衔接做不出来（最大的结构性原因）|
-| 6 | `data/blog.i18n.ts:61` slug 锚点取 `zh.json` | ⬜ 待办 | 英文才是真源，新增文章应先有英文；1 行 |
+| 3 | `blog.i18n.ts` slug 锚点 | ✅ **已完成** | 已改为 `Object.keys(EN_FILE)`，注释明写「English file is the slug source of truth」|
+| 4 | **`messages/*.json` 未译** | ⬜ **待办** | **zh 17 条 / zh-TW 74 条**（已剔除 `AI`、`✓` 这类本就该相同的 2 条）|
+| 5 | **短文按新规范重写** | ⬜ **待办** | 9 篇短文；翻译腔实测仅 **3 处**，且分布极稀（见下）|
+| 6 | `translateText()` 一次只发一段 | ⬜ **待办** | 模型看不到标题与上下文 → 跨段衔接做不出来（唯一的**结构性**缺陷）|
+
+#### 缺口 #4 明细：`messages/*.json`
+
+| locale | 条数 | 命名空间分布 |
+|---|---|---|
+| `zh` | **17** | `seo` 4 · `game` 4 · `home` 3 · `mahjong` 3 · `american` 2 · `daily` 1 |
+| `zh-TW` | **74** | **`wardrobe` 57** · `seo` 4 · `game` 4 · `home` 3 · `mahjong` 3 · `american` 2 · `daily` 1 |
+
+- 判定口径：`messages/{locale}.json` 的值与 `messages/en.json` **逐字节相同**，且含 ≥3 个连续英文字母（排除 `AI`、`✓` 等本就应保持的）。
+- 🔴 **优先级最高的是 `seo.*Title` 4 条**（`blogTitle` / `gamesTitle` / `privacyTitle` / `aboutTitle`）—— 它们渲染进 `<title>`，是**用户与搜索引擎直接看到的中文页面标题**，现在显示英文。
+- `wardrobe.*` 57 条是唯一一个**整个命名空间未译**的模块（皮肤/衣柜界面），zh-TW 特有。
+- ⚠️ 修完必须跑 `npm run gate`：`content-i18n-integrity.test.ts` 会校验 9 语 × 4 域无空缺。
+
+#### 缺口 #5 明细：短文重写
+
+13 篇中 **4 篇是基石长文**（2,400+ 字，已按新规范重写），其余 **9 篇短文**（518–863 字）尚未重写：
+
+`mahjong-etiquette-tips` · `where-to-buy-mahjong-set` · `best-mahjong-sets-for-beginners` · `types-of-mahjong-games` · `how-to-play-mahjong-online` · `american-vs-chinese-mahjong` · `mahjong-history-cultural-guide` · `how-to-play-mahjong` · `how-to-win-mahjong`
+
+⚠️ **但这 9 篇不是「问题严重」**：全站翻译腔实测仅 **3 处**，全部落在 zh（`how-to-play-mahjong` 1 · `mahjong-etiquette-tips` 1 · `where-to-buy-mahjong-set` 1），密度 1.2–1.8/千字，**均低于门禁上限 3**。zh-TW 这 9 篇是 **0 处**。
+→ 结论：此项**不是质量事故，是优化项**。做之前应先确认 ROI —— 3 处翻译腔 vs. 9 篇 × 双语重写的成本。
 
 **✅ 完成项 #2 实现说明（供 review 参考）** —— `lib/i18n-studio/fields.ts`：
 
@@ -406,7 +429,7 @@ jobs:
 
 > 先确认 `npm ci` 在无 `.env` 环境下能过（`prisma generate` 是否需 `DATABASE_URL`）。若不能，改为只跑 `validate:*` 三件套 + `vitest` 指定文件。
 
-### 6.3 门禁升级为多语（缺口 #3 完成后可做）
+### 6.3 门禁升级为多语（缺口 #4 完成后可做）
 
 当前语言门禁只覆盖 `zh` / `zh-TW`（`CONTENT_LOCALES`）。`messages/*.json` 补齐后，可把 `lint-zh-prose` 的 `--locale` 扩到其他语种 —— 但**需要先为每个语种写 redLines**，否则检测器无规则可依。
 
