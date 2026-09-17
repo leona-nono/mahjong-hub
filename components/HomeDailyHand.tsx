@@ -81,9 +81,9 @@ export default function HomeDailyHand() {
     <section aria-labelledby="daily-hand-title" className="space-y-4">
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-portal-accent">{t('eyebrow')}</p>
-        <h1 id="daily-hand-title" className="mt-1 font-display text-3xl font-semibold text-portal-text sm:text-4xl">
+        <h2 id="daily-hand-title" className="mt-1 font-display text-2xl font-semibold text-portal-text sm:text-3xl">
           {t('title')}
-        </h1>
+        </h2>
         <p className="mt-2 max-w-2xl text-sm text-portal-muted">{t('subtitle')}</p>
         {streak > 0 && <p className="mt-2 text-sm font-semibold text-portal-text">{t('streak', { n: streak })}</p>}
       </div>

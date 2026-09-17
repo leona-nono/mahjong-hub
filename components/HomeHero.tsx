@@ -1,55 +1,25 @@
-'use client';
-
-import { useSession } from 'next-auth/react';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { openLogin, useAuth } from '@/lib/auth';
-import { setPendingCheckIn } from '@/lib/appearance';
-import { claimDailyCheckIn, usePoints } from '@/lib/points';
-import { ensureGuestId } from '@/lib/guest-points';
-import { CHECKIN_CYCLE_DAYS } from '@/lib/points-rules';
-import AchievementsWall from '@/components/AchievementsWall';
-import { useState } from 'react';
 
+/** Primary play entry — `/games/mahjong-solitaire-classic` (SITE_RULES R1). */
 const SOLITAIRE_HREF = '/games/mahjong-solitaire-classic';
 
-export default function HomeHero() {
-  const t = useTranslations('home');
-  const td = useTranslations('daily');
-  const { data: session, status } = useSession();
-  const { user: localUser } = useAuth();
-  const { checkIn, hydrated } = usePoints();
-  const [claiming, setClaiming] = useState(false);
-  const signedIn = Boolean(session?.user || localUser);
-  const name =
-    session?.user?.name?.trim() ||
-    session?.user?.email?.split('@')[0] ||
-    localUser?.name?.trim() ||
-    localUser?.email?.split('@')[0] ||
-    '';
-
-  const claimedToday = checkIn?.claimedToday ?? false;
-  const streak = checkIn?.streak ?? 1;
-  const cycleDay = checkIn?.cycleDay ?? ((streak - 1) % CHECKIN_CYCLE_DAYS) + 1;
-
-  const onCheckIn = async () => {
-    if (claiming || claimedToday) return;
-    if (status !== 'authenticated') {
-      setPendingCheckIn(true);
-      openLogin();
-      return;
-    }
-    setClaiming(true);
-    try {
-      await claimDailyCheckIn();
-    } finally {
-      setClaiming(false);
-    }
-  };
+/**
+ * Homepage first block: site-positioning `<h1>` + one-click play CTA.
+ * Stripped of the retired points / check-in economy (SITE_RULES R1 / R2).
+ */
+export default async function HomeHero() {
+  const t = await getTranslations('home');
 
   return (
-    <section className="rounded-3xl border border-portal-border bg-gradient-to-br from-portal-panel via-portal-elevated to-teal-950/40 px-5 py-8 shadow-portal sm:px-8 sm:py-10">
-      <h1 className="font-display text-3xl font-semibold tracking-tight text-portal-text sm:text-4xl">
+    <section
+      aria-labelledby="home-hero-title"
+      className="rounded-3xl border border-portal-border bg-gradient-to-br from-portal-panel via-portal-elevated to-portal-panel px-5 py-8 shadow-portal sm:px-8 sm:py-10"
+    >
+      <h1
+        id="home-hero-title"
+        className="font-display text-3xl font-semibold tracking-tight text-portal-text sm:text-4xl"
+      >
         {t('heroTitle')}
       </h1>
       <div className="hero-tile-stack mt-3 flex gap-2" aria-hidden>
@@ -62,8 +32,7 @@ export default function HomeHero() {
       <div className="mt-8 flex flex-col items-start gap-2">
         <Link
           href={SOLITAIRE_HREF}
-          onClick={() => ensureGuestId()}
-          className="inline-flex min-h-14 items-center justify-center rounded-2xl bg-portal-accent px-7 py-3.5 text-base font-black text-slate-950 shadow-lg transition hover:brightness-110 sm:text-lg"
+          className="inline-flex min-h-14 items-center justify-center rounded-2xl bg-portal-accent px-7 py-3.5 text-base font-black text-portal-on-accent shadow-lg transition hover:brightness-110 sm:text-lg"
         >
           {t('playSolitaire')}
         </Link>
@@ -74,64 +43,6 @@ export default function HomeHero() {
         <SecondaryEntry href="/games/mahjong-connect-classic" label={t('entryConnect')} />
         <SecondaryEntry href="/games/classic" label={t('entryClassic')} />
         <SecondaryEntry href="/games/solitaire" label={t('entryTileMatch')} />
-      </div>
-
-      <div className="mt-8 space-y-4 border-t border-portal-border/80 pt-6">
-        <div className="rounded-2xl border border-portal-border/80 bg-black/20 px-4 py-4">
-          <p className="font-display text-base font-semibold text-portal-text">
-            {t('checkInTitle', { day: cycleDay })}
-          </p>
-          <p className="mt-1 text-sm text-portal-accent">
-            {claimedToday
-              ? td('streakLineShort', { days: streak })
-              : `${td('streakLine', { days: streak })} · ${td('achievementHint')}`}
-          </p>
-          <button
-            type="button"
-            onClick={() => void onCheckIn()}
-            disabled={claimedToday || claiming || (signedIn && !hydrated)}
-            className="mt-3 inline-flex rounded-xl bg-portal-accent px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {claimedToday ? t('checkInDone') : t('checkInNow')}
-          </button>
-        </div>
-
-        {signedIn ? (
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="font-display text-lg font-semibold text-portal-text">
-                {t('welcomeBack', { name: name || 'player' })}
-              </p>
-              <p className="mt-1 text-sm text-portal-accent">
-                {td('streakLineShort', { days: streak })}
-              </p>
-            </div>
-            <Link
-              href={SOLITAIRE_HREF}
-              className="inline-flex rounded-xl border border-portal-accent/40 px-4 py-2 text-sm font-bold text-portal-accent hover:bg-portal-accent/10"
-            >
-              {t('playSolitaire')}
-            </Link>
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-portal-border/60 bg-portal-panel/40 px-4 py-4">
-            <p className="text-sm text-portal-text">{t('signInRegister')}</p>
-            <button
-              type="button"
-              onClick={() => {
-                setPendingCheckIn(true);
-                openLogin();
-              }}
-              className="mt-3 inline-flex items-center justify-center rounded-xl bg-white/10 px-4 py-2.5 text-sm font-bold text-portal-text hover:bg-white/15"
-            >
-              {t('signInRegister')}
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="mt-8">
-        <AchievementsWall />
       </div>
     </section>
   );

@@ -7,6 +7,7 @@ import {
 import GameCard from '@/components/GameCard';
 import HomeDailyHand from '@/components/HomeDailyHand';
 import HomeFaq, { homeFaqJsonLd } from '@/components/HomeFaq';
+import HomeHero from '@/components/HomeHero';
 import HomeLearnCards from '@/components/HomeLearnCards';
 import HomeSeoBlock from '@/components/HomeSeoBlock';
 import { homeSeo } from '@/lib/home-seo';
@@ -67,6 +68,8 @@ export default async function HomePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
+      <HomeHero />
 
       <HomeDailyHand />
 
