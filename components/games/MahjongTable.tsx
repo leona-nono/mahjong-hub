@@ -125,11 +125,7 @@ export default function MahjongTable({
 
   useEffect(() => {
     trackMahjongEvent('mahjong_game_started', { variant: defaultRuleset, source: 'initial_load' });
-    // #region agent log
-    const payload = { sessionId: '3bd6ce', runId: 'pre-fix', hypothesisId: 'B', location: 'MahjongTable.tsx:mount', message: 'MahjongTable mounted', data: { defaultRuleset, dailySeed: dailySeed ?? null, coachIntensity, w: window.innerWidth }, timestamp: Date.now() };
-    fetch('/api/debug-log', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {});
-    // #endregion
-  }, [defaultRuleset, dailySeed, coachIntensity]);
+  }, [defaultRuleset]);
 
   // --- Game driver --------------------------------------------------------
   // Everything that is not a human decision is advanced here on a timer, so the
