@@ -45,7 +45,7 @@ import {
 import { useCoachIntensity } from '@/features/table/coach-prefs';
 import CoachControls from './table/CoachControls';
 import CoachPanel from './table/CoachPanel';
-import { describeScore } from '@/lib/mahjong/scoring';
+import { ResultBanner } from './table/ScorePanel';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
 import { trackMahjongEvent } from '@/features/table/telemetry';
 
@@ -125,7 +125,11 @@ export default function MahjongTable({
 
   useEffect(() => {
     trackMahjongEvent('mahjong_game_started', { variant: defaultRuleset, source: 'initial_load' });
-  }, [defaultRuleset]);
+    // #region agent log
+    const payload = { sessionId: '3bd6ce', runId: 'pre-fix', hypothesisId: 'B', location: 'MahjongTable.tsx:mount', message: 'MahjongTable mounted', data: { defaultRuleset, dailySeed: dailySeed ?? null, coachIntensity, w: window.innerWidth }, timestamp: Date.now() };
+    fetch('/api/debug-log', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {});
+    // #endregion
+  }, [defaultRuleset, dailySeed, coachIntensity]);
 
   // --- Game driver --------------------------------------------------------
   // Everything that is not a human decision is advanced here on a timer, so the
@@ -450,7 +454,11 @@ export default function MahjongTable({
 
       {/* Result banner */}
       {state.phase === 'over' && state.result && (
-        <ResultBanner state={state} onNewGame={() => newGame()} />
+        <ResultBanner
+          state={state}
+          onNewGame={() => newGame()}
+          onNextHand={() => setState((current) => startNextHand(current))}
+        />
       )}
 
       {/* Claim prompt */}
@@ -649,67 +657,6 @@ function DiscardPool({ state, traditional }: { state: GameState; traditional: bo
           </div>
         </div>
       ))}
-    </div>
-  );
-}
-
-function ResultBanner({
-  state,
-  onNewGame
-}: {
-  state: GameState;
-  onNewGame: () => void;
-}) {
-  const t = useTranslations('mahjong');
-  const result = state.result!;
-
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-2 bg-slate-950/40 p-4 text-center">
-      {result.kind === 'draw' ? (
-        <p className="font-bold text-emerald-800">{t('drawnGame')}</p>
-      ) : result.winners ? (
-        <>
-          <p className="font-bold text-emerald-800">{t('doubleRon')}</p>
-          {result.winners.map((w) => (
-            <div key={w.seat} className="mt-1">
-              <p className="font-semibold text-emerald-800">
-                {w.seat === 0
-                  ? t('youWin', { score: w.score.total })
-                  : t('seatWins', {
-                      seat: SEAT_LABEL[w.seat as Seat],
-                      score: w.score.total
-                    })}
-              </p>
-              <p className="text-sm text-emerald-700">
-                {describeScore(w.score)}
-              </p>
-            </div>
-          ))}
-        </>
-      ) : (
-        <>
-          <p className="font-bold text-emerald-800">
-            {result.winner === 0
-              ? t('youWin', { score: result.score?.total ?? 0 })
-              : t('seatWins', {
-                  seat: SEAT_LABEL[result.winner as Seat],
-                  score: result.score?.total ?? 0
-                })}
-          </p>
-          {result.score && (
-            <p className="mt-1 text-sm text-emerald-700">
-              {describeScore(result.score)}
-            </p>
-          )}
-        </>
-      )}
-      <button
-        type="button"
-        onClick={onNewGame}
-        className="mt-3 rounded-full bg-portal-accent px-5 py-2 text-sm font-bold text-portal-on-accent shadow"
-      >
-        {t('newGame')}
-      </button>
     </div>
   );
 }

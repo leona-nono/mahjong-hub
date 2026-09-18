@@ -806,7 +806,8 @@
       "variants": "Rules and variants",
       "play": "Play better",
       "culture": "Culture",
-      "buy": "Buying guide"
+      "buy": "Buying guide",
+      "strategy": "Strategy"
     },
     "groups": {
       "tiles": "Tiles and suits",
@@ -869,38 +870,134 @@
       "cta": "Save my progress"
     },
     "items": {
-      "first-hand": { "name": "First Hand", "desc": "Finish your first coached hand." },
-      "first-win": { "name": "First Win", "desc": "Win a hand for the first time." },
-      "ten-hands": { "name": "Ten Hands", "desc": "Finish 10 hands." },
-      "fifty-hands": { "name": "Fifty Hands", "desc": "Finish 50 hands." },
-      "fifty-discards": { "name": "Fifty Discards", "desc": "Make 50 coached discards." },
-      "sharp-eye": { "name": "Sharp Eye", "desc": "Earn a best-grade discard." },
-      "clean-hand": { "name": "Clean Hand", "desc": "Finish a hand with 100% best-grade discards." },
-      "no-regrets": { "name": "No Regrets", "desc": "Finish a hand with no worse-shanten discards." },
-      "streak-ten": { "name": "Streak of Ten", "desc": "Land 10 best grades in a row in one hand." },
-      "streak-thirty": { "name": "Streak of Thirty", "desc": "Land 30 best grades in a row across hands." },
-      "efficient": { "name": "Efficient", "desc": "Keep strong ukeire on average across a hand." },
-      "comeback": { "name": "Comeback", "desc": "Recover after a worse-shanten discard and still win." },
-      "coach-graduate": { "name": "Coach Graduate", "desc": "Receive 50 coach feedbacks." },
-      "chicken": { "name": "Chicken Hand", "desc": "Win a minimal qualifying hand." },
-      "all-sequences": { "name": "All Sequences", "desc": "Win with an all-sequences hand." },
-      "all-triplets": { "name": "All Triplets", "desc": "Win with an all-triplets hand." },
-      "seven-pairs": { "name": "Seven Pairs", "desc": "Win with seven pairs." },
-      "pure-straight": { "name": "Pure Straight", "desc": "Win with a pure straight (1–9 in one suit)." },
-      "mixed-triple": { "name": "Mixed Triple Chow", "desc": "Win with the same chow in three suits." },
-      "half-flush": { "name": "Half Flush", "desc": "Win a half-flush (one suit plus honors)." },
-      "full-flush": { "name": "Full Flush", "desc": "Win a full flush (one suit only)." },
-      "little-dragons": { "name": "Little Dragons", "desc": "Win with Little Three Dragons." },
-      "big-dragons": { "name": "Big Dragons", "desc": "Win with Big Three Dragons." },
-      "thirteen-orphans": { "name": "Thirteen Orphans", "desc": "Win with Thirteen Orphans." },
-      "nine-gates": { "name": "Nine Gates", "desc": "Win with Nine Gates." },
-      "hk-casual": { "name": "Hong Kong Casual", "desc": "Finish a Hong Kong casual hand." },
-      "hk-standard": { "name": "Hong Kong Standard", "desc": "Finish a Hong Kong standard hand." },
-      "riichi-declare": { "name": "Riichi Declare", "desc": "Declare riichi once." },
-      "riichi-win": { "name": "Riichi Win", "desc": "Win after declaring riichi." },
-      "mcr-qualified": { "name": "MCR Qualified", "desc": "Win a Chinese Official hand that meets the fan minimum." },
-      "daily-seven": { "name": "Week of Check-ins", "desc": "Check in on 7 consecutive days." },
-      "daily-thirty": { "name": "Month of Check-ins", "desc": "Check in on 30 consecutive days." }
+      "first-hand": {
+        "name": "First Hand",
+        "desc": "Finish your first coached hand."
+      },
+      "first-win": {
+        "name": "First Win",
+        "desc": "Win a hand for the first time."
+      },
+      "ten-hands": {
+        "name": "Ten Hands",
+        "desc": "Finish 10 hands."
+      },
+      "fifty-hands": {
+        "name": "Fifty Hands",
+        "desc": "Finish 50 hands."
+      },
+      "fifty-discards": {
+        "name": "Fifty Discards",
+        "desc": "Make 50 coached discards."
+      },
+      "sharp-eye": {
+        "name": "Sharp Eye",
+        "desc": "Earn a best-grade discard."
+      },
+      "clean-hand": {
+        "name": "Clean Hand",
+        "desc": "Finish a hand with 100% best-grade discards."
+      },
+      "no-regrets": {
+        "name": "No Regrets",
+        "desc": "Finish a hand with no worse-shanten discards."
+      },
+      "streak-ten": {
+        "name": "Streak of Ten",
+        "desc": "Land 10 best grades in a row in one hand."
+      },
+      "streak-thirty": {
+        "name": "Streak of Thirty",
+        "desc": "Land 30 best grades in a row across hands."
+      },
+      "efficient": {
+        "name": "Efficient",
+        "desc": "Keep strong ukeire on average across a hand."
+      },
+      "comeback": {
+        "name": "Comeback",
+        "desc": "Recover after a worse-shanten discard and still win."
+      },
+      "coach-graduate": {
+        "name": "Coach Graduate",
+        "desc": "Receive 50 coach feedbacks."
+      },
+      "chicken": {
+        "name": "Chicken Hand",
+        "desc": "Win a minimal qualifying hand."
+      },
+      "all-sequences": {
+        "name": "All Sequences",
+        "desc": "Win with an all-sequences hand."
+      },
+      "all-triplets": {
+        "name": "All Triplets",
+        "desc": "Win with an all-triplets hand."
+      },
+      "seven-pairs": {
+        "name": "Seven Pairs",
+        "desc": "Win with seven pairs."
+      },
+      "pure-straight": {
+        "name": "Pure Straight",
+        "desc": "Win with a pure straight (1–9 in one suit)."
+      },
+      "mixed-triple": {
+        "name": "Mixed Triple Chow",
+        "desc": "Win with the same chow in three suits."
+      },
+      "half-flush": {
+        "name": "Half Flush",
+        "desc": "Win a half-flush (one suit plus honors)."
+      },
+      "full-flush": {
+        "name": "Full Flush",
+        "desc": "Win a full flush (one suit only)."
+      },
+      "little-dragons": {
+        "name": "Little Dragons",
+        "desc": "Win with Little Three Dragons."
+      },
+      "big-dragons": {
+        "name": "Big Dragons",
+        "desc": "Win with Big Three Dragons."
+      },
+      "thirteen-orphans": {
+        "name": "Thirteen Orphans",
+        "desc": "Win with Thirteen Orphans."
+      },
+      "nine-gates": {
+        "name": "Nine Gates",
+        "desc": "Win with Nine Gates."
+      },
+      "hk-casual": {
+        "name": "Hong Kong Casual",
+        "desc": "Finish a Hong Kong casual hand."
+      },
+      "hk-standard": {
+        "name": "Hong Kong Standard",
+        "desc": "Finish a Hong Kong standard hand."
+      },
+      "riichi-declare": {
+        "name": "Riichi Declare",
+        "desc": "Declare riichi once."
+      },
+      "riichi-win": {
+        "name": "Riichi Win",
+        "desc": "Win after declaring riichi."
+      },
+      "mcr-qualified": {
+        "name": "MCR Qualified",
+        "desc": "Win a Chinese Official hand that meets the fan minimum."
+      },
+      "daily-seven": {
+        "name": "Week of Check-ins",
+        "desc": "Check in on 7 consecutive days."
+      },
+      "daily-thirty": {
+        "name": "Month of Check-ins",
+        "desc": "Check in on 30 consecutive days."
+      }
     }
   },
   "coachFb": {
@@ -937,5 +1034,181 @@
       "jokerExchange": "Joker exchange available for {tile}.",
       "outs": "Outs: {detail}"
     }
+  },
+  "review": {
+    "title": "Hand review",
+    "close": "Close review",
+    "offerCta": "Explain this hand",
+    "staticEntry": "View hand explanation",
+    "partialNote": "Structure and scoring shown; win-condition checks are labeled where incomplete.",
+    "discloseReveal": "Tiles are face-up now, so I can talk about them — mid-hand I cannot see other players' tiles.",
+    "outcome": {
+      "iWon": "You won this hand",
+      "opponentWon": "Someone else won",
+      "draw": "Drawn game"
+    },
+    "layers": {
+      "A": "A · Why is this a winning shape?",
+      "B": "B · Why were you allowed to win?",
+      "C": "C · What scored?",
+      "D": "D · How were points calculated?",
+      "miss": "How close were you?"
+    },
+    "shape": {
+      "standard": "Standard hand: four sets + a pair",
+      "sevenPairs": "Seven pairs",
+      "thirteenOrphans": "Thirteen orphans"
+    },
+    "setKind": {
+      "run": "chow",
+      "triplet": "pung",
+      "pair": "pair"
+    },
+    "gate": {
+      "yaku": "Yaku check: {actual} / {required}",
+      "minFan": "Minimum fan: {actual} / {required}",
+      "unverified": "Coach note: yaku / fan gate labeling is still partial for this ruleset.",
+      "reason": {
+        "noYaku": "No yaku — dora alone does not make a legal win.",
+        "belowMinimum": "Below the minimum fan required to declare.",
+        "flowersExcluded": "Flowers add points but do not count toward the 8-fan gate."
+      }
+    },
+    "miss": {
+      "shanten": "You were {n} away from ready.",
+      "ready": "You were ready on: {tiles}",
+      "dealtIn": "That discard dealt into the winning hand."
+    },
+    "formula": {
+      "fan": "Fan total",
+      "cappedFan": "Fan after cap",
+      "base": "Base",
+      "selfDrawEach": "Each opponent pays",
+      "discardPay": "Discarder pays",
+      "han": "Han",
+      "fu": "Fu",
+      "points": "Points",
+      "qualifying": "Qualifying fan (no flowers)",
+      "winnerTotal": "Winner fan total",
+      "total": "Total"
+    },
+    "evidence": {
+      "fallback": "Pattern matched by the scorer.",
+      "allTiles.simple": "Every tile in the hand is a simple (2–8).",
+      "allTiles.terminal": "Every tile is a terminal.",
+      "allTiles.honour": "The hand is built from terminals and/or honours.",
+      "allTiles.green": "Every tile is a green tile.",
+      "allTiles.reversible": "Every tile is reversible.",
+      "allTiles.oneSuit": "The hand stays in one suit (with or without honours).",
+      "setComposition.triplet": "The sets are all triplets / kongs.",
+      "setComposition.run": "The sets are sequences.",
+      "specificSets.dragon": "Includes a dragon pung.",
+      "specificSets.wind": "Includes a valued wind pung.",
+      "specificSets.concealed": "Includes concealed triplets.",
+      "waitShape.twoSided": "Two-sided wait.",
+      "waitShape.closed": "Closed wait.",
+      "waitShape.edge": "Edge wait.",
+      "waitShape.single": "Single-tile wait.",
+      "winCondition.selfDraw": "Won by self-draw.",
+      "winCondition.haitei": "Won on the last wall tile / last discard.",
+      "winCondition.rinshan": "Won on a kong replacement tile.",
+      "winCondition.robKong": "Won by robbing a kong.",
+      "winCondition.lastTile": "Won on the last remaining copy of that tile.",
+      "declaration.riichi": "Riichi was declared.",
+      "declaration.doubleRiichi": "Double riichi was declared.",
+      "declaration.ippatsu": "Ippatsu — won before any call after riichi.",
+      "declaration.concealed": "The hand stayed concealed.",
+      "doraCount": "Dora indicators matched tiles in the hand.",
+      "specialShape.sevenPairs": "Seven distinct pairs.",
+      "specialShape.thirteenOrphans": "Thirteen orphans shape.",
+      "specialShape.nineGates": "Nine gates shape.",
+      "sequencePattern.ittsuu": "Pure straight across one suit.",
+      "sequencePattern.sanshoku": "Same sequence in three suits.",
+      "sequencePattern.iipeikou": "Identical sequences.",
+      "kongCount": "Kongs: {concealed} concealed, {melded} melded.",
+      "flowerCount": "Flower / season tiles: {n}.",
+      "gate.chickenHand": "Casual chicken hand: structurally complete with no other fan, awarded +1.",
+      "gate.generic": "Gate {actual} / {required}."
+    }
+  },
+  "tools": {
+    "hubTitle": "Mahjong Calculator",
+    "hubLead": "Free mahjong tools that read your tiles for you — check what a hand is waiting for, work out what it scores, and look up any tile by sight.",
+    "hubIntro": "Pick a tool below. Everything runs in your browser, nothing is uploaded, and no download is needed.",
+    "seeTool": "Open tool",
+    "inDevelopment": "In development",
+    "inDevelopmentNote": "Coming soon — this calculator is still being built.",
+    "backToHub": "All mahjong tools",
+    "relatedTools": "Related tools",
+    "relatedReading": "Learn the basics",
+    "readingNote": "New to mahjong? These guides explain the ideas behind the numbers.",
+    "readGuide": "Read the guide",
+    "waitsTitle": "Mahjong Hand Checker",
+    "waitsH1": "Mahjong Hand Checker",
+    "waitsLead": "Tap the tiles in your hand and find out what it is waiting for — how far it is from ready, and which tiles would complete it.",
+    "waitsMetaDesc": "Free mahjong hand checker. Enter your hand to see its shanten, every winning tile, and how many of each are still unseen. Runs in your browser, no download.",
+    "waitsPick": "Tap your tiles",
+    "waitsPickHint": "Tap a tile to add it. Tap a tile in your hand to remove it.",
+    "waitsHand": "Your hand",
+    "waitsCount": "{n} tiles selected",
+    "waitsClear": "Clear all",
+    "waitsUndo": "Undo last",
+    "waitsIncomplete": "Add {n} more tiles to check this hand.",
+    "waitsIncompleteHint": "A hand can be checked at 13 tiles, or 10, 7 and 4 when part of it is exposed.",
+    "waitsWinning": "This hand already wins!",
+    "waitsWinningHint": "The tiles you entered already form a complete hand.",
+    "waitsTenpai": "Ready! Waiting for:",
+    "waitsAway": "{n} tiles away from ready",
+    "waitsAwayHint": "You need to swap {n} tiles to reach a ready hand.",
+    "waitsRemaining": "{n} left",
+    "waitsRemainingNote": "Counts are based on your hand only — tiles already discarded are not included.",
+    "waitsImprove": "Tiles that improve this hand",
+    "waitsImproveNote": "Each of these brings you one step closer to ready.",
+    "waitsWaitLabel": "Winning tiles",
+    "waitsShantenLabel": "Shanten",
+    "waitsShantenWhat": "Shanten counts how many tile swaps you still need before the hand is ready to win. 0 means the hand is ready; -1 means it is already complete.",
+    "waitsHowTitle": "How to use the hand checker",
+    "waitsHowP1": "Tap the tiles that are in your hand. The checker updates as you go — there is no submit button, and the result appears the moment the hand is complete enough to read.",
+    "waitsHowP2": "You get three things back. Your shanten: how many tiles you still need to swap. If the hand is ready, the exact tiles that would complete it. And for hands that are not ready yet, the tiles that would bring you one step closer.",
+    "waitsHowP3": "The \"how many are left\" figure counts only the tiles visible in your own hand. It does not subtract what other players have discarded or melded, because the checker cannot see the table. Treat it as an upper bound rather than an exact count of what remains in the wall.",
+    "waitsFaqTitle": "Frequently asked questions",
+    "waitsFaqQ1": "What does shanten mean?",
+    "waitsFaqA1": "Shanten is the number of tile swaps you still need before the hand is ready to win. A hand with a shanten of 2 needs two useful tiles before it can win; a shanten of 0 means it is ready and any winning tile completes it.",
+    "waitsFaqQ2": "Why does my hand not show a result?",
+    "waitsFaqA2": "A hand can only be read at certain sizes. Enter 13 tiles for a concealed hand, or 10, 7 or 4 when part of the hand is already exposed. Any other number of tiles cannot form a legal hand, so the checker waits.",
+    "waitsFaqQ3": "Does this use the tiles that have been discarded?",
+    "waitsFaqA3": "No. The checker only sees the tiles you enter, so the remaining counts are based on your hand alone. On a real table some of those tiles will already be gone.",
+    "waitsFaqQ4": "Which mahjong rules does this follow?",
+    "waitsFaqA4": "This version follows Hong Kong mahjong. The shapes it looks for — runs, triplets, pairs, seven pairs and thirteen orphans — are shared with most mahjong variants, so the result is a useful guide for almost any table.",
+    "waitsFaqQ5": "Is my hand sent anywhere?",
+    "waitsFaqA5": "No. The checker runs entirely in your browser. Nothing you enter leaves your device and nothing is stored.",
+    "tileIdTitle": "Mahjong Tile Identifier",
+    "tileIdH1": "Mahjong Tile Identifier",
+    "tileIdLead": "Not sure what a tile is called? Tap it to see its name, its suit, and the other names players use around the world.",
+    "tileIdMetaDesc": "Identify any mahjong tile. Tap a tile to see its name, suit, rank and the alternative names — Bams, Craks, Dots, Soap and more. Free, no download.",
+    "scoreTitle": "Mahjong Score Calculator",
+    "scoreH1": "Mahjong Score Calculator",
+    "scoreLead": "Enter a winning hand and see what it scores — every pattern it matches, and the total fan.",
+    "scoreMetaDesc": "Free mahjong score calculator. Enter a winning hand to see every pattern it matches and the total fan. Hong Kong mahjong, in your browser — no download.",
+    "hubAboutTitle": "About these mahjong tools",
+    "hubAboutP2": "Every tool here reads your tiles directly rather than asking you to count by hand. Most scoring calculators online are converters: they assume you already worked out the fan and the fu yourself, and they only turn that number into points. These tools start from the hand, match it against the patterns, and show you the reasoning.",
+    "hubAboutP3": "This set follows Hong Kong mahjong, the variant most often played in Cantonese-speaking regions and the one this site is built around. If you have been searching for a mahjong calculator and finding only Japanese riichi tools, this is the gap they leave.",
+    "readingTiles": "Mahjong tiles and their meanings",
+    "readingScoring": "The mahjong scoring system explained",
+    "readingGlossary": "Mahjong glossary",
+    "hubChallenge": "Think you know the rules? Take the mahjong quiz →",
+    "waitsConceptsTitle": "Shanten, tenpai and useful tiles",
+    "waitsConceptsP1": "A mahjong hand is not a pile of tiles, it is a set of blocks: four groups of three plus a pair. Shanten measures how far the hand is from that shape, counting the swaps still needed. A hand at shanten 4 is a long way out; a hand at shanten 1 needs a single useful tile. The number is not a prediction of who wins, it is a reading of how close the shape is.",
+    "waitsConceptsP2": "When shanten reaches 0 the hand is tenpai — ready. That is the point where the question changes from \"what do I keep\" to \"what am I waiting for\". A wait can be wide or narrow: a hand waiting on three kinds of tile can be completed by twelve tiles, while a single-tile wait may be down to two or three live copies. Two tenpai hands can look equally ready and be worth very different amounts, which is why a checker shows the waiting tiles rather than only the shanten.",
+    "waitsOverfull": "That is 14 tiles — take one back out and the checker will read the hand.",
+    "hubFaqTitle": "Frequently asked questions",
+    "hubFaqQ1": "Are these mahjong tools free?",
+    "hubFaqA1": "Yes. Every calculator on this page is free to use, with no account and no download. The tools run entirely in your browser, so nothing you type is uploaded and nothing is stored.",
+    "hubFaqQ2": "Which mahjong rules do the calculators follow?",
+    "hubFaqA2": "Hong Kong mahjong. This is the variant played across Cantonese-speaking regions, and it is the ruleset this site is built around. Japanese riichi uses different tile patterns and different scoring, so a hand that scores here may score differently in a riichi calculator.",
+    "hubFaqQ3": "Do I need to know how to count fan or fu myself?",
+    "hubFaqA3": "No, and that is the point. Most mahjong calculators online are converters: they ask you to count the fan and fu yourself, then convert that total into points. These tools read the hand directly, work out which patterns it matches, and show the reasoning.",
+    "hubFaqQ4": "Can I use these tools while playing on another site?",
+    "hubFaqA4": "Yes. Open a tool in a second tab, enter the tiles you are holding, and read the answer. The hand checker runs the same engine as the games on this site, so the reading you get in a game and the reading you get in the tool will not disagree."
   }
 }

@@ -34,7 +34,7 @@ import {
 } from '../shanten';
 import type { Ruleset } from '../engine';
 import { calculateRiichiPayment, countDora, roundFu, uraDoraIndicators, visibleDoraIndicators } from '../riichi';
-import type { ScoreInput, ScorePattern, ScoreResult } from './types';
+import type { ScoreGate, ScoreInput, ScorePattern, ScoreResult } from './types';
 import { LIMIT, value, type ValueId } from './values';
 import {
   hasChanta,
@@ -60,12 +60,24 @@ import {
   withMcrChickenHand
 } from './fans-mcr';
 import { isHongKongCasualChickenHand } from './fans-hongkong';
+import { HONG_KONG_FAN_CAP } from '../hongkong';
+import type { HongKongMode } from '../engine';
 
 export function scoreHand(input: ScoreInput): ScoreResult {
   const { state, seat, selfDrawn, winningTile } = input;
   const ruleset = state.ruleset;
   const player = state.players[seat];
   const patterns: ScorePattern[] = [];
+  let handShape: ScoreResult['handShape'];
+  let decomposition: HandSet[] | undefined;
+
+  const wrap = (result: ScoreResult): ScoreResult =>
+    enrichReviewFields(result, {
+      handShape,
+      decomposition,
+      hongKongMode: state.hongKongMode,
+      ruleset
+    });
 
   // A self-drawn win already holds the winning tile; a discard win (ron) does
   // not — the claimed tile leaves the discard pile and completes the hand.
@@ -106,7 +118,8 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   if (isConcealed && shantenThirteenOrphans(counts) === -1) {
     if (ruleset === 'riichi') pushYakuman('thirteenOrphans', 'Thirteen Orphans');
     else push('thirteenOrphans', 'Thirteen Orphans');
-    return finalise(patterns, ruleset, true);
+    handShape = 'thirteenOrphans';
+    return wrap(finalise(patterns, ruleset, true));
   }
 
   const decompositions = ruleset === 'riichi' || ruleset === 'chinese-official'
@@ -124,7 +137,11 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     isConcealed && sets === null && shantenSevenPairs(counts, ruleset) === -1;
 
   if (isSevenPairs) {
+    handShape = 'sevenPairs';
     push('sevenPairs', 'Seven Pairs');
+  } else if (sets) {
+    handShape = 'standard';
+    decomposition = sets;
   }
 
   // --- Suit composition ----------------------------------------------------
@@ -140,7 +157,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     if (ruleset === 'riichi') pushYakuman('allHonours', 'All Honours');
     else {
       push('allHonours', 'All Honours');
-      return finalise(patterns, ruleset, true);
+      return wrap(finalise(patterns, ruleset, true));
     }
   }
   if (suitsUsed.size === 1 && honourCount === 0) {
@@ -161,7 +178,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
       }
     } else if (allTiles.every((tile) => tileSuit(tile) !== 'z')) {
       push('allTerminals', 'All Terminals');
-      if (ruleset === 'hongkong') return finalise(patterns, ruleset, true);
+      if (ruleset === 'hongkong') return wrap(finalise(patterns, ruleset, true));
     } else {
       push('allTerminalsHonours', 'All Terminals and Honours');
     }
@@ -207,7 +224,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     if (ruleset === 'riichi') pushYakuman('bigThreeDragons', 'Big Three Dragons');
     else {
       push('bigThreeDragons', 'Big Three Dragons');
-      return finalise(patterns, ruleset, true);
+      return wrap(finalise(patterns, ruleset, true));
     }
   }
 
@@ -220,7 +237,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     else if (ruleset === 'chinese-official') push('bigFourWinds', 'Big Four Winds');
     else {
       push('bigFourWinds', 'Big Four Winds');
-      return finalise(patterns, ruleset, true);
+      return wrap(finalise(patterns, ruleset, true));
     }
   }
   if (windCounts.filter((count) => count >= 3).length === 3 && windCounts.some((count) => count === 2)) {
@@ -228,7 +245,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     else if (ruleset === 'chinese-official') push('smallFourWinds', 'Little Four Winds');
     else {
       push('smallFourWinds', 'Little Four Winds');
-      return finalise(patterns, ruleset, true);
+      return wrap(finalise(patterns, ruleset, true));
     }
   }
   // 大三风 has no Riichi or Hong Kong equivalent; MCR's Account-Once table
@@ -282,7 +299,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
         if (ruleset === 'riichi') pushYakuman('fourConcealedTriplets', 'Four Concealed Triplets');
         else {
           push('fourConcealedTriplets', 'Four Concealed Triplets');
-          return finalise(patterns, ruleset, true);
+          return wrap(finalise(patterns, ruleset, true));
         }
       }
       if (ruleset !== 'chinese-official') push('allTriplets', 'All Triplets');
@@ -457,9 +474,74 @@ export function scoreHand(input: ScoreInput): ScoreResult {
       selfDrawn,
       yakumanCount
     });
-    return finalise(patterns, ruleset, yakumanCount > 0, fu, payment.winnerGain, payment.label);
+    return wrap(finalise(patterns, ruleset, yakumanCount > 0, fu, payment.winnerGain, payment.label));
   }
-  return finalise(patterns, ruleset, false);
+  return wrap(finalise(patterns, ruleset, false));
+}
+
+function enrichReviewFields(
+  result: ScoreResult,
+  opts: {
+    handShape?: ScoreResult['handShape'];
+    decomposition?: HandSet[];
+    hongKongMode: HongKongMode;
+    ruleset: Ruleset;
+  }
+): ScoreResult {
+  const gate = buildScoreGate(result, opts.ruleset, opts.hongKongMode);
+  let capped: ScoreResult['capped'];
+  if (opts.ruleset === 'hongkong') {
+    const raw = result.patterns.reduce((sum, p) => sum + p.value, 0);
+    if (raw > HONG_KONG_FAN_CAP) {
+      capped = { from: raw, to: HONG_KONG_FAN_CAP, capKey: 'hkFan' };
+    }
+  } else if (opts.ruleset === 'chinese-official') {
+    capped = undefined;
+  }
+
+  return {
+    ...result,
+    handShape: opts.handShape,
+    decomposition: opts.decomposition,
+    gate,
+    capped
+  };
+}
+
+function buildScoreGate(
+  result: ScoreResult,
+  ruleset: Ruleset,
+  hongKongMode: HongKongMode
+): ScoreGate {
+  if (ruleset === 'riichi') {
+    const passed = Boolean(result.legalYaku);
+    return {
+      kind: 'yaku',
+      required: 1,
+      actual: passed ? 1 : 0,
+      passed,
+      reasonKey: passed ? undefined : 'noYaku'
+    };
+  }
+  if (ruleset === 'chinese-official') {
+    const actual = result.qualifyingTotal ?? 0;
+    const passed = actual >= 8;
+    const reasonKey = !passed
+      ? result.total >= 8
+        ? 'flowersExcluded'
+        : 'belowMinimum'
+      : undefined;
+    return { kind: 'minFan', required: 8, actual, passed, reasonKey };
+  }
+  const required = hongKongMode === 'casual' ? 1 : 3;
+  const passed = result.total >= required;
+  return {
+    kind: 'minFan',
+    required,
+    actual: result.total,
+    passed,
+    reasonKey: passed ? undefined : 'belowMinimum'
+  };
 }
 
 function finalise(

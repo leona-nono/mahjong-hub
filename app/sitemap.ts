@@ -78,6 +78,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: alternatesFor('/learn/glossary') }
     });
 
+    // Mahjong tools. Only paths that actually exist belong here — listing a
+    // tool before its route ships would point crawlers at a 404. Add to this
+    // list in the same change that creates the route (docs/MAHJONG_TOOLS_SPEC.md
+    // §3.2 / §5).
+    for (const toolPath of ['/tools', '/tools/waits'] as const) {
+      entries.push({
+        url: `${BASE}/${locale}${toolPath}`,
+        lastModified,
+        changeFrequency: 'monthly',
+        priority: toolPath === '/tools' ? 0.75 : 0.7,
+        alternates: { languages: alternatesFor(toolPath) }
+      });
+    }
+
     for (const legalPath of ['/about', '/privacy', '/cookies'] as const) {
       entries.push({
         url: `${BASE}/${locale}${legalPath}`,

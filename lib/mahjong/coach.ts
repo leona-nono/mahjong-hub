@@ -93,7 +93,9 @@ export type {
   RankedOption,
   CoachRuleset,
   DiscardExplainCode,
-  DiscardExplanation
+  DiscardExplanation,
+  Evidence,
+  CoachReview
 } from './coach/index';
 export {
   COACH_CAPABILITIES,
@@ -101,5 +103,7 @@ export {
   explainDiscard,
   makeGameStateAdapter,
   makeAmericanAdapter,
-  makeRegionalAdapter
+  makeRegionalAdapter,
+  evidenceForPattern,
+  buildCoachReview
 } from './coach/index';

@@ -2,6 +2,9 @@ export type { CoachGrade, CoachCapability, CoachRisk, CoachVerdict, CoachAdapter
 export { COACH_CAPABILITIES, resolveCoachCapability } from './contract';
 export type { DiscardExplainCode, DiscardExplanation } from './explain';
 export { explainDiscard } from './explain';
+export type { Evidence, CoachReview } from './review';
+export { evidenceForPattern } from './evidence';
+export { buildCoachReview } from './build-review';
 export { makeGameStateAdapter } from './adapters/hongkong';
 export { makeAmericanAdapter } from './adapters/american';
 export { makeRegionalAdapter } from './adapters/regional';

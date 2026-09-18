@@ -806,7 +806,8 @@
       "variants": "规则与变体",
       "play": "打得更好",
       "culture": "文化",
-      "buy": "购买指南"
+      "buy": "购买指南",
+      "strategy": "对局策略"
     },
     "groups": {
       "tiles": "牌与花色",
@@ -869,38 +870,134 @@
       "cta": "保存我的进度"
     },
     "items": {
-      "first-hand": { "name": "初上手", "desc": "打完第一局有教练的牌。" },
-      "first-win": { "name": "首胜", "desc": "第一次和牌。" },
-      "ten-hands": { "name": "十局", "desc": "累计打完 10 局。" },
-      "fifty-hands": { "name": "五十局", "desc": "累计打完 50 局。" },
-      "fifty-discards": { "name": "五十手", "desc": "累计完成 50 次教练出牌。" },
-      "sharp-eye": { "name": "慧眼", "desc": "打出一次最佳牌。" },
-      "clean-hand": { "name": "干净一手", "desc": "整局出牌全部最佳。" },
-      "no-regrets": { "name": "无悔", "desc": "整局没有打出向听变差的牌。" },
-      "streak-ten": { "name": "十连佳", "desc": "同一局连续 10 次最佳。" },
-      "streak-thirty": { "name": "三十连佳", "desc": "跨局累计连续 30 次最佳。" },
-      "efficient": { "name": "高效", "desc": "整局平均进张保持优秀。" },
-      "comeback": { "name": "翻盘", "desc": "打出向听变差后仍和牌。" },
-      "coach-graduate": { "name": "教练结业", "desc": "累计收到 50 次教练反馈。" },
-      "chicken": { "name": "鸡胡", "desc": "完成一次最低门槛和牌。" },
-      "all-sequences": { "name": "平胡", "desc": "做出一次全顺子和牌。" },
-      "all-triplets": { "name": "碰碰胡", "desc": "做出一次全刻子和牌。" },
-      "seven-pairs": { "name": "七对", "desc": "做出一次七对子。" },
-      "pure-straight": { "name": "一气通贯", "desc": "同花色做出 123·456·789。" },
-      "mixed-triple": { "name": "三色同顺", "desc": "三门同数顺子和牌。" },
-      "half-flush": { "name": "混一色", "desc": "一门花色加字牌和牌。" },
-      "full-flush": { "name": "清一色", "desc": "只用一门花色和牌。" },
-      "little-dragons": { "name": "小三元", "desc": "做出一次小三元。" },
-      "big-dragons": { "name": "大三元", "desc": "做出一次大三元。" },
-      "thirteen-orphans": { "name": "十三幺", "desc": "做出一次十三幺。" },
-      "nine-gates": { "name": "九莲宝灯", "desc": "做出一次九莲宝灯。" },
-      "hk-casual": { "name": "港麻休闲", "desc": "打完一局港式休闲。" },
-      "hk-standard": { "name": "港麻标准", "desc": "打完一局港式标准。" },
-      "riichi-declare": { "name": "立直宣言", "desc": "成功立直一次。" },
-      "riichi-win": { "name": "立直和了", "desc": "立直后和牌。" },
-      "mcr-qualified": { "name": "国标达标", "desc": "国标和牌达到番数门槛。" },
-      "daily-seven": { "name": "七日签到", "desc": "连续签到 7 天。" },
-      "daily-thirty": { "name": "三十日签到", "desc": "连续签到 30 天。" }
+      "first-hand": {
+        "name": "初上手",
+        "desc": "打完第一局有教练的牌。"
+      },
+      "first-win": {
+        "name": "首胜",
+        "desc": "第一次和牌。"
+      },
+      "ten-hands": {
+        "name": "十局",
+        "desc": "累计打完 10 局。"
+      },
+      "fifty-hands": {
+        "name": "五十局",
+        "desc": "累计打完 50 局。"
+      },
+      "fifty-discards": {
+        "name": "五十手",
+        "desc": "累计完成 50 次教练出牌。"
+      },
+      "sharp-eye": {
+        "name": "慧眼",
+        "desc": "打出一次最佳牌。"
+      },
+      "clean-hand": {
+        "name": "干净一手",
+        "desc": "整局出牌全部最佳。"
+      },
+      "no-regrets": {
+        "name": "无悔",
+        "desc": "整局没有打出向听变差的牌。"
+      },
+      "streak-ten": {
+        "name": "十连佳",
+        "desc": "同一局连续 10 次最佳。"
+      },
+      "streak-thirty": {
+        "name": "三十连佳",
+        "desc": "跨局累计连续 30 次最佳。"
+      },
+      "efficient": {
+        "name": "高效",
+        "desc": "整局平均进张保持优秀。"
+      },
+      "comeback": {
+        "name": "翻盘",
+        "desc": "打出向听变差后仍和牌。"
+      },
+      "coach-graduate": {
+        "name": "教练结业",
+        "desc": "累计收到 50 次教练反馈。"
+      },
+      "chicken": {
+        "name": "鸡胡",
+        "desc": "完成一次最低门槛和牌。"
+      },
+      "all-sequences": {
+        "name": "平胡",
+        "desc": "做出一次全顺子和牌。"
+      },
+      "all-triplets": {
+        "name": "碰碰胡",
+        "desc": "做出一次全刻子和牌。"
+      },
+      "seven-pairs": {
+        "name": "七对",
+        "desc": "做出一次七对子。"
+      },
+      "pure-straight": {
+        "name": "一气通贯",
+        "desc": "同花色做出 123·456·789。"
+      },
+      "mixed-triple": {
+        "name": "三色同顺",
+        "desc": "三门同数顺子和牌。"
+      },
+      "half-flush": {
+        "name": "混一色",
+        "desc": "一门花色加字牌和牌。"
+      },
+      "full-flush": {
+        "name": "清一色",
+        "desc": "只用一门花色和牌。"
+      },
+      "little-dragons": {
+        "name": "小三元",
+        "desc": "做出一次小三元。"
+      },
+      "big-dragons": {
+        "name": "大三元",
+        "desc": "做出一次大三元。"
+      },
+      "thirteen-orphans": {
+        "name": "十三幺",
+        "desc": "做出一次十三幺。"
+      },
+      "nine-gates": {
+        "name": "九莲宝灯",
+        "desc": "做出一次九莲宝灯。"
+      },
+      "hk-casual": {
+        "name": "港麻休闲",
+        "desc": "打完一局港式休闲。"
+      },
+      "hk-standard": {
+        "name": "港麻标准",
+        "desc": "打完一局港式标准。"
+      },
+      "riichi-declare": {
+        "name": "立直宣言",
+        "desc": "成功立直一次。"
+      },
+      "riichi-win": {
+        "name": "立直和了",
+        "desc": "立直后和牌。"
+      },
+      "mcr-qualified": {
+        "name": "国标达标",
+        "desc": "国标和牌达到番数门槛。"
+      },
+      "daily-seven": {
+        "name": "七日签到",
+        "desc": "连续签到 7 天。"
+      },
+      "daily-thirty": {
+        "name": "三十日签到",
+        "desc": "连续签到 30 天。"
+      }
     }
   },
   "coachFb": {
@@ -938,6 +1035,102 @@
       "outs": "进张：{detail}"
     }
   },
+  "review": {
+    "title": "局末复盘",
+    "close": "关闭复盘",
+    "offerCta": "讲讲这手牌",
+    "staticEntry": "查看牌型说明",
+    "partialNote": "结构与番种可讲；部分门槛仍标为未完全校验。",
+    "discloseReveal": "牌已经亮开了，我才能讲这些 —— 局中我看不到对家的牌。",
+    "outcome": {
+      "iWon": "这手你胡了",
+      "opponentWon": "别人胡了",
+      "draw": "流局"
+    },
+    "layers": {
+      "A": "A · 为什么是和牌形？",
+      "B": "B · 为什么允许和？",
+      "C": "C · 值多少番？",
+      "D": "D · 点数怎么来的？",
+      "miss": "你差在哪里？"
+    },
+    "shape": {
+      "standard": "标准型：四组面子 + 雀头",
+      "sevenPairs": "七对子",
+      "thirteenOrphans": "十三幺"
+    },
+    "setKind": {
+      "run": "顺子",
+      "triplet": "刻子",
+      "pair": "对子"
+    },
+    "gate": {
+      "yaku": "役种检查：{actual} / {required}",
+      "minFan": "起胡番数：{actual} / {required}",
+      "unverified": "教练提示：此规则的役种 / 番数门槛标注仍为 partial。",
+      "reason": {
+        "noYaku": "没有役 —— 只有宝牌不能和。",
+        "belowMinimum": "未达到起胡最低番数。",
+        "flowersExcluded": "花牌给分，但不计入 8 番门槛。"
+      }
+    },
+    "miss": {
+      "shanten": "你还差 {n} 向听。",
+      "ready": "你听：{tiles}",
+      "dealtIn": "这张弃牌点炮了。"
+    },
+    "formula": {
+      "fan": "番数合计",
+      "cappedFan": "封顶后番数",
+      "base": "底分",
+      "selfDrawEach": "每家支付",
+      "discardPay": "放铳者支付",
+      "han": "飜",
+      "fu": "符",
+      "points": "点数",
+      "qualifying": "有效番（不含花）",
+      "winnerTotal": "赢家番数",
+      "total": "合计"
+    },
+    "evidence": {
+      "fallback": "计分器判定该番种成立。",
+      "allTiles.simple": "手牌全是 2–8 的序数牌。",
+      "allTiles.terminal": "手牌全是幺九牌。",
+      "allTiles.honour": "手牌由字牌 / 幺九构成。",
+      "allTiles.green": "手牌全是绿一色牌。",
+      "allTiles.reversible": "手牌全是推不倒牌。",
+      "allTiles.oneSuit": "同一花色（可含字牌）。",
+      "setComposition.triplet": "面子全是刻子 / 杠。",
+      "setComposition.run": "面子全是顺子。",
+      "specificSets.dragon": "包含三元刻。",
+      "specificSets.wind": "包含役牌风刻。",
+      "specificSets.concealed": "包含暗刻。",
+      "waitShape.twoSided": "两面听。",
+      "waitShape.closed": "嵌张听。",
+      "waitShape.edge": "边张听。",
+      "waitShape.single": "单骑听。",
+      "winCondition.selfDraw": "自摸和。",
+      "winCondition.haitei": "海底 / 河底和。",
+      "winCondition.rinshan": "岭上开花。",
+      "winCondition.robKong": "抢杠和。",
+      "winCondition.lastTile": "和绝张。",
+      "declaration.riichi": "已宣告立直。",
+      "declaration.doubleRiichi": "已宣告双立直。",
+      "declaration.ippatsu": "一发 —— 立直后无人鸣牌即和。",
+      "declaration.concealed": "门前清。",
+      "doraCount": "宝牌指示与手牌命中。",
+      "specialShape.sevenPairs": "七个不同的对子。",
+      "specialShape.thirteenOrphans": "十三幺。",
+      "specialShape.nineGates": "九莲宝灯。",
+      "sequencePattern.ittsuu": "同花色一气通贯。",
+      "sequencePattern.sanshoku": "三色同顺。",
+      "sequencePattern.iipeikou": "一杯口 / 二杯口。",
+      "kongCount": "杠：暗 {concealed}、明 {melded}。",
+      "flowerCount": "花牌 / 季牌：{n}。",
+      "gate.chickenHand": "休闲鸡胡：结构完整但无其他番，自动 +1。",
+      "gate.generic": "门槛 {actual} / {required}。"
+    }
+  },
   "_meta": {
     "overrides": {
       "seo.homeDescription": {
@@ -961,5 +1154,85 @@
         "note": "Marked from Content Studio"
       }
     }
+  },
+  "tools": {
+    "hubTitle": "麻将计算器",
+    "hubLead": "免费麻将工具，直接读你的牌——查听牌、算番数、认牌面。",
+    "hubIntro": "选一个工具开始。全部在浏览器里运行，不上传任何数据，无需下载。",
+    "seeTool": "打开工具",
+    "inDevelopment": "开发中",
+    "inDevelopmentNote": "即将上线——这个计算器仍在开发中。",
+    "backToHub": "全部麻将工具",
+    "relatedTools": "相关工具",
+    "relatedReading": "基础教程",
+    "readingNote": "刚接触麻将？这些教程讲解数字背后的规则。",
+    "readGuide": "阅读教程",
+    "waitsTitle": "麻将听牌检查器",
+    "waitsH1": "麻将听牌检查器",
+    "waitsLead": "点出手上的牌，立刻看到这手牌在等什么——离听牌还差几张，以及哪些牌能让你胡。",
+    "waitsMetaDesc": "免费麻将听牌检查器。输入手牌，立刻看到向听数、所有听牌张，以及每张还剩几张。浏览器内运行，无需下载。",
+    "waitsPick": "点选你的牌",
+    "waitsPickHint": "点牌面加入手牌；点手牌里的牌可以移除。",
+    "waitsHand": "你的手牌",
+    "waitsCount": "已选 {n} 张",
+    "waitsClear": "清空",
+    "waitsUndo": "撤销上一张",
+    "waitsIncomplete": "再点 {n} 张牌就能检查这手牌。",
+    "waitsIncompleteHint": "手牌张数需为 13 张；若有副露，则为 10、7 或 4 张。",
+    "waitsWinning": "这手牌已经胡了！",
+    "waitsWinningHint": "你输入的所有牌已组成一副完整手牌。",
+    "waitsTenpai": "听牌了！在等：",
+    "waitsAway": "还差 {n} 张听牌",
+    "waitsAwayHint": "你需要再换 {n} 张牌才能听牌。",
+    "waitsRemaining": "还剩 {n} 张",
+    "waitsRemainingNote": "张数只按你的手牌计算，不含已经打出的牌。",
+    "waitsImprove": "能改善这手牌的牌",
+    "waitsImproveNote": "这几张牌都能让你离听牌更近一步。",
+    "waitsWaitLabel": "听牌张",
+    "waitsShantenLabel": "向听数",
+    "waitsShantenWhat": "向听数＝还要换几张牌才能听牌。0 表示已经听牌，-1 表示已经胡牌。",
+    "waitsHowTitle": "怎么用这个检查器",
+    "waitsHowP1": "点出手牌里的牌，点一张加一张，检查结果会跟着变——没有提交按钮，手牌张数够了结果就出来。",
+    "waitsHowP2": "你会看到三样东西：向听数（还要换几张牌）、听牌张（如果已经听牌，具体在等哪些牌）、以及改善张（还没听牌时，哪几张牌能让你更进一步）。",
+    "waitsHowP3": "「还剩几张」只统计你手牌里可见的牌，不会扣掉其他人已经打出或碰杠的牌，因为检查器看不到牌桌。请把它当作上限，而不是牌山里的准确剩余数。",
+    "waitsFaqTitle": "常见问题",
+    "waitsFaqQ1": "向听数是什么意思？",
+    "waitsFaqA1": "向听数＝还要换几张牌才能听牌。向听数为 2，表示还需要两张有用的牌才能听牌；向听数为 0，表示已经听牌，来任何一张听牌张都能胡。",
+    "waitsFaqQ2": "为什么我的手牌没有结果？",
+    "waitsFaqA2": "手牌只有特定张数才能解读。门清手牌输入 13 张；已有副露时输入 10、7 或 4 张。其他张数无法构成合法手牌，检查器会等你补齐。",
+    "waitsFaqQ3": "计算时会算上已经打出的牌吗？",
+    "waitsFaqA3": "不会。检查器只看你输入的牌，所以剩余张数是按你的手牌算的。在真实牌桌上，其中一些牌可能已经被打掉了。",
+    "waitsFaqQ4": "这里用的是哪种麻将规则？",
+    "waitsFaqA4": "当前版本按港式麻将计算。它判断的牌型——顺子、刻子、对子、七对子和十三幺——在大多数麻将玩法里都通用，所以结果对任何牌桌都有参考价值。",
+    "waitsFaqQ5": "我的手牌会被上传吗？",
+    "waitsFaqA5": "不会。检查器完全在浏览器里运行，你输入的任何内容都不会离开你的设备，也不会被保存。",
+    "tileIdTitle": "麻将认牌器",
+    "tileIdH1": "麻将认牌器",
+    "tileIdLead": "不确定这张牌叫什么？点一下，看它的名称、所属花色，以及世界各地玩家的不同叫法。",
+    "tileIdMetaDesc": "识别任意一张麻将牌。点选牌面，查看名称、花色、点数，以及 Bams、Craks、Dots、Soap 等别名。免费、无需下载。",
+    "scoreTitle": "麻将算番器",
+    "scoreH1": "麻将算番器",
+    "scoreLead": "输入一副胡牌手牌，看它能算多少番——命中的全部番种，以及总番数。",
+    "scoreMetaDesc": "免费麻将算番器。输入胡牌手牌，查看命中的全部番种与总番数。港式麻将，浏览器内运行，无需下载。",
+    "hubAboutTitle": "关于这些麻将工具",
+    "hubAboutP2": "这里的每个工具都直接读你的牌面，不需要你自己数。网上大多数算番器本质是换算器：它们默认你已经数好了番数和符数，只是帮你换成点数。这些工具从手牌出发，自己匹配牌型，并把判断依据告诉你。",
+    "hubAboutP3": "本系列按港式麻将编写，也就是粤语地区最常打的玩法，也是本站主打的玩法。如果你搜「麻将计算器」却只搜到一堆日式立直工具，这里补的就是那个缺口。",
+    "readingTiles": "麻将牌面与含义",
+    "readingScoring": "麻将算番规则讲解",
+    "readingGlossary": "麻将术语表",
+    "hubChallenge": "想知道自己懂多少规则？来答几道麻将题 →",
+    "waitsConceptsTitle": "向听、听牌与有效牌",
+    "waitsConceptsP1": "一手麻将牌不是一堆牌，而是一组组结构：四个三张的搭子加一个对子。向听数衡量的就是离这个形状还差多远，也就是还需要换几张牌。向听 4 的手牌离成牌还早；向听 1 的手牌只差一张有用的牌。这个数字不预测谁能胡，它读的是形状离完成还有多远。",
+    "waitsConceptsP2": "向听数到 0 就是听牌。到这一步，问题就从「我该留什么」变成「我在等什么」。听口有宽有窄：听三种牌的手牌可以有十二张牌能完成它，而单钓一张的听口可能只剩两三张可用的牌。两手同样听牌的牌，价值可能差很多，所以工具要显示听的是哪些牌，而不是只给一个向听数。",
+    "waitsOverfull": "现在是 14 张——拿掉一张，工具才能读这手牌。",
+    "hubFaqTitle": "常见问题",
+    "hubFaqQ1": "这些麻将工具收费吗？",
+    "hubFaqA1": "免费。本页所有计算器都免费使用，不用注册、不用下载。工具完全在你的浏览器里运行，输入的内容不会上传，也不会被保存。",
+    "hubFaqQ2": "这些计算器按哪种麻将规则？",
+    "hubFaqA2": "港式麻将。这是粤语地区通行的玩法，也是本站主打的规则。日式立直用的牌型和算番方式都不同，所以同一手牌在这里和立直算番器里算出来的结果可能不一样。",
+    "hubFaqQ3": "我需要自己会数番数或符数吗？",
+    "hubFaqA3": "不需要，这正是重点。网上大多数麻将计算器本质是换算器：要你先自己数好番数和符数，再帮你换成点数。这些工具直接读手牌，判断它符合哪些牌型，并把判断依据展示出来。",
+    "hubFaqQ4": "在别的网站上打牌时能用这些工具吗？",
+    "hubFaqA4": "可以。另开一个标签页打开工具，把手上有的牌点进去就能看结果。听牌检查器用的是和本站对局一样的引擎，所以对局里的判断和工具里的判断不会互相矛盾。"
   }
 }

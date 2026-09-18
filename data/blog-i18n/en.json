@@ -2180,5 +2180,604 @@
         "answer": "In American mahjong, yes. With three players you either skip the Charleston entirely or deal a ghost hand that takes part in the passing. Two-player Siamese mah jongg has no Charleston at all. Japanese and Chinese rulesets have no Charleston in any format."
       }
     ]
+  },
+  "mahjong-strategy": {
+    "title": "Mahjong Strategy: How to Actually Win More Hands",
+    "description": "A practical mahjong strategy guide: tile efficiency, hand value, reading discards, and when to push or fold. Every number verified against a real scoring engine.",
+    "sections": [
+      {
+        "heading": "Strategy Starts With One Question",
+        "body": [
+          "Most mahjong advice is a list of tips. Tips are hard to use because they conflict: keep pairs, but do not keep too many pairs. Push for value, but do not push too long. Without a principle underneath, a beginner has no way to decide which tip applies to the hand in front of them.",
+          "There is a principle, and it is a single question. Every turn, ask: does this discard bring me closer to winning, or does it keep me safer? Those two goals pull in opposite directions, and almost every strategic decision in mahjong is a judgement about which one matters more right now. A hand that is close to winning justifies risk. A hand that is far away, late in the game, justifies caution.",
+          "Everything else in this guide is a tool for answering that question well. Tile efficiency tells you how close you are. Hand value tells you whether winning is worth the risk. Discard reading tells you how dangerous a tile is. Push-or-fold is the decision itself.",
+          "The order matters. Beginners usually learn hand value first, because scoring is concrete and visible on a score sheet. But efficiency comes first in practice, because a hand you never complete scores nothing regardless of what it was worth on paper. A low-value hand that finishes beats a high-value hand that stays in your rack.",
+          "This guide uses numbers verified against a real mahjong engine rather than rule-of-thumb figures. Where you see a wait count or a shanten figure, it came from evaluating that exact hand layout, not from estimating. That matters because intuitive tile-efficiency advice is frequently off by a tile or more, and a one-tile error compounds across a whole session."
+        ]
+      },
+      {
+        "heading": "Tile Efficiency: Closing the Gap",
+        "body": [
+          "Shanten is the number of tile improvements between your hand and a winning shape. A hand at zero shanten is one tile away from completion and is called tenpai. A hand at shanten two needs two more useful draws. Every strategy decision starts by knowing this number.",
+          "The counting is less mysterious than it looks. A complete hand is four sets plus a pair. You count how many of those five blocks you already hold, then account for the partial blocks that can become sets. Run the engine on a hand of m2 m3 m4 m5 m6 m7 p2 p3 p4 s2 s3 s5 s5 and it reports shanten 0 with a two-sided wait on s1 or s4 — two complete sequences, one more sequence, and a pair, with one block still to finish.",
+          "The practical skill is not counting shanten by hand. It is recognising which block to keep when you must choose. Two blocks can look equally useful and differ substantially in how many tiles complete them.",
+          "Here is a comparison that surprises most beginners. Give two hands the same nine completed tiles, then give one the block 2-3 and the other the block 2-2. Both need one more tile to become a set. The engine reports three waits for the first and four for the second, because the pair can also serve as the pair in the finished hand, which frees the remaining block. Same tile count, different flexibility.",
+          "The gap widens with compound shapes. A hand holding 2-2-3-3 in one suit, with the rest of the hand complete, waits on six different tiles. Replace it with plain 2-3 and 4-5 and the same hand drops to three. The compound shape works as two overlapping partial sets, so it accepts tiles that complete it in either direction. This is the single most valuable shape to recognise, and it is invisible if you only ever think in terms of separate blocks."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 2
+          },
+          {
+            "suit": "char",
+            "rank": 2
+          },
+          {
+            "suit": "char",
+            "rank": 3
+          },
+          {
+            "suit": "char",
+            "rank": 3
+          }
+        ]
+      },
+      {
+        "heading": "Hand Value: Is Winning Worth It",
+        "body": [
+          "Efficiency answers how close you are. Value answers whether being close is worth much. Both matter, because a fast hand and a valuable hand are usually not the same hand.",
+          "Value in mahjong comes from patterns rather than from tiles themselves. Sequences are easy to build and score little. Triplets are harder and score more. Keeping to one suit, or holding only simple tiles, or finishing on a self-drawn tile — each adds points, and each narrows the set of hands you can build.",
+          "The trade is real and it is usually worth taking in a specific direction. Chasing a high-value hand means accepting a hand you complete less often. Chasing speed means accepting a smaller payout when you do finish. Neither is right in the abstract; the choice depends on how far along the hand is and how much time the game has left.",
+          "A workable default for beginners: build efficiency first, then notice value when it arrives on its own. If three of your blocks happen to point at one suit, lean into it. If they are spread out, do not force them together. Forced value is the most common way beginners turn a hand that would have completed into one that never does.",
+          "There is also a defensive dimension to value, which beginners miss. A visible, valuable hand attracts attention. When you call tiles repeatedly and discard from a narrow range, the other three players read what you are building and start holding the tiles you need. A quieter hand that finishes unexpectedly often beats a loud hand that everyone has learned to block."
+        ]
+      },
+      {
+        "heading": "Reading Discards Like a Detective",
+        "body": [
+          "Every tile a player discards is a public statement about what they do not need. Individually the statements are weak. In sequence they become a reliable portrait of a hand.",
+          "The first thing to read is suit concentration. A player discarding one suit early and rarely touching another is collecting that second suit. If their early discards are honours, they are likely building a hand that ignores honour tiles entirely. Either read tells you which of your own discards are dangerous.",
+          "The second thing to read is timing. An early discard of a middle tile is usually meaningless — they simply had it and did not want it. The same tile discarded late in the hand is a strong signal, because by then the player has had many turns to use it and chose not to. Late discards carry far more information than early ones.",
+          "The third is the gap pattern. If a player has discarded 4 and 6 of a suit, they probably do not hold 5, which makes 5 relatively safe against them. This is the basis of most defensive play, and it works because of a structural fact about mahjong: with four copies of every tile, visible tiles are gone tiles.",
+          "Applying these reads takes practice, and there is a shortcut for beginners. Rather than trying to model all three opponents at once, track the single player who has visibly committed — the one who has called tiles and is discarding from a narrow range. That player is the one most likely to win and the one whose waits are easiest to infer. Defend against them specifically and treat the other two as background."
+        ]
+      },
+      {
+        "heading": "Push or Fold: The Decision Itself",
+        "body": [
+          "This is where the principle from the first section becomes an action. You are holding a hand that is not yet ready. A player across the table has called several tiles and is discarding in a suspiciously narrow pattern. Do you keep building, or do you start discarding only safe tiles and accept that this hand is over?",
+          "The honest answer is that this decision is about expected value, not about courage. Pushing means you might complete your hand and you might deal into theirs. Folding means you certainly do not win, but you also certainly do not pay. The question is which outcome loses less over many hands.",
+          "Three signals tilt the decision toward folding. Your hand is far from ready — the engine says two or more shanten, meaning you need multiple good draws, not one. The game is late, so the remaining draws are few. And the threatening player has shown strength, so the chance their hand is real is high.",
+          "Three signals tilt the other way. You are already tenpai, so a single tile finishes you and the threat may not get another turn. Your hand has value worth defending. Or the threatening player has been calling from an early stage and their hand is more likely to be cheap than dangerous.",
+          "The practical rule that captures most of this: fold early, push late — but only once ready. Folding a hand at shanten two costs almost nothing, because it was unlikely to complete anyway. Folding a finished hand at tenpai costs the whole hand. The mistake beginners make is the reverse, staying in with a hopeless hand early and then abandoning a live hand late out of nerves.",
+          "One more consideration that beginners consistently undervalue: not dealing in is itself a positive result. In most scoring systems a deal-in payment is larger than what you would have won with a small hand. Simply not paying can be worth more than winning, and the players who understand this are the ones who keep their scores steady across a long session."
+        ]
+      },
+      {
+        "heading": "Putting It Together in a Real Hand",
+        "body": [
+          "Take a concrete hand and walk it forward. You hold m2 m3 m4 m5 m6 m7 p2 p3 p4 s2 s3 s5 s5. Three complete sequences, one pair, and the partial block s2-s3 to finish.",
+          "The engine evaluates this at shanten 0, waiting on s1 or s4 — a two-sided wait, the strongest common shape, because it accepts tiles from both ends of the block. Two complete sequences in one suit plus a partial block in another is the template fastest hand: several ways to finish, no single point of failure.",
+          "Now suppose someone discards p7 early. Irrelevant; you do not need dots. Suppose instead that the player to your left calls two tiles in dots and then discards a dot they had apparently held for a while. That is a signal, and the safe dodge is to keep your own dot discards to tiles already visible on the table.",
+          "Your wait is s1 or s4. Count what is visible. If two of the four s1 tiles are already discarded, the wait has narrowed to what remains. This is where counting four copies stops being an abstract fact and becomes a number you use: a two-sided wait on a tile with two copies visible is meaningfully worse than the same wait with nothing visible.",
+          "If the game reaches its final draws with your hand still at tenpai and the threatening player still pushing, you are in the spot the previous section described. Your hand is complete-adjacent, so folding wastes real equity. The correct play is usually to keep the wait and accept the risk, because a finished hand that pays is better than a safe hand that scores nothing.",
+          "That is the whole framework in miniature: measure the gap, notice the value, read the discards, then decide. None of the four steps is difficult alone. The skill is running them in order, every turn, without skipping to the decision first."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          },
+          {
+            "suit": "bamboo",
+            "rank": 2
+          },
+          {
+            "suit": "bamboo",
+            "rank": 3
+          },
+          {
+            "suit": "bamboo",
+            "rank": 5
+          }
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "What is the single most important mahjong strategy for beginners?",
+        "answer": "Tile efficiency. Knowing how many tiles away your hand is, and choosing the block that accepts the most completing tiles, improves results faster than any scoring tactic. A hand that completes beats a valuable hand that never does."
+      },
+      {
+        "question": "Should I always keep pairs?",
+        "answer": "No. A pair is more flexible than a two-tile sequential block, because it can become a triplet or serve as the finished hand’s pair. But a hand with too many pairs loses the sequences it needs, so keep pairs that have a path and discard ones that do not."
+      },
+      {
+        "question": "How do I know when to stop pushing and fold?",
+        "answer": "Fold when your hand is two or more shanten, the game is late, and an opponent has shown strength. Folding early is cheap; abandoning a finished hand is expensive. The common beginner error is doing the opposite."
+      },
+      {
+        "question": "Is it worth chasing a valuable hand?",
+        "answer": "Only when the value arrives naturally. Build for efficiency first and lean into value when several of your blocks already point the same direction. Forcing a high-value shape usually means the hand never completes at all."
+      }
+    ]
+  },
+  "best-opening-hands": {
+    "title": "Best Mahjong Opening Hands: What to Keep in Your First Discards",
+    "description": "Which starting tiles to keep and which to throw away first. Real shanten counts for the shapes that matter, plus the opening mistakes that quietly cost you the hand.",
+    "sections": [
+      {
+        "heading": "Your First Discards Decide the Hand",
+        "body": [
+          "The opening is the part of mahjong where skill compounds fastest. A single early discard rarely matters, but the pattern of your first four or five discards sets the shape of everything that follows. Get them wrong and you spend the rest of the hand recovering. Get them right and the hand plays itself.",
+          "The reason the opening is so consequential is that it is the only point where you have maximum freedom and minimum information. All thirteen tiles are yours and nobody has shown anything. Every later decision is constrained by what you have already thrown and by what your opponents have revealed. The opening is the one moment you are choosing your hand rather than reacting to it.",
+          "So opening strategy is really about which shapes deserve to be kept. Some starting tiles are obviously disposable — isolated honours, tiles with no neighbours. Others look similar but differ sharply in how many future tiles they accept. This guide gives you the shanten counts for those shapes so the choice stops being a guess.",
+          "A useful frame before the details: a hand is four sets plus a pair, so thirteen tiles must eventually become those five blocks. In the opening you are not trying to complete anything. You are trying to hold five blocks that can each become something, and discarding the tiles that cannot belong to any of them.",
+          "There is a second reason the opening deserves separate study, and it is about mistakes rather than upside. Opening errors are the easiest to repeat unconsciously, because each individual discard is small and the feedback arrives many turns later. A player who habitually keeps isolated honours will never see a single turn where that choice visibly costs them. They will only see a general pattern of hands that never quite came together, and that pattern is much harder to diagnose than a single blunder.",
+          "One warning that applies throughout. These numbers describe tile layouts in isolation. They ignore what is visible on the table, what your opponents are doing, and what suit you are being handed by the draw. Use them to compare shapes, not as a formula to follow blind."
+        ]
+      },
+      {
+        "heading": "The Shapes Worth Keeping",
+        "body": [
+          "Not all two-tile blocks are equal, and the differences are larger than most beginners assume. Given the same rest of the hand, three partial blocks accept different numbers of completing tiles: a two-sided block such as 2-3 accepts four tile types, a closed block such as 1-2 accepts four but from one end only, and a gap block such as 1-3 accepts four into the middle.",
+          "The wide-open block is the strongest simple shape. A block like 2-3 accepts 1 and 4, which is two tile types across two copies each, for four tiles’ worth of improvement. It also keeps more of the suit available, because 1 and 4 sit at opposite ends of the block rather than in the middle.",
+          "Pairs deserve their own mention because they are more flexible than their two tiles suggest. Run the engine on a hand whose remaining blocks are complete except for a 2-2 pair and it reports four waits; the same hand with a 2-3 block reports three. The pair can finish as a triplet or, if the rest of the hand provides one, serve as the pair the completed hand requires. That dual role is why pairs are worth keeping even when they look passive.",
+          "The most valuable shape in the opening is the compound block, and it is the one beginners consistently fail to recognise. Hold 2-2-3-3 in one suit and the engine reports six waits. Hold the equivalent 2-3 and 4-5 and the same hand reports three. The compound shape overlaps: it can develop toward two sequences, toward a triplet plus a sequence, or toward a pair plus a sequence, so it accepts tiles that help in any of those directions.",
+          "The practical upshot: when you see overlapping tiles in one suit, treat them as one asset rather than two separate problems. Their value is not the sum of their parts. It is the set of futures they allow.",
+          "There is a ranking worth memorising, from weakest to strongest, for the two-tile blocks you will see most often. A closed block pointing at the far end of a suit is weakest, because it accepts from one direction and the tiles it needs are near the edge where fewer shapes live. A gap block is better, since it accepts a specific middle tile from either side. A two-sided block is better still, accepting from both ends. A pair is roughly as flexible as a two-sided block but in a different way, and a compound overlapping shape beats all of them.",
+          "None of this means you should keep a weak block over a strong one in every case. The rest of the hand constrains the choice — a suit you already hold three sequences in has less room for a fourth, and a block in a suit you are largely ignoring is worth less than its raw flexibility suggests. What the ranking gives you is a default, and defaults are what you need in the opening when there is no other information to use."
+        ],
+        "tiles": [
+          {
+            "suit": "bamboo",
+            "rank": 2
+          },
+          {
+            "suit": "bamboo",
+            "rank": 2
+          },
+          {
+            "suit": "bamboo",
+            "rank": 3
+          },
+          {
+            "suit": "bamboo",
+            "rank": 3
+          }
+        ]
+      },
+      {
+        "heading": "The Shapes to Throw Away First",
+        "body": [
+          "The mirror image of keeping good shapes is identifying dead tiles, and the opening is when they are easiest to spot. A tile is dead when no realistic path leads from it to a set plus a pair.",
+          "Isolated honours are the clearest case. A lone East wind has no neighbours, cannot form a sequence, and needs two more identical copies to become a triplet. Two of those copies might sit in other players’ hands or in the wall. Early in the hand it is the most disposable tile on the table, and discarding it first costs nothing.",
+          "Isolated terminals are the next to go. A lone 1 or 9 in a suit can only form a sequence one way, and only with two specific partners. Holding that 1 while the 2 and 3 never arrive is a tile you carried for nothing. Late in a session you will notice how often the tiles you finally throw away are the same isolated terminals you held at the start.",
+          "The subtle mistake is discarding a middle tile because it looks unconnected. A lone 5 has neighbours on both sides and can join blocks in four different directions. It looks like nothing and behaves like an asset. Beginners throw these and keep their lone honours, which is precisely backwards.",
+          "There is a timing rule that captures it: discard in order of shrinking options. Honours have the fewest paths, then terminals, then middle tiles. Following that order means you spend your early discards on the tiles that could never have helped, and reach the middle game still holding the tiles that still can.",
+          "One subtlety that catches players who have learned the rule: isolated honours are disposable, but a *pair* of honours is a completely different asset. Two identical winds can become a triplet with a single draw, which makes them a legitimate block, and a triplet of your seat wind or the round wind carries bonus value in many rulesets. The rule is about isolated tiles, not about honour tiles as a category. Discard the single East; keep the two of them.",
+          "The same distinction applies to terminals. An isolated 9 is nearly worthless. A pair of 9s is a valid block with a path to a triplet. Beginners who learn the terminal rule too literally will throw the second 9 and lose a real asset along with the dead one."
+        ]
+      },
+      {
+        "heading": "Counting Copies Changes Everything",
+        "body": [
+          "There are exactly four of every mahjong tile, and every copy you can see is a copy that cannot complete your hand. This fact is worth using from the first discard, not just in the endgame.",
+          "The logic is straightforward. If a shape accepts a particular tile and all four copies are visible, that shape is dead and should be reassessed. If two are visible, the shape still works but at half strength. Two shapes that look equivalent can be far apart once you count.",
+          "Applying it early feels unnatural because the opening is when least is visible. But even the opening gives you information. Your own hand holds some copies, and the first few discards from each player are public. By the time you have thrown four tiles yourself, a meaningful fraction of the wall is accounted for.",
+          "There is a second-order version of this that separates strong players. Holding a tile that your own discard pattern suggests you do not want is a form of disguise, but holding a tile that is visibly scarce is simply a waste. If two copies of the tile your block needs are already discarded, that block is worth less than the same block in a suit where nothing is visible — and the correction belongs in your opening plan, not just your endgame.",
+          "The habit to build is counting the tiles that matter to your two or three live blocks. Not all 34 tile types, just the handful your hand is actually waiting on. That is a small enough number to track in your head while the hand is still developing.",
+          "A worked example makes the arithmetic concrete. Suppose your hand’s remaining path runs through the 3 and 6 of one suit, and you have seen two 3s and three 6s across the table. Your effective outs have dropped from eight tiles to three. The block is not dead, but it is running at under half strength, and a competing block in a suit where nothing is visible is now the better bet despite looking no different on your rack.",
+          "This is the calculation that separates a player who is reading the table from one who is merely looking at it. The tiles you cannot see are the only ones that can still help you, and their number changes every turn. Recalculating it is cheap; ignoring it means planning around tiles that no longer exist."
+        ]
+      },
+      {
+        "heading": "What a Strong Opening Looks Like",
+        "body": [
+          "Put the pieces together and a strong opening has a recognisable profile. Several blocks are live, at least one is a two-sided shape, at least one pair is present or forming, and no tile is being carried without a path to a set.",
+          "A concrete example. Start with m2 m3 m4 m5 m6 m7 p2 p3 p4 s2 s3 s5 s5 and the engine places you at shanten 0, waiting on s1 or s4. That is a finished-quality hand from the opening — three sequences, a pair, and a two-sided block. It did not require cleverness. It required holding the right shapes while discarding everything else.",
+          "Compare a weaker opening with the same tile count: m1 m3 m5 m7 m9 p2 p4 p6 p8 s1 s3 s5 z1. Every tile is isolated, nothing overlaps, and the engine reports shanten 5. Hands like this are not unlucky. They are what remains when a player keeps tiles that only look useful — alternating numbers, one from each suit — instead of tiles that connect.",
+          "The difference between those two hands is not the draw. Both are legal thirteen-tile hands. The difference is that one holds five coherent blocks and the other holds thirteen separate tiles.",
+          "So the concrete opening checklist is short. Discard isolated honours and terminals first. Keep pairs and overlapping tiles in one suit. Prefer wide-open blocks to closed ones. Count the visible copies of the tiles your live blocks need. And judge your hand by whether it holds five blocks, not by whether the tiles look tidy.",
+          "It is worth noting what the checklist deliberately leaves out. It says nothing about which suit to favour, because that should follow from where your tiles already cluster rather than from preference. It says nothing about speed versus value, because that choice belongs to the middle game once the hand has a shape. And it says nothing about defence, because in the opening there is no threat to defend against.",
+          "Keeping the opening checklist narrow is what makes it usable. A player who tries to optimise everything from turn one ends up paralysed, comparing tile values that will not matter until much later. The opening has one job — establish five live blocks — and doing that well is enough.",
+          "After that, the opening is over and the middle game begins — where the question shifts from which tiles to keep to which tiles are safe to throw."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 2
+          },
+          {
+            "suit": "dot",
+            "rank": 3
+          },
+          {
+            "suit": "bamboo",
+            "rank": 2
+          },
+          {
+            "suit": "bamboo",
+            "rank": 3
+          },
+          {
+            "suit": "bamboo",
+            "rank": 5
+          },
+          {
+            "suit": "bamboo",
+            "rank": 5
+          }
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "What should I discard first in mahjong?",
+        "answer": "Isolated honour tiles first, then isolated terminals, then middle tiles. This order follows how many future tiles each one can connect with, so you spend early discards on tiles that could never have helped your hand."
+      },
+      {
+        "question": "Are pairs worth keeping in a starting hand?",
+        "answer": "Usually yes. A pair can develop into a triplet or serve as the pair the finished hand needs, which makes it more flexible than a two-tile sequential block. Keep pairs that have a path and discard ones that do not."
+      },
+      {
+        "question": "What is the strongest two-tile shape to hold?",
+        "answer": "A two-sided block such as 2-3, which accepts tiles from both ends. Overlapping compound shapes like 2-2-3-3 are stronger still — engine evaluation shows they accept roughly twice as many completing tiles as the equivalent separate blocks."
+      },
+      {
+        "question": "How do I know my opening hand is good?",
+        "answer": "Count your blocks. A strong opening holds five developable blocks, at least one two-sided shape, and no tile without a path to a set. If several tiles are isolated, the hand is weak regardless of how many suits it covers."
+      }
+    ]
+  },
+  "defense-strategy": {
+    "title": "Mahjong Defense: How to Stop Dealing Into Winning Hands",
+    "description": "A practical guide to mahjong defence: reading danger, choosing safe tiles, and knowing when to abandon your own hand. Covers suji, visible copies, and the fold decision.",
+    "sections": [
+      {
+        "heading": "Not Dealing In Is a Skill",
+        "body": [
+          "Most mahjong guides teach you to win. Almost none teach you to lose less, even though the second skill decides more sessions than the first. A player who wins one hand and deals into three has a worse night than a player who wins nothing and pays nothing.",
+          "The asymmetry that makes defence worth learning is in the scoring. When you win, you collect from one or sometimes all players, and the amount depends on your hand. When you deal in, you pay a large share — often the full value of a good hand that someone else built patiently. One deal-in can erase two wins.",
+          "So defence is not the absence of aggression. It is a separate decision that runs alongside your attacking plan, and it occasionally overrides it. This guide treats it that way: what makes a tile dangerous, how to choose a safe substitute, and when abandoning your hand is the correct play rather than a surrender.",
+          "The reason beginners struggle with defence is that it feels like giving up. Building a hand is visibly productive, and discarding safe tiles feels like treading water. But the goal was never to build a hand. It was to finish the session ahead, and sometimes those two goals point in different directions.",
+          "There is a measurable way to see the value, which makes the discipline easier to accept. Track a session and count what you paid out versus what you collected. Most beginners find that deal-in payments exceed their winnings even in sessions where they felt they played well. That single comparison is usually enough to convert a reluctant defender into a committed one."
+        ]
+      },
+      {
+        "heading": "Reading Danger From Discards",
+        "body": [
+          "Every discard on the table is a clue about what its owner does and does not need, and the clues compound into a usable picture of how dangerous each tile is.",
+          "Start with suit concentration. A player who discards one suit repeatedly, especially into the late middle game, is not collecting that suit. If their discards are mostly one suit while they never touch another, they are building in the untouched one, and every tile you hold in that suit is a candidate danger.",
+          "Next, read call patterns. A player who has called two or three tiles has committed their hand publicly. Their discards from that point are constrained — they are throwing what their finished shape does not need. That constraint is information. A hand still fully concealed tells you much less.",
+          "Watch for the tiles a player will not throw. If someone has been discarding freely all game and suddenly starts throwing only tiles already visible on the table, they are playing defence themselves, which tells you their hand is either unfinished or abandoned and they are no longer a threat.",
+          "The strongest single signal is a late, deliberate discard. Early discards are noise — a player simply had an unwanted tile. A tile thrown after ten or more turns, when the player has had many chances to use it, says they built around it and did not want it. That says something real about their waiting tiles.",
+          "Reading all three opponents at once is beyond most players, and it is not necessary. Identify the one who has committed and is closest to completion. Defend against them specifically and treat the others as background threats.",
+          "One further read is worth adding because it is easy and accurate: watch how a player handles their discards physically or in the interface. A player who discards instantly every turn is playing by reflex and their discards carry less information than they appear to. A player who pauses before discarding, especially before throwing a tile that looks harmless, is choosing deliberately — which usually means they are weighing safety, and that they have something to protect."
+        ]
+      },
+      {
+        "heading": "Suji and the Gap Principle",
+        "body": [
+          "The most useful defensive heuristic in mahjong comes from a structural fact: no two-sided wait can include a tile that sits between two tiles its owner has already discarded.",
+          "Here is the reasoning. A two-sided wait needs a block like 2-3, which accepts 1 and 4. For that player to be waiting on that block, they must hold 2 and 3. If they have already discarded the 4, they cannot be holding the 2-3 block, because the 4 would have completed a sequence they had. So a tile discarded by a player makes the tiles that would pair with it in a sequence — the ones two steps away — safer against that player.",
+          "This is what players call suji, and the pattern is worth seeing concretely. If a player has discarded 4, then 1 and 7 are safer against them than they look. If they have discarded 1, then 4 is safer. The tiles two steps away from a visible discard lose most of their danger from two-sided waits.",
+          "Two limits keep this honest. First, suji only protects against two-sided waits. A player waiting on a closed gap shape or a single tile is not bound by the pattern, and those waits ignore it entirely. Second, respecting suji too rigidly makes you predictable — a strong opponent notices which tiles you treat as safe and works backward to your hand.",
+          "Use suji as one input among several. It is a well-founded reason to consider a tile safer. It is not proof, and it never overrides a stronger signal such as a player calling a tile they already discarded.",
+          "A useful way to hold suji in your head without memorising tables: for any tile you hold, ask which partial block an opponent would need in order to be waiting on it. If the tiles that would have completed that block are already in their discard pile, the block is impossible and the wait is unlikely. Working backwards from your candidate tile to the shape it would require is faster than learning the pattern as a list of pairs."
+        ]
+      },
+      {
+        "heading": "Actually Safe: Visible and Dead Tiles",
+        "body": [
+          "Suji tells you a tile is probably safer. There is a category of tile that is genuinely safe, and learning to find them is the core defensive skill.",
+          "A tile is safe against a specific opponent if it appears in their own discard pile. They cannot be waiting on a tile they have thrown away — in most rulesets they cannot win on it at all, and in all rulesets they are unlikely to want it. A tile visible in the discards of the player you are worried about is the safest discard available to you.",
+          "The next tier is a tile that all four copies of are visible on the table. This is usually called a dead tile. Not only is it unlikely to be wanted, but no player can form a new set with it, so it cannot improve anyone’s hand either.",
+          "After those two, the third tier is a tile whose copies are mostly visible. Three visible out of four leaves one copy in play, and the odds any specific player holds it and is waiting on it are low. This tier is not safe in the way the first two are, but it is far better than throwing a fresh middle tile.",
+          "The practical procedure, when you must discard and are worried: look at the threatening player’s discards first and take any tile that appears there. If none, look for a fully visible tile. If none, look for a tile with three copies visible. Only when all three tiers are empty do you fall back on judgement and suji.",
+          "This procedure is mechanical, which is its virtue. Under time pressure, a beginner’s instinct is to throw whatever looks least useful to them, which is close to the opposite of what defence requires.",
+          "There is a fourth tier worth knowing for completeness, though it applies less often. A tile that an opponent has just discarded and that has since been passed over by everyone is unlikely to be a winning tile for anyone, simply because three players had the chance to claim it and none did. This is weaker evidence than a discard pile appearance, but it is a useful tiebreaker when your first three tiers are empty."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 1
+          },
+          {
+            "suit": "char",
+            "rank": 4
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "When to Abandon Your Hand",
+        "body": [
+          "Defence becomes a real decision only when it costs you something. If your hand is hopeless, folding is free. The hard case is a hand that is close and a threat that is real.",
+          "Three conditions together justify folding. Your hand is two or more shanten, so you need more than one lucky draw. The game is late, so few draws remain. And an opponent has shown clear strength by calling tiles and discarding from a narrow range. When all three hold, folding costs little because the hand was unlikely to complete anyway.",
+          "The mirror image applies to pushing. Push when your hand is at tenpai, because a single tile finishes you and your wait may land before the threat resolves. Push when your hand has real value, since abandoning it wastes more than the risk of paying. Push when the threatening player committed early, which usually means a cheap hand rather than a dangerous one.",
+          "There is a middle state that causes the most errors: one tile from ready, with a live threat and several draws left. Here the decision turns on the size of your wait and the size of the threat. A wide wait with three tile types still live is worth defending. A single-tile wait that you can see is half dead is not.",
+          "The pattern to internalise is fold early, push late, and never abandon a finished hand out of nerves. Folding a hopeless hand in turn five costs almost nothing. Folding a tenpai hand in the final draws throws away everything you built. Beginners do the reverse, staying in with nothing and then bailing once the hand finally becomes live.",
+          "It helps to be precise about what folding costs, because the cost is smaller than it feels. Folding means you stop adding tiles to a hand that was unlikely to finish. You do not forfeit anything you already held, and you keep the option of returning to attack if the threat resolves or a safe opportunity appears. Folding is a pause, not a surrender, and treating it as reversible makes the decision much easier to take."
+        ]
+      },
+      {
+        "heading": "Defence in Practice",
+        "body": [
+          "Put the mechanics into a sequence you can actually run at the table, because defence fails under time pressure if it requires judgement calls on every tile.",
+          "First, track one opponent. The player who has called tiles and is discarding narrowly. Ignore the others until they show similar commitment; splitting attention four ways means you track nobody well.",
+          "Second, maintain a mental list of safe tiles against that player. Their discard pile is the list. Any tile you hold that appears there is a free discard you can take whenever you need one.",
+          "Third, when you must choose between continuing your hand and discarding safely, ask how far from ready you are. Engine evaluation of your own hand gives a number rather than a feeling, and two or more shanten late in the game is a clear signal to stop building.",
+          "Fourth, count visible copies of the tiles you would need. If your remaining path depends on a tile whose copies are mostly gone, the path is not real, and that alone justifies folding regardless of how close the hand looks.",
+          "Fifth, accept the result. Defence is measured across many hands, not one. A session where you deal in once instead of four times is a success even if you never win, because the scoring asymmetry means not paying is worth nearly as much as winning.",
+          "The satisfying part of defence is that it improves immediately. Attacking well requires reading three opponents and building a hand at the same time. Defending well requires tracking one player and knowing three tiers of safe tile. The second skill is learnable in an afternoon, and it will show up in your results the same week."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "What is the safest tile to discard in mahjong?",
+        "answer": "A tile that already appears in the discard pile of the player you are worried about. They cannot win on their own discard. After that, a tile with all four copies visible on the table is the next safest."
+      },
+      {
+        "question": "What is suji in mahjong defense?",
+        "answer": "Suji uses the fact that two-sided waits cannot contain a tile two steps from a tile the player already discarded. If an opponent has thrown 4, tiles 1 and 7 are safer against them because a 2-3 or 5-6 wait would have used that 4."
+      },
+      {
+        "question": "When should I stop pushing and play defence?",
+        "answer": "When three conditions hold together: your hand is two or more shanten, the game is late, and an opponent has shown strength by calling tiles. Folding in that spot costs little because the hand was unlikely to finish anyway."
+      },
+      {
+        "question": "Does suji always work?",
+        "answer": "No. Suji only protects against two-sided waits. A player waiting on a closed gap or a single tile is not bound by the pattern. Treat suji as one reason a tile is safer, not as proof."
+      }
+    ]
+  },
+  "common-beginner-mistakes": {
+    "title": "Common Mahjong Mistakes: 10 Errors That Cost You Hands",
+    "description": "The ten mistakes that cost beginner mahjong players the most hands, from calling too often to chasing value, each with the correct play and a concrete example.",
+    "sections": [
+      {
+        "heading": "Mistakes Are Cheaper to Fix Than to Learn",
+        "body": [
+          "Improving at mahjong is usually taught as accumulating knowledge — more scoring rules, more patterns, more variants. In practice the fastest improvement comes from removing errors, because most beginners lose consistently to the same short list of mistakes rather than to a lack of exotic knowledge.",
+          "The reason is compounding. A single wrong early discard costs you a tile of efficiency. The same wrong instinct applied five times in a row costs you the hand. None of the individual decisions looks decisive while it is being made, which is exactly why the errors are so persistent.",
+          "This guide collects the ten that do the most damage, ordered roughly by how many hands they cost. Each one gets the mistake, why it seems reasonable while you are making it, and the concrete alternative.",
+          "A note on how to use this list. Do not try to fix all ten at once; that produces a player who is thinking about ten things and playing slowly. Pick the one or two that describe your last few games, correct those until they are automatic, then move down the list.",
+          "It is also worth saying what this list is not. None of these mistakes are about luck, and none of them are about knowing an obscure rule. They are all about decisions you make on ordinary tiles in ordinary hands, repeatedly. That is precisely why they are worth fixing: the payoff is frequency, not cleverness."
+        ]
+      },
+      {
+        "heading": "Mistakes 1–3: Calling and Keeping",
+        "body": [
+          "Calling too often is the single most common beginner error. Calling feels productive because it visibly builds your hand, but every call opens your hand, forfeits concealed bonuses in most rulesets, and tells the table what you are collecting. The tile you call must genuinely accelerate the hand, and often it does not — it completes a set you could have finished by drawing while keeping your options open.",
+          "Keeping too many pairs is the second. Pairs are good, so beginners keep all of them, and a hand with five pairs has no room for the sequences a completed hand needs. Pairs are worth keeping when they have a path to a triplet or a clear role as the finishing pair. Beyond about two or three, extra pairs are crowding out the blocks that would actually finish the hand.",
+          "Keeping isolated honours too long is the third, and it is the mirror image of over-valuing tiles that look important. A lone honour is the most disposable tile in the game — no neighbours, no sequence, needing two specific copies that may be nowhere. Beginners hold them hoping for a triplet and discard useful middle tiles instead. The correct order is honours first, then isolated terminals, then middle tiles.",
+          "These three are grouped because they share a root cause: each mistakes visible progress for real progress. A call, a kept pair, a held honour — all three make the hand look more developed than it is. The correction in each case is to ask what the tile or the call is actually contributing, rather than whether it feels like progress.",
+          "A concrete illustration of the calling error. You hold a partial hand and someone discards the third tile of a sequence you were building toward. Calling completes that set immediately and feels like a clear gain. But the set you completed was going to finish by drawing anyway within a few turns, and by calling you have opened your hand, forfeited the concealed bonus, and shown the table exactly which suit you are in. You traded a small time saving for a large amount of information and a scoring penalty.",
+          "The pair error has a similar shape. Two pairs in a starting hand are good — they give you flexibility and a path to the finishing pair. Five pairs is not five times as good; it is a hand with no sequences and no room to develop one. The moment to stop collecting pairs is the moment you no longer have space for four sets alongside them."
+        ]
+      },
+      {
+        "heading": "Mistakes 4–6: Value and Speed",
+        "body": [
+          "Chasing a big hand from the start is the fourth mistake. A player decides they want a flush, or an all-triplet hand, and then bends every later decision toward it. The result is a hand that would have completed in a normal shape but never does, because the constraint was imposed before the tiles justified it. Value should be noticed when it arrives, not ordered in advance.",
+          "Playing only for speed is the fifth, and it is the opposite error — rarer among beginners but damaging among players who have just learned efficiency. Always building the fastest hand means always collecting the smallest payment and never exploiting the hands where value was genuinely available. Speed is the default, not the only option.",
+          "Ignoring the minimum score threshold is the sixth, and it is technical but costly. Several rulesets require a hand to be worth a minimum before it can be declared a win at all. A beginner who completes a hand with no scoring pattern at all discovers, too late, that it cannot be declared. Knowing what your ruleset requires before you start building is not optional information.",
+          "The thread through these three is that value and speed are both legitimate, and the error is treating either as a rule rather than a judgement. The player who always chases value and the player who always chases speed are making the same mistake in opposite directions — fixing the decision before seeing the hand.",
+          "The minimum score rule deserves one more sentence because it is the only mistake on this list that can make a completed hand worthless. In rulesets with a threshold, a hand that finishes but scores below the minimum cannot be declared at all. That means the hand is not merely low value — it is not a win. Checking the threshold before committing to a shape is therefore not bookkeeping; it is the difference between a hand that counts and one that does not."
+        ],
+        "tiles": [
+          {
+            "suit": "char",
+            "rank": 2
+          },
+          {
+            "suit": "char",
+            "rank": 3
+          },
+          {
+            "suit": "char",
+            "rank": 4
+          },
+          {
+            "suit": "char",
+            "rank": 5
+          },
+          {
+            "suit": "char",
+            "rank": 6
+          },
+          {
+            "suit": "char",
+            "rank": 7
+          }
+        ]
+      },
+      {
+        "heading": "Mistakes 7–8: Reading the Table",
+        "body": [
+          "Not watching discards is the seventh and arguably the most expensive on the list. Beginners look at their own hand and the tile just drawn, and treat the rest of the table as decoration. But the discards are the only reliable public information in the game, and a player who never reads them is playing with a fraction of the available data.",
+          "The specific failure is most costly in defence. A player who has not been tracking the threatening opponent repeatedly discards into a hand that was visibly nearly complete, then feels unlucky. The information was on the table for several turns; it simply was not read. A minimal version of the habit — track one committed opponent and know which tiles they have discarded — prevents most of these outcomes.",
+          "Misreading your own distance to a win is the eighth. Beginners judge closeness by how good the hand looks rather than by how many tiles it needs. A tidy-looking hand with a closed gap wait can be further from completion than a messy-looking one with a two-sided block, because tile efficiency is about how many future tiles you accept, not about how organised the tiles appear in your rack.",
+          "The practical substitute for judgement is counting: how many blocks do I hold, how many are complete, and how many tiles would improve each incomplete one. That gives a number rather than an impression, and the number is almost always more accurate than the feeling.",
+          "Both mistakes in this pair come from looking inward. The fix in each case is to redirect attention outward — to the table’s discards for the first, and to an objective count for the second. Neither requires new knowledge, only a change in what you are watching.",
+          "A quick test tells you which of the two you suffer from more. After your next hand, try to recall the last three tiles each opponent discarded. If you cannot, the discard-reading habit is missing. Then try to state how many tiles your hand needed at the midpoint. If you cannot, the distance-counting habit is missing. Most players fail one of these two cleanly, and that tells them where to start."
+        ]
+      },
+      {
+        "heading": "Mistakes 9–10: Tempo and Discipline",
+        "body": [
+          "Rushing the turn is the ninth. Under time pressure, players discard the first tile that looks unhelpful rather than comparing their options. Mahjong rewards comparison — the difference between two candidate discards is often measurable, and a player who never pauses will never see it. Slow, deliberate play is not indecision; it is where the skill actually gets applied.",
+          "The tenth is the most abstract and the most costly: failing to accept that some hands are not winnable. A player who insists on finishing every hand they start will push past the point where folding was correct, and the accumulated deal-ins will outweigh the occasional extra win. Recognising a dead hand and steering it safely to the end is a skill, not a defeat.",
+          "These two are related. Rushing produces shallow decisions; refusing to fold produces bad ones. Both come from treating every hand as though it must be won.",
+          "The discipline that fixes both is the same: before deciding, ask what the current hand is actually worth finishing. Some hands deserve aggressive play. Many do not, and identifying which is which is most of what separates a steady player from a volatile one.",
+          "It is worth adding a note on how these two feel from the inside, because they are the mistakes most resistant to correction. Rushing feels efficient, and folding feels like losing, so both punish the player who corrects them with an immediate sensation of having done something wrong. The reward for slowing down and for folding properly arrives later and in aggregate, which is why the fix requires trusting the numbers rather than the feeling."
+        ]
+      },
+      {
+        "heading": "Fixing Them in Order",
+        "body": [
+          "The list is long, so here is the order that pays fastest. Stop calling reflexively. That single change improves both your efficiency and the information you leak, and it takes almost no new knowledge to apply.",
+          "Then fix your discard order — honours, then isolated terminals, then middle tiles. This is mechanical and immediately reduces the number of dead tiles you carry into the middle game.",
+          "Then start tracking one opponent. Not all three. One player, the one who has shown commitment, and their discard pile. This converts defence from a theory into a habit you can actually run.",
+          "Then add the distance check: before discarding, count how many tiles away your hand is. If you cannot answer that roughly, you are choosing blind.",
+          "The remaining mistakes — chasing value, ignoring minimum score, insisting on finishing every hand — resolve largely on their own once those four habits are in place, because a player who measures distance and reads the table naturally stops over-committing.",
+          "None of these corrections requires memorising a scoring table or learning a new variant. They are changes to what you pay attention to, which is why they show up in results within days rather than months.",
+          "One last point about how to judge whether the fixes are working. Do not measure by whether you win more hands; that number is too noisy over a short run to tell you anything. Measure by whether you can describe, for your last few hands, what your distance was and which opponent you were watching. If you can answer those two questions about your own play, the corrections have taken. If you cannot, the mistakes are still running unobserved."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "What is the most common mahjong mistake?",
+        "answer": "Calling tiles too often. It feels productive but opens your hand, forfeits concealed bonuses, and tells the table what you are building. Most calls a beginner makes do not meaningfully speed up the hand."
+      },
+      {
+        "question": "Why do I keep losing at mahjong even when my hand looks good?",
+        "answer": "Usually because the hand is further from completion than it looks. Judge distance by how many tiles your hand still needs and how many tiles each block accepts, not by how tidy the tiles appear."
+      },
+      {
+        "question": "Should I always try to win every hand?",
+        "answer": "No. Some hands are not winnable, and pushing them leads to deal-ins that cost more than the occasional extra win. Recognising a dead hand and playing it safely is a core skill."
+      },
+      {
+        "question": "What order should I discard tiles in?",
+        "answer": "Isolated honours first, then isolated terminals, then middle tiles. This follows how many future tiles each can connect with, so early discards go to tiles that could never have completed a set."
+      }
+    ]
+  },
+  "discard-strategy": {
+    "title": "Mahjong Discard Strategy: Choosing the Right Tile Every Turn",
+    "description": "How to choose what to discard in mahjong: comparing candidate tiles, counting live copies, using the discard pile as a threat map, and handling ties.",
+    "sections": [
+      {
+        "heading": "One Decision, Every Turn",
+        "body": [
+          "Mahjong hands are won and lost at the discard. You make the decision every single turn, roughly eighteen times per hand, and each one either improves your position or quietly damages it. It is the most repeated decision in the game and therefore the one worth sharpening first.",
+          "The decision looks simple — give away one tile you do not need. The difficulty is that you usually have two or three candidates that all look unhelpful, and they are not equivalent. They differ in how much they could help you later, and in how dangerous they are to the other three players.",
+          "That is the shape of the problem. A discard is judged on two axes at once: its value to your own hand if kept, and its danger to you if thrown. Most of this guide is about evaluating those two axes separately before combining them.",
+          "Beginners tend to judge only the first axis, and often badly. They throw the tile that looks least useful right now, without asking what it could become in three turns or what throwing it tells the table. Both omissions are correctable, and fixing them changes results faster than almost any other adjustment.",
+          "There is also a tempo element that makes the discard decision unusual. Unlike most choices in a game, you cannot defer it. You must throw something every turn, and the option of waiting for more information does not exist. That means your discard routine has to work even when you are uncertain, which is why the later sections of this guide spend so much time on defaults and tiebreakers rather than on ideal cases."
+        ]
+      },
+      {
+        "heading": "Comparing Candidate Discards",
+        "body": [
+          "When you have two or three candidates, the comparison is about what each tile can still become. A tile that can join several different blocks is worth more than one that can join a single specific block, even if both look equally lonely in your rack.",
+          "Take a concrete case. You hold 1 and 5 in a suit, and you must discard one. The 1 can only be completed toward 1-2-3, so it needs the 2 and 3 to arrive. The 5 sits in the middle of the suit and can form a sequence with 3-4, 4-6, or 6-7. The 5 is worth substantially more, and if you must choose, the 1 goes first.",
+          "The same logic applies to blocks rather than single tiles. Given two partial blocks and the need to cut one, the block that accepts more completing tiles survives. A two-sided block such as 2-3 accepts tiles from both ends. A closed block such as 1-2 accepts from one end only. Where the rest of the hand is equal, keep the two-sided shape.",
+          "A worked comparison shows how much this matters. Two hands hold the same nine completed tiles. One has a 2-3 block, the other has a 1-3 gap block. Both look like a partial block of the same size. But the 2-3 accepts two tile types from two directions, while the 1-3 accepts one tile type from the middle. Given a choice, the 2-3 survives every time, and the difference is not subtle — it is roughly double the ways to complete.",
+          "Compound shapes deserve special care because they are easy to break by accident. Tiles like 2-2-3-3 look redundant, and a beginner discarding one of them is destroying a shape worth roughly double the equivalent separate blocks. Before discarding from an overlapping run, check whether the overlap is what gives the shape its flexibility.",
+          "The exception to all of this is a tile whose completing tiles are visibly gone. Keeping a shape that needs tiles already in the discard pile is not flexibility, it is a dead branch. Count visible copies before you commit to keeping a block.",
+          "A second exception is a tile that is far from the rest of your hand in suit. A beautiful two-sided block in a suit where you hold nothing else is worth less than a mediocre block that connects to tiles you already own, because blocks only become sets if they can be joined by the sequences around them. Flexibility measured in isolation is not the same as flexibility in your actual hand."
+        ]
+      },
+      {
+        "heading": "Counting Live Copies",
+        "body": [
+          "Four copies of every tile exist, and each one you can see reduces what remains. This turns discard choice from an abstract judgement into a countable one.",
+          "Suppose your hand’s remaining path runs through tile X, and you can see three of the four copies of X on the table. One copy remains in play, possibly in the wall and possibly in an opponent’s hand. Your path is nearly dead. That is a strong argument to take a different route, even if the route currently looks worse.",
+          "The reverse also holds and is more motivating. If none of the copies of the tiles your block needs are visible, that block is at full strength and deserves protection. Holding it is not optimism; it is bookkeeping.",
+          "Where this becomes decisive is when comparing two shapes that look equivalent. Both might accept four tile types, but if one set of four is heavily visible and the other is not, the effective value differs sharply. The visible tiles are not just gone for you; their absence tells you the shape is less likely to complete.",
+          "The habit to build is narrow. Do not count all thirty-four tile types. Count the specific tiles your one or two live blocks depend on. That is a small enough set to track while the hand develops, and it catches most of the cases where a shape is secretly dead.",
+          "There is a useful way to convert this into a decision. When you are choosing between keeping block A and block B, count the visible copies of every tile that would complete each. Whichever block has more live outs is the one to keep, even if it looked weaker before you counted. This is the single most reliable tiebreaker available, and it takes a few seconds."
+        ],
+        "tiles": [
+          {
+            "suit": "dot",
+            "rank": 1
+          },
+          {
+            "suit": "dot",
+            "rank": 4
+          },
+          {
+            "suit": "dot",
+            "rank": 7
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          },
+          {
+            "suit": "dragon",
+            "dragon": "red"
+          }
+        ]
+      },
+      {
+        "heading": "The Discard Pile as a Threat Map",
+        "body": [
+          "Your discards are a decision. Everyone else’s discards are data. The pile in front of each player is the clearest public information in the game, and it should be running as a background process on every turn.",
+          "Three readings matter most. First, concentration: a player discarding one suit while leaving another untouched is building in the untouched suit. Second, timing: an early discard is nearly meaningless, while the same tile thrown after ten turns says the player built around it and did not want it. Third, commitment: a player who has called several tiles has a constrained hand, and their later discards are unusually informative.",
+          "The direct use of all this is safety. A tile that appears in the discard pile of the player you are worried about is the safest tile you can throw, because they cannot win on their own discard. That check belongs in your discard routine, before any aesthetic judgement about which tile you would rather lose.",
+          "The indirect use is predicting. If a player has discarded 4 and 6 in a suit, the 5 is unlikely to be in their hand, which means your own 5 is safer than its central position suggests. This is the gap principle, and applying it is how a player moves from avoiding obvious mistakes to actively steering.",
+          "A practical simplification: track one opponent properly rather than three badly. The one who has called tiles and is discarding narrowly is most likely to win, so their discard pile is the one worth memorising.",
+          "The reason the discard pile beats every other information source is that it is authoritative. Body language, timing and hesitation are suggestive but can be faked or misread. A tile on the table is a fact: that player chose not to keep it, and in most rulesets cannot win on it. Building your defensive picture on facts rather than inferences is what makes defence reliable rather than speculative."
+        ]
+      },
+      {
+        "heading": "When Two Discards Are Equal",
+        "body": [
+          "Often the comparison produces a tie. Two tiles help your hand equally, or the difference is too small to resolve. In that case danger decides, and danger is easier to read than value.",
+          "A tile already in the threatening player’s discard pile wins any tie. If neither is there, prefer the tile with more copies visible on the table. If it is still tied, prefer the tile that is further from the middle of its suit — terminals and honours are generally safer than central tiles because fewer waiting shapes need them.",
+          "There is a fourth tiebreaker that beginners never consider: the information you leak. Discarding from a suit you have been avoiding tells the table something about your hand. Discarding a tile that keeps your options ambiguous leaks less. When everything else is equal, prefer the discard that reveals least.",
+          "This matters more late in the hand. Early on, no opponent can use your discard pattern meaningfully, so the information cost is near zero. In the final few turns, a single revealing discard can tell a strong opponent exactly which tiles you need, and they will hold them.",
+          "The order of tiebreakers is worth memorising because it removes hesitation under time pressure: safety against the tracked opponent, then visible copies, then distance from the middle, then information leaked. Applying them in that order costs a second and prevents most rushed errors.",
+          "One refinement that matters in the last few turns: when the game is nearly over, information leaked becomes much more valuable to your opponents than it was early on. A single discard that reveals which suit you are waiting on can let a strong opponent hold the exact tile you need and win the race. In the final turns, prefer the discard that says least, even if it is marginally safer to throw a different tile."
+        ]
+      },
+      {
+        "heading": "A Discard Routine",
+        "body": [
+          "The mechanics above only help if they run every turn without requiring deliberation. So the deliverable of this guide is a routine, short enough to execute reliably at speed.",
+          "List your candidates. Usually two or three tiles in your hand are genuinely discardable this turn. Identifying them explicitly prevents the common failure of discarding the first tile that looks wrong.",
+          "Compare them on what they could become. A tile that can join more blocks survives. A compound shape is protected. A shape whose completing tiles are mostly visible loses its claim.",
+          "Check the tracked opponent’s discard pile. Any candidate appearing there is immediately the best choice, because safety against a committed player outweighs small differences in value.",
+          "If the candidates are still tied, apply the tiebreaker order — visible copies, distance from the middle, information leaked.",
+          "Then decide, and move on. The point of a routine is speed; a hand played well is not a hand played slowly. The comparison should take a few seconds once the habit forms, and the improvement comes from making the right choice consistently rather than from agonising over individual turns.",
+          "The reason this pays off across a session rather than only in dramatic hands is that discards compound. Each correct discard preserves one more option in a hand that needs many. Eighteen small correct decisions per hand do not produce a highlight, but they are how hands that looked unremarkable keep reaching tenpai."
+        ]
+      }
+    ],
+    "faq": [
+      {
+        "question": "How do I decide which tile to discard in mahjong?",
+        "answer": "Compare your candidates on what each could become, then on danger. Keep the tile that can join more blocks, and prefer to throw tiles already in the discard pile of the opponent you are tracking."
+      },
+      {
+        "question": "Should I discard honours or middle tiles first?",
+        "answer": "Honours first. A lone honour cannot form a sequence and needs two specific copies, while a middle tile can join blocks from four directions. Discard in order of shrinking options: honours, terminals, then middle tiles."
+      },
+      {
+        "question": "What do other players’ discards tell me?",
+        "answer": "A tile in an opponent’s discard pile is safe against them, since they cannot win on their own discard. Concentration and timing in their discards also reveal which suit they are collecting and which tiles they no longer need."
+      },
+      {
+        "question": "When two discards are equally useful, what breaks the tie?",
+        "answer": "Safety first: check the tracked opponent’s discards, then count visible copies, then prefer tiles further from the middle of their suit. Last, prefer the discard that reveals least about your hand."
+      }
+    ]
   }
 }

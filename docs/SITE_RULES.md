@@ -2,25 +2,26 @@
 
 > **站点级、跨功能的不可妥协约定。** 任何功能规格与本文件冲突时，**以本文件为准**。
 > 文案真源：`data/site.json`；规则真源：本文件。
-> 已确立：2026-09-17（R1–R3）／2026-09-18（R4 语种范围）
+> 已确立：2026-09-17（R1–R3）／2026-09-18（R4 语种范围）／2026-09-18（R1 改回港麻首屏）
 
 ---
 
-## R1 · 首屏第一区块 = 一键开局
+## R1 · 首屏第一区块 = 港麻一键开局
 
 **规则**
-各 locale 首页（`/`）的**第一个内容区块**必须是「立即开局」入口：一个主 CTA，点击即进入可玩牌局。
+各 locale 首页（`/`）的**第一个内容区块**必须是可立即上手的**四人港麻练习桌**（`HomeDailyHand`：当日种子墙 + `MahjongTable`）。访客进站即可打牌，不必先点进别的游戏页。
 
 **为什么**
-站点定位就是 *Instant play, no download*（`data/site.json → siteDescription`、`messages/*.json → home.instantPlay`）。访客进站的第一诉求是"马上玩一局"，且本站所有牌局**无失败惩罚** —— 没有任何理由让人先做别的事。
+站点差异化卖点是自研四人真麻将（见 `CLAUDE.md`）；Solitaire / Connect 是流量入口，**不得**占首页第一块。`Instant play, no download` 在此落实为「牌桌已在眼前」，而不是跳转到消除页。
 
 **要求**
-- 主 CTA 文案走 i18n（现成键：`home.playSolitaire`）
-- 落点：`/games/mahjong-solitaire-classic`（与历史实现一致，见 `components/HomeHero.tsx:14`）
-- ⛔ 签到、公告、推广位、每日挑战**一律不得**占据首屏第一区块（可出现于第二区块及以后）
+- 第一区块：`components/HomeDailyHand.tsx`（由 `app/[locale]/(public)/page.tsx` 置顶）
+- 规则集：Hong Kong（`lockRuleset` + daily seed）；文案走 `dailyHand.*`
+- ⛔ Solitaire / Connect 主 CTA、签到、公告、推广位、游戏墙**一律不得**占据首屏第一区块（可出现于第二区块及以后）
+- ⛔ 不要把 `HomeHero`（solitaire 主 CTA，见提交 `a81ea11`）再挂回首页第一块
 
-**现状偏差**
-~~`app/[locale]/(public)/page.tsx` 的第一区块是 `<HomeDailyHand />`~~ → **已修（2026-09-17）**：第一区块改为 `<HomeHero />`（Play CTA → solitaire classic），每日一局排第二。
+**现状（2026-09-18）**
+首页顺序：站点定位 `<h1>` + **`HomeDailyHand`** → SEO / Learn / FAQ → 游戏墙。`HomeHero` 不挂首页。
 
 ---
 
@@ -31,7 +32,7 @@
 
 - 真源：`data/site.json → homeH1`（当前值 `"Play Mahjong Online Free – Mahjong Solitaire, Riichi & Chinese Mahjong"`）
 - 同值 i18n 键：`messages/*.json → home.heroTitle`
-- 功能模块标题（每日挑战 / 游戏墙 / 学习卡片 / 术语表入口 …）**一律 `<h2>` 及以下**
+- 功能模块标题（每日一局 / 游戏墙 / 学习卡片 / 术语表入口 …）**一律 `<h2>` 及以下**
 
 **为什么**
 `<h1>` 是页面主题最强的相关性信号位，而首页是站点权重最高的页面。把它让给一个次要功能的标题，等于**浪费首页最强的关键词位**。
@@ -43,23 +44,19 @@
 - ⛔ 功能组件内**不得**出现 `<h1>`（页面标题层级由路由层决定，不由组件决定）
 - ⛔ 任何页面不得出现两个及以上 `<h1>`（见 R3）
 
-**现状（已修 · 2026-09-17）**
+**现状（2026-09-18）**
 
 | # | 位置 | 状态 |
 |---|---|---|
-| 1 | `components/HomeDailyHand.tsx` | `<h2>`（不再占用首页唯一 h1） |
-| 2 | `components/HomeHero.tsx` | **已挂回首页第一区块**；h1 = `home.heroTitle`；已去掉积分/签到/AchievementsWall |
-| 3 | `HomeDailyChallenge` / `DailyChallengeCard` | **已删除**（原为零引用死代码） |
-| 4 | `data/site.json → homeH1` / `home.heroTitle` | 经 `HomeHero` 渲染；EN 与 `homeH1` 同值 |
+| 1 | `app/[locale]/(public)/page.tsx` | **唯一 `<h1>`** = `home.heroTitle`（与港麻桌同属第一区块文案头） |
+| 2 | `components/HomeDailyHand.tsx` | `<h2>`（每日一局功能标题） |
+| 3 | `components/HomeHero.tsx` | **不挂首页**；内含 solitaire CTA，仅作备用 |
+| 4 | `data/site.json → homeH1` / `home.heroTitle` | EN 同值；由首页路由渲染 |
 
-**🔑 修复路径（推荐：恢复，而不是新建）**
-
-首页**曾经**有 Hero（h1 = 定位词 + Play Now + 三分入口 + 签到）。提交 `c9658df`（*"Focus the homepage on a seeded Hong Kong hand and an advisory coach"*）把它整体换成了 `HomeDailyHand`，**但没删 `HomeHero`**。所以 R1 + R2 可以**一次同时满足**：
-
-1. 把 `HomeHero`（或按其结构写一个更瘦的 Hero）挂回首页**第一区块** → 同时满足 R1
-2. 清掉 `HomeHero` 内的**积分/签到残留**：`usePoints` / `claimDailyCheckIn` / `home.checkInTitle` / `home.emailBonusHint` / `home.pointsBalance` 等 —— 均属**已废弃的积分经济**（v2 已删货币属性，见 `积分转成就系统_重构方案`）。`AchievementsWall` 若不需要展示也一并移除
-3. 移除 `HomeDailyHand` 的 `<h1>` → 降为 `<h2>`
-4. 删除 `HomeDailyChallenge.tsx` / `DailyChallengeCard.tsx`（两者均全仓零引用）
+**R1 + R2 同时满足**
+1. 第一区块 = 站点 `<h1>` + `HomeDailyHand`（牌桌即开局）
+2. `HomeDailyHand` 内只用 `<h2>` 及以下
+3. 不要为了 SEO 再把 solitaire `HomeHero` 插回第一块
 
 **其他页面不受影响**：`about` / `blog` / `blog/[slug]` / `games` / `games/*` / `learn/glossary` / `privacy` / `cookies` / `not-found` 的 `<h1>` = 该页主题，**现状正确，无需改动**。
 
@@ -121,9 +118,8 @@ node -e "const fs=require('fs');const L=['en','zh','zh-TW','ja','ko','es','fr','
 ```
 
 **验收清单**
-- [x] 首页第一区块 = 主 CTA「立即开局」，点击进入牌局
-- [x] 首页恰好 1 个 `<h1>`，文本 = `site.json.homeH1`（经 `home.heroTitle`）
-- [x] `HomeDailyHand` / 已删 challenge 组件内无 `<h1>`
-- [x] 首页功能标题用 `<h2>` 及以下
-- [x] Hero 配色走 `portal-*` 令牌
-- [x] 3 个 locale（`en` / `zh` / `zh-TW`）已有 `home.heroTitle` / `playSolitaire` 等键
+- [x] 首页第一区块 = 港麻 `HomeDailyHand`（牌桌即开局）
+- [x] 首页恰好 1 个 `<h1>`，文本 = `site.json.homeH1`（经 `home.heroTitle`，在路由层渲染）
+- [x] `HomeDailyHand` 内无 `<h1>`（功能标题用 `<h2>`）
+- [x] `HomeHero`（solitaire CTA）**不**挂在首页第一块
+- [x] 3 个 locale（`en` / `zh` / `zh-TW`）已有 `home.heroTitle` / `dailyHand.*` 等键

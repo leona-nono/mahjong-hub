@@ -1,11 +1,15 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import TileFace from '../TileFace';
 import type { GameState, HongKongMode, Seat, SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { formatPatternList, formatPaymentLabel, formatScoreHeadline } from '@/features/table/score-copy';
 import { tileFace, type Tile } from '@/lib/mahjong/tiles';
+import { buildCoachReview } from '@/lib/mahjong/coach';
+import { useCoachIntensity, useCoachRevealDisclosed } from '@/features/table/coach-prefs';
+import CoachReviewPanel from './CoachReviewPanel';
 
 const HUMAN: Seat = 0;
 const SEAT_KEY = { 0: 'seatEast', 1: 'seatSouth', 2: 'seatWest', 3: 'seatNorth' } as const;
@@ -122,6 +126,7 @@ export interface ResultBannerProps {
 /** End-of-hand result overlay with score breakdown and hand review. */
 export function ResultBanner({ state, onNewGame, onNextHand }: ResultBannerProps) {
   const t = useTranslations('mahjong');
+  const reviewT = useTranslations('review');
   const seats = useTranslations('regional');
   const seatName = (seat: number) => seats(SEAT_KEY[seat as Seat]);
   const result = state.result!;
@@ -133,6 +138,25 @@ export function ResultBanner({ state, onNewGame, onNextHand }: ResultBannerProps
     ...state.players[seat].hand,
     ...(seat === winnerSeat && result.loser !== undefined && state.lastDiscard ? [state.lastDiscard.tile] : [])
   ];
+
+  const [coachIntensity] = useCoachIntensity();
+  const [revealDisclosed, markRevealDisclosed] = useCoachRevealDisclosed();
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [showDisclose, setShowDisclose] = useState(false);
+  const coachReview = useMemo(
+    () =>
+      buildCoachReview(state, HUMAN, {
+        discloseReveal: showDisclose
+      }),
+    [state, showDisclose]
+  );
+
+  const openReview = () => {
+    setShowDisclose(!revealDisclosed);
+    setReviewOpen(true);
+    if (!revealDisclosed) markRevealDisclosed();
+  };
+
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-[3px]">
       <div className="max-h-[92vh] min-w-[380px] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#f4f0df] p-8 text-center text-emerald-950 shadow-[0_0_70px_rgba(251,191,36,.38)]">
@@ -190,6 +214,28 @@ export function ResultBanner({ state, onNewGame, onNextHand }: ResultBannerProps
             {state.matchResult.remainingRiichiSticks > 0 && <p className="mt-2 text-xs font-bold text-amber-800">{t('riichiDepositsRemain', { n: state.matchResult.remainingRiichiSticks })}</p>}
           </div>
         )}
+
+        {/* Settlement teaching entry: live/ask = coach CTA; silent = table-local static link (P1-10). */}
+        <div className="mt-5">
+          {coachIntensity === 'silent' ? (
+            <button
+              type="button"
+              onClick={openReview}
+              className="text-sm font-bold text-emerald-800 underline underline-offset-2 hover:text-emerald-950"
+            >
+              {reviewT('staticEntry')}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={openReview}
+              className="rounded-lg border border-amber-500/50 bg-amber-100 px-5 py-2.5 text-sm font-black text-emerald-950 hover:bg-amber-200"
+            >
+              {reviewT('offerCta')}
+            </button>
+          )}
+        </div>
+
         <div className="mt-6 flex justify-center gap-3">
           {state.matchEnded ? (
             <p className="rounded-lg bg-amber-100 px-5 py-3 font-black text-emerald-950">{t('southRoundComplete')}</p>
@@ -197,6 +243,20 @@ export function ResultBanner({ state, onNewGame, onNextHand }: ResultBannerProps
           <button type="button" onClick={onNewGame} className="rounded-lg border border-[#0b6749] px-5 py-3 font-black text-[#0b6749] hover:bg-emerald-50">{t('newMatch')}</button>
         </div>
       </div>
+      {reviewOpen && (
+        <CoachReviewPanel
+          key={showDisclose ? 'first-review' : 'review'}
+          review={coachReview}
+          onClose={() => setReviewOpen(false)}
+          defaultOpen={
+            showDisclose
+              ? ['A', 'B']
+              : coachReview.outcome === 'iWon'
+                ? ['A', 'C']
+                : ['miss']
+          }
+        />
+      )}
     </div>
   );
 }

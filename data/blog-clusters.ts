@@ -1,4 +1,4 @@
-export type BlogClusterId = 'learn' | 'variants' | 'play' | 'culture' | 'buy';
+export type BlogClusterId = 'learn' | 'variants' | 'play' | 'culture' | 'buy' | 'strategy';
 
 export type BlogCluster = {
   id: BlogClusterId;
@@ -18,6 +18,16 @@ export const BLOG_CLUSTERS: BlogCluster[] = [
       'mahjong-tiles-meaning-guide',
       'mahjong-scoring-system-explained',
       'how-many-players-mahjong'
+    ]
+  },
+  {
+    id: 'strategy',
+    pillar: 'mahjong-strategy',
+    members: [
+      'best-opening-hands',
+      'defense-strategy',
+      'common-beginner-mistakes',
+      'discard-strategy'
     ]
   },
   {
@@ -58,7 +68,12 @@ const CTA_HREF: Record<string, string> = {
   'mahjong-etiquette-tips': '/games/hong-kong-mahjong',
   'mahjong-history-cultural-guide': '/games/hong-kong-mahjong',
   'how-to-play-american-mahjong': '/games/classic',
-  'how-many-players-mahjong': '/games/hong-kong-mahjong'
+  'how-many-players-mahjong': '/games/hong-kong-mahjong',
+  'mahjong-strategy': '/games/hong-kong-mahjong',
+  'best-opening-hands': '/games/hong-kong-mahjong',
+  'defense-strategy': '/games/hong-kong-mahjong',
+  'common-beginner-mistakes': '/games/hong-kong-mahjong',
+  'discard-strategy': '/games/hong-kong-mahjong'
 };
 
 /** Cross-cluster bridge, rendered as one inline link in the second paragraph. */
@@ -69,7 +84,7 @@ const BRIDGE: Record<string, string> = {
   'what-is-mahjong': 'types-of-mahjong-games',
   'how-to-play-mahjong': 'mahjong-tiles-meaning-guide',
   'types-of-mahjong-games': 'what-is-mahjong',
-  'how-to-win-mahjong': 'mahjong-scoring-system-explained',
+  'how-to-win-mahjong': 'mahjong-strategy',
   'how-to-play-mahjong-online': 'what-is-mahjong',
   'american-vs-chinese-mahjong': 'types-of-mahjong-games',
   'mahjong-history-cultural-guide': 'what-is-mahjong',
@@ -77,7 +92,12 @@ const BRIDGE: Record<string, string> = {
   'best-mahjong-sets-for-beginners': 'mahjong-tiles-meaning-guide',
   'where-to-buy-mahjong-set': 'best-mahjong-sets-for-beginners',
   'how-to-play-american-mahjong': 'mahjong-rules-beginners-complete-guide',
-  'how-many-players-mahjong': 'types-of-mahjong-games'
+  'how-many-players-mahjong': 'types-of-mahjong-games',
+  'mahjong-strategy': 'how-to-win-mahjong',
+  'best-opening-hands': 'mahjong-tiles-meaning-guide',
+  'defense-strategy': 'common-beginner-mistakes',
+  'common-beginner-mistakes': 'defense-strategy',
+  'discard-strategy': 'mahjong-scoring-system-explained'
 };
 
 export function clusterOf(slug: string): BlogCluster | undefined {

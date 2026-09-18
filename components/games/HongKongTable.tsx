@@ -205,6 +205,32 @@ export default function HongKongTable({
     if (state.wallIndex > previous.wallIndex) playMahjongSound('draw', undefined, voiceLocale);
   }, [state, soundEnabled, voiceLocale]);
 
+  // #region agent log
+  useEffect(() => {
+    const shell = tableShellRef.current;
+    const mobile = shell?.querySelector('[data-debug-mobile-table]') as HTMLElement | null;
+    const ms = mobile ? getComputedStyle(mobile) : null;
+    const payload = {
+      sessionId: '3bd6ce',
+      runId: 'pre-fix',
+      hypothesisId: 'C',
+      location: 'HongKongTable.tsx:layout',
+      message: 'shell layout',
+      data: {
+        w: window.innerWidth,
+        shellH: shell?.clientHeight ?? null,
+        shellW: shell?.clientWidth ?? null,
+        mobileDisplay: ms?.display ?? null,
+        mobileH: mobile?.clientHeight ?? null,
+        phase: state.phase,
+        hasCoach: Boolean(coach)
+      },
+      timestamp: Date.now()
+    };
+    fetch('/api/debug-log', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {});
+  }, [state.phase, coach]);
+  // #endregion
+
   return (
     <section ref={tableShellRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell relative ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
       {/* Mobile: keep coach in its own strip so it never covers discard rivers. */}

@@ -342,3 +342,14 @@ export function decomposeWins(counts: number[], meldCount = 0): HandSet[][] {
 
   return found;
 }
+
+/**
+ * Expand a HandSet into concrete tiles for settlement teaching.
+ * `HandSet.tile` stores only the lowest tile of the block.
+ */
+export function expandSet(set: HandSet): Tile[] {
+  if (set.kind === 'pair') return [set.tile, set.tile];
+  if (set.kind === 'triplet') return [set.tile, set.tile, set.tile];
+  const start = tileIndex(set.tile);
+  return [tileFromIndex(start), tileFromIndex(start + 1), tileFromIndex(start + 2)];
+}

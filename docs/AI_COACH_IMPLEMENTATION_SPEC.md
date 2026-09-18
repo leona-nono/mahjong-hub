@@ -8,6 +8,10 @@
 > **上游设计文档**（仅追溯用，不必读）：见 §10
 > **角色定位**：游戏设计 / 产品设计交付物。本文件不 commit、不 push，由执行者落地。
 
+> ## 实施切片 · Phase E（2026-09-18）
+>
+> 港麻 MVP 已按 E1→E2→E3 落地：`ScoreResult` 扩展、`CoachReview` / `buildCoachReview`、`CoachReviewPanel`、ResultBanner 入口（silent 桌面静态链）、高频 Evidence + 三套 formula。立直/国标 B 层标 partial；美式/川台未接 Panel。不依赖 Phase D 立绘席。
+
 ---
 
 > ## 🔴 修订块 · v2（2026-09-16）：积分 → 成就重构

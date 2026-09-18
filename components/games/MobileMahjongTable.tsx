@@ -88,7 +88,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
   })();
 
   return (
-    <div className="relative flex h-[calc(100dvh-7rem)] min-h-[520px] flex-col overflow-hidden rounded-xl bg-transparent text-white lg:hidden landscape:fixed landscape:inset-0 landscape:z-[60] landscape:h-dvh landscape:min-h-0 landscape:rounded-none">
+    <div data-debug-mobile-table className="relative flex h-[calc(100dvh-7rem)] min-h-[520px] flex-col overflow-hidden rounded-xl bg-transparent text-white lg:hidden landscape:fixed landscape:inset-0 landscape:z-[60] landscape:h-dvh landscape:min-h-0 landscape:rounded-none">
       <div className="flex min-h-11 items-center justify-between gap-1 border-b border-white/10 bg-[#0b6548] px-2">
         <div className="flex flex-wrap gap-1">
           <TableToolButton label={paused ? t('play') : t('pause')} onClick={onTogglePause}>

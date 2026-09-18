@@ -1,12 +1,13 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 
-/** Primary play entry — `/games/mahjong-solitaire-classic` (SITE_RULES R1). */
+/** Primary play entry — solitaire classic (not homepage R1; see SITE_RULES). */
 const SOLITAIRE_HREF = '/games/mahjong-solitaire-classic';
 
 /**
- * Homepage first block: site-positioning `<h1>` + one-click play CTA.
- * Stripped of the retired points / check-in economy (SITE_RULES R1 / R2).
+ * Optional solitaire-led hero block (SITE_RULES: **not** homepage first block).
+ * Homepage R1 uses HomeDailyHand (Hong Kong table). Keep this file if a
+ * secondary surface needs a solitaire CTA + positioning h1.
  */
 export default async function HomeHero() {
   const t = await getTranslations('home');

@@ -7,7 +7,6 @@ import {
 import GameCard from '@/components/GameCard';
 import HomeDailyHand from '@/components/HomeDailyHand';
 import HomeFaq, { homeFaqJsonLd } from '@/components/HomeFaq';
-import HomeHero from '@/components/HomeHero';
 import HomeLearnCards from '@/components/HomeLearnCards';
 import HomeSeoBlock from '@/components/HomeSeoBlock';
 import { homeSeo } from '@/lib/home-seo';
@@ -69,9 +68,21 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <HomeHero />
-
-      <HomeDailyHand />
+      {/* SITE_RULES R1: first block = Hong Kong practice table (instant play).
+          R2: sole <h1> = site-positioning keywords; DailyHand titles stay <h2>. */}
+      <section aria-labelledby="home-hero-title" className="space-y-4">
+        <div>
+          <h1
+            id="home-hero-title"
+            className="font-display text-3xl font-semibold tracking-tight text-portal-text sm:text-4xl"
+          >
+            {t('heroTitle')}
+          </h1>
+          <p className="mt-2 text-sm font-medium text-portal-accent sm:text-base">{t('brandLine')}</p>
+          <p className="mt-1 text-sm text-portal-muted">{t('instantPlay')}</p>
+        </div>
+        <HomeDailyHand />
+      </section>
 
       <HomeSeoBlock locale={locale} />
 
