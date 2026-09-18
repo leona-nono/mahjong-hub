@@ -29,7 +29,7 @@
 **规则**
 首页**有且仅有一个** `<h1>`，其文本 = 站点定位关键词。
 
-- 真源：`data/site.json → homeH1`（当前值 `"Free Mahjong Games Online"`）
+- 真源：`data/site.json → homeH1`（当前值 `"Play Mahjong Online Free – Mahjong Solitaire, Riichi & Chinese Mahjong"`）
 - 同值 i18n 键：`messages/*.json → home.heroTitle`
 - 功能模块标题（每日挑战 / 游戏墙 / 学习卡片 / 术语表入口 …）**一律 `<h2>` 及以下**
 

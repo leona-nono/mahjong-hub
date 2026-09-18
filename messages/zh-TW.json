@@ -16,6 +16,8 @@
     "beginners": "學習",
     "beginnersSubtitle": "從零開始學麻將——淺顯易懂的規則、策略與教學。",
     "beginnersComingSoon": "入門教學即將上線。",
+    "tools": "工具",
+    "toolsSubtitle": "免費麻將計算器——查聽牌、算番數、認牌面。",
     "set": "商店",
     "setSubtitle": "精選麻將套裝與配件推薦。",
     "setComingSoon": "精選商品即將上線。",
@@ -27,7 +29,7 @@
     "gameHall": "遊戲大廳"
   },
   "home": {
-    "heroTitle": "免費線上麻將遊戲",
+    "heroTitle": "免費線上打麻將 – 麻將消除、立直麻將與中國麻將",
     "heroSubtitle": "即開即玩，無需下載",
     "playButton": "立即遊玩",
     "featuredTitle": "精選推薦",
@@ -670,7 +672,7 @@
     "coachRiskHigh": "公開風險高：對手已亮出 {tile}。"
   },
   "seo": {
-    "homeTitle": "免費線上麻將 | Mahjong Hub",
+    "homeTitle": "免費線上打麻將 – 麻將消除、立直麻將與中國麻將 | Mahjong Hub",
     "homeDescription": "免費線上玩麻將消消樂、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。",
     "wardrobeTitle": "牌背與桌布外觀 | Mahjong Hub",
     "blogTitle": "麻將入門指南與規則 | Mahjong Hub",

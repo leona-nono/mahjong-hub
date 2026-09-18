@@ -28,7 +28,7 @@ export const DEFAULT_PUBLIC_SITE_SETTINGS: PublicSiteSettings = {
   defaultLocale: 'en',
   ogImage: '/og-default.png',
   titleTemplate: '{page} | {brand}',
-  homeH1: 'Free Mahjong Games Online',
+  homeH1: 'Play Mahjong Online Free – Mahjong Solitaire, Riichi & Chinese Mahjong',
   homeSubtitle: 'Mahjong Hub · Rainbow Mahjong Games',
   gameTitleTemplate: '{game} | {brand}',
   gameDescriptionTemplate:

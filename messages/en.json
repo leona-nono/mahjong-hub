@@ -4,7 +4,7 @@
     "tagline": "Free online mahjong games"
   },
   "seo": {
-    "homeTitle": "Free Mahjong Games Online | Mahjong Hub",
+    "homeTitle": "Play Mahjong Online Free – Mahjong Solitaire, Riichi & Chinese Mahjong | Mahjong Hub",
     "homeDescription": "Play free mahjong games online—solitaire, connect, and tile-match puzzles. Instant play in your browser, no download required.",
     "wardrobeTitle": "Mahjong Tile Backs & Table Skins | Mahjong Hub",
     "blogTitle": "Mahjong Guides & Rules for Beginners | Mahjong Hub",
@@ -26,6 +26,8 @@
     "beginners": "Learn",
     "beginnersSubtitle": "Learn mahjong from scratch — rules, strategies and guides in plain language.",
     "beginnersComingSoon": "Beginner guides are coming soon.",
+    "tools": "Tools",
+    "toolsSubtitle": "Free mahjong calculators — check your hand, count your score and identify any tile.",
     "set": "Shop",
     "setSubtitle": "Recommended mahjong sets and accessories from our curated picks.",
     "setComingSoon": "Recommended products are coming soon.",
@@ -36,7 +38,7 @@
     "regionSichuan": "Sichuan Mahjong"
   },
   "home": {
-    "heroTitle": "Free Mahjong Games Online",
+    "heroTitle": "Play Mahjong Online Free – Mahjong Solitaire, Riichi & Chinese Mahjong",
     "heroSubtitle": "Instant play, no download",
     "playButton": "Play Now",
     "featuredTitle": "Featured",
