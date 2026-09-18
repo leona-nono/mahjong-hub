@@ -79,15 +79,7 @@ export default function HomeDailyHand() {
   };
 
   return (
-    <section aria-labelledby="daily-hand-title" className="space-y-4">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-portal-accent">{t('eyebrow')}</p>
-        <h2 id="daily-hand-title" className="mt-1 font-display text-2xl font-semibold text-portal-text sm:text-3xl">
-          {t('title')}
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm text-portal-muted">{t('subtitle')}</p>
-        {streak > 0 && <p className="mt-2 text-sm font-semibold text-portal-text">{t('streak', { n: streak })}</p>}
-      </div>
+    <section aria-label={t('title')} className="space-y-4">
       {seed === null ? (
         <div className="flex h-64 items-center justify-center rounded-2xl border border-portal-border bg-portal-panel text-sm text-portal-muted">
           Loading table…

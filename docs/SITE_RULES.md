@@ -32,7 +32,7 @@
 
 - 真源：`data/site.json → homeH1`（当前值 `"Play Mahjong Online Free – Mahjong Solitaire, Riichi & Chinese Mahjong"`）
 - 同值 i18n 键：`messages/*.json → home.heroTitle`
-- 功能模块标题（每日一局 / 游戏墙 / 学习卡片 / 术语表入口 …）**一律 `<h2>` 及以下**
+- 功能模块标题（游戏墙 / 学习卡片 / 术语表入口 …）**一律 `<h2>` 及以下**；港麻桌区块不另挂可见功能标题（桌面即入口）
 
 **为什么**
 `<h1>` 是页面主题最强的相关性信号位，而首页是站点权重最高的页面。把它让给一个次要功能的标题，等于**浪费首页最强的关键词位**。
@@ -49,13 +49,13 @@
 | # | 位置 | 状态 |
 |---|---|---|
 | 1 | `app/[locale]/(public)/page.tsx` | **唯一 `<h1>`** = `home.heroTitle`（与港麻桌同属第一区块文案头） |
-| 2 | `components/HomeDailyHand.tsx` | `<h2>`（每日一局功能标题） |
+| 2 | `components/HomeDailyHand.tsx` | **无可见标题**（仅 `aria-label`；牌桌紧接站点 `<h1>`） |
 | 3 | `components/HomeHero.tsx` | **不挂首页**；内含 solitaire CTA，仅作备用 |
 | 4 | `data/site.json → homeH1` / `home.heroTitle` | EN 同值；由首页路由渲染 |
 
 **R1 + R2 同时满足**
 1. 第一区块 = 站点 `<h1>` + `HomeDailyHand`（牌桌即开局）
-2. `HomeDailyHand` 内只用 `<h2>` 及以下
+2. `HomeDailyHand` 内不放可见功能标题 / `<h1>`（桌面即开局）
 3. 不要为了 SEO 再把 solitaire `HomeHero` 插回第一块
 
 **其他页面不受影响**：`about` / `blog` / `blog/[slug]` / `games` / `games/*` / `learn/glossary` / `privacy` / `cookies` / `not-found` 的 `<h1>` = 该页主题，**现状正确，无需改动**。
@@ -120,6 +120,6 @@ node -e "const fs=require('fs');const L=['en','zh','zh-TW','ja','ko','es','fr','
 **验收清单**
 - [x] 首页第一区块 = 港麻 `HomeDailyHand`（牌桌即开局）
 - [x] 首页恰好 1 个 `<h1>`，文本 = `site.json.homeH1`（经 `home.heroTitle`，在路由层渲染）
-- [x] `HomeDailyHand` 内无 `<h1>`（功能标题用 `<h2>`）
+- [x] `HomeDailyHand` 内无可见功能标题 / `<h1>`（桌面紧接站点 `<h1>`）
 - [x] `HomeHero`（solitaire CTA）**不**挂在首页第一块
 - [x] 3 个 locale（`en` / `zh` / `zh-TW`）已有 `home.heroTitle` / `dailyHand.*` 等键
