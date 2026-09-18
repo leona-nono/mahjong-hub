@@ -51,7 +51,14 @@ const CTA_HREF: Record<string, string> = {
   'mahjong-scoring-system-explained': '/games/hong-kong-mahjong',
   'how-to-win-mahjong': '/games/hong-kong-mahjong',
   'types-of-mahjong-games': '/games/classic',
-  'american-vs-chinese-mahjong': '/games/classic'
+  'american-vs-chinese-mahjong': '/games/classic',
+  'how-to-play-mahjong-online': '/games/hong-kong-mahjong',
+  'best-mahjong-sets-for-beginners': '/games/mahjong-solitaire-classic',
+  'where-to-buy-mahjong-set': '/games/mahjong-solitaire-classic',
+  'mahjong-etiquette-tips': '/games/hong-kong-mahjong',
+  'mahjong-history-cultural-guide': '/games/hong-kong-mahjong',
+  'how-to-play-american-mahjong': '/games/classic',
+  'how-many-players-mahjong': '/games/hong-kong-mahjong'
 };
 
 /** Cross-cluster bridge, rendered as one inline link in the second paragraph. */
