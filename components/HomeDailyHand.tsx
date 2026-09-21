@@ -31,6 +31,30 @@ function readProgress(): DailyHandProgress {
   }
 }
 
+/** SSR + first paint: keyword-rich table copy until the client seeds the deal. */
+function DailyHandSsrIntro() {
+  const t = useTranslations('dailyHand');
+  return (
+    <div
+      className="rounded-2xl border border-portal-border bg-portal-panel px-5 py-6 sm:px-6"
+      data-daily-hand="ssr-intro"
+    >
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-portal-accent/90">
+        {t('eyebrow')}
+      </p>
+      <h2 className="mt-2 font-display text-xl font-semibold text-portal-text sm:text-2xl">
+        {t('title')}
+      </h2>
+      <p className="mt-2 text-sm text-portal-muted">{t('subtitle')}</p>
+      <div className="mt-4 space-y-3 text-sm leading-relaxed text-portal-muted">
+        <p>{t('ssrP1')}</p>
+        <p>{t('ssrP2')}</p>
+        <p>{t('ssrP3')}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function HomeDailyHand() {
   const t = useTranslations('dailyHand');
   const [seed, setSeed] = useState<number | null>(null);
@@ -81,11 +105,9 @@ export default function HomeDailyHand() {
   return (
     <section aria-label={t('title')} className="space-y-4">
       {seed === null ? (
-        <div className="flex h-64 items-center justify-center rounded-2xl border border-portal-border bg-portal-panel text-sm text-portal-muted">
-          Loading table…
-        </div>
+        <DailyHandSsrIntro />
       ) : (
-        <TableErrorBoundary fallbackLabel="Daily hand table failed to load">
+        <TableErrorBoundary fallbackLabel={t('tableFailed')}>
           <MahjongTable dailySeed={seed} lockRuleset onHandOver={onHandOver} />
         </TableErrorBoundary>
       )}
@@ -94,7 +116,11 @@ export default function HomeDailyHand() {
           <p className="font-semibold text-portal-text">{t('complete')}</p>
           <p className="mt-1 text-sm text-portal-text">{resultLine}</p>
           <p className="mt-1 text-sm text-portal-muted">{t('streak', { n: streak })}</p>
-          <button type="button" onClick={share} className="mt-3 rounded-lg bg-portal-accent px-3 py-2 text-sm font-semibold text-portal-on-accent">
+          <button
+            type="button"
+            onClick={share}
+            className="mt-3 rounded-lg bg-portal-accent px-3 py-2 text-sm font-semibold text-portal-on-accent"
+          >
             {copied ? t('copied') : t('share')}
           </button>
         </div>

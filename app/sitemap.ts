@@ -82,7 +82,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // tool before its route ships would point crawlers at a 404. Add to this
     // list in the same change that creates the route (docs/MAHJONG_TOOLS_SPEC.md
     // §3.2 / §5).
-    for (const toolPath of ['/tools', '/tools/waits'] as const) {
+    for (const toolPath of ['/tools', '/tools/waits', '/tools/tile-identifier', '/tools/score'] as const) {
       entries.push({
         url: `${BASE}/${locale}${toolPath}`,
         lastModified,

@@ -15,10 +15,8 @@ export const dynamic = 'force-static';
  * child tools each take a specific one. Splitting them into four sibling pages
  * would make all four thin.
  *
- * Per §3.2 the hub may only ship alongside at least one *working* child tool,
- * so `waits` is listed as live while `score` and `tile-identifier` are marked
- * in development. Listing a tool that does not exist yet would be a second
- * Coming Soon page, and the site already has enough of those.
+ * Per §3.2 the hub may only ship alongside at least one *working* child tool.
+ * All three Phase-1 tools (waits, tile-identifier, score) are live.
  */
 
 type ToolEntry = {
@@ -29,8 +27,8 @@ type ToolEntry = {
 
 const TOOLS: ToolEntry[] = [
   { id: 'waits', href: '/tools/waits', live: true },
-  { id: 'score', href: '/tools/score', live: false },
-  { id: 'tileId', href: '/tools/tile-identifier', live: false }
+  { id: 'tileId', href: '/tools/tile-identifier', live: true },
+  { id: 'score', href: '/tools/score', live: true }
 ];
 
 const HUB_FAQ_COUNT = 4;
@@ -70,7 +68,9 @@ export default async function ToolsHubPage({
     name: t('hubTitle'),
     description: t('hubLead'),
     url: pageUrl,
-    hasPart: TOOLS.map((tool) => ({
+    // Only live tools belong in structured data — listing undeployed URLs
+    // would hand crawlers soft-404 targets (MAHJONG_TOOLS_SPEC §3.2).
+    hasPart: TOOLS.filter((tool) => tool.live).map((tool) => ({
       '@type': 'SoftwareApplication',
       name: t(`${tool.id}Title`),
       description: t(`${tool.id}Lead`),
@@ -140,7 +140,9 @@ export default async function ToolsHubPage({
         })}
       </div>
 
-      <p className="mt-4 text-xs text-portal-muted">{t('inDevelopmentNote')}</p>
+      {TOOLS.some((tool) => !tool.live) ? (
+        <p className="mt-4 text-xs text-portal-muted">{t('inDevelopmentNote')}</p>
+      ) : null}
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold text-portal-text">{t('hubAboutTitle')}</h2>
@@ -183,11 +185,6 @@ export default async function ToolsHubPage({
         </ul>
       </section>
 
-      <p className="mt-10 text-sm">
-        <Link href="/challenge" className="text-portal-accent underline">
-          {t('hubChallenge')}
-        </Link>
-      </p>
     </div>
   );
 }

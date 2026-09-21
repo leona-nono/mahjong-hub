@@ -12,6 +12,11 @@ import {
   type Tile
 } from '@/lib/mahjong/tiles';
 import { shanten, waitingTiles } from '@/lib/mahjong/shanten';
+import {
+  encodeSharedHand,
+  parseSharedHand,
+  SHARED_HAND_MAX_TILES
+} from '@/lib/tools/hand-share';
 
 /**
  * Mahjong Hand Checker.
@@ -31,7 +36,7 @@ import { shanten, waitingTiles } from '@/lib/mahjong/shanten';
  */
 
 const RULESET = 'hongkong' as const;
-const MAX_TILES = 14;
+const MAX_TILES = SHARED_HAND_MAX_TILES;
 
 /** Tiles are laid out in four rows: characters, dots, bamboo, honours. */
 const ROWS: { suit: Suit; ranks: number[] }[] = [
@@ -73,27 +78,15 @@ function nextReadableCount(count: number): number {
   return target > count ? target : target + 3;
 }
 
-/** Parse `?hand=m1m2m3...`; ignore anything malformed rather than throwing. */
-function parseSharedHand(search: string): Tile[] {
-  const raw = new URLSearchParams(search).get('hand');
-  if (!raw) return [];
-  const ids = raw.match(/[mpsz][1-9]/g);
-  if (!ids) return [];
-  const valid = ids.filter((id) => {
-    const index = tileIndex(id);
-    return index >= 0 && index < TILE_KINDS;
-  });
-  if (valid.length === 0 || valid.length > MAX_TILES) return [];
-  // Cap each kind at four copies — silently trim the surplus.
-  const tally = new Map<string, number>();
-  const kept: Tile[] = [];
-  for (const id of valid) {
-    const seen = tally.get(id) ?? 0;
-    if (seen >= COPIES_PER_TILE) continue;
-    tally.set(id, seen + 1);
-    kept.push(id);
+function syncHandToUrl(tiles: Tile[]) {
+  if (typeof window === 'undefined') return;
+  const url = new URL(window.location.href);
+  if (tiles.length === 0) {
+    url.searchParams.delete('hand');
+  } else {
+    url.searchParams.set('hand', encodeSharedHand(tiles));
   }
-  return kept;
+  window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
 }
 
 export default function WaitsTool() {
@@ -106,6 +99,12 @@ export default function WaitsTool() {
     setHand(parseSharedHand(window.location.search));
     setHydrated(true);
   }, []);
+
+  // Keep `?hand=` shareable as the hand changes (T5).
+  useEffect(() => {
+    if (!hydrated) return;
+    syncHandToUrl(hand);
+  }, [hand, hydrated]);
 
   const addTile = useCallback((tile: Tile) => {
     setHand((current) => {
