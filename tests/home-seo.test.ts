@@ -9,8 +9,15 @@ import {
 } from '@/lib/seo';
 import { homeJsonLd } from '@/lib/home-jsonld';
 import { DEFAULT_PUBLIC_SITE_SETTINGS } from '@/lib/site-settings';
+import { routing } from '@/i18n/routing';
 
 describe('homepage SEO consolidation', () => {
+  it('disables next-intl middleware Link hreflang headers', () => {
+    // HTML hreflang from pageMeta()/alternatesFor() is the single source.
+    // Duplicate Link headers confuse crawlers — keep alternateLinks off.
+    expect(routing.alternateLinks).toBe(false);
+  });
+
   it('points English canonical and x-default at /en', () => {
     const alts = alternatesFor('en', '');
     expect(alts.canonical).toBe(`${SITE_BASE_URL}/en`);
