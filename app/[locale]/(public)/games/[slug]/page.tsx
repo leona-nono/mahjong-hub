@@ -83,8 +83,7 @@ export default async function GamePage({
   const t = await getTranslations('game');
   const nav = await getTranslations('nav');
   const related = getLocalizedGames(getRelatedGames(slug, 8), locale);
-  // Every playable native game page (6 classic + solitaire + connect) shares
-  // the same GameCard recommendation rail — homepage cover style, not catalogue frames.
+  // Same bottom wall as the homepage: full-width GameCard grid, no right rail.
   const switchGames = getLocalizedGames(
     [...getGamesByNavGroup('classic'), ...getGamesByNavGroup('solitaire')],
     locale
@@ -199,22 +198,9 @@ export default async function GamePage({
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px]">
-        <div className="min-w-0">
-          {stage}
-          <AdSlot />
-        </div>
-
-        <aside className="hidden lg:block">
-          <h2 className="mb-3 font-display text-sm font-semibold uppercase tracking-wide text-portal-muted">
-            {t('tryAnother')}
-          </h2>
-          <div className="grid grid-cols-1 gap-3">
-            {switchGames.map((g) => (
-              <GameCard key={g.slug} game={g} locale={locale} size="sm" />
-            ))}
-          </div>
-        </aside>
+      <div className="min-w-0">
+        {stage}
+        <AdSlot />
       </div>
 
       {content ? (
@@ -288,16 +274,23 @@ export default async function GamePage({
         </div>
       ) : null}
 
-      <section className="mt-8 lg:hidden">
-        <h2 className="mb-3 font-display text-lg font-semibold text-portal-text">
-          {t('tryAnother')}
-        </h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {switchGames.map((g) => (
-            <GameCard key={g.slug} game={g} locale={locale} size="sm" />
-          ))}
-        </div>
-      </section>
+      {switchGames.length > 0 ? (
+        <section aria-labelledby="game-page-recs" className="mt-8">
+          <div className="mb-3 flex items-end justify-between gap-3">
+            <h2
+              id="game-page-recs"
+              className="font-display text-xl font-semibold text-portal-text sm:text-2xl"
+            >
+              {t('tryAnother')}
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {switchGames.map((g) => (
+              <GameCard key={g.slug} game={g} locale={locale} size="sm" />
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }
