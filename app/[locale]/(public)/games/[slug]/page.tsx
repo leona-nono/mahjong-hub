@@ -12,7 +12,7 @@ import {
 } from '@/data/games';
 import IframeSection from '@/components/IframeSection';
 import NativeGameLazy from '@/components/games/NativeGameLazy';
-import CatalogGameCard from '@/components/CatalogGameCard';
+import GameCard from '@/components/GameCard';
 import AdSlot from '@/components/AdSlot';
 import ComingSoonGame from '@/components/ComingSoonGame';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -83,19 +83,16 @@ export default async function GamePage({
   const t = await getTranslations('game');
   const nav = await getTranslations('nav');
   const related = getLocalizedGames(getRelatedGames(slug, 8), locale);
-  const regionalSwitchGames = getLocalizedGames(
-    getGamesByNavGroup('classic'),
-    locale
-  ).filter((candidate) => candidate.slug !== slug);
-  const solitaireSwitchGames = getLocalizedGames(
-    getGamesByNavGroup('solitaire'),
+  // Every playable native game page (6 classic + solitaire + connect) shares
+  // the same GameCard recommendation rail — homepage cover style, not catalogue frames.
+  const switchGames = getLocalizedGames(
+    [...getGamesByNavGroup('classic'), ...getGamesByNavGroup('solitaire')],
     locale
   ).filter((candidate) => candidate.slug !== slug);
   const isNative = game.gameType === 'native';
   const isComingSoon = game.gameType === 'coming-soon';
   const content = game.content;
   const isHongKong = game.ruleset === 'hongkong';
-  const isFourPlayer = game.category === 'four-player';
 
   const jsonLd: Record<string, unknown>[] = [];
   if (isNative) {
@@ -212,14 +209,9 @@ export default async function GamePage({
           <h2 className="mb-3 font-display text-sm font-semibold uppercase tracking-wide text-portal-muted">
             {t('tryAnother')}
           </h2>
-          <div className="regional-switch-grid">
-            {(isFourPlayer ? regionalSwitchGames : solitaireSwitchGames).map((g) => (
-              <CatalogGameCard
-                key={g.slug}
-                game={g}
-                kind={isFourPlayer ? 'classic' : 'solitaire'}
-                compact
-              />
+          <div className="grid grid-cols-1 gap-3">
+            {switchGames.map((g) => (
+              <GameCard key={g.slug} game={g} locale={locale} size="sm" />
             ))}
           </div>
         </aside>
@@ -300,14 +292,9 @@ export default async function GamePage({
         <h2 className="mb-3 font-display text-lg font-semibold text-portal-text">
           {t('tryAnother')}
         </h2>
-        <div className="regional-switch-grid regional-switch-grid--mobile">
-          {(isFourPlayer ? regionalSwitchGames : solitaireSwitchGames).map((g) => (
-            <CatalogGameCard
-              key={g.slug}
-              game={g}
-              kind={isFourPlayer ? 'classic' : 'solitaire'}
-              compact
-            />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {switchGames.map((g) => (
+            <GameCard key={g.slug} game={g} locale={locale} size="sm" />
           ))}
         </div>
       </section>

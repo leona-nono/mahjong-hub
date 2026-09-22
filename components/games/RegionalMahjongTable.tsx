@@ -282,22 +282,30 @@ export default function RegionalMahjongTable({
       </header>
 
       <div className="mahjong-desktop-board mahjong-desktop-board--seasonal relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-transparent shadow-[inset_0_0_90px_rgba(0,30,22,.34)]">
-        <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">{t('practiceTableAI')}</p>
+        <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">
+          {t('practiceTableAI')}
+          <span className="mx-2 text-emerald-200/50">·</span>
+          <span className="font-semibold text-cyan-100">{isSichuan ? r('sichuanTitle') : r('taiwanTitle')}</span>
+          <span className="mx-1.5 text-emerald-200/50">·</span>
+          <span className="font-semibold text-cyan-100">{r('turnDealer', { turn: seatNames[state.turn], dealer: seatNames[state.dealer] })}</span>
+          <span className="mx-1.5 text-emerald-200/50">·</span>
+          <span className="tabular-nums text-amber-100">{t('wallLeft', { n: wallLeft })}</span>
+        </p>
 
         <div className="absolute left-1/2 top-8 -translate-x-1/2"><RegionalConcealedRack count={state.players[3].hand.length} tiles={revealHands ? state.players[3].hand : undefined} orientation="top" /></div>
         <div className="absolute left-[15%] top-1/2 -translate-y-1/2"><RegionalConcealedRack count={state.players[2].hand.length} tiles={revealHands ? state.players[2].hand : undefined} orientation="left" /></div>
         <div className="absolute right-[15%] top-1/2 -translate-y-1/2"><RegionalConcealedRack count={state.players[1].hand.length} tiles={revealHands ? state.players[1].hand : undefined} orientation="right" /></div>
 
-        <RegionalPlayerBadge seat={3} active={state.turn === 3} className="right-[19%] top-[11%]" flowers={state.players[3].flowers} />
-        <RegionalPlayerBadge seat={2} active={state.turn === 2} className="left-5 top-[39%]" flowers={state.players[2].flowers} />
-        <RegionalPlayerBadge seat={1} active={state.turn === 1} className="right-5 top-[39%]" flowers={state.players[1].flowers} />
+        <RegionalPlayerBadge seat={3} active={state.turn === 3 && state.phase !== 'over'} className="right-[19%] top-[11%]" flowers={state.players[3].flowers} />
+        <RegionalPlayerBadge seat={2} active={state.turn === 2 && state.phase !== 'over'} className="left-5 top-[39%]" flowers={state.players[2].flowers} />
+        <RegionalPlayerBadge seat={1} active={state.turn === 1 && state.phase !== 'over'} className="right-5 top-[39%]" flowers={state.players[1].flowers} />
         {/* Keep the local player's badge in the lower-left safe area. The old
             placement overlapped West's revealed rack at end-of-hand. */}
-        <RegionalPlayerBadge seat={0} active={state.turn === 0} className="bottom-[20%] left-[3%]" flowers={human.flowers} human />
+        <RegionalPlayerBadge seat={0} active={state.turn === 0 && state.phase !== 'over'} className="bottom-[20%] left-[3%]" flowers={human.flowers} human />
 
-        {/* The outer four sides are reserved for concealed hands.  Discards and
-            exposed chi / pon / kan sets live in these four inner table areas,
-            around the score display, so a played tile never drifts into a hand. */}
+        {/* The outer four sides are reserved for concealed hands. Discards and
+            exposed chi / pon / kan sets live in these four inner table areas
+            so a played tile never drifts into a hand. */}
         <div className="pointer-events-none absolute left-[28%] right-[28%] top-[18%] h-[48%] border border-[#003d2f]">
         </div>
         <RegionalDiscardZone tiles={state.players[3].discards} melds={state.players[3].melds} className="left-1/2 top-[22%] -translate-x-1/2" orientation="top" />
@@ -305,11 +313,6 @@ export default function RegionalMahjongTable({
         <RegionalDiscardZone tiles={state.players[1].discards} melds={state.players[1].melds} className="right-[27%] top-[32%]" orientation="right" />
         <RegionalDiscardZone tiles={human.discards} melds={human.melds} className="bottom-[24%] left-1/2 -translate-x-1/2" orientation="bottom" />
 
-        <div className="absolute left-1/2 top-[45%] z-10 flex h-44 w-52 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-[5px] border-[#20222d] bg-[#07090d] text-center shadow-[0_12px_20px_rgba(0,0,0,.45)]">
-          <span className="text-[12px] font-black uppercase tracking-[.2em] text-cyan-300/75">{isSichuan ? r('sichuanTitle') : r('taiwanTitle')}</span>
-          <strong className="mt-2 text-2xl font-normal text-cyan-200">{r('turnDealer', { turn: seatNames[state.turn], dealer: seatNames[state.dealer] })}</strong>
-          <span className="mt-2 text-4xl font-light text-cyan-200">{wallLeft}</span>
-        </div>
         {!isSichuan && human.flowers.length > 0 && <div className="absolute right-[12%] top-[57%] z-20 flex items-center gap-1 rounded-lg bg-amber-50/95 px-2 py-1 text-sm font-black text-emerald-950 shadow-lg"><span>{t('flowersLabel')}</span>{human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="sm" traditional />)}</div>}
         {readyIntent && <p className="absolute bottom-[28%] left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#063d30]/95 px-3 py-1 text-xs font-bold text-amber-100">{r('readyHint')}</p>}
         {actionButtons}
@@ -340,7 +343,39 @@ function RegionalPlayerBadge({ seat, active, className, flowers, human = false }
   const portrait = [3, 1, 2, 0][seat];
   const row = portrait > 1 ? 1 : 0;
   const column = portrait % 2;
-  return <div className={`absolute z-20 flex w-24 flex-col items-center ${className}`}><div className={`relative overflow-hidden rounded-xl border-4 bg-[#f7f1df] shadow-lg ${active ? 'border-yellow-300' : 'border-[#e8ece3]'}`} aria-label={human ? 'You' : `Player ${seat + 1}`}><span className="relative block h-14 w-14 overflow-hidden rounded-[10px]"><img src="/images/mahjong/ai-avatars-default.webp" alt="" className="absolute h-[200%] w-[200%] max-w-none" style={{ left: `${-column * 100}%`, top: `${-row * 100}%` }} /></span></div>{flowers.length > 0 && <div className="mt-1 flex max-w-24 justify-center gap-px rounded bg-amber-50/90 p-0.5">{flowers.slice(0, 4).map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}</div>}</div>;
+  return (
+    <div
+      className={`absolute flex w-24 flex-col items-center transition-transform duration-200 ease-out ${
+        active ? 'z-30 scale-[1.28]' : 'z-20 scale-100'
+      } ${className}`}
+    >
+      <div
+        className={`relative overflow-hidden rounded-xl border-4 bg-[#f7f1df] ${
+          active
+            ? 'border-amber-300 shadow-[0_0_22px_rgba(251,191,36,.65)]'
+            : 'border-[#e8ece3] shadow-lg'
+        }`}
+        aria-label={human ? 'You' : `Player ${seat + 1}`}
+        aria-current={active ? 'true' : undefined}
+      >
+        <span className="relative block h-14 w-14 overflow-hidden rounded-[10px]">
+          <img
+            src="/images/mahjong/ai-avatars-default.webp"
+            alt=""
+            className="absolute h-[200%] w-[200%] max-w-none"
+            style={{ left: `${-column * 100}%`, top: `${-row * 100}%` }}
+          />
+        </span>
+      </div>
+      {flowers.length > 0 && (
+        <div className="mt-1 flex max-w-24 justify-center gap-px rounded bg-amber-50/90 p-0.5">
+          {flowers.slice(0, 4).map((tile, index) => (
+            <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function RegionalDiscardZone({ tiles, melds, className, orientation }: { tiles: Tile[]; melds: RegionalMeld[]; className: string; orientation: 'top' | 'left' | 'right' | 'bottom' }) {

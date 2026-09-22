@@ -130,7 +130,13 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
       </div>
 
       <div className="relative min-h-0 flex-1 overflow-hidden bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_58%,#003c2d_100%)] landscape:h-[calc(100dvh-3rem)]">
-        <p className="pointer-events-none absolute left-1/2 top-1 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#003d2f]/85 px-2 py-0.5 text-[10px] font-bold text-emerald-50">{t('allOpponentsAI')}</p>
+        <p className="pointer-events-none absolute left-1/2 top-1 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#003d2f]/85 px-2 py-0.5 text-[10px] font-bold text-emerald-50">
+          {t('allOpponentsAI')}
+          <span className="mx-1 text-emerald-200/50">·</span>
+          <span className="text-cyan-100">{roundLabel}</span>
+          <span className="mx-1 text-emerald-200/50">·</span>
+          <span className="tabular-nums text-amber-100">{tilesRemaining(state)}</span>
+        </p>
         <Opponent state={state} seat={3} className="left-1/2 top-7 -translate-x-1/2" />
         <Opponent state={state} seat={2} className="left-1 top-[26%]" />
         <Opponent state={state} seat={1} className="right-1 top-[26%]" />
@@ -145,13 +151,6 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
         <Discards state={state} seat={2} className="left-[12%] top-[42%]" />
         <Discards state={state} seat={1} className="right-[12%] top-[42%]" />
         <Discards state={state} seat={0} className="bottom-[26%] left-1/2 -translate-x-1/2" />
-
-        <div className="absolute left-1/2 top-[48%] z-10 flex h-[4.6rem] w-[5.2rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-4 border-[#242632] bg-[#080b10] shadow-xl">
-          <span className="text-[9px] font-bold tracking-[.16em] text-cyan-300">{isRiichi ? 'RIICHI' : isMcr ? 'MCR' : 'HK'}</span>
-          <strong className="text-sm font-medium text-cyan-100">{roundLabel}</strong>
-          <span className="text-lg font-light text-cyan-200">{tilesRemaining(state)}</span>
-          <span className="absolute -bottom-3 rounded bg-rose-600 px-2 text-[10px] font-black">{seatName(state.turn)}</span>
-        </div>
 
         {isRiichi && (
           <div className="absolute right-[23%] top-[29%] rounded-md bg-black/30 p-1 text-center text-xs font-bold text-amber-200">
@@ -321,8 +320,23 @@ function Action({ children, onClick, danger = false }: { children: ReactNode; on
 function Opponent({ state, seat, className }: { state: GameState; seat: Seat; className: string }) {
   const active = state.turn === seat && state.phase !== 'over';
   return (
-    <div className={'absolute z-20 flex items-center gap-1 rounded-full bg-black/35 p-1 pr-2 ' + className}>
-      <span className={active ? 'flex h-9 w-9 items-center justify-center rounded-full border-2 border-yellow-300 bg-violet-400 text-xs font-black' : 'flex h-9 w-9 items-center justify-center rounded-full border-2 border-white/60 bg-violet-500 text-xs font-black'}>P{seat + 1}</span>
+    <div
+      className={
+        'absolute flex items-center gap-1 rounded-full bg-black/35 p-1 pr-2 transition-transform duration-200 ease-out ' +
+        (active ? 'z-30 scale-125 shadow-[0_0_14px_rgba(251,191,36,.55)] ' : 'z-20 scale-100 ') +
+        className
+      }
+    >
+      <span
+        className={
+          active
+            ? 'flex h-10 w-10 items-center justify-center rounded-full border-2 border-amber-300 bg-violet-400 text-xs font-black'
+            : 'flex h-9 w-9 items-center justify-center rounded-full border-2 border-white/60 bg-violet-500 text-xs font-black'
+        }
+        aria-current={active ? 'true' : undefined}
+      >
+        P{seat + 1}
+      </span>
       <span className="text-sm font-black text-amber-100">{state.players[seat].score}</span>
     </div>
   );

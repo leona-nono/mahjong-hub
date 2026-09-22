@@ -319,7 +319,15 @@ export default function HongKongTable({
           style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}
         >
           <div className="absolute left-4 top-3 z-20 text-xl font-semibold text-emerald-100/45">Rate: 10</div>
-          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">{t('practiceTableAI')}</p>
+          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">
+            {t('practiceTableAI')}
+            <span className="mx-2 text-emerald-200/50">·</span>
+            <span className="font-semibold text-cyan-100">{gameName}</span>
+            <span className="mx-1.5 text-emerald-200/50">·</span>
+            <span className="font-semibold text-cyan-100">{roundLabel}</span>
+            <span className="mx-1.5 text-emerald-200/50">·</span>
+            <span className="tabular-nums text-amber-100">{t('wallLeft', { n: tilesRemaining(state) })}</span>
+          </p>
 
           <div className="absolute left-1/2 top-8 -translate-x-1/2">
             <ConcealedRack seat={3} count={state.players[3].hand.length} tiles={revealAllHands ? state.players[3].hand : undefined} orientation="top" />
@@ -346,19 +354,8 @@ export default function HongKongTable({
           <DiscardPool state={state} seat={1} className="right-[27%] top-[32%]" />
           <DiscardPool state={state} seat={0} className="bottom-[24%] left-1/2 -translate-x-1/2" showMelds={false} />
 
-          <div className="absolute left-1/2 top-[45%] z-10 h-44 w-52 -translate-x-1/2 -translate-y-1/2 rounded-xl border-[5px] border-[#20222d] bg-[#11121a] shadow-[0_12px_20px_rgba(0,0,0,.45)]">
-            <div className="absolute inset-5 flex flex-col items-center justify-center bg-[#07090d] text-center">
-              <span className="text-[13px] uppercase tracking-[.28em] text-cyan-300/75">{gameName}</span>
-              <strong className="mt-1 text-2xl font-normal text-cyan-200">{roundLabel}</strong>
-              <span className="mt-1 text-4xl font-light text-cyan-200">{tilesRemaining(state)}</span>
-            </div>
-            <CenterWind position="top" active={state.turn === 3}>N</CenterWind>
-            <CenterWind position="right" active={state.turn === 1}>S</CenterWind>
-            <CenterWind position="bottom" active={state.turn === 0}>E</CenterWind>
-            <CenterWind position="left" active={state.turn === 2}>W</CenterWind>
-          </div>
           {isMcr && (
-            <div className="absolute left-1/2 top-[57%] z-10 -translate-x-1/2 rounded-full border border-emerald-200/30 bg-[#063d30]/90 px-3 py-1 text-sm font-black tracking-[.12em] text-emerald-100">
+            <div className="absolute left-1/2 top-[48%] z-10 -translate-x-1/2 rounded-full border border-emerald-200/30 bg-[#063d30]/90 px-3 py-1 text-sm font-black tracking-[.12em] text-emerald-100">
               {t('mcrStrip')}
             </div>
           )}
@@ -551,10 +548,19 @@ function PlayerBadge({
 }) {
   const active = state.turn === seat && state.phase !== 'over';
   return (
-    <div className={`absolute z-20 flex w-24 flex-col items-center ${className}`}>
+    <div
+      className={`absolute flex w-24 flex-col items-center transition-transform duration-200 ease-out ${
+        active ? 'z-30 scale-[1.28]' : 'z-20 scale-100'
+      } ${className}`}
+    >
       <div
-        className={`relative overflow-hidden rounded-xl border-4 bg-[#f7f1df] shadow-lg ${active ? 'border-yellow-300' : 'border-[#e8ece3]'}`}
+        className={`relative overflow-hidden rounded-xl border-4 bg-[#f7f1df] ${
+          active
+            ? 'border-amber-300 shadow-[0_0_22px_rgba(251,191,36,.65)]'
+            : 'border-[#e8ece3] shadow-lg'
+        }`}
         aria-label={human ? 'You' : `Player ${seat + 1}`}
+        aria-current={active ? 'true' : undefined}
       >
         <DefaultPlayerPortrait seat={seat} />
       </div>
@@ -569,22 +575,4 @@ function PlayerBadge({
       )}
     </div>
   );
-}
-
-function CenterWind({
-  position,
-  active,
-  children
-}: {
-  position: 'top' | 'right' | 'bottom' | 'left';
-  active: boolean;
-  children: ReactNode;
-}) {
-  const classes = {
-    top: 'left-1/2 top-1 -translate-x-1/2',
-    right: 'right-2 top-1/2 -translate-y-1/2',
-    bottom: 'bottom-1 left-1/2 -translate-x-1/2',
-    left: 'left-2 top-1/2 -translate-y-1/2'
-  }[position];
-  return <span className={`absolute ${classes} flex h-6 w-8 items-center justify-center rounded text-sm font-black ${active ? 'bg-rose-700 text-white' : 'bg-slate-600 text-slate-100'}`}>{children}</span>;
 }

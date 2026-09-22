@@ -395,7 +395,23 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
 
         <div className="mahjong-desktop-board mahjong-desktop-board--seasonal relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-transparent shadow-[inset_0_0_90px_rgba(0,30,22,.34)]" style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}>
           <div className="absolute left-4 top-3 text-xl font-semibold leading-6 text-emerald-100/45">NMJL-STYLE<br />PRACTICE<br />Rate: 10</div>
-          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-[10px] font-bold tracking-wide text-emerald-50">{t('practiceTableNotice')}</p>
+          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-[10px] font-bold tracking-wide text-emerald-50">
+            {t('practiceTableNotice')}
+            <span className="mx-2 text-emerald-200/50">·</span>
+            <span className="font-semibold text-cyan-100">AMERICAN</span>
+            <span className="mx-1.5 text-emerald-200/50">·</span>
+            <span className="font-semibold text-cyan-100">
+              {game.phase === 'second-charleston-choice'
+                ? t('chooseRound2')
+                : game.phase === 'courtesy'
+                  ? t('courtesyPass')
+                  : inCharleston
+                    ? `${t('charleston')} ${game.charlestonRound}-${step + 1}/3`
+                    : t('yourTurn')}
+            </span>
+            <span className="mx-1.5 text-emerald-200/50">·</span>
+            <span className="tabular-nums text-amber-100">{deal.wall.length} {t('tilesLeft')}</span>
+          </p>
           {lessonGoal && <p className="absolute left-1/2 top-9 z-20 -translate-x-1/2 rounded-full bg-amber-300/90 px-3 py-1 text-[10px] font-black text-emerald-950">Lesson goal · {lessonGoal}</p>}
 
           <Wall className="left-1/2 top-8 -translate-x-1/2" count={13} orientation="top" />
@@ -404,10 +420,10 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           <CharlestonReserve className="left-1/2 top-[13%] -translate-x-1/2" />
           <CharlestonReserve className="left-[31%] top-[39%]" vertical />
           <CharlestonReserve className="right-[31%] top-[39%]" vertical />
-          <Avatar seat="P4" score="8900" portrait={0} status={botStatus(3)} className="right-[20%] top-[9%]" />
-          <Avatar seat="P3" score="8900" portrait={2} status={botStatus(2)} className="left-5 top-[37%]" />
-          <Avatar seat="P2" score="8900" portrait={1} status={botStatus(1)} className="right-5 top-[37%]" />
-          <Avatar seat="YOU" score="8920" portrait={3} className="bottom-[15%] left-[13%]" human />
+          <Avatar seat="P4" score="8900" portrait={0} status={botStatus(3)} active={game.phase === 'turn' && game.currentSeat === 3} className="right-[20%] top-[9%]" />
+          <Avatar seat="P3" score="8900" portrait={2} status={botStatus(2)} active={game.phase === 'turn' && game.currentSeat === 2} className="left-5 top-[37%]" />
+          <Avatar seat="P2" score="8900" portrait={1} status={botStatus(1)} active={game.phase === 'turn' && game.currentSeat === 1} className="right-5 top-[37%]" />
+          <Avatar seat="YOU" score="8920" portrait={3} active={game.phase === 'turn' && game.currentSeat === 0} className="bottom-[15%] left-[13%]" human />
 
           <div className="absolute left-1/2 top-[16%] z-30 flex -translate-x-1/2 gap-1 rounded-full bg-[#002f24]/90 p-1 text-[10px] font-black shadow-lg">
             {[t('step1'), t('step2'), t('step3'), t('step4')].map((label, index) => {
@@ -417,12 +433,6 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
           </div>
 
           <div className="pointer-events-none absolute left-[28%] right-[28%] top-[18%] h-[48%] border border-[#003d2f]" />
-          <div className="absolute left-1/2 top-[45%] z-10 flex h-40 w-52 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-xl border-[5px] border-[#20222d] bg-[#07090d] text-center shadow-xl">
-            <span className="text-[11px] font-black tracking-[.26em] text-cyan-300">AMERICAN</span>
-            <strong className="mt-2 text-2xl font-normal text-cyan-100">{game.phase === 'second-charleston-choice' ? t('chooseRound2') : game.phase === 'courtesy' ? t('courtesyPass') : inCharleston ? `${t('charleston')} ${game.charlestonRound}-${step + 1}/3` : t('yourTurn')}</strong>
-            <span className="mt-1 text-4xl font-light text-cyan-200">{deal.wall.length}</span>
-            <span className="mt-1 text-[10px] font-bold text-emerald-200">{t('tilesLeft')}</span>
-          </div>
 
           {(inCharleston || game.phase === 'second-charleston-choice' || game.phase === 'courtesy' || game.phase === 'claim') && <div className="absolute left-1/2 top-[46%] z-20 w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-emerald-200/15 bg-[#002f24]/95 px-6 py-5 text-center shadow-2xl">
             <p className="text-[2rem] font-black leading-tight text-amber-50">{game.phase === 'second-charleston-choice' ? t('secondCharlestonQ') : game.phase === 'courtesy' ? t('courtesyPass') : inCharleston ? `${t('charleston')} ${game.charlestonRound}-${step + 1}` : t('originalPracticeCard')}</p>
@@ -480,7 +490,11 @@ export default function AmericanMahjongTable({ onWin }: { onWin?: (points: numbe
       <div className="min-h-[620px] bg-transparent p-3 text-white min-[700px]:hidden" style={isFullscreen ? { minHeight: '100dvh' } : undefined}>
         <div className="flex items-center justify-between"><strong className="text-xs tracking-[.18em]">{t('aiTitle')}</strong><div className="flex gap-1"><button type="button" className="rounded bg-amber-300 px-3 py-1 text-xs font-black text-emerald-950" onClick={reset}>{t('newGame')}</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={toggleSound}>{soundEnabled ? t('soundOn') : t('soundOff')}</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={() => setShowAccessibility(true)}>Aa</button><button type="button" className="rounded border border-white/20 px-3 py-1 text-xs font-black" onClick={enterFullscreen}>{t('fullScreen')}</button></div></div>
         <div className="mt-4 rounded-2xl border border-white/10 bg-[#003b2d]/90 p-4 text-center"><p className="text-lg font-black">{game.phase === 'second-charleston-choice' ? t('secondCharlestonQ') : game.phase === 'courtesy' ? t('courtesyPass') : inCharleston ? `${t('charleston')} ${game.charlestonRound}-${step + 1}` : t('yourTurn')}</p><p className="mt-1 text-sm text-emerald-100">{notice}</p><p className="mt-2 text-[10px] text-emerald-200">{t('cardHint', { card: card.title })}</p></div>
-        <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-emerald-100"><Opponent label="P4" portrait={3} status={botStatus(3)} /><Opponent label="P3" portrait={2} status={botStatus(2)} /><Opponent label="P2" portrait={1} status={botStatus(1)} /></div>
+        <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-emerald-100">
+          <Opponent label="P4" portrait={3} status={botStatus(3)} active={game.phase === 'turn' && game.currentSeat === 3} />
+          <Opponent label="P3" portrait={2} status={botStatus(2)} active={game.phase === 'turn' && game.currentSeat === 2} />
+          <Opponent label="P2" portrait={1} status={botStatus(1)} active={game.phase === 'turn' && game.currentSeat === 1} />
+        </div>
         <CoachControls intensity={coachIntensity} onChange={setCoachIntensity} onAsk={() => setCoachAsked(true)} className="mt-4 text-emerald-50" />
         {coachIntensity !== 'silent' && (coachIntensity === 'live' || coachAsked || lastVerdict) && (
           <CoachPanel
@@ -533,8 +547,69 @@ function Portrait({ index, label, compact = false }: { index: 0 | 1 | 2 | 3; lab
     <img src="/images/mahjong/ai-avatars-default.webp" alt="" className="absolute h-[200%] w-[200%] max-w-none" style={{ left: `${-column * 100}%`, top: `${-row * 100}%` }} />
   </span>;
 }
-function Avatar({ seat, score, className, human = false, portrait = 0, status }: { seat: string; score: string; className: string; human?: boolean; portrait?: 0 | 1 | 2 | 3; status?: string }) { return <div className={`absolute z-20 flex w-24 flex-col items-center ${className}`}><div className={`rounded-full border-4 ${human ? 'border-amber-300' : 'border-white'} bg-[#f7f1df] shadow-lg`}><Portrait index={portrait} label={seat} /></div><div className="mt-1 rounded-full bg-black/40 px-2 py-0.5 text-xs font-black text-amber-100">{status ?? `G ${score}`}</div></div>; }
-function Opponent({ label, portrait, status }: { label: string; portrait: 0 | 1 | 2 | 3; status: string }) { return <div className="flex items-center rounded-full bg-black/35 p-2"><Portrait index={portrait} label={label} compact /><span className="ml-1 font-black text-amber-100">{status}</span></div>; }
+function Avatar({
+  seat,
+  score,
+  className,
+  human = false,
+  portrait = 0,
+  status,
+  active = false
+}: {
+  seat: string;
+  score: string;
+  className: string;
+  human?: boolean;
+  portrait?: 0 | 1 | 2 | 3;
+  status?: string;
+  active?: boolean;
+}) {
+  return (
+    <div
+      className={`absolute flex w-24 flex-col items-center transition-transform duration-200 ease-out ${
+        active ? 'z-30 scale-[1.28]' : 'z-20 scale-100'
+      } ${className}`}
+    >
+      <div
+        className={`rounded-full border-4 bg-[#f7f1df] ${
+          active
+            ? 'border-amber-300 shadow-[0_0_22px_rgba(251,191,36,.65)]'
+            : human
+              ? 'border-amber-300 shadow-lg'
+              : 'border-white shadow-lg'
+        }`}
+        aria-current={active ? 'true' : undefined}
+      >
+        <Portrait index={portrait} label={seat} />
+      </div>
+      <div className="mt-1 rounded-full bg-black/40 px-2 py-0.5 text-xs font-black text-amber-100">
+        {status ?? `G ${score}`}
+      </div>
+    </div>
+  );
+}
+function Opponent({
+  label,
+  portrait,
+  status,
+  active = false
+}: {
+  label: string;
+  portrait: 0 | 1 | 2 | 3;
+  status: string;
+  active?: boolean;
+}) {
+  return (
+    <div
+      className={`flex items-center justify-center rounded-full bg-black/35 p-2 transition-transform duration-200 ${
+        active ? 'scale-110 ring-2 ring-amber-300' : ''
+      }`}
+    >
+      <Portrait index={portrait} label={label} compact />
+      <span className="ml-1 font-black text-amber-100">{status}</span>
+    </div>
+  );
+}
 function TableButton({ children, onClick, active = false }: { children: ReactNode; onClick: () => void; active?: boolean }) { return <button type="button" onClick={onClick} className={`h-9 rounded-lg border px-4 text-xs font-black ${active ? 'border-amber-300 bg-amber-300 text-emerald-950' : 'border-white/10 bg-[#07553b] text-white'}`}>{children}</button>; }
 /** One line describing what the table did while the human was not acting. */
 function describeTableTurn(game: AmericanGameState, t: (key: string, values?: any) => string): string {

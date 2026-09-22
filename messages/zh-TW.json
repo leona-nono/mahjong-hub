@@ -9,17 +9,17 @@
     "about": "關於",
     "wardrobe": "衣櫥",
     "classic": "人機對戰",
-    "classicSubtitle": "玩真正的四人麻將——中國、日本、美國、台灣與四川玩法。",
+    "classicSubtitle": "四人麻將實戰——中國、日本、美國與四川等規則，對戰 AI。",
     "solitaire": "更多麻將休閒遊戲",
     "solitaireSubtitle": "休閒配對與消除小遊戲，輕鬆放鬆片刻。",
-    "solitaireBuilding": "自研麻將內容。更多原創牌局會繼續補上。",
+    "solitaireBuilding": "自研麻將小遊戲，更多原創牌局陸續上線。",
     "beginners": "學習",
     "beginnersSubtitle": "從零開始學麻將——淺顯易懂的規則、策略與教學。",
     "beginnersComingSoon": "入門教學即將上線。",
     "tools": "工具",
     "toolsSubtitle": "免費麻將計算器——查聽牌、算番數、認牌面。",
     "set": "商店",
-    "setSubtitle": "精選麻將套裝與配件推薦。",
+    "setSubtitle": "我們精選的麻將套裝與配件",
     "setComingSoon": "精選商品即將上線。",
     "regionChina": "中國麻將",
     "regionJapan": "日本麻將",
@@ -31,11 +31,11 @@
   "home": {
     "heroTitle": "免費線上打麻將 – 麻將消除、立直麻將與中國麻將",
     "heroSubtitle": "即開即玩，無需下載",
-    "playButton": "立即遊玩",
+    "playButton": "立即開始",
     "featuredTitle": "精選推薦",
     "collectionTitle": "全部遊戲",
     "originalTitle": "自研遊戲",
-    "originalSubtitle": "自研四人麻將與連連看。免費，無需下載。",
+    "originalSubtitle": "自研出品。免費，無需下載。",
     "brandLine": "Mahjong Hub · 彩虹麻將合集",
     "playSolitaire": "玩麻將消除",
     "instantPlay": "即開即玩，無需下載",
@@ -61,9 +61,9 @@
     "catSolitaireBody": "配對免費方塊並清空版面——放鬆遊玩，無需計時",
     "catFourPlayer": "4人麻將",
     "catFourPlayerBody": "香港、日式、中國国标以及更多規則體系對戰人工智慧。",
-    "catMore": "更多謎題",
+    "catMore": "更多玩法",
     "catMoreBody": "遊戲大廳內有連連看、方塊配對以及更多免費遊戲.",
-    "seoTitle": "可於瀏覽器遊玩的免費麻將遊戲",
+    "seoTitle": "免費麻將遊戲，打開瀏覽器就能玩",
     "seoBody": "Mahjong Hub是一款免費線上遊戲大廳，提供麻將接龍、四人麻將桌與麻將牌益智遊戲。立即參與上方的今日每日挑戰，瀏覽接龍與四人對戰分類，或是開啟任意遊戲卡片——無需下載、無需註冊帳號即可開始遊玩。",
     "seoLinkSolitaire": "麻將接龍遊戲",
     "seoLinkClassic": "四人麻將",
@@ -71,8 +71,8 @@
     "seoLinkBeginners": "麻將新人教學",
     "featuredHall": "精選遊戲",
     "seasonalTitle": "季節牌桌合集",
-    "seasonalBody": "為每款遊戲挑選免費桌布氛圍與配套牌背。",
-    "openWardrobe": "開啟衣櫥"
+    "seasonalBody": "給每款遊戲換一套免費桌面主題與配套牌背。",
+    "openWardrobe": "開啟裝扮"
   },
   "game": {
     "play": "開始遊戲",
@@ -86,7 +86,7 @@
     "tips": "策略要點",
     "faq": "常見問題",
     "comingSoon": "敬請期待",
-    "savePointsPrompt": "信箱登入以保存你的 {n} 積分",
+    "savePointsPrompt": "用信箱登入，保存你的 {n} 積分",
     "minRead": "約 {n} 分鐘閱讀",
     "playNow": "立即開玩",
     "beginnersCtaLead": "準備好實戰練習了嗎？",
@@ -99,14 +99,14 @@
   },
   "collection": {
     "title": "麻將消除遊戲合集",
-    "subtitle": "連接麻將牌、清空棋盤、放鬆一下。"
+    "subtitle": "連線配對，清空棋盤，隨手放鬆。"
   },
   "ad": {
     "label": "廣告"
   },
   "footer": {
     "rights": "麻將樂園 · 彩虹治癒系麻將遊戲合集。",
-    "noGambling": "免費遊玩 · 無真金賭博"
+    "noGambling": "免費遊玩 · 不涉及真錢賭博"
   },
   "consent": {
     "title": "Cookie 與隱私",
@@ -122,7 +122,7 @@
     "necessary": "必要",
     "necessaryHelp": "登入、隱私選擇、無障礙設定，以及本機訪客進度。",
     "analytics": "分析",
-    "analyticsHelp": "匿名漏斗（首次點牌耗時、過關、PWA）。不傳送牌面或手牌。",
+    "analyticsHelp": "匿名遊玩資料（首次點牌耗時、過關、PWA）。不傳送牌面或手牌。",
     "advertising": "廣告",
     "advertisingHelp": "接入廣告網路後的激勵影片。目前不會載入。"
   },
@@ -479,7 +479,7 @@
     "deadPrompt": "沒有可走步了——解圍會把剩餘牌重排成可解局面。",
     "rescue": "解圍",
     "noFreeUndo": "本關免費復原已用完（{n} 次）。可用復原道具、積分或短影片續一次。",
-    "itemLocked": "該道具將隨進度解鎖。",
+    "itemLocked": "隨進度解鎖",
     "needItem": "沒有{item}了——選一種方式繼續。",
     "itemPrice": "需要 {n} 積分",
     "pointsBalance": "目前積分：{n}",
@@ -513,7 +513,7 @@
     "blurb": "保存在本裝置，四人桌與消除共用。",
     "highContrast": "高對比度",
     "reducedMotion": "減弱動效",
-    "tileSize": "牌面尺寸",
+    "tileSize": "牌張大小",
     "tileNormal": "標準",
     "tileLarge": "放大",
     "settingsTitle": "遊戲設定",
@@ -521,8 +521,8 @@
     "highlightFree": "高亮可點的自由牌",
     "colorblindMarks": "色盲標記（字母+點數）",
     "tableTheme": "桌面主題",
-    "themeTeal": "青綠",
-    "themeFelt": "經典綠",
+    "themeTeal": "青綠絨面",
+    "themeFelt": "經典綠絨",
     "themeNight": "夜藍",
     "hotkeysHint": "電腦端：H 提示，Z 復原，P 暫停/繼續。"
   },
@@ -539,9 +539,9 @@
     "dayShort": "第 {day} 天",
     "doneMark": "✓",
     "weekAria": "七日簽到進度",
-    "streakLine": "已連續 {days} 天 — 明天再來保持連續",
+    "streakLine": "已連續 {days} 天 — 明天再來延續",
     "streakLineShort": "連續 {days} 天",
-    "guestNote": "訪客也可簽到 —— 我們會先請你用電子郵件註冊。",
+    "guestNote": "訪客也能簽到，需先用電子郵件註冊。",
     "claimFailed": "簽到未能儲存，請重新整理後再試。",
     "achievementHint": "連續簽到 7 天可解鎖成就"
   },
@@ -686,7 +686,7 @@
     "home": "返回首頁"
   },
   "regional": {
-    "baseline": "可玩規則基線",
+    "baseline": "可玩規則基礎",
     "sichuanTitle": "四川血戰到底",
     "taiwanTitle": "台灣十六張麻將",
     "seatEast": "東",
@@ -702,12 +702,12 @@
     "nextHand": "下一局",
     "winner": "贏家：{seats}",
     "wallExhausted": "牌牆耗盡",
-    "scope": "本桌採用麻將樂園的地區規則基線。",
+    "scope": "本桌採用麻將樂園的地區規則設定。",
     "shareReplay": "分享牌譜",
     "replayCopied": "牌譜連結已複製。",
     "replayCopyFallback": "請從瀏覽器網址列複製牌譜連結。",
     "declareReady": "宣告聽牌",
-    "readyHint": "請選擇高亮的棄牌來宣告聽牌。",
+    "readyHint": "選一張高亮的棄牌即可宣告聽牌。",
     "scoreTaiwanHand": "本桌採用 16 張、五副牌加一對的 0 台起和基線；計分為底分加台數。",
     "scoreTaiwanFlowers": "花牌與座花會補牌並加入台數；八花與七搶一依目前桌面基線即時結算。",
     "scoreTaiwanSettlement": "自摸由其餘三家支付；放銃、搶槓與槓上自摸依本桌底分加台數結算。",
