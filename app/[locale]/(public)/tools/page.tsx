@@ -185,6 +185,11 @@ export default async function ToolsHubPage({
         </ul>
       </section>
 
+      <p className="mt-10 text-sm">
+        <Link href="/challenge" className="text-portal-accent underline">
+          {t('hubChallenge')}
+        </Link>
+      </p>
     </div>
   );
 }

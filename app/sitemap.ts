@@ -102,6 +102,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
+    entries.push({
+      url: `${BASE}/${locale}/challenge`,
+      lastModified,
+      changeFrequency: 'daily',
+      priority: 0.75,
+      alternates: { languages: alternatesFor('/challenge') }
+    });
+
     for (const post of blogPosts) {
       const path = `/blog/${post.slug}`;
       entries.push({

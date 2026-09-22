@@ -189,6 +189,11 @@ export default async function WaitsPage({
           </li>
         </ul>
         <p className="mt-4 text-sm">
+          <Link href="/challenge" className="text-portal-accent underline">
+            {t('hubChallenge')}
+          </Link>
+        </p>
+        <p className="mt-4 text-sm">
           <Link href="/tools" className="text-portal-muted underline">
             {t('backToHub')}
           </Link>
