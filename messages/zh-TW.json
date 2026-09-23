@@ -11,7 +11,7 @@
     "classic": "人機對戰",
     "classicSubtitle": "四人麻將實戰——中國、日本、美國與四川等規則，對戰 AI。",
     "solitaire": "更多麻將休閒遊戲",
-    "solitaireSubtitle": "休閒配對與消除小遊戲，輕鬆放鬆片刻。",
+    "solitaireSubtitle": "休閒配對與接龍小遊戲，輕鬆放鬆片刻。",
     "solitaireBuilding": "自研麻將小遊戲，更多原創牌局陸續上線。",
     "beginners": "學習",
     "beginnersSubtitle": "從零開始學麻將——淺顯易懂的規則、策略與教學。",
@@ -33,7 +33,7 @@
     "gameHallH1": "免費麻將遊戲"
   },
   "home": {
-    "heroTitle": "免費線上打麻將 – 麻將消除、立直麻將與中國麻將",
+    "heroTitle": "免費線上打麻將 – 麻將接龍、立直麻將與中國麻將",
     "heroSubtitle": "即開即玩，無需下載",
     "playButton": "立即開始",
     "featuredTitle": "精選推薦",
@@ -41,7 +41,7 @@
     "originalTitle": "自研遊戲",
     "originalSubtitle": "自研出品。免費，無需下載。",
     "brandLine": "Mahjong Hub · 彩虹麻將合集",
-    "playSolitaire": "玩麻將消除",
+    "playSolitaire": "玩麻將接龍",
     "instantPlay": "即開即玩，無需下載",
     "entryConnect": "連連看",
     "entryClassic": "四人麻將",
@@ -102,7 +102,7 @@
     "startBlurb": "點「開始遊戲」載入牌桌。下方規則與提示始終可見，無需帳號。"
   },
   "collection": {
-    "title": "麻將消除遊戲合集",
+    "title": "麻將接龍遊戲合集",
     "subtitle": "連線配對，清空棋盤，隨手放鬆。"
   },
   "ad": {
@@ -514,7 +514,7 @@
   "a11y": {
     "title": "無障礙設定",
     "done": "完成",
-    "blurb": "保存在本裝置，四人桌與消除共用。",
+    "blurb": "保存在本裝置，四人桌與接龍共用。",
     "highContrast": "高對比度",
     "reducedMotion": "減弱動效",
     "tileSize": "牌張大小",
@@ -592,7 +592,7 @@
   },
   "portal": {
     "categories": "分類",
-    "solitaire": "消除",
+    "solitaire": "接龍",
     "classic": "經典",
     "connect": "連連看",
     "tileMatch": "配對",
@@ -705,11 +705,11 @@
     "coachRiskHigh": "公開風險高：對手已亮出 {tile}。"
   },
   "seo": {
-    "homeTitle": "免費線上打麻將 – 麻將消除、立直麻將與中國麻將 | Mahjong Hub",
-    "homeDescription": "免費線上玩麻將消消樂、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。",
+    "homeTitle": "免費線上打麻將 – 麻將接龍、立直麻將與中國麻將 | Mahjong Hub",
+    "homeDescription": "免費線上玩麻將接龍、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。",
     "wardrobeTitle": "牌背與桌布外觀 | Mahjong Hub",
     "blogTitle": "麻將入門指南與規則 | Mahjong Hub",
-    "gamesTitle": "免費線上麻將遊戲 — 消除與四人麻將 | Mahjong Hub",
+    "gamesTitle": "免費線上麻將遊戲 — 接龍與四人麻將 | Mahjong Hub",
     "privacyTitle": "隱私權政策 | Mahjong Hub",
     "aboutTitle": "關於麻將樂園 — 免費麻將遊戲與入門指南"
   },
@@ -858,7 +858,7 @@
     "q2": "一定要四個人嗎？",
     "a2": "不用。另外三家是 AI，不用等空房。",
     "q3": "可以一個人玩嗎？",
-    "a3": "可以。跟 AI 打一桌，或者先玩一局消除。",
+    "a3": "可以。跟 AI 打一桌，或者先玩一局接龍。",
     "q4": "中國麻將和美式麻將有什麼不同？",
     "a4": "中式是成牌型和一對。美式練習用原創牌卡、過牌和百搭，不是現年 NMJL 牌。兩邊都是免費練習，沒有真錢。",
     "q5": "這個站真的免費嗎？",

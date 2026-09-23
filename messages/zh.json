@@ -11,7 +11,7 @@
     "classic": "人机对战",
     "classicSubtitle": "四人麻将实战——中国、日本、美国与四川等规则，对战 AI。",
     "solitaire": "更多麻将休闲游戏",
-    "solitaireSubtitle": "休闲配对与消除小游戏，轻松放松片刻。",
+    "solitaireSubtitle": "休闲配对与接龙小游戏，轻松放松片刻。",
     "solitaireBuilding": "自研麻将小游戏，更多原创牌局陆续上线。",
     "beginners": "学习",
     "beginnersSubtitle": "从零开始学麻将——通俗易懂的规则、策略与教程。",
@@ -33,7 +33,7 @@
     "gameHallH1": "免费麻将游戏"
   },
   "home": {
-    "heroTitle": "免费在线打麻将 – 麻将消除、立直麻将与中国麻将",
+    "heroTitle": "免费在线打麻将 – 麻将接龙、立直麻将与中国麻将",
     "heroSubtitle": "即开即玩，无需下载",
     "playButton": "立即开始",
     "featuredTitle": "精选推荐",
@@ -42,7 +42,7 @@
     "originalTitle": "自研游戏",
     "originalSubtitle": "自研出品。免费，无需下载。",
     "brandLine": "Mahjong Hub · 彩虹麻将合集",
-    "playSolitaire": "玩麻将消除",
+    "playSolitaire": "玩麻将接龙",
     "instantPlay": "即开即玩，无需下载",
     "entryConnect": "连连看",
     "entryClassic": "四人麻将",
@@ -62,17 +62,17 @@
     "checkInDone": "已签到",
     "emailBonusHint": "💡 邮箱登录可额外获得 {n} 积分！",
     "categoriesTitle": "按分类浏览",
-    "catSolitaire": "麻将消除",
+    "catSolitaire": "麻将接龙",
     "catSolitaireBody": "配对空闲牌清空棋盘，轻松无倒计时。",
     "catFourPlayer": "四人麻将",
     "catFourPlayerBody": "港式、立直、国标等规则对战 AI。",
     "catMore": "更多玩法",
     "catMoreBody": "连连看、对对碰等免费游戏尽在游戏大厅。",
     "seoTitle": "免费麻将游戏，打开浏览器就能玩",
-    "seoBody": "麻将乐园是免费的在线游戏大厅，提供麻将消除、四人麻将与益智玩法。可直接挑战今日棋盘，或进入消除 / 四人分类与任意游戏卡——无需下载，无需注册即可开玩。",
-    "seoLinkSolitaire": "麻将消除游戏",
+    "seoBody": "麻将乐园是免费的在线游戏大厅，提供麻将接龙、四人麻将与益智玩法。可直接挑战今日棋盘，或进入接龙 / 四人分类与任意游戏卡——无需下载，无需注册即可开玩。",
+    "seoLinkSolitaire": "麻将接龙游戏",
     "seoLinkClassic": "四人麻将",
-    "seoLinkPlay": "玩经典消除",
+    "seoLinkPlay": "玩经典接龙",
     "seoLinkBeginners": "麻将入门",
     "seasonalTitle": "季节牌桌合集",
     "seasonalBody": "给每款游戏换一套免费桌面主题与配套牌背。",
@@ -102,7 +102,7 @@
     "startBlurb": "点「开始游戏」加载牌桌。下方规则与提示始终可见，无需账号。"
   },
   "collection": {
-    "title": "麻将消除游戏合集",
+    "title": "麻将接龙游戏合集",
     "subtitle": "连线配对，清空棋盘，随手放松。"
   },
   "ad": {
@@ -514,7 +514,7 @@
   "a11y": {
     "title": "无障碍设置",
     "done": "完成",
-    "blurb": "保存在本设备，四人桌与消除共用。",
+    "blurb": "保存在本设备，四人桌与接龙共用。",
     "highContrast": "高对比度",
     "reducedMotion": "减弱动效",
     "tileSize": "牌张大小",
@@ -592,7 +592,7 @@
   },
   "portal": {
     "categories": "分类",
-    "solitaire": "消除",
+    "solitaire": "接龙",
     "classic": "经典",
     "connect": "连连看",
     "tileMatch": "配对",
@@ -705,11 +705,11 @@
     "coachRiskHigh": "公开风险高：对手已亮出 {tile}。"
   },
   "seo": {
-    "homeTitle": "免费在线打麻将 – 麻将消除、立直麻将与中国麻将 | Mahjong Hub",
-    "homeDescription": "免费在线玩麻将消除、连连看与经典四人麻将。浏览器即开即玩，无需下载，支持每日挑战与多语界面。",
+    "homeTitle": "免费在线打麻将 – 麻将接龙、立直麻将与中国麻将 | Mahjong Hub",
+    "homeDescription": "免费在线玩麻将接龙、连连看与经典四人麻将。浏览器即开即玩，无需下载，支持每日挑战与多语界面。",
     "wardrobeTitle": "牌背与桌布皮肤 | Mahjong Hub",
     "blogTitle": "麻将入门指南与规则 | Mahjong Hub",
-    "gamesTitle": "免费在线麻将游戏 — 消除与四人麻将 | Mahjong Hub",
+    "gamesTitle": "免费在线麻将游戏 — 接龙与四人麻将 | Mahjong Hub",
     "privacyTitle": "隐私政策 | Mahjong Hub",
     "aboutTitle": "关于麻将乐园 — 免费麻将游戏与入门指南"
   },
@@ -858,7 +858,7 @@
     "q2": "一定要四个人吗？",
     "a2": "不用。另外三家是 AI，不用等空房。",
     "q3": "可以一个人玩吗？",
-    "a3": "可以。跟 AI 打一桌，或者先玩一局消除。",
+    "a3": "可以。跟 AI 打一桌，或者先玩一局接龙。",
     "q4": "中国麻将和美式麻将有什么不同？",
     "a4": "中式是成牌型和一对。美式练习用原创牌卡、过牌和百搭，不是现年 NMJL 牌。两边都是免费练习，没有真钱。",
     "q5": "这个站真的免费吗？",
