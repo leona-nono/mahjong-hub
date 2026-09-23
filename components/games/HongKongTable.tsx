@@ -8,9 +8,8 @@ import MobileMahjongTable from './MobileMahjongTable';
 import BoardScaleFrame from './BoardScaleFrame';
 import TableToolButton from './TableToolButton';
 import ClaimDialog from './table/ClaimDialog';
-import CoachCabin from './table/CoachCabin';
 import DiscardPool from './table/DiscardPool';
-import { ResultBanner, ScoringTipsDialog, TurnHintsBar } from './table/ScorePanel';
+import { McrScoreCoach, ResultBanner, ScoringTipsDialog, TurnHintsBar } from './table/ScorePanel';
 import { tilesRemaining, type ClaimOption, type GameState, type HongKongMode, type RiichiVariant, type Seat, type SelfDrawEvaluation } from '@/lib/mahjong/engine';
 import { type Tile } from '@/lib/mahjong/tiles';
 import type { Difficulty } from '@/lib/mahjong/ai';
@@ -43,8 +42,6 @@ interface HongKongTableProps {
   onNewGame: () => void;
   onNextHand: () => void;
   coach?: ReactNode;
-  /** Folded coach-chip label; null hides the chip (silent). */
-  coachChipLabel?: string | null;
   onDiscard: (tile: Tile) => void;
   onClaim: (option: ClaimOption) => void;
   onTsumo: () => void;
@@ -83,7 +80,6 @@ export default function HongKongTable({
   onNewGame,
   onNextHand,
   coach,
-  coachChipLabel = null,
   onDiscard,
   onClaim,
   onTsumo,
@@ -111,6 +107,9 @@ export default function HongKongTable({
   const mcrFlowers = human.flowers.length;
   // Settlement is auditable: a winning hand turns every concealed rack face-up.
   const revealAllHands = state.phase === 'over' && state.result?.kind === 'win';
+  // A stable three-side wall makes the remaining wall and table orientation
+  // readable; it does not expose any opponent's concealed hand.
+  const wallTiles = Math.max(6, Math.min(18, Math.ceil(tilesRemaining(state) / 4)));
   const roundWindKey = WIND_KEY[state.roundWind as keyof typeof WIND_KEY];
   const roundLabel = `${roundWindKey ? seats(roundWindKey) : ''} ${state.handNumber % 4 + 1}`;
   const tableShellRef = useRef<HTMLElement>(null);
@@ -208,6 +207,13 @@ export default function HongKongTable({
 
   return (
     <section ref={tableShellRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell relative ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
+      {/* Mobile: keep coach in its own strip so it never covers discard rivers. */}
+      {coach && (
+        <div className="relative z-30 border-b border-white/10 bg-[#0b6548] px-2 py-1.5 lg:hidden">
+          {coach}
+        </div>
+      )}
+      {coach && <div className="absolute right-3 top-14 z-40 hidden max-w-sm lg:block">{coach}</div>}
       <MobileMahjongTable
         state={state}
         variant={variant}
@@ -223,8 +229,6 @@ export default function HongKongTable({
         kanTiles={kanTiles}
         riichiDiscards={riichiDiscards}
         roundLabel={roundLabel}
-        coachPanel={coach ?? null}
-        coachChipLabel={coachChipLabel}
         onTogglePause={togglePause}
         onHongKongMode={onHongKongMode}
         onToggleHints={onToggleHints}
@@ -311,10 +315,11 @@ export default function HongKongTable({
         </div>
 
         <div
-          className="mahjong-desktop-board mahjong-desktop-board--seasonal relative mx-auto h-[720px] max-w-[970px] overflow-hidden border-[5px] border-[#032f22] bg-transparent shadow-[inset_0_0_90px_rgba(0,30,22,.34)]"
+          className="mahjong-desktop-board mahjong-desktop-board--seasonal relative h-[720px] overflow-hidden border-[5px] border-[#032f22] bg-transparent shadow-[inset_0_0_90px_rgba(0,30,22,.34)]"
           style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}
         >
-          <p className="absolute left-1/2 top-1 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">
+          <div className="absolute left-4 top-3 z-20 text-xl font-semibold text-emerald-100/45">Rate: 10</div>
+          <p className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">
             {t('practiceTableAI')}
             <span className="mx-2 text-emerald-200/50">·</span>
             <span className="font-semibold text-cyan-100">{gameName}</span>
@@ -324,7 +329,7 @@ export default function HongKongTable({
             <span className="tabular-nums text-amber-100">{t('wallLeft', { n: tilesRemaining(state) })}</span>
           </p>
 
-          <div className="absolute left-1/2 top-6 -translate-x-1/2">
+          <div className="absolute left-1/2 top-8 -translate-x-1/2">
             <ConcealedRack seat={3} count={state.players[3].hand.length} tiles={revealAllHands ? state.players[3].hand : undefined} orientation="top" />
           </div>
           <div className="absolute left-[15%] top-1/2 -translate-y-1/2">
@@ -334,7 +339,7 @@ export default function HongKongTable({
             <ConcealedRack seat={1} count={state.players[1].hand.length} tiles={revealAllHands ? state.players[1].hand : undefined} orientation="right" />
           </div>
 
-          <PlayerBadge state={state} seat={3} layout="horizontal" className="right-[19%] top-[11.8%]" showFlowers={isMcr} />
+          <PlayerBadge state={state} seat={3} className="right-[19%] top-[11%]" showFlowers={isMcr} />
           <PlayerBadge state={state} seat={2} className="left-5 top-[39%]" showFlowers={isMcr} />
           <PlayerBadge state={state} seat={1} className="right-5 top-[39%]" showFlowers={isMcr} />
           <PlayerBadge state={state} seat={0} className="bottom-[16%] left-[12%]" human showFlowers={isMcr} />
@@ -345,10 +350,22 @@ export default function HongKongTable({
           {/* Hand racks stay on the outside of the table.  Each player's
               discard / exposed-meld area is one of these four inner zones. */}
           <DiscardPool state={state} seat={3} className="left-1/2 top-[22%] -translate-x-1/2" />
-          <DiscardPool state={state} seat={2} className="left-[20%] top-[32%]" />
-          <DiscardPool state={state} seat={1} className="right-[20%] top-[32%]" />
+          <DiscardPool state={state} seat={2} className="left-[27%] top-[32%]" />
+          <DiscardPool state={state} seat={1} className="right-[27%] top-[32%]" />
           <DiscardPool state={state} seat={0} className="bottom-[24%] left-1/2 -translate-x-1/2" showMelds={false} />
 
+          {isMcr && (
+            <div className="absolute left-1/2 top-[48%] z-10 -translate-x-1/2 rounded-full border border-emerald-200/30 bg-[#063d30]/90 px-3 py-1 text-sm font-black tracking-[.12em] text-emerald-100">
+              {t('mcrStrip')}
+            </div>
+          )}
+          {isMcr && (
+            <McrScoreCoach
+              qualifying={mcrQualifying}
+              flowers={mcrFlowers}
+              patterns={tsumoEvaluation?.score?.patterns}
+            />
+          )}
           {isRiichi && (
             <div className="absolute left-[58%] top-[24%] z-10 rounded-lg bg-black/30 p-2 text-center text-sm font-bold uppercase tracking-wider text-amber-200">
               <span className="mb-1 block">{t('doraIndicators')}</span>
@@ -357,20 +374,6 @@ export default function HongKongTable({
               </div>
             </div>
           )}
-
-          <CoachCabin
-            coachPanel={coach ?? null}
-            coachChipLabel={coachChipLabel}
-            mcr={
-              isMcr
-                ? {
-                    qualifying: mcrQualifying,
-                    flowers: mcrFlowers,
-                    patterns: tsumoEvaluation?.score?.patterns
-                  }
-                : null
-            }
-          />
 
           {paused && (
             <button
@@ -457,11 +460,6 @@ export default function HongKongTable({
 
         <div className="mahjong-table-footer flex h-10 items-center justify-between bg-[#15583e] px-3 text-sm font-semibold text-emerald-100/75" style={isFullscreen ? { flex: '0 0 40px' } : undefined}>
           <span>{gameName} Mahjong</span>
-          {isMcr && (
-            <span className="rounded-full border border-emerald-200/25 px-3 py-0.5 text-xs font-bold tracking-[.12em] text-emerald-100/75">
-              {t('mcrStrip')}
-            </span>
-          )}
           <div className="flex gap-2">
             <button type="button" onClick={() => setShowScoring(true)} className="rounded px-2 py-1 hover:bg-white/10">{t('scoringTips')}</button>
             <button type="button" onClick={enterFullscreen} className="rounded px-2 py-1 hover:bg-white/10">{t('fullScreen')}</button>
@@ -524,7 +522,7 @@ function DefaultPlayerPortrait({ seat }: { seat: Seat }) {
   const row = index > 1 ? 1 : 0;
   const column = index % 2;
   return (
-    <span className="relative block h-[60px] w-[60px] overflow-hidden rounded-[10px]" aria-hidden="true">
+    <span className="relative block h-14 w-14 overflow-hidden rounded-[10px]" aria-hidden="true">
       <img
         src="/images/mahjong/ai-avatars-default.webp"
         alt=""
@@ -540,68 +538,40 @@ function PlayerBadge({
   seat,
   className,
   human = false,
-  showFlowers = false,
-  layout = 'vertical'
+  showFlowers = false
 }: {
   state: GameState;
   seat: Seat;
   className: string;
   human?: boolean;
   showFlowers?: boolean;
-  layout?: 'vertical' | 'horizontal';
 }) {
   const active = state.turn === seat && state.phase !== 'over';
-  const horizontal = layout === 'horizontal';
-  const scorePill = (
-    <div
-      className={`${horizontal ? '' : 'mt-1'} flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-xs font-black text-amber-100`}
-    >
-      <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-amber-300 text-[9px] text-amber-900">
-        G
-      </span>
-      {state.players[seat].score}
-    </div>
-  );
-  const flowers =
-    showFlowers && state.players[seat].flowers.length > 0 ? (
-      <div
-        className={`${horizontal ? '' : 'mt-1'} flex max-w-24 justify-center gap-px rounded bg-amber-50/90 p-0.5`}
-      >
-        {state.players[seat].flowers.map((tile, index) => (
-          <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />
-        ))}
-      </div>
-    ) : null;
-
   return (
     <div
-      className={`absolute transition-transform duration-200 ease-out ${
-        horizontal ? 'flex flex-row items-center gap-1.5' : 'flex w-24 flex-col items-center'
-      } ${
-        active
-          ? `z-30 ${horizontal ? 'scale-110' : 'scale-[1.28]'} shadow-[0_0_22px_rgba(251,191,36,.65)]`
-          : 'z-20 scale-100'
+      className={`absolute flex w-24 flex-col items-center transition-transform duration-200 ease-out ${
+        active ? 'z-30 scale-[1.28]' : 'z-20 scale-100'
       } ${className}`}
     >
       <div
         className={`relative overflow-hidden rounded-xl border-4 bg-[#f7f1df] ${
-          active ? 'border-amber-300 shadow-[0_0_22px_rgba(251,191,36,.65)]' : 'border-[#e8ece3] shadow-lg'
+          active
+            ? 'border-amber-300 shadow-[0_0_22px_rgba(251,191,36,.65)]'
+            : 'border-[#e8ece3] shadow-lg'
         }`}
         aria-label={human ? 'You' : `Player ${seat + 1}`}
         aria-current={active ? 'true' : undefined}
       >
         <DefaultPlayerPortrait seat={seat} />
       </div>
-      {horizontal ? (
-        <div className="flex flex-col items-start gap-1">
-          {scorePill}
-          {flowers}
+      <div className="mt-1 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-xs font-black text-amber-100">
+        <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-amber-300 text-[9px] text-amber-900">G</span>
+        {state.players[seat].score}
+      </div>
+      {showFlowers && state.players[seat].flowers.length > 0 && (
+        <div className="mt-1 flex max-w-24 justify-center gap-px rounded bg-amber-50/90 p-0.5">
+          {state.players[seat].flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
         </div>
-      ) : (
-        <>
-          {scorePill}
-          {flowers}
-        </>
       )}
     </div>
   );

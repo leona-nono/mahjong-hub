@@ -49,39 +49,16 @@ export interface McrScoreCoachProps {
   patterns: { id?: string; label: string; value: number }[] | undefined;
 }
 
-/** Unpositioned MCR score body — used by CoachCabin / mobile drawers. */
-export function McrScoreBody({ qualifying, flowers, patterns }: McrScoreCoachProps) {
+/** Chinese Official live score coach beside the table center. */
+export function McrScoreCoach({ qualifying, flowers, patterns }: McrScoreCoachProps) {
   const t = useTranslations('mahjong');
   return (
-    <div className="text-xs text-emerald-50">
+    <div className="absolute right-[12%] top-[56%] z-20 w-52 rounded-xl border border-amber-200/25 bg-[#063d30]/95 p-3 text-xs text-emerald-50 shadow-xl">
       <p className="font-black uppercase tracking-[.14em] text-amber-200">{t('mcrScoreCoach')}</p>
-      <div className="mt-2 flex justify-between">
-        <span>{t('qualifyingHand')}</span>
-        <strong>{qualifying}/8</strong>
-      </div>
-      <div className="mt-1 flex justify-between">
-        <span>{t('flowersSeasons')}</span>
-        <strong>+{flowers}</strong>
-      </div>
+      <div className="mt-2 flex justify-between"><span>{t('qualifyingHand')}</span><strong>{qualifying}/8</strong></div>
+      <div className="mt-1 flex justify-between"><span>{t('flowersSeasons')}</span><strong>+{flowers}</strong></div>
       <p className="mt-2 text-sm leading-5 text-emerald-100/75">{t('flowerGateNote')}</p>
-      {patterns?.length ? (
-        <p className="mt-2 border-t border-white/10 pt-2 text-sm leading-5 text-amber-50">
-          {formatPatternList(
-            patterns.map((pattern) => ({ id: pattern.id ?? '', label: pattern.label, value: pattern.value })),
-            t,
-            'plus'
-          )}
-        </p>
-      ) : null}
-    </div>
-  );
-}
-
-/** @deprecated Prefer CoachCabin + McrScoreBody — absolute card overlaps seat-1 rack. */
-export function McrScoreCoach(props: McrScoreCoachProps) {
-  return (
-    <div className="absolute right-[12%] top-[56%] z-20 w-52 rounded-xl border border-amber-200/25 bg-[#063d30]/95 p-3 shadow-xl">
-      <McrScoreBody {...props} />
+      {patterns?.length ? <p className="mt-2 border-t border-white/10 pt-2 text-sm leading-5 text-amber-50">{formatPatternList(patterns.map((pattern) => ({ id: pattern.id ?? '', label: pattern.label, value: pattern.value })), t, 'plus')}</p> : null}
     </div>
   );
 }
