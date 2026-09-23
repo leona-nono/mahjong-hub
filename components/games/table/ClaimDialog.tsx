@@ -60,7 +60,7 @@ export default function ClaimDialog({
   if (!visible) return null;
 
   return (
-    <div className="absolute bottom-[18%] left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-xl border border-amber-200/50 bg-[#101711]/95 p-2 shadow-2xl">
+    <div className="absolute bottom-[18%] right-[18%] z-30 flex max-w-[70%] flex-wrap items-center justify-end gap-2 rounded-xl border border-amber-200/50 bg-[#101711]/95 p-2 shadow-2xl">
       {myClaims?.map((option, index) => (
         <button
           key={`${option.kind}-${index}`}

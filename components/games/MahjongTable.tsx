@@ -80,6 +80,7 @@ export default function MahjongTable({
   onHandOver
 }: MahjongTableProps) {
   const t = useTranslations('mahjong');
+  const tCoach = useTranslations('coachFb');
   const [ruleset, setRuleset] = useState<Ruleset>(defaultRuleset);
   const isMcr = ruleset === 'chinese-official';
   const traditional = ruleset === 'hongkong' || ruleset === 'chinese-official';
@@ -314,7 +315,7 @@ export default function MahjongTable({
                     ? (() => {
                         const top = coachAdapter.rank(state, HUMAN)[0];
                         return top
-                          ? { suggested: top.tile, shanten: top.shanten, ukeire: top.ukeire }
+                          ? { suggested: tileFace(top.tile), shanten: top.shanten, ukeire: top.ukeire }
                           : null;
                       })()
                     : null
@@ -325,6 +326,27 @@ export default function MahjongTable({
             </div>
           )
         }
+        coachChipLabel={(() => {
+          if (coachIntensity === 'silent') return null;
+          if (lastVerdict?.grade && !myTurn) {
+            const grade =
+              lastVerdict.grade === 'best'
+                ? tCoach('gradeBest')
+                : lastVerdict.grade === 'acceptable'
+                  ? tCoach('gradeOk')
+                  : lastVerdict.grade === 'better'
+                    ? tCoach('gradeBetter')
+                    : null;
+            if (grade) return grade;
+          }
+          if ((coachIntensity === 'live' || coachAsked) && myTurn) {
+            const top = coachAdapter.rank(state, HUMAN)[0];
+            if (top) {
+              return t('coachChipLive', { tile: tileFace(top.tile), n: top.shanten });
+            }
+          }
+          return t('coachAsk');
+        })()}
         onDiscard={handleDiscard}
         onClaim={handleClaim}
         onTsumo={() => setState((current) => declareTsumo(current, HUMAN))}
