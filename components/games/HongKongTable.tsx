@@ -311,7 +311,7 @@ export default function HongKongTable({
         </div>
 
         <div
-          className="mahjong-desktop-board mahjong-desktop-board--seasonal relative mx-auto h-[720px] w-full max-w-[970px] overflow-hidden border-[5px] border-[#032f22] bg-transparent shadow-[inset_0_0_90px_rgba(0,30,22,.34)]"
+          className="mahjong-desktop-board mahjong-desktop-board--seasonal relative mx-auto h-[720px] max-w-[970px] overflow-hidden border-[5px] border-[#032f22] bg-transparent shadow-[inset_0_0_90px_rgba(0,30,22,.34)]"
           style={isFullscreen ? { height: 'auto', minHeight: 0, flex: '1 1 0%' } : undefined}
         >
           <p className="absolute left-1/2 top-1 z-20 -translate-x-1/2 rounded-full bg-[#003d2f]/85 px-3 py-1 text-sm font-bold tracking-wide text-emerald-50">
