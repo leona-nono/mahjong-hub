@@ -338,6 +338,14 @@ export const cornerstonePosts: BlogPost[] = [
         ]
       },
       {
+        heading: 'Prefer to Play Solo?',
+        body: [
+          'Not every session needs three opponents. If you want the tiles without the table — no turns to wait for, no etiquette to mind — the site also offers two single-player games built from the same mahjong tiles.',
+          '[Mahjong Solitaire](/games/mahjong-solitaire-classic) is the classic layered matching puzzle: pair off free tiles to clear a stacked layout. [Mahjong Connect](/games/mahjong-connect-classic) is the faster spatial variant, where you link identical tiles with a path that bends no more than twice until the board is empty.',
+          'Both run free in the browser and need nothing installed, which makes them the fastest way to get a few minutes of mahjong on any device. They do not teach the four-player game, but they are a genuinely good puzzle when you want the tiles and not the tournament.'
+        ]
+      },
+      {
         heading: 'Online Mahjong Etiquette',
         body: [
           'Take your turn promptly. Call only when you really want the tile. Do not rush others. And in casual games, remember the goal is fun — nobody wins every hand.',
@@ -651,9 +659,17 @@ export const cornerstonePosts: BlogPost[] = [
         heading: 'Mahjong Solitaire',
         body: [
           'Not mahjong, despite the name. It is a single-player tile-matching puzzle in which you clear a stacked layout by pairing off identical tiles that have at least one long side free. There are no opponents, no draws, no scoring decisions — just a layout that is either solvable from where you are or is not, and the only real skill is recognising which pairs you can afford to spend.',
-          'It shares the tile faces and the word "mahjong" and essentially nothing else. It is the reason a lot of Western players first type the word into a search box, and it is a legitimately good puzzle. It is not a way to learn the four-player game, and the two should not be confused when you are choosing something to play tonight.',
+          'It shares the tile faces and the word "mahjong" and essentially nothing else. It is the reason a lot of Western players first type the word into a search box, and it is a legitimately good puzzle you can play free in your browser as [Mahjong Solitaire](/games/mahjong-solitaire-classic). It is not a way to learn the four-player game, and the two should not be confused when you are choosing something to play tonight.',
           'If the four-player game is what you are after, the styles above are your options and Hong Kong is the gentlest door in. If you want a quiet fifteen minutes with a familiar-looking board, this one is genuinely worth the time — just know which of the two you signed up for.',
           'Who it suits: solo players, and anyone who wants the pleasure of the tiles without the table.'
+        ]
+      },
+      {
+        heading: 'Mahjong Connect',
+        body: [
+          'A second single-player take on the tiles, and a different puzzle from solitaire. Instead of clearing a stacked layout, you connect two identical tiles with a path that bends no more than twice, removing pairs until the board is empty. Like solitaire it needs no opponents and no ruleset — just pattern recognition and a little planning.',
+          'The two single-player games suit different moods. Solitaire is a slow, layered clear; Connect is a faster, spatial match where the shrinking board pushes you to spot pairs quickly. Both are free to play in the browser and need nothing downloaded, which makes them the easiest way to enjoy the tiles when you do not have time or players for a full four-player game.',
+          'If you want the layered puzzle, play [Mahjong Solitaire](/games/mahjong-solitaire-classic). If you prefer the faster connect-and-clear loop, [Mahjong Connect](/games/mahjong-connect-classic) is the one to open. Neither teaches the four-player game, but both are a genuine few minutes of the tiles on any device.'
         ]
       },
     ],
