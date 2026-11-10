@@ -31,6 +31,12 @@ export default function Footer({ siteTitle }: { siteTitle: string }) {
           <Link href="/about" className="hover:text-portal-accent">
             {tn('about')}
           </Link>
+          <Link href="/terms" className="hover:text-portal-accent">
+            {t('terms')}
+          </Link>
+          <Link href="/refunds" className="hover:text-portal-accent">
+            {t('refunds')}
+          </Link>
           <Link href="/privacy" className="hover:text-portal-accent">
             {tc('privacy')}
           </Link>

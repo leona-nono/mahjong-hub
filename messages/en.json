@@ -11,6 +11,8 @@
     "learnTitle": "Learn Mahjong Free: First Tile to First Hand | Mahjong Hub",
     "gamesTitle": "Free Online Mahjong Games – Solitaire & 4-Player | Mahjong Hub",
     "privacyTitle": "Privacy Policy | Mahjong Hub",
+    "termsTitle": "Terms of Service | Mahjong Hub",
+    "refundsTitle": "Refund Policy | Mahjong Hub",
     "aboutTitle": "About Mahjong Hub — Free Mahjong Games & Beginner Guides"
   },
   "nav": {
@@ -194,7 +196,9 @@
   },
   "footer": {
     "rights": "Mahjong Hub · A rainbow healing tile game collection.",
-    "noGambling": "Free to play · No real-money gambling"
+    "noGambling": "Free to play · No real-money gambling",
+    "terms": "Terms",
+    "refunds": "Refunds"
   },
   "consent": {
     "title": "Cookies and privacy",

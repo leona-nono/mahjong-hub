@@ -108,7 +108,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
-    for (const legalPath of ['/about', '/privacy', '/cookies'] as const) {
+    for (const legalPath of ['/about', '/terms', '/refunds', '/privacy', '/cookies'] as const) {
       entries.push({
         url: `${BASE}/${locale}${legalPath}`,
         lastModified,

@@ -111,7 +111,9 @@
   },
   "footer": {
     "rights": "麻将乐园 · 彩虹治愈系麻将游戏合集。",
-    "noGambling": "免费游玩 · 不涉及真钱赌博"
+    "noGambling": "免费游玩 · 不涉及真钱赌博",
+    "terms": "服务条款",
+    "refunds": "退款政策"
   },
   "consent": {
     "title": "Cookie 与隐私",
@@ -713,6 +715,8 @@
     "learnTitle": "学麻将：从认牌到第一手和牌 | Mahjong Hub",
     "gamesTitle": "免费在线麻将游戏 — 接龙与四人麻将 | Mahjong Hub",
     "privacyTitle": "隐私政策 | Mahjong Hub",
+    "termsTitle": "服务条款 | Mahjong Hub",
+    "refundsTitle": "退款政策 | Mahjong Hub",
     "aboutTitle": "关于麻将乐园 — 免费麻将游戏与入门指南"
   },
   "notFound": {

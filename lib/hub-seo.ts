@@ -8,6 +8,8 @@ type HubTitleKey =
   | 'blogTitle'
   | 'gamesTitle'
   | 'privacyTitle'
+  | 'termsTitle'
+  | 'refundsTitle'
   | 'aboutTitle'
   | 'learnTitle';
 

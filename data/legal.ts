@@ -1,6 +1,6 @@
 import { privacyEmail } from '@/lib/ads-inventory';
 
-export const LEGAL_UPDATED = '2026-08-18';
+export const LEGAL_UPDATED = '2026-11-10';
 
 export type LegalSection = {
   heading: string;
@@ -418,6 +418,303 @@ const cookiesKo: LegalDoc = {
   ]
 };
 
+const termsEn: LegalDoc = {
+  title: 'Terms of Service',
+  intro:
+    'These terms cover your use of Mahjong Hub (mahjonggame.org) and any digital products we offer. By using the site you agree to them. If you do not agree, please do not use the site.',
+  sections: [
+    {
+      heading: 'What Mahjong Hub is',
+      paragraphs: [
+        'Mahjong Hub is a free website for learning and practising mahjong. It offers games against AI opponents, lessons, guides and tools. Four-player tables are you against computer opponents, not other people.'
+      ]
+    },
+    {
+      heading: 'Not a gambling site',
+      paragraphs: [
+        'There is no real-money betting anywhere on Mahjong Hub. There is no gambling currency you can buy, and there are no cash prizes.',
+        'Points are only used inside the site: to track progress and achievements and to unlock in-game items and cosmetic looks. Points cannot be exchanged for money, cannot be transferred to another person or account, and have no cash value.'
+      ]
+    },
+    {
+      heading: 'Accounts are optional',
+      paragraphs: [
+        'You can play without signing in. Signing in is only used to save your progress and achievements and to restore them on another device. You are responsible for keeping access to the sign-in method you use.'
+      ]
+    },
+    {
+      heading: 'Purchases',
+      paragraphs: [
+        'Mahjong Hub may sell digital products, such as study materials. Creem is the Merchant of Record for these orders: Creem sells the product to you and handles payment, sales tax or VAT, invoices and refunds. Mahjong Hub is the provider of the product and its content.',
+        'The price and what is included are shown on the product page at the time you buy. Refunds follow our Refund Policy.'
+      ]
+    },
+    {
+      heading: 'Our content',
+      paragraphs: [
+        'The articles, lessons, tile artwork, game engine and other site content belong to Mahjong Hub. You may use them for your own personal learning.',
+        `You may not copy or republish the site or large parts of it, and you may not use our content to train commercial AI models. If you want to use our content in another way, email ${EMAIL} and ask first.`
+      ]
+    },
+    {
+      heading: 'Acceptable use',
+      paragraphs: [
+        'Do not scrape or crawl the site in a way that puts load on our service. Do not reverse engineer the site or its games in order to redistribute them commercially. Do not use the site for anything illegal.',
+        'We may limit or close access for accounts that break these rules.'
+      ]
+    },
+    {
+      heading: 'No guarantees',
+      paragraphs: [
+        'The site and its content are provided as they are. We try to explain rules accurately, but mahjong rules vary by region and club; for official play, the official rules of your region or club apply.',
+        'We are not responsible for indirect losses that come from using the site, to the extent the law allows.'
+      ]
+    },
+    {
+      heading: 'Changes and contact',
+      paragraphs: [
+        `We may update these terms. The date at the top of this page shows the latest version. Last updated ${LEGAL_UPDATED}.`,
+        `Questions about these terms: ${EMAIL}.`
+      ]
+    }
+  ]
+};
+
+const termsZh: LegalDoc = {
+  title: '服务条款',
+  intro:
+    '本条款适用于你使用 Mahjong Hub（mahjonggame.org）以及我们提供的数字产品。使用本站即表示你同意本条款；如不同意，请不要使用本站。',
+  sections: [
+    {
+      heading: '本站是什么',
+      paragraphs: [
+        'Mahjong Hub 是一个免费的麻将学习与练习网站，提供 AI 对手对局、课程、指南和工具。四人桌是你对电脑对手，不是真人玩家。'
+      ]
+    },
+    {
+      heading: '本站不是赌博网站',
+      paragraphs: [
+        '本站任何地方都没有真钱下注，没有可购买的赌博货币，也没有现金奖励。',
+        '积分只在站内使用：记录进度与成就，以及解锁游戏道具和外观。积分不能兑换现金，不能转让给他人或其他账号，没有任何现金价值。'
+      ]
+    },
+    {
+      heading: '账号可选',
+      paragraphs: [
+        '不登录也能玩。登录只用于保存进度与成就，并在其他设备上恢复。请自行保管好你所用登录方式的访问权限。'
+      ]
+    },
+    {
+      heading: '购买',
+      paragraphs: [
+        '本站可能出售数字产品（例如学习资料）。这些订单由 Creem 作为记录商户（Merchant of Record）：由 Creem 向你出售产品，并负责收款、销售税或增值税、发票和退款。本站是产品及其内容的提供方。',
+        '价格和产品包含的内容以购买时产品页的说明为准。退款按本站的退款政策处理。'
+      ]
+    },
+    {
+      heading: '我们的内容',
+      paragraphs: [
+        '本站的文章、课程、牌面美术、游戏引擎和其他内容归 Mahjong Hub 所有。你可以用于个人学习。',
+        `不得复制或转载整站或其中大部分内容，也不得用本站内容训练商业 AI 模型。如需以其他方式使用，请先发邮件至 ${EMAIL} 征得同意。`
+      ]
+    },
+    {
+      heading: '可接受的使用',
+      paragraphs: [
+        '不得以给服务器造成压力的方式抓取或爬取本站；不得为商业分发而逆向本站或其中的游戏；不得将本站用于任何违法用途。',
+        '违反上述规则的账号，我们可能限制或关闭其访问。'
+      ]
+    },
+    {
+      heading: '免责声明',
+      paragraphs: [
+        '本站及其内容按“现状”提供。我们尽量准确讲解规则，但麻将规则因地区和俱乐部而异；正式对局请以你所在地区或俱乐部的官方规则为准。',
+        '在法律允许的范围内，我们不对因使用本站而产生的间接损失负责。'
+      ]
+    },
+    {
+      heading: '变更与联系方式',
+      paragraphs: [
+        `我们可能更新本条款，页首日期即最新版本。最近更新日期：${LEGAL_UPDATED}。`,
+        `关于本条款的问题，请发邮件至 ${EMAIL}。`
+      ]
+    }
+  ]
+};
+
+const termsZhTw: LegalDoc = {
+  title: '服務條款',
+  intro:
+    '本條款適用於你使用 Mahjong Hub（mahjonggame.org）以及我們提供的數位產品。使用本站即表示你同意本條款；如不同意，請不要使用本站。',
+  sections: [
+    {
+      heading: '本站是什麼',
+      paragraphs: [
+        'Mahjong Hub 是一個免費的麻將學習與練習網站，提供 AI 對手對局、課程、指南和工具。四人桌是你對電腦對手，不是真人玩家。'
+      ]
+    },
+    {
+      heading: '本站不是賭博網站',
+      paragraphs: [
+        '本站任何地方都沒有真錢下注，沒有可購買的賭博貨幣，也沒有現金獎勵。',
+        '積分只在站內使用：記錄進度與成就，以及解鎖遊戲道具和外觀。積分不能兌換現金，不能轉讓給他人或其他帳號，沒有任何現金價值。'
+      ]
+    },
+    {
+      heading: '帳號可選',
+      paragraphs: [
+        '不登入也能玩。登入只用於保存進度與成就，並在其他裝置上恢復。請自行保管好你所用登入方式的存取權限。'
+      ]
+    },
+    {
+      heading: '購買',
+      paragraphs: [
+        '本站可能販售數位產品（例如學習資料）。這些訂單由 Creem 擔任記錄商戶（Merchant of Record）：由 Creem 向你販售產品，並負責收款、銷售稅或加值稅、發票和退款。本站是產品及其內容的提供方。',
+        '價格和產品包含的內容以購買時產品頁的說明為準。退款依本站的退款政策處理。'
+      ]
+    },
+    {
+      heading: '我們的內容',
+      paragraphs: [
+        '本站的文章、課程、牌面美術、遊戲引擎和其他內容歸 Mahjong Hub 所有。你可以用於個人學習。',
+        `不得複製或轉載整站或其中大部分內容，也不得用本站內容訓練商業 AI 模型。如需以其他方式使用，請先寄信至 ${EMAIL} 徵得同意。`
+      ]
+    },
+    {
+      heading: '可接受的使用',
+      paragraphs: [
+        '不得以對伺服器造成負擔的方式抓取或爬取本站；不得為商業散布而逆向本站或其中的遊戲；不得將本站用於任何違法用途。',
+        '違反上述規則的帳號，我們可能限制或關閉其存取。'
+      ]
+    },
+    {
+      heading: '免責聲明',
+      paragraphs: [
+        '本站及其內容依「現狀」提供。我們盡量準確講解規則，但麻將規則因地區和俱樂部而異；正式對局請以你所在地區或俱樂部的官方規則為準。',
+        '在法律允許的範圍內，我們不對因使用本站而產生的間接損失負責。'
+      ]
+    },
+    {
+      heading: '變更與聯絡方式',
+      paragraphs: [
+        `我們可能更新本條款，頁首日期即最新版本。最近更新日期：${LEGAL_UPDATED}。`,
+        `關於本條款的問題，請寄信至 ${EMAIL}。`
+      ]
+    }
+  ]
+};
+
+const refundsEn: LegalDoc = {
+  title: 'Refund Policy',
+  intro:
+    'If a digital product from Mahjong Hub is not right for you, you can get your money back. This page explains how.',
+  sections: [
+    {
+      heading: '7-day refund, no reason needed',
+      paragraphs: [
+        'You can ask for a full refund within 7 days of buying any digital product. You do not need to tell us why.'
+      ]
+    },
+    {
+      heading: 'How to ask for a refund',
+      paragraphs: [
+        `Email ${EMAIL} with the email address you used for the order and your Creem order number. Or use the link in your Creem order email to request the refund yourself.`
+      ]
+    },
+    {
+      heading: 'Who handles the refund',
+      paragraphs: [
+        'Creem is the Merchant of Record for our orders, so Creem processes the refund. We will refund you to the original payment method. How long it takes to reach you depends on your bank or payment provider.'
+      ]
+    },
+    {
+      heading: 'Exceptions',
+      paragraphs: [
+        'We may refuse a refund in clear cases of abuse, such as the same account buying and refunding again and again, or bulk purchases made to take content for free.'
+      ]
+    },
+    {
+      heading: 'Help with a product',
+      paragraphs: [
+        `For any other question about a product, email ${EMAIL}. We will reply within 2 business days.`,
+        `Last updated ${LEGAL_UPDATED}.`
+      ]
+    }
+  ]
+};
+
+const refundsZh: LegalDoc = {
+  title: '退款政策',
+  intro: '如果你购买的 Mahjong Hub 数字产品不合适，可以申请退款。本页说明具体做法。',
+  sections: [
+    {
+      heading: '7 天无理由退款',
+      paragraphs: ['任何数字产品自购买之日起 7 天内，都可以申请全额退款，无需说明理由。']
+    },
+    {
+      heading: '如何申请',
+      paragraphs: [
+        `发邮件至 ${EMAIL}，附上下单时使用的邮箱和 Creem 订单号；也可以通过 Creem 订单邮件里的链接自助申请。`
+      ]
+    },
+    {
+      heading: '由谁处理',
+      paragraphs: [
+        'Creem 是我们订单的记录商户（Merchant of Record），退款由 Creem 处理，款项退回原支付方式。到账时间取决于你的银行或支付渠道。'
+      ]
+    },
+    {
+      heading: '例外情况',
+      paragraphs: [
+        '对于明显的滥用行为，例如同一账号反复购买再退款，或为了免费获取内容而批量购买，我们可以拒绝退款。'
+      ]
+    },
+    {
+      heading: '售后支持',
+      paragraphs: [
+        `产品相关的其他问题，也请发邮件至 ${EMAIL}，我们会在 2 个工作日内回复。`,
+        `最近更新日期：${LEGAL_UPDATED}。`
+      ]
+    }
+  ]
+};
+
+const refundsZhTw: LegalDoc = {
+  title: '退款政策',
+  intro: '如果你購買的 Mahjong Hub 數位產品不合適，可以申請退款。本頁說明具體做法。',
+  sections: [
+    {
+      heading: '7 天無理由退款',
+      paragraphs: ['任何數位產品自購買之日起 7 天內，都可以申請全額退款，無需說明理由。']
+    },
+    {
+      heading: '如何申請',
+      paragraphs: [
+        `寄信至 ${EMAIL}，附上下單時使用的電子郵件和 Creem 訂單編號；也可以透過 Creem 訂單郵件裡的連結自助申請。`
+      ]
+    },
+    {
+      heading: '由誰處理',
+      paragraphs: [
+        'Creem 是我們訂單的記錄商戶（Merchant of Record），退款由 Creem 處理，款項退回原付款方式。入帳時間取決於你的銀行或支付管道。'
+      ]
+    },
+    {
+      heading: '例外情況',
+      paragraphs: [
+        '對於明顯的濫用行為，例如同一帳號反覆購買再退款，或為了免費取得內容而大量購買，我們可以拒絕退款。'
+      ]
+    },
+    {
+      heading: '售後支援',
+      paragraphs: [
+        `產品相關的其他問題，也請寄信至 ${EMAIL}，我們會在 2 個工作天內回覆。`,
+        `最近更新日期：${LEGAL_UPDATED}。`
+      ]
+    }
+  ]
+};
+
 const privacyByLocale: Record<string, LegalDoc> = {
   en: privacyEn,
   zh: privacyZh,
@@ -440,4 +737,24 @@ export function getPrivacyDoc(locale: string): LegalDoc {
 
 export function getCookiesDoc(locale: string): LegalDoc {
   return cookiesByLocale[locale] ?? cookiesEn;
+}
+
+const termsByLocale: Record<string, LegalDoc> = {
+  en: termsEn,
+  zh: termsZh,
+  'zh-TW': termsZhTw
+};
+
+const refundsByLocale: Record<string, LegalDoc> = {
+  en: refundsEn,
+  zh: refundsZh,
+  'zh-TW': refundsZhTw
+};
+
+export function getTermsDoc(locale: string): LegalDoc {
+  return termsByLocale[locale] ?? termsEn;
+}
+
+export function getRefundsDoc(locale: string): LegalDoc {
+  return refundsByLocale[locale] ?? refundsEn;
 }
