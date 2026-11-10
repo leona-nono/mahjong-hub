@@ -78,6 +78,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: alternatesFor('/learn/glossary') }
     });
 
+    // Learning hub + three path pages (× INDEXABLE_LOCALES).
+    for (const learnPath of [
+      '/learn',
+      '/learn/start',
+      '/learn/variants',
+      '/learn/advanced'
+    ] as const) {
+      entries.push({
+        url: `${BASE}/${locale}${learnPath}`,
+        lastModified,
+        changeFrequency: 'weekly',
+        priority: learnPath === '/learn' ? 0.8 : 0.75,
+        alternates: { languages: alternatesFor(learnPath) }
+      });
+    }
+
     // Mahjong tools. Only paths that actually exist belong here — listing a
     // tool before its route ships would point crawlers at a 404. Add to this
     // list in the same change that creates the route (docs/MAHJONG_TOOLS_SPEC.md

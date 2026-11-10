@@ -33,7 +33,8 @@
     "gameHallH1": "免费麻将游戏"
   },
   "home": {
-    "heroTitle": "免费在线打麻将 – 麻将接龙、立直麻将与中国麻将",
+    "heroTitle": "边打边学麻将 —— 免费真人对局，AI 教练陪练",
+    "geoLead": "Mahjong Hub 是一个免费学麻将的地方：和 AI 对手打真实的四人麻将，覆盖港麻、立直、国标、美式、四川、台湾六种规则。",
     "heroSubtitle": "即开即玩，无需下载",
     "playButton": "立即开始",
     "featuredTitle": "精选推荐",
@@ -709,6 +710,7 @@
     "homeDescription": "免费在线玩麻将接龙、连连看与经典四人麻将。浏览器即开即玩，无需下载，支持每日挑战与多语界面。",
     "wardrobeTitle": "牌背与桌布皮肤 | Mahjong Hub",
     "blogTitle": "麻将入门指南与规则 | Mahjong Hub",
+    "learnTitle": "学麻将：从认牌到第一手和牌 | Mahjong Hub",
     "gamesTitle": "免费在线麻将游戏 — 接龙与四人麻将 | Mahjong Hub",
     "privacyTitle": "隐私政策 | Mahjong Hub",
     "aboutTitle": "关于麻将乐园 — 免费麻将游戏与入门指南"
@@ -834,6 +836,68 @@
     "glossaryLead": "本站用到的牌、叫牌和胡牌牌型，一句说清。",
     "seeOnTable": "到港麻牌桌上看",
     "whatIs": "{term}是什么？",
+    "hubH1": "一课一课学会麻将",
+    "hubLead": "三条短路径，从没摸过牌到真正打成一手四人麻将。每课只有一篇文章加一个上桌就能做的动作。",
+    "path": {
+      "start": {
+        "title": "打出第一手牌",
+        "subtitle": "八课，港麻规则",
+        "lead": "从零开始，一直走到能坐上真实的四人牌桌。认牌、规则、算番、第一次和牌，按新手真正需要的顺序排。",
+        "finish": "你现在已经能摸牌、打牌、鸣牌，并算出一手港麻的番数。再多打几局每日一局，把这些变成习惯。"
+      },
+      "variants": {
+        "title": "看懂六种麻将",
+        "subtitle": "四课，从港麻到美式",
+        "lead": "同样一副牌，在港麻、立直、国标、美式、四川、台湾六种规则里打法完全不同。先弄清差别，再决定学哪一种。",
+        "finish": "现在你能说出六种规则之间到底变了什么，也知道下一步该坐哪张牌桌。"
+      },
+      "advanced": {
+        "title": "把一种规则打深",
+        "subtitle": "五课，对局策略",
+        "lead": "起手牌、弃牌、防守，以及新手最容易犯的错。写给已经会规则的人。",
+        "finish": "你现在有了起手、弃牌和防守的清单。选一张牌桌，趁印象还新，马上打几局。"
+      }
+    },
+    "lessonCount": "{n} 课",
+    "minRead": "约 {n} 分钟",
+    "startFirst": "从第 1 课开始",
+    "viewPath": "看全部课程",
+    "cultureTitle": "麻将文化",
+    "cultureLead": "麻将从哪里来，真实的牌桌上又该怎么坐。",
+    "allArticles": "全部文章",
+    "lessonOf": "第 {n} 课",
+    "lessonBadge": "第 {n} / {total} 课",
+    "prevLesson": "上一课",
+    "nextLesson": "下一课",
+    "progress": "已完成 {done} / {total}",
+    "markDone": "标记为已学完",
+    "markUndone": "取消已学完",
+    "completed": "已学完",
+    "startHere": "从这里开始",
+    "pathOutcome": "学完之后你会什么",
+    "kit": {
+      "eyebrow": "可选",
+      "title": "想把六种规则的对比留在纸上？",
+      "lead": "六种规则并排看最容易分清。入门工具包把同样的对比做成一页可打印的速查卡，另附几手不用看屏幕也能练的牌。",
+      "priceNow": "$9.9",
+      "priceWas": "常规价 $29",
+      "disclaimer": "一次性购买。不是订阅，也不含任何博彩货币。",
+      "ctaSoon": "工具包页面即将上线"
+    },
+    "upcoming": "即将上线",
+    "course": {
+      "sixMahjongs": "六种麻将，一手牌看懂"
+    },
+    "action": {
+      "tryTileTool": "认一张牌",
+      "playFirstHand": "打第一手牌",
+      "scoreYourHand": "算一次番",
+      "checkWaits": "看听牌",
+      "playWithCoach": "开教练打一局",
+      "seeKit": "看入门工具包",
+      "tryAmerican": "试试美式牌桌",
+      "tryRiichi": "试试立直牌桌"
+    },
     "cluster": {
       "learn": "认识麻将",
       "variants": "规则与变体",

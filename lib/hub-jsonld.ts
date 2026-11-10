@@ -1,9 +1,9 @@
 import { absoluteUrl, SITE_BASE_URL } from '@/lib/seo';
 
-/** CollectionPage + ItemList for /blog and /games hubs (locale-prefixed URLs). */
+/** CollectionPage + ItemList for hub pages (/blog, /games, /learn …). */
 export function hubCollectionJsonLd(opts: {
   locale: string;
-  path: '/blog' | '/games';
+  path: `/${string}`;
   name: string;
   description: string;
   items: { urlPath: string; name: string }[];

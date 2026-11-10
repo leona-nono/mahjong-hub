@@ -4,10 +4,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ArticleTiles from '@/components/blog/ArticleTiles';
+import LessonNav from '@/components/learning/LessonNav';
 import { pageMeta } from '@/lib/seo';
 import { UI_LOCALES } from '@/lib/locales';
 import { getBlogPosts, getLocalizedBlogPost } from '@/data/blog';
 import { clusterOf, ctaHrefFor, relatedSlugs } from '@/data/blog-clusters';
+import { pathOfSlug } from '@/data/learning-paths';
 import { articleWordCount, linkArticleSections } from '@/lib/article-links';
 import { RichParagraph } from '@/lib/rich-text';
 import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
@@ -78,12 +80,25 @@ export default async function BlogPostPage({
     faq: post.faq
   });
 
-  const crumbs = [
-    { name: nav('home'), path: '/' },
-    { name: nav('beginners'), path: '/blog' },
-    ...(cluster ? [{ name: learn(`cluster.${cluster.id}`), path: `/blog#cluster-${cluster.id}` }] : []),
-    { name: post.title, path: `/blog/${slug}` }
-  ];
+  const learningPath = pathOfSlug(slug);
+  const crumbs = learningPath
+    ? [
+        { name: nav('home'), path: '/' },
+        { name: learn('title'), path: '/learn' },
+        {
+          name: learn(`path.${learningPath.id}.title`),
+          path: `/learn/${learningPath.id}`
+        },
+        { name: post.title, path: `/blog/${slug}` }
+      ]
+    : [
+        { name: nav('home'), path: '/' },
+        { name: nav('beginners'), path: '/blog' },
+        ...(cluster
+          ? [{ name: learn(`cluster.${cluster.id}`), path: `/blog#cluster-${cluster.id}` }]
+          : []),
+        { name: post.title, path: `/blog/${slug}` }
+      ];
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
@@ -96,6 +111,7 @@ export default async function BlogPostPage({
       ))}
 
       <Breadcrumbs locale={locale} crumbs={crumbs} />
+      <LessonNav slug={slug} locale={locale} />
 
       <h1 className="mt-4 font-display text-3xl font-semibold text-portal-text">
         {post.title}

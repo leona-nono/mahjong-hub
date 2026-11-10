@@ -4,7 +4,12 @@ import { pageMeta } from '@/lib/seo';
 import { clipSeo } from '@/lib/seo-templates';
 import { brandName, formatPageTitle, getPublicSiteSettings } from '@/lib/site-settings';
 
-type HubTitleKey = 'blogTitle' | 'gamesTitle' | 'privacyTitle' | 'aboutTitle';
+type HubTitleKey =
+  | 'blogTitle'
+  | 'gamesTitle'
+  | 'privacyTitle'
+  | 'aboutTitle'
+  | 'learnTitle';
 
 /** Locale-aware hub-page metadata with product-controlled English titles. */
 export async function hubPageMeta(opts: {

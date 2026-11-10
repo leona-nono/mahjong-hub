@@ -31,7 +31,7 @@ export default function Header({ siteTitle }: { siteTitle: string }) {
     { href: '/games/classic', label: tn('classic') },
     { href: '/games', label: tn('solitaire') },
     { href: '/tools', label: tn('tools') },
-    { href: '/blog', label: tn('beginners') }
+    { href: '/learn', label: tn('beginners') }
   ];
 
   return (

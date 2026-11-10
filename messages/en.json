@@ -8,6 +8,7 @@
     "homeDescription": "Play free mahjong games online—solitaire, connect, and tile-match puzzles. Instant play in your browser, no download required.",
     "wardrobeTitle": "Mahjong Tile Backs & Table Skins | Mahjong Hub",
     "blogTitle": "Mahjong Guides & Rules for Beginners | Mahjong Hub",
+    "learnTitle": "Learn Mahjong Free: First Tile to First Hand | Mahjong Hub",
     "gamesTitle": "Free Online Mahjong Games – Solitaire & 4-Player | Mahjong Hub",
     "privacyTitle": "Privacy Policy | Mahjong Hub",
     "aboutTitle": "About Mahjong Hub — Free Mahjong Games & Beginner Guides"
@@ -42,7 +43,8 @@
     "gameHallH1": "Free Mahjong Games"
   },
   "home": {
-    "heroTitle": "Play Mahjong Online Free – Mahjong Solitaire, Riichi & Chinese Mahjong",
+    "heroTitle": "Learn Mahjong by Playing — Free 4-Player Tables with an AI Coach",
+    "geoLead": "Mahjong Hub is a free site for learning mahjong by playing real four-player games against AI opponents, across six rulesets — Hong Kong, Riichi, Chinese Official, American, Sichuan and Taiwanese.",
     "heroSubtitle": "Instant play, no download",
     "playButton": "Play Now",
     "featuredTitle": "Featured",
@@ -834,6 +836,68 @@
     "glossaryLead": "Short definitions for the tiles, calls and winning shapes used on this site.",
     "seeOnTable": "See it on the Hong Kong table",
     "whatIs": "What is {term}?",
+    "hubH1": "Learn mahjong, one lesson at a time",
+    "hubLead": "Three short paths take you from never holding a tile to playing a real four-player hand. Every lesson is one article plus one thing to try at the table.",
+    "path": {
+      "start": {
+        "title": "Play your first hand",
+        "subtitle": "Eight lessons, Hong Kong rules",
+        "lead": "Start at zero and finish sitting at a real four-player table. Tiles, rules, scoring and a first win, in the order a beginner actually needs them.",
+        "finish": "You can now deal, discard, call and score a Hong Kong hand. Play a few more daily hands to make it stick."
+      },
+      "variants": {
+        "title": "Understand the six rulesets",
+        "subtitle": "Four lessons, Hong Kong to American",
+        "lead": "The same tiles play very differently in Hong Kong, Riichi, Chinese Official, American, Sichuan and Taiwanese rules. Learn what changes before you pick one.",
+        "finish": "You can now name what changes between the six rulesets — and you know which table to sit at next."
+      },
+      "advanced": {
+        "title": "Get better at one ruleset",
+        "subtitle": "Five lessons, strategy",
+        "lead": "Opening hands, discards, defence and the mistakes that cost beginners the most. Written for players who already know the rules.",
+        "finish": "You now have a checklist for openings, discards and defence. Pick one table and play a few hands while the ideas are still fresh."
+      }
+    },
+    "lessonCount": "{n} lessons",
+    "minRead": "{n} min read",
+    "startFirst": "Start with lesson 1",
+    "viewPath": "See all lessons",
+    "cultureTitle": "Mahjong culture",
+    "cultureLead": "Where the game came from, and how a real table behaves.",
+    "allArticles": "All articles",
+    "lessonOf": "Lesson {n}",
+    "lessonBadge": "Lesson {n} of {total}",
+    "prevLesson": "Previous lesson",
+    "nextLesson": "Next lesson",
+    "progress": "{done} of {total} done",
+    "markDone": "Mark as done",
+    "markUndone": "Mark as not done",
+    "completed": "Done",
+    "startHere": "Start here",
+    "pathOutcome": "What you can do at the end",
+    "kit": {
+      "eyebrow": "Optional",
+      "title": "Want the whole ruleset comparison on paper?",
+      "lead": "The six rulesets are easiest to compare side by side. The starter kit puts the same comparisons on one printable sheet, plus practice hands you can play without a screen.",
+      "priceNow": "$9.9",
+      "priceWas": "Regular price $29",
+      "disclaimer": "One-time purchase. No subscription, no gambling currency.",
+      "ctaSoon": "Kit page coming soon"
+    },
+    "upcoming": "Coming soon",
+    "course": {
+      "sixMahjongs": "Six Mahjongs, One Hand"
+    },
+    "action": {
+      "tryTileTool": "Identify a tile",
+      "playFirstHand": "Play your first hand",
+      "scoreYourHand": "Score a hand",
+      "checkWaits": "Check your waits",
+      "playWithCoach": "Play with the coach",
+      "seeKit": "See the starter kit",
+      "tryAmerican": "Try the American table",
+      "tryRiichi": "Try the Riichi table"
+    },
     "cluster": {
       "learn": "Learn the game",
       "variants": "Rules and variants",

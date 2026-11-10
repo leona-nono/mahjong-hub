@@ -11,8 +11,29 @@ import HomeLearnCards from '@/components/HomeLearnCards';
 import HomeSeoBlock from '@/components/HomeSeoBlock';
 import { homeSeo } from '@/lib/home-seo';
 import { homeJsonLd } from '@/lib/home-jsonld';
+import { LEARNING_PATHS } from '@/data/learning-paths';
 import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
 import { alternatesFor, socialShareMeta } from '@/lib/seo';
+
+/**
+ * Homepage `<title>` is `{ absolute }`, so the layout `titleTemplate`
+ * (`{page} | {brand}`) is not applied. Brand is appended once here.
+ */
+const EN_HOME_TITLE =
+  'Learn Mahjong Online Free — How to Play, 6 Rulesets, AI Opponents | Mahjong Hub';
+
+const EN_HOME_DESCRIPTION =
+  'Learn mahjong by playing real four-player games against AI opponents — six rulesets, a coach that explains each discard, and free practice tables. No download, no sign-up.';
+
+function homeMeta(
+  locale: string,
+  fallback: { title: string; description: string }
+): { title: string; description: string } {
+  if (locale === 'en') {
+    return { title: EN_HOME_TITLE, description: EN_HOME_DESCRIPTION };
+  }
+  return fallback;
+}
 
 /** Pure SSG — no Prisma / ISR. Redeploy to refresh copy. */
 export const dynamic = 'force-static';
@@ -23,8 +44,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  // Keep learning-path slug checks in this route's build graph.
+  void LEARNING_PATHS.length;
   const site = getPublicSiteSettings();
-  const home = await homeSeo(locale);
+  const home = homeMeta(locale, await homeSeo(locale));
   return {
     title: { absolute: home.title },
     description: home.description,
@@ -49,7 +72,7 @@ export default async function HomePage({
 
   const t = await getTranslations('home');
   const site = getPublicSiteSettings();
-  const home = await homeSeo(locale);
+  const home = homeMeta(locale, await homeSeo(locale));
   const all = getLocalizedGames(getGames(), locale);
   const wall = all.filter((g) => g.gameType === 'native').slice(0, 6);
   const faq = await homeFaqJsonLd();
@@ -78,6 +101,9 @@ export default async function HomePage({
           >
             {t('heroTitle')}
           </h1>
+          <p className="mt-3 max-w-3xl text-base leading-relaxed text-portal-text">
+            {t('geoLead')}
+          </p>
           <p className="mt-2 text-sm font-medium text-portal-accent sm:text-base">{t('brandLine')}</p>
           <p className="mt-1 text-sm text-portal-muted">{t('instantPlay')}</p>
         </div>

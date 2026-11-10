@@ -33,7 +33,8 @@
     "gameHallH1": "免費麻將遊戲"
   },
   "home": {
-    "heroTitle": "免費線上打麻將 – 麻將接龍、立直麻將與中國麻將",
+    "heroTitle": "邊打邊學麻將 —— 免費真人對局，AI 教練陪練",
+    "geoLead": "Mahjong Hub 是一個免費學麻將的地方：和 AI 對手打真實的四人麻將，涵蓋港麻、立直、國標、美式、四川、台灣六種規則。",
     "heroSubtitle": "即開即玩，無需下載",
     "playButton": "立即開始",
     "featuredTitle": "精選推薦",
@@ -709,6 +710,7 @@
     "homeDescription": "免費線上玩麻將接龍、連連看與經典四人麻將。瀏覽器即開即玩，無需下載，支援每日挑戰與多語介面。",
     "wardrobeTitle": "牌背與桌布外觀 | Mahjong Hub",
     "blogTitle": "麻將入門指南與規則 | Mahjong Hub",
+    "learnTitle": "學麻將：從認牌到第一手和牌 | Mahjong Hub",
     "gamesTitle": "免費線上麻將遊戲 — 接龍與四人麻將 | Mahjong Hub",
     "privacyTitle": "隱私權政策 | Mahjong Hub",
     "aboutTitle": "關於麻將樂園 — 免費麻將遊戲與入門指南"
@@ -834,6 +836,68 @@
     "glossaryLead": "本站用到的牌、叫牌和胡牌牌型，一句說清。",
     "seeOnTable": "到港麻牌桌上看",
     "whatIs": "{term}是什麼？",
+    "hubH1": "一課一課學會麻將",
+    "hubLead": "三條短路徑，從沒摸過牌到真正打成一手四人麻將。每課只有一篇文章加一個上桌就能做的動作。",
+    "path": {
+      "start": {
+        "title": "打出第一手牌",
+        "subtitle": "八課，港麻規則",
+        "lead": "從零開始，一直走到能坐上真實的四人牌桌。認牌、規則、算番、第一次和牌，按新手真正需要的順序排。",
+        "finish": "你現在已經能摸牌、打牌、鳴牌，並算出一手港麻的番數。再多打幾局每日一局，把這些變成習慣。"
+      },
+      "variants": {
+        "title": "看懂六種麻將",
+        "subtitle": "四課，從港麻到美式",
+        "lead": "同樣一副牌，在港麻、立直、國標、美式、四川、台灣六種規則裡打法完全不同。先弄清差別，再決定學哪一種。",
+        "finish": "現在你能說出六種規則之間到底變了什麼，也知道下一步該坐哪張牌桌。"
+      },
+      "advanced": {
+        "title": "把一種規則打深",
+        "subtitle": "五課，對局策略",
+        "lead": "起手牌、棄牌、防守，以及新手最容易犯的錯。寫給已經會規則的人。",
+        "finish": "你現在有了起手、棄牌和防守的清單。選一張牌桌，趁印象還新，馬上打幾局。"
+      }
+    },
+    "lessonCount": "{n} 課",
+    "minRead": "約 {n} 分鐘",
+    "startFirst": "從第 1 課開始",
+    "viewPath": "看全部課程",
+    "cultureTitle": "麻將文化",
+    "cultureLead": "麻將從哪裡來，真實的牌桌上又該怎麼坐。",
+    "allArticles": "全部文章",
+    "lessonOf": "第 {n} 課",
+    "lessonBadge": "第 {n} / {total} 課",
+    "prevLesson": "上一課",
+    "nextLesson": "下一課",
+    "progress": "已完成 {done} / {total}",
+    "markDone": "標記為已學完",
+    "markUndone": "取消已學完",
+    "completed": "已學完",
+    "startHere": "從這裡開始",
+    "pathOutcome": "學完之後你會什麼",
+    "kit": {
+      "eyebrow": "可選",
+      "title": "想把六種規則的對比留在紙上？",
+      "lead": "六種規則並排看最容易分清。入門工具包把同樣的對比做成一頁可列印的速查卡，另附幾手不用看螢幕也能練的牌。",
+      "priceNow": "$9.9",
+      "priceWas": "常規價 $29",
+      "disclaimer": "一次性購買。不是訂閱，也不含任何博弈貨幣。",
+      "ctaSoon": "工具包頁面即將上線"
+    },
+    "upcoming": "即將上線",
+    "course": {
+      "sixMahjongs": "六種麻將，一手牌看懂"
+    },
+    "action": {
+      "tryTileTool": "認一張牌",
+      "playFirstHand": "打第一手牌",
+      "scoreYourHand": "算一次番",
+      "checkWaits": "看聽牌",
+      "playWithCoach": "開教練打一局",
+      "seeKit": "看入門工具包",
+      "tryAmerican": "試試美式牌桌",
+      "tryRiichi": "試試立直牌桌"
+    },
     "cluster": {
       "learn": "認識麻將",
       "variants": "規則與變體",
