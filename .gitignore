@@ -20,3 +20,6 @@ lib/generated/
 
 # Offline i18n translation memory (local DeepSeek cache — never runtime)
 .cache/
+
+# Scratch output from local checks
+_tmp/
