@@ -30,12 +30,12 @@ export const GLOSSARY_DEFINITIONS: Record<string, GlossaryDefinitions> = {
   dragon_tiles: {
     en: 'Dragon tiles are the three honour tiles: Red, Green and White.',
     zh: '箭牌是中、发、白三张字牌。',
-    'zh-TW': '箭牌是中、發、白三張字牌。'
+    'zh-TW': '三元牌是中、發、白三張字牌。'
   },
   honor_tiles: {
     en: 'Honour tiles are the winds and dragons. They do not form numbered sequences.',
     zh: '字牌是风牌和箭牌，不能按数字组成顺子。',
-    'zh-TW': '字牌是風牌和箭牌，不能按數字組成順子。'
+    'zh-TW': '字牌是風牌和三元牌，不能按數字組成順子。'
   },
   number_tiles: {
     en: 'Number tiles are the three suits — characters, bamboo and dots — each numbered 1 to 9.',

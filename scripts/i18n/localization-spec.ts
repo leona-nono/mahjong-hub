@@ -32,7 +32,7 @@ import { GLOSSARY, type GlossaryLocale } from '../../data/glossary';
  * spec — the spec could be rewritten while the cache kept serving pre-change output, and
  * nobody would notice because both numbers looked plausible.
  */
-export const SPEC_VERSION = 'v3-locale-spec';
+export const SPEC_VERSION = 'v4-locale-spec-dual-track-tw';
 
 export type Severity = 'error' | 'warn';
 
@@ -97,7 +97,7 @@ export const LOCALE_SHEETS: Record<GlossaryLocale, LocaleSheet> = {
     ],
     rules: [
       '牌 = 牌，永远不是「板块」「棋子」「方块」。',
-      '摸牌 / 打出、打掉；不写「抽牌」「弃掉」「丢牌」。',
+      '摸牌 / 打出、打掉；不写「抽牌」「弃掉」「丢牌」（名词「弃牌」是通行行话，可用）。',
       '牌型、手牌 = 成型的牌；不写「图形」（只有指牌面图案时才用）「组合」「图案」。',
       '白板 / 红中 / 发财；不写「白龙」「红龙」「绿龙」。',
       '花色与牌名：万子、条子、筒子；面子、顺子、刻子、将牌、门清、听牌、自摸、点炮。',
@@ -124,7 +124,7 @@ export const LOCALE_SHEETS: Record<GlossaryLocale, LocaleSheet> = {
     }
   },
   'zh-TW': {
-    label: 'Traditional Chinese (Taiwan)',
+    label: 'Traditional Chinese (Taiwan base, Hong Kong terms on HK tables)',
     register: [
       '與 zh 同一種教學語氣，但用台灣麻將的詞，不是簡體版的字形轉換。',
       '台灣讀者熟悉「將牌」「聽牌」「門清」「暗槓」「碰碰胡」，這些優先於大陸用詞。',
@@ -132,12 +132,15 @@ export const LOCALE_SHEETS: Record<GlossaryLocale, LocaleSheet> = {
     ],
     rules: [
       '牌永遠不是「板塊」「方塊」。',
-      '摸牌 / 打出、打掉；不寫「抽牌」「棄掉」。',
+      '摸牌 / 打出、打掉；不寫「抽牌」「棄掉」；名詞寫「打出的牌」或「牌河」。',
       '牌型、手牌；不寫「圖形」（只有指牌面圖案時才用）。',
       '白板 / 紅中 / 發財；不寫「白龍」「紅龍」「綠龍」。',
-      '花色用萬子、索子、筒子（竹子花色在台灣叫索子，不叫條子）。',
+      '花色用萬子、索子、筒子（竹子花色在台灣和香港都叫索子，不叫條子）。',
       '面子、順子、刻子、將牌、門清、聽牌、自摸、暗槓、明槓、碰碰胡、七對子、斷么九。',
+      '字牌＝風牌＋三元牌。寫「三元牌」，不寫「箭牌」（港式桌寫「番子」）。',
       '「番」為通用計數單位；講台灣麻將自身的台數時才寫「台」。專指日本立直可寫「飜」。',
+      '🔴 術語地區（雙軌制）：港式桌文案一律用香港粵語術語（食糊、出銃、叫糊、三番起糊、例牌、番子），任何語種皆同；有桌面歸屬的文案用該桌面原生術語（國標與四川桌用大陸術語，台灣桌用台灣術語）；無桌面歸屬的通用文案（工具、教練、結算、導航、類目頁、博客）用台灣術語。',
+      '🔴 同一句內不得混用兩地寫法（例如「放銃」與「放槍」不可並存）。',
       '數字用半角並與單位留一空格：144 張、13 張、9 筒。',
       '標點用全角，引號用「」；台灣正體字形（裡、牆、麼、為、隻）。'
     ],
@@ -145,8 +148,10 @@ export const LOCALE_SHEETS: Record<GlossaryLocale, LocaleSheet> = {
       { pattern: /板塊/g, right: '牌', severity: 'error', why: '板塊 是 tile 的硬翻譯' },
       { pattern: /白龍/g, right: '白板', severity: 'error', why: '白板才是這張箭牌的名字' },
       { pattern: /紅龍/g, right: '紅中', severity: 'error', why: '紅中才是這張箭牌的名字' },
-      { pattern: /綠龍|綠龍/g, right: '發財', severity: 'error', why: '發財才是這張箭牌的名字' },
+      { pattern: /綠龍/g, right: '發財', severity: 'error', why: '發財才是這張箭牌的名字' },
       { pattern: /抽牌/g, right: '摸牌', severity: 'error', why: '麻將裡沒有「抽牌」這個動作' },
+      { pattern: /箭牌/g, right: '三元牌', severity: 'error', why: 'zh-TW 用「三元牌」，不是「箭牌」；港式桌用「番子」' },
+      { pattern: /條子|条子/g, right: '索子', severity: 'warn', why: '台灣與香港都叫「索子」；僅引述大陸用法時可保留' },
       { pattern: /棄掉/g, right: '打出', severity: 'warn', why: '英文 discard 的動詞是打出；名詞用「打出的牌」或「牌河」' }
     ],
     calibration: {

@@ -66,7 +66,7 @@ describe('homepage SEO consolidation', () => {
     expect(meta.alternates?.languages?.fr).toBeUndefined();
     expect(meta.robots).toBeUndefined();
     expect(meta.openGraph?.url).toBe(`${SITE_BASE_URL}/zh-TW/games`);
-    expect(meta.openGraph?.locale).toBe('zh_TW');
+    expect(meta.openGraph?.locale).toBe('zh_Hant');
     expect(meta.title).toEqual({ absolute: '遊戲' });
     expect(meta.openGraph?.title).toBe('遊戲');
     expect(meta.twitter?.card).toBe('summary_large_image');

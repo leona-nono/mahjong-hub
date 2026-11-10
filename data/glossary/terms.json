@@ -74,7 +74,7 @@
     "type": "term",
     "i18n": {
       "zh": "箭牌",
-      "zh-TW": "箭牌",
+      "zh-TW": "三元牌",
       "ja": "三元牌",
       "ko": "용패",
       "es": "Fichas de dragón",
@@ -396,7 +396,7 @@
     "type": "term",
     "i18n": {
       "zh": "点炮",
-      "zh-TW": "放銃",
+      "zh-TW": "放槍",
       "ja": "ロン",
       "ko": "론",
       "es": "Victoria por descarte ajeno",

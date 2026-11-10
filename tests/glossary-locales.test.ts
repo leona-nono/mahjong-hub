@@ -49,7 +49,7 @@ describe('locales indexability', () => {
 
   it('maps OG locale codes', () => {
     expect(ogLocale('zh')).toBe('zh_CN');
-    expect(ogLocale('zh-TW')).toBe('zh_TW');
+    expect(ogLocale('zh-TW')).toBe('zh_Hant');
     expect(ogLocale('en')).toBe('en_US');
   });
 });

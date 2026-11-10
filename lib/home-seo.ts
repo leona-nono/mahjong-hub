@@ -17,8 +17,10 @@ function clipSeoKeepTrailingBrand(text: string, max: number): string {
   const budget = max - (brand ? brand.length + BRAND_SEP.length : 0);
 
   let coreClipped = clipSeo(core, Math.max(budget, 1));
-  if (TRAILING_PUNCT.test(coreClipped)) {
-    const withoutTail = coreClipped.replace(/\s*\S+\s*$/u, '').trimEnd();
+  // clipSeo may append "…"; strip it before checking dangling connectors like "Riichi &…"
+  const bare = coreClipped.replace(/…$/u, '');
+  if (TRAILING_PUNCT.test(bare)) {
+    const withoutTail = bare.replace(/\s*\S+\s*$/u, '').trimEnd();
     coreClipped = clipSeo(withoutTail, Math.max(budget, 1));
   }
 

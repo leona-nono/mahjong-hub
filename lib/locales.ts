@@ -28,7 +28,7 @@ export function isContentLocale(locale: string): locale is ContentLocale {
 export const OG_LOCALE: Record<Locale, string> = {
   en: 'en_US',
   zh: 'zh_CN',
-  'zh-TW': 'zh_TW'
+  'zh-TW': 'zh_Hant'
 };
 
 /** Locales retired from routing. URLs 301 to English. Message files live in messages/_retired. */
