@@ -5,6 +5,7 @@
  */
 import { BLOG_I18N, type LocaleCode } from './blog.i18n';
 import { cornerstonePosts } from './blog.cornerstone';
+import { extraPosts } from './blog.extra';
 import type { TileSpec } from './tiles';
 
 export interface BlogSection {
@@ -332,7 +333,7 @@ const beginnerPosts: BlogPost[] = [
   }
 ];
 
-export const blogPosts: BlogPost[] = [...beginnerPosts, ...cornerstonePosts];
+export const blogPosts: BlogPost[] = [...beginnerPosts, ...cornerstonePosts, ...extraPosts];
 
 export function getBlogPosts(): BlogPost[] {
   return blogPosts;

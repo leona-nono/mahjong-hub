@@ -28,6 +28,7 @@
     "i18n:check": "npx tsx scripts/i18n-check.ts",
     "i18n:studio": "scripts/open-i18n-studio.cmd",
     "translate:content-i18n": "npx tsx scripts/i18n/translate-content-i18n.ts",
+    "new:post": "node scripts/new-post.mjs",
     "postinstall": "prisma generate"
   },
   "dependencies": {
