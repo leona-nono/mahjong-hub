@@ -32,13 +32,14 @@ const privacyEn: LegalDoc = {
         'If you play as a guest we store progress, item counts and settings on your device (local storage). We do not require an account to play.',
         'If you sign in we receive the name, email and avatar your Google, Facebook, X or email provider shares with us, plus a session cookie so you stay signed in. We store points, item inventory, daily-challenge streak and solitaire progress on our database (hosted by Neon Postgres).',
         'Our host (Vercel) and, if you consent, Google Analytics 4 may process IP address, browser type, language, approximate region and pages you open. We do not try to identify you from that traffic data.',
-        'We do not collect payment card numbers. We do not run a shop checkout on this site yet.'
+        'If you buy a digital product, Creem (our Merchant of Record) runs the checkout and takes your payment. We never see or store your card or bank details. Creem shares the order details we need to deliver the product and help you, such as your email address, name, country, the product bought and the order number. Creem handles your payment data under its own privacy policy.'
       ]
     },
     {
       heading: 'Why we use data (GDPR legal bases)',
       paragraphs: [
         'Providing the game and account: contract / legitimate interest — so you can play, keep a streak, and restore progress on another device.',
+        'Purchases: contract — to deliver what you bought, answer support questions and handle refunds. Creem keeps sales and tax records as Merchant of Record.',
         'Security and abuse prevention: legitimate interest — rate limits, login sessions, and append-only point ledgers.',
         'Analytics cookies and similar identifiers: consent. They stay off until you accept them in the cookie banner.',
         'Advertising cookies and rewarded-video identifiers: consent. No advertising SDK is loaded until you opt in and an ad network is actually connected.',
@@ -77,14 +78,14 @@ const privacyEn: LegalDoc = {
     {
       heading: 'Processors and international transfers',
       paragraphs: [
-        'Vercel hosts the website. Neon hosts the database. Auth.js talks to Google, Facebook, X or your email provider when you choose that sign-in method. Google Analytics runs only with consent.',
+        'Vercel hosts the website. Neon hosts the database. Auth.js talks to Google, Facebook, X or your email provider when you choose that sign-in method. Google Analytics runs only with consent. Creem sells our digital products as Merchant of Record and processes payments, sales tax and refunds.',
         'These providers may process data in the United States or other countries. Where GDPR applies we rely on their published transfer tools (such as Standard Contractual Clauses).'
       ]
     },
     {
       heading: 'Retention',
       paragraphs: [
-        'Guest device data lasts until you clear site data. Account records last while the account exists. Sessions expire. Point and item ledgers are kept to prevent cheating and restore balances. You can ask us to delete an account; we will drop personal identifiers and may keep aggregated, non-identifying gameplay counts.'
+        'Guest device data lasts until you clear site data. Account records last while the account exists. Sessions expire. Point and item ledgers are kept to prevent cheating and restore balances. You can ask us to delete an account; we will drop personal identifiers and may keep aggregated, non-identifying gameplay counts. Order details from Creem are kept as long as we need them for delivery, support, refunds and the records the law requires.'
       ]
     },
     {
@@ -113,13 +114,14 @@ const privacyZh: LegalDoc = {
         '游客游玩时，进度、道具和设置保存在你的设备（本地存储）。玩游戏不强制注册。',
         '登录后，我们会收到你选择的 Google、Facebook、X 或邮箱服务提供的姓名、邮箱和头像，并用会话 Cookie 保持登录。积分、道具、每日挑战连续天数和消除进度存在我们的数据库（Neon Postgres）。',
         '托管方 Vercel，以及在你同意后的 Google Analytics 4，可能处理 IP、浏览器、语言、大致地区和访问的页面。我们不会用这些流量数据识别你的身份。',
-        '我们不收集银行卡号。本站目前没有结账店铺。'
+        '购买数字产品时，结账和收款由我们的记录商户（Merchant of Record）Creem 完成。我们看不到、也不保存你的银行卡或账户信息。Creem 会把交付产品和提供帮助所需的订单信息提供给我们，例如邮箱、姓名、国家/地区、所购产品和订单号。你的支付数据由 Creem 按其自己的隐私政策处理。'
       ]
     },
     {
       heading: '使用目的（GDPR 法律依据）',
       paragraphs: [
         '提供游戏与账号：合同 / 正当利益——让你能玩、保持连续登录、在其他设备恢复进度。',
+        '购买：合同——交付你购买的产品、回答售后问题、处理退款。销售与税务记录由作为记录商户的 Creem 保存。',
         '安全与防刷：正当利益——频率限制、登录会话、只追加的积分流水。',
         '分析类 Cookie：同意。未在横幅中接受前不会启用。',
         '广告类 Cookie 与激励视频标识：同意。未选择同意且未接入广告网络前，不会加载广告 SDK。',
@@ -158,14 +160,14 @@ const privacyZh: LegalDoc = {
     {
       heading: '处理方与跨境传输',
       paragraphs: [
-        '网站由 Vercel 托管，数据库由 Neon 托管。登录时 Auth.js 会与你选择的 Google、Facebook、X 或邮件服务通信。Google Analytics 仅在同意后运行。',
+        '网站由 Vercel 托管，数据库由 Neon 托管。登录时 Auth.js 会与你选择的 Google、Facebook、X 或邮件服务通信。Google Analytics 仅在同意后运行。Creem 作为记录商户销售本站数字产品，负责收款、销售税和退款。',
         '上述服务可能在美国等地处理数据。在适用 GDPR 时，我们依赖其公布的传输机制（如标准合同条款）。'
       ]
     },
     {
       heading: '保存期限',
       paragraphs: [
-        '游客数据直到你清除站点数据。账号数据在账号存续期间保留。会话会过期。积分与道具流水用于防作弊和恢复余额。你可以要求删除账号；我们会删除个人标识，并可能保留无法识别个人的汇总统计。'
+        '游客数据直到你清除站点数据。账号数据在账号存续期间保留。会话会过期。积分与道具流水用于防作弊和恢复余额。你可以要求删除账号；我们会删除个人标识，并可能保留无法识别个人的汇总统计。来自 Creem 的订单信息，会在交付、售后、退款和法律要求的记录所需期限内保存。'
       ]
     },
     {
@@ -192,13 +194,14 @@ const privacyZhTw: LegalDoc = {
         '訪客遊玩時，進度、道具與設定存在你的裝置（本機儲存）。不必註冊也能玩。',
         '登入後，我們會收到你選擇的 Google、Facebook、X 或電子郵件服務提供的姓名、電子郵件與頭像，並以工作階段 Cookie 維持登入。積分、道具、每日挑戰連續天數與消除進度存在資料庫（Neon Postgres）。',
         '託管商 Vercel，以及在你同意後的 Google Analytics 4，可能處理 IP、瀏覽器、語言、大致地區與造訪頁面。',
-        '我們不收集信用卡號。本站目前沒有結帳商店。'
+        '購買數位產品時，結帳與收款由我們的記錄商戶（Merchant of Record）Creem 完成。我們看不到、也不保存你的信用卡或帳戶資料。Creem 會把交付產品與提供協助所需的訂單資料提供給我們，例如電子郵件、姓名、國家/地區、所購產品與訂單編號。你的付款資料由 Creem 依其自己的隱私權政策處理。'
       ]
     },
     {
       heading: '使用目的',
       paragraphs: [
-        '提供遊戲與帳號、安全防刷：契約 / 正當利益。分析與廣告識別碼：同意，未同意前不會載入。'
+        '提供遊戲與帳號、安全防刷：契約 / 正當利益。分析與廣告識別碼：同意，未同意前不會載入。',
+        '購買：契約——交付你購買的產品、回答售後問題、處理退款。銷售與稅務紀錄由擔任記錄商戶的 Creem 保存。'
       ]
     },
     {
@@ -216,7 +219,7 @@ const privacyZhTw: LegalDoc = {
     {
       heading: '處理方、保存與變更',
       paragraphs: [
-        `網站由 Vercel 託管，資料庫由 Neon 託管。帳號資料於帳號存續期間保存。最近更新日期：${LEGAL_UPDATED}。`
+        `網站由 Vercel 託管，資料庫由 Neon 託管。Creem 擔任記錄商戶販售本站數位產品，負責收款、銷售稅與退款。帳號資料於帳號存續期間保存；來自 Creem 的訂單資料，在交付、售後、退款與法律要求的紀錄所需期間內保存。最近更新日期：${LEGAL_UPDATED}。`
       ]
     }
   ]
@@ -450,10 +453,14 @@ const termsEn: LegalDoc = {
       ]
     },
     {
-      heading: 'Our content',
+      heading: 'Intellectual property',
       paragraphs: [
-        'The articles, lessons, tile artwork, game engine and other site content belong to Mahjong Hub. You may use them for your own personal learning.',
-        `You may not copy or republish the site or large parts of it, and you may not use our content to train commercial AI models. If you want to use our content in another way, email ${EMAIL} and ask first.`
+        'The articles, lessons, tile artwork, game engine and code, site design, and the Mahjong Hub name and logo belong to Mahjong Hub or the people who licensed them to us. Using the site or buying a product does not transfer any of these rights to you.',
+        'You may use the site for your own personal, non-commercial learning. You may share links to any page and quote short passages, as long as you name Mahjong Hub and link back to the page.',
+        'You may not copy or republish the site or large parts of it, and you may not use our content to train commercial AI models. You may not use our name or logo in a way that suggests we endorse you.',
+        'Digital products you buy come with a personal licence for you alone. You may download them and print them for your own use. You may not resell, share or publish the files, or hand them on to others. We keep ownership of the content.',
+        'The rules of mahjong belong to no one. Names and trademarks of other organisations, such as the National Mah Jongg League, belong to their owners; we are not affiliated with them. Our American Mahjong practice hands are our own and are not the official card of any league.',
+        `If you want to use our content in another way, or you believe something on the site infringes your rights, email ${EMAIL} with the page address and the details. We will look into it and remove material where that is right.`
       ]
     },
     {
@@ -512,10 +519,14 @@ const termsZh: LegalDoc = {
       ]
     },
     {
-      heading: '我们的内容',
+      heading: '知识产权',
       paragraphs: [
-        '本站的文章、课程、牌面美术、游戏引擎和其他内容归 Mahjong Hub 所有。你可以用于个人学习。',
-        `不得复制或转载整站或其中大部分内容，也不得用本站内容训练商业 AI 模型。如需以其他方式使用，请先发邮件至 ${EMAIL} 征得同意。`
+        '本站的文章、课程、牌面美术、游戏引擎与代码、网站设计，以及 Mahjong Hub 的名称和标识，归 Mahjong Hub 或授权给我们的权利人所有。使用本站或购买产品，都不会把这些权利转让给你。',
+        '你可以将本站用于个人的非商业学习。你可以分享任何页面的链接，也可以引用简短段落，但需注明 Mahjong Hub 并链接回原页面。',
+        '不得复制或转载整站或其中大部分内容，也不得用本站内容训练商业 AI 模型。不得以暗示我们为你背书的方式使用本站名称或标识。',
+        '你购买的数字产品仅授权你本人使用。你可以下载，并打印供自己使用；不得转售、分享或公开发布这些文件，也不得转交他人。内容的所有权仍归我们。',
+        '麻将规则本身不归任何人所有。其他机构的名称和商标（例如美国国家麻将联盟 National Mah Jongg League）归其各自所有者，我们与它们没有关联。本站的美式麻将练习牌型为原创，并非任何联盟的官方牌型卡。',
+        `如需以其他方式使用本站内容，或认为本站内容侵犯了你的权利，请发邮件至 ${EMAIL}，附上页面地址和具体情况。我们会核实，并在合理时删除相关内容。`
       ]
     },
     {
@@ -574,10 +585,14 @@ const termsZhTw: LegalDoc = {
       ]
     },
     {
-      heading: '我們的內容',
+      heading: '智慧財產權',
       paragraphs: [
-        '本站的文章、課程、牌面美術、遊戲引擎和其他內容歸 Mahjong Hub 所有。你可以用於個人學習。',
-        `不得複製或轉載整站或其中大部分內容，也不得用本站內容訓練商業 AI 模型。如需以其他方式使用，請先寄信至 ${EMAIL} 徵得同意。`
+        '本站的文章、課程、牌面美術、遊戲引擎與程式碼、網站設計，以及 Mahjong Hub 的名稱和標誌，歸 Mahjong Hub 或授權給我們的權利人所有。使用本站或購買產品，都不會把這些權利轉讓給你。',
+        '你可以將本站用於個人的非商業學習。你可以分享任何頁面的連結，也可以引用簡短段落，但需註明 Mahjong Hub 並連結回原頁面。',
+        '不得複製或轉載整站或其中大部分內容，也不得用本站內容訓練商業 AI 模型。不得以暗示我們為你背書的方式使用本站名稱或標誌。',
+        '你購買的數位產品僅授權你本人使用。你可以下載，並列印供自己使用；不得轉售、分享或公開發布這些檔案，也不得轉交他人。內容的所有權仍歸我們。',
+        '麻將規則本身不歸任何人所有。其他機構的名稱和商標（例如美國國家麻將聯盟 National Mah Jongg League）歸其各自所有者，我們與它們沒有關聯。本站的美式麻將練習牌型為原創，並非任何聯盟的官方牌型卡。',
+        `如需以其他方式使用本站內容，或認為本站內容侵害了你的權利，請寄信至 ${EMAIL}，附上頁面網址和具體情況。我們會核實，並在合理時移除相關內容。`
       ]
     },
     {
