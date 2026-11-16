@@ -15,13 +15,13 @@ export default function BoardScaleFrame({
   className?: string;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
-  const scale = useBoardScale(designWidth, frameRef);
+  const scale = useBoardScale(designWidth, designHeight, frameRef);
   const scaled = scale < 1;
 
   return (
     <div
       ref={frameRef}
-      className={`w-full min-w-0 overflow-hidden ${className}`}
+      className={`w-full min-h-0 min-w-0 max-h-[100dvh] overflow-hidden ${className}`}
       style={scaled ? { height: designHeight * scale } : undefined}
     >
       <div

@@ -206,13 +206,7 @@ export default function HongKongTable({
   }, [state, soundEnabled, voiceLocale]);
 
   return (
-    <section ref={tableShellRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell relative ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:p-3 fullscreen:rounded-none`}>
-      {/* Mobile: keep coach in its own strip so it never covers discard rivers. */}
-      {coach && (
-        <div className="relative z-30 border-b border-white/10 bg-[#0b6548] px-2 py-1.5 lg:hidden">
-          {coach}
-        </div>
-      )}
+    <section ref={tableShellRef} data-high-contrast={preferences.highContrast} data-reduced-motion={preferences.reducedMotion} data-tile-scale={preferences.tileScale} className={`mahjong-table-shell relative ${isFullscreen ? 'mahjong-table-shell--fullscreen' : ''} overflow-hidden rounded-xl bg-[#176845] p-0 shadow-[0_24px_60px_rgba(0,45,31,.35)] lg:fixed lg:inset-0 lg:z-[40] lg:flex lg:h-[100dvh] lg:max-h-[100dvh] lg:flex-col lg:overflow-hidden lg:p-3 fullscreen:rounded-none`}>
       {coach && <div className="absolute right-3 top-14 z-40 hidden max-w-sm lg:block">{coach}</div>}
       <MobileMahjongTable
         state={state}
@@ -242,9 +236,10 @@ export default function HongKongTable({
         onRiichi={onRiichi}
         onFullscreen={enterFullscreen}
         onAccessibility={() => setShowAccessibility(true)}
+        coach={coach}
       />
-      <div className="hidden lg:block">
-        <BoardScaleFrame designWidth={980} designHeight={824}>
+      <div className="hidden min-h-0 lg:block lg:min-h-0 lg:flex-1">
+        <BoardScaleFrame designWidth={980} designHeight={824} className="h-full max-h-full">
       <div
         className="mahjong-desktop-shell flex min-w-[980px] flex-col"
         style={isFullscreen ? { display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 16px)' } : undefined}

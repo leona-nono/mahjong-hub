@@ -342,7 +342,7 @@ export default function MahjongTable({
   }
 
   return (
-    <div className={traditional ? "mahjong-desktop-board--seasonal relative min-h-[820px] overflow-hidden rounded-none border-[6px] border-[#073727] bg-[#07553f] p-2 text-white shadow-[0_24px_70px_rgba(2,44,34,.45)] sm:rounded-xl sm:p-4" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
+    <div className={traditional ? "mahjong-desktop-board--seasonal relative min-h-0 overflow-hidden rounded-none border-[6px] border-[#073727] bg-[#07553f] p-2 text-white shadow-[0_24px_70px_rgba(2,44,34,.45)] sm:rounded-xl sm:p-4" : "rounded-3xl border border-emerald-900/20 bg-[radial-gradient(circle_at_center,#f8fffc_0%,#e4f6ef_62%,#d4eee4_100%)] p-3 shadow-[0_24px_70px_rgba(15,118,110,.16)] sm:p-6"}>
       {/* Controls */}
       {traditional && <div className="absolute right-5 top-5 z-20 text-sm font-semibold tracking-wide text-emerald-100/70">Rate: 10</div>}
       <div className={traditional ? "absolute left-3 top-3 z-30 flex flex-wrap items-center gap-2 rounded-lg border border-emerald-800/80 bg-[#062b23]/95 p-2 text-sm shadow-lg backdrop-blur" : "relative z-20 mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-white/80 bg-white/90 p-2 text-sm shadow-md backdrop-blur lg:absolute lg:left-3 lg:top-3 lg:mb-0"}>
@@ -403,7 +403,7 @@ export default function MahjongTable({
       </div>
 
       {/* Opponents / table seats */}
-      <div className={traditional ? "relative z-10 grid min-h-[650px] gap-2 rounded-[1.5rem] border border-emerald-950/40 bg-[linear-gradient(135deg,#064e3b,#07553f,#064e3b)] p-2 shadow-inner sm:grid-cols-3 sm:grid-rows-[auto_auto] lg:block" : "grid gap-2 rounded-[1.5rem] border border-emerald-900/10 bg-[linear-gradient(135deg,#0f766e,#115e59)] p-2 shadow-inner sm:grid-cols-3 sm:grid-rows-[auto_auto]"}>
+      <div className={traditional ? "relative z-10 grid min-h-0 gap-2 rounded-[1.5rem] border border-emerald-950/40 bg-[linear-gradient(135deg,#064e3b,#07553f,#064e3b)] p-2 shadow-inner sm:grid-cols-3 sm:grid-rows-[auto_auto] lg:block" : "grid gap-2 rounded-[1.5rem] border border-emerald-900/10 bg-[linear-gradient(135deg,#0f766e,#115e59)] p-2 shadow-inner sm:grid-cols-3 sm:grid-rows-[auto_auto]"}>
         <div className="sm:col-span-3 lg:absolute lg:left-1/2 lg:top-8 lg:w-[48%] lg:-translate-x-1/2">
           <OpponentPanel state={state} seat={3} traditional={traditional} />
         </div>
@@ -416,7 +416,7 @@ export default function MahjongTable({
       </div>
 
       {/* Table centre */}
-      <div className={traditional ? "relative z-20 my-3 min-h-[470px] overflow-hidden rounded-2xl border border-emerald-950/80 bg-[#07553f] p-3 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,.04),inset_0_20px_60px_rgba(0,0,0,.18)] sm:p-5 lg:absolute lg:left-1/2 lg:top-[155px] lg:my-0 lg:w-[58%] lg:-translate-x-1/2" : "my-4 rounded-2xl border border-emerald-900/10 bg-white/90 p-4 shadow-sm"}>
+      <div className={traditional ? "relative z-20 my-3 min-h-0 overflow-hidden rounded-2xl border border-emerald-950/80 bg-[#07553f] p-3 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,.04),inset_0_20px_60px_rgba(0,0,0,.18)] sm:p-5 lg:absolute lg:left-1/2 lg:top-[155px] lg:my-0 lg:w-[58%] lg:-translate-x-1/2" : "my-4 rounded-2xl border border-emerald-900/10 bg-white/90 p-4 shadow-sm"}>
         {traditional && <>
           <WallRail position="top" />
           <WallRail position="left" />
