@@ -208,3 +208,18 @@ model AchievementUnlock {
   @@id([userId, achievementId])
   @@index([userId])
 }
+
+/// Course-open waitlist. Not tied to a user account. Email is stored lowercase.
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  /// learn-variants | kit | home — which surface converted
+  source    String
+  locale    String
+  /// sha256(ip + AUTH_SECRET) prefix. Never the raw IP.
+  ipHash    String?
+  createdAt DateTime @default(now())
+
+  @@index([source])
+  @@map("Waitlist")
+}

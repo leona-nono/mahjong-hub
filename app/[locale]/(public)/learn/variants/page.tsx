@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import PathPageBody from '@/components/learning/PathPageBody';
+import WaitlistForm from '@/components/learning/WaitlistForm';
 import { pageMeta } from '@/lib/seo';
 import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
 import { clipSeo } from '@/lib/seo-templates';
@@ -44,7 +45,11 @@ export default async function LearnVariantsPage({
   const learn = await getTranslations('learn');
 
   return (
-    <PathPageBody pathId={PATH_ID} locale={locale}>
+    <PathPageBody
+      pathId={PATH_ID}
+      locale={locale}
+      afterStep={{ step: 3, content: <WaitlistForm source="learn-variants" /> }}
+    >
       {/*
         Starter-kit offer (D-028). The buy link goes live with T-08 once
         `/kit` exists — until then this block states the price and shows a

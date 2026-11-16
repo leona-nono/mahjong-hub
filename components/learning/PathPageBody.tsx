@@ -17,11 +17,14 @@ import { SITE_BASE_URL } from '@/lib/seo';
 export default async function PathPageBody({
   pathId,
   locale,
-  children
+  children,
+  afterStep
 }: {
   pathId: LearningPathId;
   locale: string;
   children?: ReactNode;
+  /** Inserted inside the lesson list, after this step number. */
+  afterStep?: { step: number; content: ReactNode };
 }) {
   const nav = await getTranslations('nav');
   const learn = await getTranslations('learn');
@@ -94,6 +97,7 @@ export default async function PathPageBody({
         <CourseList
           pathId={path.id}
           courses={courses}
+          afterStep={afterStep}
           labels={{
             // ICU templates: taken raw because CourseList formats them
             // client-side as the local progress count changes.
