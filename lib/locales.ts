@@ -5,14 +5,19 @@ export const UI_LOCALES = routing.locales;
 
 /**
  * Locales open to search indexing (hreflang + sitemap).
- * Matches UI_LOCALES — every routed language has dedicated long-form copy.
+ * Simplified Chinese stays in the language switcher (`UI_LOCALES`) but is
+ * noindex: it is an AI translation of the English pages. Traditional Chinese
+ * stays indexable.
  */
-export const INDEXABLE_LOCALES = ['en', 'zh', 'zh-TW'] as const satisfies readonly Locale[];
+export const INDEXABLE_LOCALES = ['en', 'zh-TW'] as const satisfies readonly Locale[];
 
 export type IndexableLocale = (typeof INDEXABLE_LOCALES)[number];
 
-/** Non-English locales that ship long-form JSON (about / home-guide / games). */
-export const CONTENT_LOCALES = ['zh', 'zh-TW'] as const satisfies readonly Exclude<IndexableLocale, 'en'>[];
+/**
+ * Non-English locales that ship long-form JSON (about / home-guide / games).
+ * Independent of indexing — `zh` remains a content locale while noindexed.
+ */
+export const CONTENT_LOCALES = ['zh', 'zh-TW'] as const satisfies readonly Exclude<Locale, 'en'>[];
 
 export type ContentLocale = (typeof CONTENT_LOCALES)[number];
 

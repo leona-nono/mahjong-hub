@@ -83,6 +83,7 @@ export function homeJsonLd(opts: {
     name: opts.site.siteTitle,
     description,
     url: SITE_BASE_URL,
+    // Languages advertised to crawlers. Noindexed zh is omitted.
     inLanguage: [...INDEXABLE_LOCALES],
     publisher: { '@id': `${SITE_BASE_URL}/#organization` }
   };

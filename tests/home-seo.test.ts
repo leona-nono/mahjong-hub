@@ -61,7 +61,8 @@ describe('homepage SEO consolidation', () => {
     });
     expect(meta.alternates?.canonical).toBe(`${SITE_BASE_URL}/zh-TW/games`);
     expect(meta.alternates?.languages?.['x-default']).toBe(`${SITE_BASE_URL}/en/games`);
-    expect(meta.alternates?.languages?.zh).toBe(`${SITE_BASE_URL}/zh/games`);
+    expect(meta.alternates?.languages?.en).toBe(`${SITE_BASE_URL}/en/games`);
+    expect(meta.alternates?.languages?.zh).toBeUndefined();
     expect(meta.alternates?.languages?.['zh-TW']).toBe(`${SITE_BASE_URL}/zh-TW/games`);
     expect(meta.alternates?.languages?.fr).toBeUndefined();
     expect(meta.robots).toBeUndefined();
@@ -72,17 +73,34 @@ describe('homepage SEO consolidation', () => {
     expect(meta.twitter?.card).toBe('summary_large_image');
   });
 
-  it('keeps indexable locales indexable without forced noindex', () => {
+  it('noindexes simplified Chinese and keeps a self canonical', () => {
     const meta = pageMeta({
       locale: 'zh',
       path: '/about',
       title: '关于',
       description: '简介'
     });
-    expect(meta.robots).toBeUndefined();
+    expect(meta.robots).toEqual({ index: false, follow: true });
+    expect(meta.alternates?.canonical).toBe(`${SITE_BASE_URL}/zh/about`);
+    expect(meta.alternates?.languages?.zh).toBeUndefined();
+    expect(meta.alternates?.languages?.['x-default']).toBe(`${SITE_BASE_URL}/en/about`);
     expect(meta.alternates?.languages?.['zh-TW']).toBe(`${SITE_BASE_URL}/zh-TW/about`);
     expect(meta.alternates?.languages?.fr).toBeUndefined();
     expect(meta.openGraph?.locale).toBe('zh_CN');
+  });
+
+  it('leaves privacy and cookies indexable on zh', () => {
+    for (const path of ['/privacy', '/cookies'] as const) {
+      const meta = pageMeta({
+        locale: 'zh',
+        path,
+        title: '合规',
+        description: '说明'
+      });
+      expect(meta.robots).toBeUndefined();
+      expect(meta.alternates?.canonical).toBe(`${SITE_BASE_URL}/zh${path}`);
+      expect(meta.alternates?.languages?.zh).toBeUndefined();
+    }
   });
 
   it('includes Organization and SoftwareApplication JSON-LD', () => {

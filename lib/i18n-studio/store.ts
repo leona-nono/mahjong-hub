@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { getBlogPosts } from '@/data/blog';
 import { games } from '@/data/games';
-import { CONTENT_LOCALES, INDEXABLE_LOCALES } from '@/lib/locales';
+import { CONTENT_LOCALES, UI_LOCALES } from '@/lib/locales';
 import type { OverrideReason, WithI18nMeta } from '@/lib/i18n-rules/meta';
 
 export type StudioDomain =
@@ -82,7 +82,8 @@ export function getEntry(
   id: string,
   locale: string
 ): { en: unknown; locale: unknown; localeCode: string } {
-  if (!(INDEXABLE_LOCALES as readonly string[]).includes(locale) && locale !== 'en') {
+  // Editor locales are every routed language, including noindexed zh.
+  if (!(UI_LOCALES as readonly string[]).includes(locale)) {
     throw Object.assign(new Error('Invalid locale'), { status: 400 });
   }
 

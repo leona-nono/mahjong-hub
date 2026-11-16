@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { assertDevOnly, listDomain, type StudioDomain } from '@/lib/i18n-studio/store';
-import { INDEXABLE_LOCALES } from '@/lib/locales';
+import { UI_LOCALES } from '@/lib/locales';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,12 +23,12 @@ export async function GET(req: Request) {
       return NextResponse.json({
         domain,
         items: listDomain(domain),
-        locales: INDEXABLE_LOCALES
+        locales: UI_LOCALES
       });
     }
     return NextResponse.json({
       domains: DOMAINS,
-      locales: INDEXABLE_LOCALES
+      locales: UI_LOCALES
     });
   } catch (e) {
     const status = (e as { status?: number }).status ?? 500;

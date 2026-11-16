@@ -29,12 +29,12 @@ describe('game page robots (scheme: iframe stays noindex)', () => {
     expect(games.some((g) => g.gameType === 'native')).toBe(true);
   });
 
-  it('never noindexes native games on EU/CJK locales', () => {
+  it('keeps native games indexable on en and zh-TW, and noindexes zh', () => {
     const native = getGame('hong-kong-mahjong');
     expect(native?.gameType).toBe('native');
     const robots = gameRobots('native');
 
-    for (const locale of ['zh-TW', 'zh', 'en'] as const) {
+    for (const locale of ['zh-TW', 'en'] as const) {
       expect(isIndexableLocale(locale)).toBe(true);
       const meta = pageMeta({
         locale,
@@ -45,12 +45,26 @@ describe('game page robots (scheme: iframe stays noindex)', () => {
       });
       expect(meta.robots).toEqual({ index: true, follow: true });
     }
+
+    expect(isIndexableLocale('zh')).toBe(false);
+    const zh = pageMeta({
+      locale: 'zh',
+      path: `/games/${native!.slug}`,
+      title: native!.title,
+      description: native!.description,
+      robots
+    });
+    expect(zh.robots).toEqual({ index: false, follow: true });
+    expect(zh.alternates?.canonical).toBe(
+      `https://mahjonggame.org/zh/games/${native!.slug}`
+    );
+    expect(zh.alternates?.languages?.zh).toBeUndefined();
   });
 
   it('always noindexes iframe games on every locale including en', () => {
     const robots = gameRobots('iframe');
 
-    for (const locale of INDEXABLE_LOCALES) {
+    for (const locale of [...INDEXABLE_LOCALES, 'zh'] as const) {
       const meta = pageMeta({
         locale,
         path: '/games/mahjong-solitaire',
@@ -62,18 +76,27 @@ describe('game page robots (scheme: iframe stays noindex)', () => {
     }
   });
 
-  it('lists blog posts for all indexable locales without forced noindex', () => {
+  it('lists blog posts without forced noindex on indexable locales', () => {
     const posts = getBlogPosts();
     expect(posts.length).toBeGreaterThan(0);
-    for (const locale of ['zh', 'zh-TW'] as const) {
-      const meta = pageMeta({
-        locale,
-        path: `/blog/${posts[0].slug}`,
-        title: posts[0].title,
-        description: posts[0].description,
-        type: 'article'
-      });
-      expect(meta.robots).toBeUndefined();
-    }
+    const zhTw = pageMeta({
+      locale: 'zh-TW',
+      path: `/blog/${posts[0].slug}`,
+      title: posts[0].title,
+      description: posts[0].description,
+      type: 'article'
+    });
+    expect(zhTw.robots).toBeUndefined();
+    const zh = pageMeta({
+      locale: 'zh',
+      path: `/blog/${posts[0].slug}`,
+      title: posts[0].title,
+      description: posts[0].description,
+      type: 'article'
+    });
+    expect(zh.robots).toEqual({ index: false, follow: true });
+    expect(zh.alternates?.canonical).toBe(
+      `https://mahjonggame.org/zh/blog/${posts[0].slug}`
+    );
   });
 });
