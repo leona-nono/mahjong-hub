@@ -41,6 +41,8 @@ export interface MobileMahjongTableProps {
   onRiichi?: () => void;
   onFullscreen: () => void;
   onAccessibility: () => void;
+  /** Shown in the bottom row on short landscape screens. Portrait keeps the caller's own strip. */
+  coach?: ReactNode;
 }
 
 export default function MobileMahjongTable(props: MobileMahjongTableProps) {
@@ -48,7 +50,7 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
     state, variant, paused, soundEnabled, hongKongMode, showHints, myTurn, myClaims, hints,
     canTsumo, tsumoEvaluation, kanTiles, riichiDiscards, roundLabel, onTogglePause,
     onToggleHints, onToggleSound, onHongKongMode, onNewGame, onNextHand, onDiscard, onClaim, onTsumo,
-    onKan, onRiichi, onFullscreen, onAccessibility
+    onKan, onRiichi, onFullscreen, onAccessibility, coach
   } = props;
   const human = state.players[HUMAN];
   const isRiichi = variant === 'riichi';
@@ -88,11 +90,17 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
   })();
 
   return (
-    <div data-debug-mobile-table className="relative flex h-[calc(100dvh-7rem)] min-h-[520px] flex-col overflow-hidden rounded-xl bg-transparent text-white lg:hidden landscape:fixed landscape:inset-0 landscape:z-[60] landscape:h-dvh landscape:min-h-0 landscape:rounded-none">
-      <div className="flex min-h-11 items-center justify-between gap-1 border-b border-white/10 bg-[#0b6548] px-2">
+    <div data-debug-mobile-table className="fixed inset-0 z-[60] flex h-[100dvh] min-h-0 flex-col overflow-hidden bg-transparent pb-[env(safe-area-inset-bottom)] text-white lg:hidden">
+      {coach ? (
+        <div className="mahjong-mobile-coach shrink-0 border-b border-white/10 bg-[#0b6548] px-2 py-1.5">
+          {coach}
+        </div>
+      ) : null}
+      <div className="mahjong-mobile-toolbar flex min-h-11 shrink-0 items-center justify-between gap-1 border-b border-white/10 bg-[#0b6548] px-2">
         <div className="flex flex-wrap gap-1">
           <TableToolButton label={paused ? t('play') : t('pause')} onClick={onTogglePause}>
-            {paused ? t('play') : t('pause')}
+            <span className="mahjong-tool-label">{paused ? t('play') : t('pause')}</span>
+            <span className="mahjong-tool-icon" aria-hidden="true">{paused ? '▶' : '❚❚'}</span>
           </TableToolButton>
           <TableToolButton
             label={t('newGameShort')}
@@ -101,19 +109,25 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
               onNewGame();
             }}
           >
-            {t('newGameShort')}
+            <span className="mahjong-tool-label">{t('newGameShort')}</span>
+            <span className="mahjong-tool-icon" aria-hidden="true">↻</span>
           </TableToolButton>
           <TableToolButton label={t('hints')} onClick={onToggleHints} active={showHints}>
-            {t('hints')}
+            <span className="mahjong-tool-label">{t('hints')}</span>
+            <span className="mahjong-tool-icon" aria-hidden="true">◇</span>
           </TableToolButton>
           <TableToolButton
             label={soundEnabled ? t('sound') : t('muted')}
             onClick={onToggleSound}
             active={soundEnabled}
           >
-            {soundEnabled ? t('sound') : t('muted')}
+            <span className="mahjong-tool-label">{soundEnabled ? t('sound') : t('muted')}</span>
+            <span className="mahjong-tool-icon" aria-hidden="true">{soundEnabled ? '♪' : '×'}</span>
           </TableToolButton>
-          <TableToolButton label="Accessibility" onClick={onAccessibility}>Aa</TableToolButton>
+          <TableToolButton label="Accessibility" onClick={onAccessibility}>
+            <span className="mahjong-tool-label">Aa</span>
+            <span className="mahjong-tool-icon" aria-hidden="true">Aa</span>
+          </TableToolButton>
         </div>
         <div className="flex flex-wrap gap-1">
           {variant === 'hongkong' && (
@@ -122,14 +136,18 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
               onClick={() => onHongKongMode(hongKongMode === 'casual' ? 'standard' : 'casual')}
               active={hongKongMode === 'casual'}
             >
-              {hongKongMode === 'casual' ? t('casualShort') : t('standard3FanShort')}
+              <span className="mahjong-tool-label">{hongKongMode === 'casual' ? t('casualShort') : t('standard3FanShort')}</span>
+              <span className="mahjong-tool-icon" aria-hidden="true">{hongKongMode === 'casual' ? '★' : '3'}</span>
             </TableToolButton>
           )}
-          <TableToolButton label={t('full')} onClick={onFullscreen}>{t('full')}</TableToolButton>
+          <TableToolButton label={t('full')} onClick={onFullscreen}>
+            <span className="mahjong-tool-label">{t('full')}</span>
+            <span className="mahjong-tool-icon" aria-hidden="true">⛶</span>
+          </TableToolButton>
         </div>
       </div>
 
-      <div className="relative min-h-0 flex-1 overflow-hidden bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_58%,#003c2d_100%)] landscape:h-[calc(100dvh-3rem)]">
+      <div className="relative min-h-0 flex-1 overflow-hidden bg-[radial-gradient(circle_at_center,#087052_0%,#00553e_58%,#003c2d_100%)]">
         <p className="pointer-events-none absolute left-1/2 top-1 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#003d2f]/85 px-2 py-0.5 text-[10px] font-bold text-emerald-50">
           {t('allOpponentsAI')}
           <span className="mx-1 text-emerald-200/50">·</span>
@@ -195,12 +213,13 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
         )}
 
         <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-white/15 bg-[#063d30]/95 pb-[max(.4rem,env(safe-area-inset-bottom))] pt-1 shadow-[0_-8px_22px_rgba(0,0,0,.3)]">
+          {coach ? <div className="mahjong-mobile-coach-inline px-2">{coach}</div> : null}
           <div className="flex h-7 items-center justify-between px-2 text-sm font-bold text-emerald-100">
             <span>{myTurn ? t('yourTurnTap') : t('seatPlaying', { seat: seatName(state.turn) })}</span>
             {hintStatus && <span className={tsumoEvaluation?.complete ? 'text-amber-200' : ''}>{hintStatus}</span>}
           </div>
           {human.melds.length > 0 && (
-            <div className="mb-1 flex overflow-x-auto px-2">
+            <div className="mb-1 flex flex-wrap px-2">
               {human.melds.map((meld, index) => (
                 <div key={index} className="mr-1 flex shrink-0 gap-px rounded bg-black/25 p-0.5">
                   {meld.tiles.map((tile, tileIndex) => <TileFace key={tileIndex} tile={tile} size="sm" traditional />)}
@@ -214,8 +233,8 @@ export default function MobileMahjongTable(props: MobileMahjongTableProps) {
               {human.flowers.map((tile, index) => <TileFace key={`${tile}-${index}`} tile={tile} size="xs" traditional />)}
             </div>
           )}
-          <div className="overflow-x-auto overscroll-x-contain px-1 pb-0.5 [-webkit-overflow-scrolling:touch]">
-            <div className="mx-auto flex w-max min-w-full items-end justify-center gap-px px-1">
+          <div className="mahjong-mobile-hand px-1 pb-0.5">
+            <div className="mx-auto flex flex-wrap items-end justify-center gap-px px-1">
               {human.hand.map((tile, index) => (
                 <span key={tile + index} className={index === human.hand.length - 1 ? 'ml-1.5' : ''}>
                   <TileFace
@@ -360,12 +379,12 @@ function Discards({ state, seat, className }: { state: GameState; seat: Seat; cl
   return (
     <div
       className={
-        'absolute z-[15] min-w-[4.5rem] max-w-[7.5rem] rounded-md bg-[#003d2f]/55 p-0.5 shadow-[0_1px_5px_rgba(0,0,0,.28)] ' +
+        'mahjong-mobile-discards absolute z-[15] min-w-[4.5rem] max-w-[7.5rem] rounded-md bg-[#003d2f]/55 p-0.5 shadow-[0_1px_5px_rgba(0,0,0,.28)] ' +
         className
       }
       aria-label={`P${seat + 1} discards`}
     >
-      <div className="grid grid-cols-3 justify-items-center gap-px">
+      <div className="mahjong-mobile-discard-grid grid grid-cols-3 justify-items-center gap-px">
         {recent.map((tile, index) => (
           <span
             key={tile + index}

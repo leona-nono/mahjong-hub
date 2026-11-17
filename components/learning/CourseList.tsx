@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState, type ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
+import { TrackedLink } from '@/components/learning/TrackedLink';
 
 /**
  * Ordered lesson list for a learning path (T-04).
@@ -24,6 +25,8 @@ export interface CourseListItem {
 interface CourseListProps {
   pathId: string;
   courses: CourseListItem[];
+  /** Rendered after the lesson with this step, still inside the list. */
+  afterStep?: { step: number; content: ReactNode };
   labels: {
     lessonOf: string;
     markDone: string;
@@ -48,7 +51,7 @@ function readDone(): string[] {
   }
 }
 
-export default function CourseList({ pathId, courses, labels }: CourseListProps) {
+export default function CourseList({ pathId, courses, labels, afterStep }: CourseListProps) {
   const [done, setDone] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
 
@@ -101,8 +104,9 @@ export default function CourseList({ pathId, courses, labels }: CourseListProps)
         {courses.map((course) => {
           const isDone = done.includes(course.slug);
           return (
+            <Fragment key={`${pathId}-${course.slug}`}>
             <li
-              key={`${pathId}-${course.slug}`}
+              data-lesson-step={course.step}
               className="rounded-2xl border border-portal-border bg-portal-panel p-4 sm:p-5"
             >
               <div className="flex items-start gap-3">
@@ -117,12 +121,18 @@ export default function CourseList({ pathId, courses, labels }: CourseListProps)
                     </>
                   ) : (
                     <>
-                      <Link
+                      <TrackedLink
                         href={`/blog/${course.slug}`}
+                        event="learn_lesson_open"
+                        properties={{
+                          path_id: pathId,
+                          step: course.step,
+                          slug: course.slug
+                        }}
                         className="font-semibold text-portal-text hover:text-portal-accent hover:underline"
                       >
                         {course.title}
-                      </Link>
+                      </TrackedLink>
                       <p className="mt-1 text-sm text-portal-muted">{course.description}</p>
                       <p className="mt-2 text-xs text-portal-muted/70">
                         {labels.lessonOf.replace('{n}', String(course.step))} ·{' '}
@@ -160,6 +170,12 @@ export default function CourseList({ pathId, courses, labels }: CourseListProps)
                 </div>
               </div>
             </li>
+            {afterStep && afterStep.step === course.step ? (
+              <li className="list-none" data-after-lesson={course.step}>
+                {afterStep.content}
+              </li>
+            ) : null}
+            </Fragment>
           );
         })}
       </ol>

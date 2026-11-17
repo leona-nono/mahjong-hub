@@ -888,6 +888,17 @@
       "disclaimer": "一次性購買。不是訂閱，也不含任何博弈貨幣。",
       "ctaSoon": "工具包頁面即將上線"
     },
+    "waitlist": {
+      "title": "想先拿到入門工具包",
+      "body": "六種規則對照課還在做。留下信箱，開課時我會通知你。",
+      "placeholder": "你的信箱",
+      "button": "通知我",
+      "success": "已記下。第一門課開放時，我會發信告訴你。",
+      "privacy": "只用來通知你課程開放，不發訂閱郵件。",
+      "errInvalid": "這個信箱看起來不對。",
+      "errTooFast": "請稍等一下再試。",
+      "errServer": "出了點問題，請再試一次。"
+    },
     "upcoming": "即將上線",
     "course": {
       "sixMahjongs": "六種麻將，一手牌看懂"

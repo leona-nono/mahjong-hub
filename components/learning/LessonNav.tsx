@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { TrackedLink } from '@/components/learning/TrackedLink';
 import { getLocalizedBlogPost } from '@/data/blog';
 import {
   courseNeighbours,
@@ -67,13 +68,19 @@ export default async function LessonNav({
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {prev ? (
           prev.href ? (
-            <Link
+            <TrackedLink
               href={prev.href}
+              event="learn_lesson_step"
+              properties={{
+                path_id: path.id,
+                from_step: neighbours.step,
+                direction: 'prev'
+              }}
               className="rounded-xl border border-portal-border bg-portal-panel px-3 py-2 text-sm transition hover:border-portal-accent/50"
             >
               <span className="block text-xs text-portal-muted">{learn('prevLesson')}</span>
               <span className="mt-0.5 block font-medium text-portal-text">{prev.title}</span>
-            </Link>
+            </TrackedLink>
           ) : (
             <div className="rounded-xl border border-dashed border-portal-border px-3 py-2 text-sm">
               <span className="block text-xs text-portal-muted">{learn('prevLesson')}</span>
@@ -88,13 +95,19 @@ export default async function LessonNav({
 
         {next ? (
           next.href ? (
-            <Link
+            <TrackedLink
               href={next.href}
+              event="learn_lesson_step"
+              properties={{
+                path_id: path.id,
+                from_step: neighbours.step,
+                direction: 'next'
+              }}
               className="rounded-xl border border-portal-border bg-portal-panel px-3 py-2 text-sm transition hover:border-portal-accent/50 sm:text-right"
             >
               <span className="block text-xs text-portal-muted">{learn('nextLesson')}</span>
               <span className="mt-0.5 block font-medium text-portal-text">{next.title}</span>
-            </Link>
+            </TrackedLink>
           ) : (
             <div className="rounded-xl border border-dashed border-portal-border px-3 py-2 text-sm sm:text-right">
               <span className="block text-xs text-portal-muted">{learn('nextLesson')}</span>

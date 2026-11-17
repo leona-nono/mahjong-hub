@@ -1,5 +1,35 @@
 import type { Metadata } from 'next';
-import { INDEXABLE_LOCALES, ogLocale } from '@/lib/locales';
+import { INDEXABLE_LOCALES, isIndexableLocale, ogLocale } from '@/lib/locales';
+
+/**
+ * Compliance pages keep their current indexing policy on every locale.
+ * Locale noindex does not apply here (T-14: do not change /privacy or /cookies).
+ */
+const LOCALE_NOINDEX_EXEMPT_PATHS = new Set(['/privacy', '/cookies']);
+
+function robotsAlreadyNoindex(robots: Metadata['robots']): boolean {
+  if (!robots) return false;
+  if (typeof robots === 'string') return /\bnoindex\b/.test(robots);
+  return robots.index === false;
+}
+
+/**
+ * Robots for a public page.
+ * Non-indexable locales (zh) are `noindex, follow` unless the path is exempt.
+ * An explicit noindex already chosen by the page (iframe games, `/games/set`,
+ * challenge `?c=`) is left as-is. Indexable locales keep the caller's robots.
+ */
+export function robotsForLocale(
+  locale: string,
+  path: string,
+  explicit?: Metadata['robots']
+): Metadata['robots'] | undefined {
+  if (!isIndexableLocale(locale) && !LOCALE_NOINDEX_EXEMPT_PATHS.has(path)) {
+    if (explicit && robotsAlreadyNoindex(explicit)) return explicit;
+    return { index: false, follow: true };
+  }
+  return explicit;
+}
 
 export const SITE_BASE_URL = 'https://mahjonggame.org';
 
@@ -104,12 +134,13 @@ export function pageMeta(opts: {
   if (opts.type && share.openGraph) {
     share.openGraph = { ...share.openGraph, type: opts.type };
   }
+  const robots = robotsForLocale(opts.locale, opts.path, opts.robots);
   return {
     title: { absolute: opts.title },
     description: opts.description,
     alternates: alternatesFor(opts.locale, opts.path),
     ...share,
-    ...(opts.robots ? { robots: opts.robots } : {}),
+    ...(robots ? { robots } : {}),
     ...(opts.keywords ? { keywords: opts.keywords } : {})
   };
 }

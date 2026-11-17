@@ -13,7 +13,7 @@ import { homeSeo } from '@/lib/home-seo';
 import { homeJsonLd } from '@/lib/home-jsonld';
 import { LEARNING_PATHS } from '@/data/learning-paths';
 import { brandName, getPublicSiteSettings } from '@/lib/site-settings';
-import { alternatesFor, socialShareMeta } from '@/lib/seo';
+import { pageMeta } from '@/lib/seo';
 
 /**
  * Homepage `<title>` is `{ absolute }`, so the layout `titleTemplate`
@@ -48,18 +48,14 @@ export async function generateMetadata({
   void LEARNING_PATHS.length;
   const site = getPublicSiteSettings();
   const home = homeMeta(locale, await homeSeo(locale));
-  return {
-    title: { absolute: home.title },
+  return pageMeta({
+    locale,
+    path: '',
+    title: home.title,
     description: home.description,
-    alternates: alternatesFor(locale, ''),
-    ...socialShareMeta({
-      title: home.title,
-      description: home.description,
-      locale,
-      ogImage: site.ogImage,
-      siteName: brandName(site)
-    })
-  };
+    ogImage: site.ogImage,
+    siteName: brandName(site)
+  });
 }
 
 export default async function HomePage({

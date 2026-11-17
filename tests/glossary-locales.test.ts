@@ -37,11 +37,14 @@ describe('glossary', () => {
 });
 
 describe('locales indexability', () => {
-  it('indexes the three routed UI locales', () => {
-    expect([...INDEXABLE_LOCALES]).toEqual(['en', 'zh', 'zh-TW']);
-    expect(isIndexableLocale('zh')).toBe(true);
+  it('indexes English and Traditional Chinese only', () => {
+    expect([...INDEXABLE_LOCALES]).toEqual(['en', 'zh-TW']);
+    expect(isIndexableLocale('en')).toBe(true);
+    expect(isIndexableLocale('zh-TW')).toBe(true);
+    expect(isIndexableLocale('zh')).toBe(false);
     expect(isIndexableLocale('fr')).toBe(false);
     expect(isIndexableLocale('pt-BR')).toBe(false);
+    expect(isContentLocale('zh')).toBe(true);
     expect(isContentLocale('zh-TW')).toBe(true);
     expect(isContentLocale('es')).toBe(false);
     expect(CONTENT_LOCALES).toEqual(['zh', 'zh-TW']);

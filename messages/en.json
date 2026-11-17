@@ -888,6 +888,17 @@
       "disclaimer": "One-time purchase. No subscription, no gambling currency.",
       "ctaSoon": "Kit page coming soon"
     },
+    "waitlist": {
+      "title": "Get the starter kit first",
+      "body": "The six-ruleset comparison course is in progress. Leave your email and I'll tell you when it opens.",
+      "placeholder": "Your email",
+      "button": "Notify me",
+      "success": "You're on the list. I'll email you when the first course opens.",
+      "privacy": "Only used to notify you about the course. No newsletters.",
+      "errInvalid": "That email doesn't look right.",
+      "errTooFast": "Just a moment, then try again.",
+      "errServer": "Something went wrong. Please try again."
+    },
     "upcoming": "Coming soon",
     "course": {
       "sixMahjongs": "Six Mahjongs, One Hand"

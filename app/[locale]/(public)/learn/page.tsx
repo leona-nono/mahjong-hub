@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { TrackedLink } from '@/components/learning/TrackedLink';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { hubPageMeta } from '@/lib/hub-seo';
 import { hubCollectionJsonLd } from '@/lib/hub-jsonld';
@@ -99,19 +100,23 @@ export default async function LearnPage({
 
               <div className="mt-4 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-5">
                 {first && firstPost ? (
-                  <Link
+                  <TrackedLink
                     href={`/blog/${first.slug}`}
+                    event="learn_path_open"
+                    properties={{ path_id: path.id }}
                     className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-portal-accent px-5 py-2.5 text-sm font-bold text-portal-on-accent transition hover:brightness-110"
                   >
                     {learn('startFirst')} →
-                  </Link>
+                  </TrackedLink>
                 ) : null}
-                <Link
+                <TrackedLink
                   href={PATH_HREF[path.id]}
+                  event="learn_path_open"
+                  properties={{ path_id: path.id }}
                   className="text-sm font-semibold text-portal-accent hover:underline"
                 >
                   {learn('viewPath')}
-                </Link>
+                </TrackedLink>
               </div>
             </section>
           );
